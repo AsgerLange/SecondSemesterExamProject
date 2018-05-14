@@ -1,18 +1,37 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace SecondSemesterExamProject
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GameWorld : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private static GameWorld instance;
+        private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
+        private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
 
-        public Game1()
+        /// <summary>
+        /// Creates a Singleton Gameworld instance
+        /// </summary>
+        public static GameWorld Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameWorld();
+                }
+                return instance;
+            }
+        }
+
+        private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
