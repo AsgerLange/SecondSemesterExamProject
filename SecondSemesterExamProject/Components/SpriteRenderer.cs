@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     class SpriteRenderer : Component, IDrawable, ILoadable
     {
@@ -19,6 +19,13 @@ namespace SecondSemesterExamProject
         private bool useRect = false;
         public bool UseRect { get { return useRect; } set { useRect = value; } }
         private Vector2 offset;
+        private float rotation = 0;
+
+        public float Rotation
+        {
+            get { return rotation; }
+            set { rotation = MathHelper.ToRadians(value); }
+        }
 
         public Vector2 Offset
         {
@@ -52,13 +59,15 @@ namespace SecondSemesterExamProject
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
+
             if (UseRect)
             {
-                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, rectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, rectangle, Color.White, rotation, origin, 1, SpriteEffects.None, layerDepth);
             }
             else
             {
-                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, null, Color.White, rotation, origin, 1, SpriteEffects.None, layerDepth);
             }
         }
 

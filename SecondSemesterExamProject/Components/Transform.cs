@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     /// <summary>
     /// Makes it posible for the object to move

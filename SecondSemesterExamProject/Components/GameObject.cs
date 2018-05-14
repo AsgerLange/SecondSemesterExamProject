@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     class GameObject : Component
     {
@@ -49,7 +49,7 @@ namespace SecondSemesterExamProject
         {
             foreach (Component comp in components)
             {
-                if (comp.GetType().ToString() == "Beardman." + component)
+                if (comp.GetType().ToString() == "TankGame." + component)
                 {
                     return comp;
                 }

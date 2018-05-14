@@ -6,33 +6,48 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    class Vehicle : Component, IAnimatable, IUpdatable, IDrawable, ILoadable
+    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable
     {
         public Animator animator;
         protected int health;
         protected Controls control;
         protected float movementSpeed;
         protected float fireRate;
+        protected float rotation = 0;
+        protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
 
-        public Vehicle(Controls control, int health, float movementSpeed, float fireRate)
+        /// <summary>
+        /// creates a vehicle
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="control"></param>
+        /// <param name="health"></param>
+        /// <param name="movementSpeed"></param>
+        /// <param name="fireRate"></param>
+        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed) : base(gameObject)
         {
             this.control = control;
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.fireRate = fireRate;
+            this.rotateSpeed = rotateSpeed;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
         }
 
+        /// <summary>
+        /// handles what happens when a vehicle dies
+        /// </summary>
         protected virtual void Die()
         {
-
+            Console.WriteLine(new NotImplementedException("die Vehicle"));
         }
 
         /// <summary>
@@ -40,25 +55,82 @@ namespace SecondSemesterExamProject
         /// </summary>
         public virtual void Update()
         {
-            throw new NotImplementedException();
+            Vector2 translation = Vector2.Zero;
+            //is the player Rotating?
+            Rotate(translation);
+            //Is the player moving
+            translation = Move(translation);
+            //calculate direction of movement
+            translation = RotateMove(translation);
+            //move the vehicle
+            TranslateMovement(translation);
+            //rotate sprite
+            spriteRenderer.Rotation = rotation;
         }
 
         /// <summary>
-        /// draws the vehicle
+        /// moves the vehicle
         /// </summary>
-        /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch)
+        /// <param name="translation"></param>
+        /// <returns></returns>
+        public Vector2 Move(Vector2 translation)
         {
-            throw new NotImplementedException();
+            KeyboardState keyState = Keyboard.GetState();
+            if (keyState.IsKeyDown(Keys.W))
+            {
+                translation += new Vector2(1, 0);
+            }
+            else if (keyState.IsKeyDown(Keys.S))
+            {
+                translation += new Vector2(-1, 0);
+            }
+            return translation;
         }
 
+        /// <summary>
+        /// Rotates the vehicle depending on the reotateSpeed
+        /// </summary>
+        /// <param name="translation"></param>
+        public void Rotate(Vector2 translation)
+        {
+            KeyboardState keyState = Keyboard.GetState();
+            if (keyState.IsKeyDown(Keys.D))
+            {
+                rotation += rotateSpeed;
+            }
+            if (keyState.IsKeyDown(Keys.A))
+            {
+                rotation -= rotateSpeed;
+            }
+        }
+
+        /// <summary>
+        /// Returns a rotated version of the given translation
+        /// </summary>
+        /// <param name="translation"></param>
+        /// <returns></returns>
+        public Vector2 RotateMove(Vector2 translation)
+        {
+            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)));
+        }
+
+        /// <summary>
+        /// Makes the vehicle actually move
+        /// </summary>
+        /// <param name="translation"></param>
+        /// <param name="movementSpeed"></param>
+        public void TranslateMovement(Vector2 translation)
+        {
+            GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
+        }
+        
         /// <summary>
         /// handles animation for the vehicle
         /// </summary>
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(new NotImplementedException("OnAnimationDone Vehicle"));
         }
 
         /// <summary>
@@ -71,13 +143,13 @@ namespace SecondSemesterExamProject
 
             CreateAnimation();
 
-            animator.PlayAnimation("IdleDown");
+            animator.PlayAnimation("Idle");
         }
 
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("IdleDown", new Animation(5, 0, 0, 64, 112, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 40, 40, 3, Vector2.Zero));
         }
     }
 }

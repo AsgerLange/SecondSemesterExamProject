@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     /// <summary>
     /// This is the main type for your game.
@@ -78,6 +78,15 @@ namespace SecondSemesterExamProject
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            GameObject go;
+            go = new GameObject();
+            go.Transform.Position = new Vector2(20, 20);
+            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0));
+            go.AddComponent(new Animator(go));
+            go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed, Constant.tankFireRate, Constant.tankRotateSpeed));
+            go.AddComponent(new Collider(go));
+            gameObjects.Add(go);
 
             base.Initialize();
         }
@@ -156,13 +165,14 @@ namespace SecondSemesterExamProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
             //Draw Gameobjects
             foreach (var go in gameObjects)
             {
                 go.Draw(spriteBatch);
             }
 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

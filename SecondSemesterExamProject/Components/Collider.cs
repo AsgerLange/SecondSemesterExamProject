@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     class Collider : Component, IDrawable, ILoadable, IUpdatable
     {
@@ -53,7 +53,7 @@ namespace SecondSemesterExamProject
         public void Draw(SpriteBatch spriteBatch)
         {
 #if DEBUG
-            throw new NotImplementedException();
+            
 #endif
         }
 

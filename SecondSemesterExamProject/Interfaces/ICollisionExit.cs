@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     /// <summary>
     /// Handles what happens when 2 objects stop colliding
