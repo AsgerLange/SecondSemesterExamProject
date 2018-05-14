@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SecondSemesterExamProject
 {
+    enum Alignment {Friendly, Enemy, Neutral}
     class GameObject : Component
     {
         private List<Component> components = new List<Component>();
