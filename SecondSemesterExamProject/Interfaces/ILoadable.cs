@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     /// <summary>
     /// Has some content that needs to be loaded
