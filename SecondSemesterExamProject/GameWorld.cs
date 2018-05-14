@@ -1,21 +1,69 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace SecondSemesterExamProject
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    class GameWorld : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private static GameWorld instance;
+        private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
+        private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
+        private List<Collider> colliders = new List<Collider>();
+        private float deltaTime;
 
-        public Game1()
+        public List<Collider> Colliders
+        {
+            get { return colliders; }
+            set { colliders = value; }
+        }
+
+        public List<GameObject> GameObjectsToRemove
+        {
+            get { return gameObjectsToRemove; }
+            set { gameObjectsToRemove = value; }
+        }
+
+        public List<GameObject> GameObjects
+        {
+            get { return gameObjects; }
+            set { gameObjects = value; }
+        }
+
+        public float DeltaTime
+        {
+            get { return deltaTime; }
+        }
+
+        /// <summary>
+        /// Creates a Singleton Gameworld instance
+        /// </summary>
+        public static GameWorld Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameWorld();
+                }
+                return instance;
+            }
+        }
+
+        private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferHeight = 672;//Changes Window Size
+            graphics.PreferredBackBufferWidth = 1120;//Changes Window Size
+            this.Window.Position = new Point(0, 0);
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -27,6 +75,9 @@ namespace SecondSemesterExamProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             base.Initialize();
         }
@@ -41,6 +92,12 @@ namespace SecondSemesterExamProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            //load objects
+            foreach (var go in gameObjects)
+            {
+                go.LoadContent(Content);
+            }
         }
 
         /// <summary>
@@ -63,8 +120,31 @@ namespace SecondSemesterExamProject
                 Exit();
 
             // TODO: Add your update logic here
+            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //Updates GameObjects
+            foreach (var go in gameObjects)
+            {
+                go.Update();
+            }
 
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Removes dead objects
+        /// </summary>
+        private void RemoveObjects()
+        {
+            foreach (var go in gameObjectsToRemove)
+            {
+                if (go.GetComponent("Collider") is Collider collider)
+                {
+                    Colliders.Remove(collider);
+                }
+                gameObjects.Remove(go);
+            }
+            gameObjectsToRemove.Clear();
         }
 
         /// <summary>
@@ -76,6 +156,12 @@ namespace SecondSemesterExamProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            //Draw Gameobjects
+            foreach (var go in gameObjects)
+            {
+                go.Draw(spriteBatch);
+            }
 
             base.Draw(gameTime);
         }
