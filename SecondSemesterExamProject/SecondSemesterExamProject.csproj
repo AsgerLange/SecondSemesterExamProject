@@ -45,7 +45,7 @@
     <Compile Include="Builders\EnemyBuilder.cs" />
     <Compile Include="Interfaces\IEnemyBuilder.cs" />
     <Compile Include="Interfaces\IBulletBuilder.cs" />
-    <Compile Include="Bullet.cs" />
+    <Compile Include="Components\Bullet.cs" />
     <Compile Include="Components\Enemies\Enemy.cs" />
     <Compile Include="Builders\GameObjectDirector.cs" />
     <Compile Include="ObjectPools\BulletPool.cs" />

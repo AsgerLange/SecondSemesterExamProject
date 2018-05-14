@@ -9,6 +9,7 @@ namespace SecondSemesterExamProject
     enum BulletType {BaiscBullet };
     class Bullet : Component
     {
+        #region Attributes for object pool
         private bool canRelease;
 
         public bool CanRelease
@@ -16,5 +17,6 @@ namespace SecondSemesterExamProject
             get { return canRelease; }
             set { canRelease = value; }
         }
+        #endregion;
     }
 }

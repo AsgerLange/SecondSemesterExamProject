@@ -13,10 +13,10 @@ namespace SecondSemesterExamProject
         //List containing active Enemies
         private static List<GameObject> inActiveEnemies = new List<GameObject>();
 
-        //List containing inactive bullets
+        //List containing inactive enemies
         private static List<GameObject> activeEnemies = new List<GameObject>();
 
-        //List containing bullets to be released
+        //List containing enemies to be released
         public static List<GameObject> releaseList = new List<GameObject>();
 
         
@@ -85,10 +85,10 @@ namespace SecondSemesterExamProject
         /// <summary>
         /// Cleans up the enemy (resets attributes)
         /// </summary>
-        /// <param name="projectile"></param>
+        /// <param name="enemy"></param>
         public static void CleanUp(GameObject enemy)
         {
-            //Reset all bullet attrubutes
+            //Reset all enemy attrubutes
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace SecondSemesterExamProject
         /// Recycles old Bullet objects, or Creates new ones if the inactiveBullet list is empty
         /// </summary>
         /// <param name="position">The position where the bullet should spawn</param>
-        /// <param name="alignment">The faction of the bullet (Enemy/Friendly)</param>
+        /// <param name="alignment">The allignment of the bullet (Enemy/Friendly/neutral)</param>
         /// <returns></returns>
         public static GameObject CreateBullet(Vector2 position, Alignment alignment)
         {
@@ -87,9 +87,19 @@ namespace SecondSemesterExamProject
         /// Cleans up the bullet (resets attributes)
         /// </summary>
         /// <param name="projectile"></param>
-        public static void CleanUp(GameObject projectile)
+        public static void CleanUp(GameObject bullet)
         {
-            //Reset all bullet attrubutes
+            //Reset all bullet attributes
+
+
+            bullet.Transform.Position = new Vector2(100, 100);
+           // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
+            ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
+            GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
+            //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
+
+            activeBullets.Remove(bullet);
+            inActiveBullets.Add(bullet);
         }
 
         /// <summary>
