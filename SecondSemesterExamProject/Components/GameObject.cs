@@ -120,5 +120,50 @@ namespace SecondSemesterExamProject
                 }
             }
         }
+
+        /// <summary>
+        /// Handles Collision between 2 objects
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionStay(Collider other)
+        {
+            foreach (Component component in components)
+            {
+                if (component is ICollisionStay)
+                {
+                    (component as ICollisionStay).OnCollisionStay(other);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles Collision start
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionEnter(Collider other)
+        {
+            foreach (Component component in components)
+            {
+                if (component is ICollisionEnter)
+                {
+                    (component as ICollisionEnter).OnCollisionEnter(other);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles Collision end.
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionExit(Collider other)
+        {
+            foreach (Component component in components)
+            {
+                if (component is ICollisionExit)
+                {
+                    (component as ICollisionExit).OnCollisionExit(other);
+                }
+            }
+        }
     }
 }
