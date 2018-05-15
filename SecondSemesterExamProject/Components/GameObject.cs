@@ -17,10 +17,15 @@ namespace TankGame
 
         private bool isLoaded;
         private Transform transform;
-        
+
         public Transform Transform
         {
             get { return transform; }
+        }
+
+        public List<Component> GetComponentList
+        {
+            get { return components; }
         }
 
         /// <summary>
