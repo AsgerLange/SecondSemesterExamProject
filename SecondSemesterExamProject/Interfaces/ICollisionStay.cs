@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 namespace TankGame
 {
     /// <summary>
-    /// Can be loaded
+    /// Handles What happens during a continuous collision
     /// </summary>
-    interface IUpdatable
+    interface ICollisionStay
     {
-        /// <summary>
-        /// Handles Updates for the object component
-        /// </summary>
-        void Update();
+        void OnCollisionStay(Collider other);
     }
 }

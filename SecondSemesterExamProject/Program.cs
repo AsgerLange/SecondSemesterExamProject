@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
 #if WINDOWS || LINUX
     /// <summary>

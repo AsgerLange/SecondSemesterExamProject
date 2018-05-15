@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 namespace TankGame
 {
     /// <summary>
-    /// Can be loaded
+    /// Handles the moment 2 objects collide
     /// </summary>
-    interface IUpdatable
+    interface ICollisionEnter
     {
-        /// <summary>
-        /// Handles Updates for the object component
-        /// </summary>
-        void Update();
+        void OnCollisionEnter(Collider other);
     }
 }
