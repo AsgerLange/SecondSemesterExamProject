@@ -85,7 +85,7 @@ namespace TankGame
             GameObject go;
             go = new GameObject();
             go.Transform.Position = new Vector2(20, 20);
-            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0));
+            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go,Alignment.Friendly, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankFireRate, Constant.tankRotateSpeed));
@@ -180,7 +180,7 @@ namespace TankGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
             //Draw Gameobjects
             foreach (var go in gameObjects)
             {
