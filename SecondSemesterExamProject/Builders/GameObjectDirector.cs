@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
     enum BuilderType { BulletBuilder, EnemyBuilder }
     class GameObjectDirector

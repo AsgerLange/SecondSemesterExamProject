@@ -1,0 +1,6 @@
+﻿namespace TankGame
+{
+     interface IEnemyAI
+    {
+    }
+}

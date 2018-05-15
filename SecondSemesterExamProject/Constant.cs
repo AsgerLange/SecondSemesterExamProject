@@ -17,5 +17,15 @@ namespace TankGame
         public static float tankRotateSpeed = 2.0F;
         #endregion
         #endregion
+
+        #region Enemies
+        #region BasicEnemy
+        public static string basicEnemySpriteSheet = "EnemyBasic";
+        public static int basicEnemyHealth = 250;
+        public static float basicEnemyMovementSpeed = 25;
+        public static float basicEnemyAttackRate = 1;
+
+        #endregion
+        #endregion
     }
 }
