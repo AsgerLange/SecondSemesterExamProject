@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SecondSemesterExamProject
+namespace TankGame
 {
      interface IEnemyBuilder
     {

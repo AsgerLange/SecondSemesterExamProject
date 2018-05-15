@@ -1,29 +1,19 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace TankGame
 {
-    class Tank : Vehicle
+    class BasicEnemy : Enemy
     {
-        /// <summary>
-        /// Creates the tank
-        /// </summary>
-        /// <param name="gameObject"></param>
-        /// <param name="control"></param>
-        /// <param name="health"></param>
-        /// <param name="movementSpeed"></param>
-        /// <param name="fireRate"></param>
-        public Tank(GameObject gameObject, Alignment alignment,Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed) : base(gameObject,alignment, control, health, movementSpeed, fireRate, rotateSpeed)
+        public BasicEnemy(GameObject gameObject, Alignment alignment, int health, float movementSpeed,float attackRate) : base(gameObject,alignment, health, movementSpeed, attackRate)
         {
-
+            
         }
+
 
         /// <summary>
         /// Creates the animations
