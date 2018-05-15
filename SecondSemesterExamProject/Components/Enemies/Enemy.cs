@@ -16,7 +16,6 @@ namespace TankGame
 
         public Animator animator;
         private SpriteRenderer spriteRenderer;
-        protected GameObject vehicle;
 
         protected float rotation = 0;
         protected float movementSpeed;
@@ -52,7 +51,6 @@ namespace TankGame
             this.attackRate = attackRate;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-
             spriteRenderer.UseRect = true;
 
         }
@@ -113,18 +111,16 @@ namespace TankGame
             if (this.GameObject.Transform.Position.X >= 500)
             {
                 shouldMoveRight = false;
-                this.rotation = 180;
-
+                
             }
             if (this.GameObject.Transform.Position.X <= 400)
             {
                 shouldMoveRight = true;
-                this.rotation = 0;
-
-
+                
             }
             return translation;
         }
+
         /// <summary>
         /// Makes the Enemy actually move
         /// </summary>
@@ -138,7 +134,7 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 40, 40, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 24, 24, 3, Vector2.Zero));
         }
 
         /// <summary>
@@ -149,6 +145,7 @@ namespace TankGame
         {
             Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
         }
+
         /// <summary>
         /// handles what happens when a enemy dies
         /// </summary>
