@@ -19,12 +19,12 @@ namespace TankGame
         private bool useRect = false;
         public bool UseRect { get { return useRect; } set { useRect = value; } }
         private Vector2 offset;
-        private float rotation = 0;
+        private float rotation = 0;//in radians
 
         public float Rotation
         {
             get { return rotation; }
-            set { rotation = MathHelper.ToRadians(value); }
+            set { rotation = MathHelper.ToRadians(value); }//set with degrees
         }
 
         public Vector2 Offset
@@ -59,14 +59,14 @@ namespace TankGame
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-
             if (UseRect)
             {
+                Vector2 origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
                 spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, rectangle, Color.White, rotation, origin, 1, SpriteEffects.None, layerDepth);
             }
             else
             {
+                Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
                 spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, null, Color.White, rotation, origin, 1, SpriteEffects.None, layerDepth);
             }
         }

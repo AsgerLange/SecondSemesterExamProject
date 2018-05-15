@@ -35,14 +35,29 @@ namespace TankGame
             GameWorld.Instance.Colliders.Add(this);
         }
 
-        /// <summary>
-        /// Creates a collisionbox
-        /// </summary>
-        public Rectangle CollisionBox
+        /// <summary> 
+        /// Creates a collisionbox 
+        /// </summary> 
+        public Circle CollisionBox
         {
             get
             {
-                throw new NotImplementedException();
+                if (spriteRenderer.UseRect)
+                {
+                    return new Circle
+                    (new Vector2(
+                        GameObject.Transform.Position.X,
+                        GameObject.Transform.Position.Y),
+                        spriteRenderer.Rectangle.Width / 2);
+                }
+                else
+                {
+                    return new Circle
+                    (new Vector2(
+                        GameObject.Transform.Position.X,
+                        GameObject.Transform.Position.Y),
+                        spriteRenderer.Sprite.Width / 2);
+                }
             }
         }
 
@@ -53,7 +68,7 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
 #if DEBUG
-            
+            spriteBatch.Draw(texture, new Rectangle(CollisionBox.Bounds.X - CollisionBox.Bounds.Width / 2, CollisionBox.Bounds.Y - CollisionBox.Bounds.Height / 2, CollisionBox.Bounds.Width, CollisionBox.Bounds.Height), Color.Red);
 #endif
         }
 
