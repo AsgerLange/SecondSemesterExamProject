@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable
+    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter
     {
         public Animator animator;
         protected int health;
@@ -154,6 +154,21 @@ namespace TankGame
         {
             //EKSEMPEL
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 20, 40, 3, Vector2.Zero));
+        }
+
+        /// <summary>
+        /// what happens when something drives into the vehicle or the vehicle driwes into something?
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionEnter(Collider other)
+        {
+#if DEBUG
+            foreach (Component com in other.GameObject.GetComponentList)
+            {
+                Console.WriteLine("Collided with an object with this Component: " + com.ToString());
+            }
+            Console.WriteLine("At these Coordinates: " + GameObject.Transform.Position);
+#endif
         }
     }
 }

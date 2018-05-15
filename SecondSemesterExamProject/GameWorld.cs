@@ -82,7 +82,7 @@ namespace TankGame
             GameObject go;
             go = new GameObject();
             go.Transform.Position = new Vector2(20, 20);
-            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 1));
+            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed, Constant.tankFireRate, Constant.tankRotateSpeed));
             go.AddComponent(new Collider(go));
