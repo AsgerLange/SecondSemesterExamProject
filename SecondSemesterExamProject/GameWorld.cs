@@ -74,11 +74,14 @@ namespace TankGame
         /// </summary>
         protected override void Initialize()
         {
+            //graphics.ToggleFullScreen(); 
+
             // TODO: Add your initialization logic here
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Adds test player
             GameObject go;
             go = new GameObject();
             go.Transform.Position = new Vector2(20, 20);
@@ -89,6 +92,7 @@ namespace TankGame
             go.AddComponent(new Collider(go));
             gameObjects.Add(go);
 
+            //adds test enemy
             GameObject enemy;
             enemy = new GameObject();
             enemy.Transform.Position = new Vector2(450, 250);
@@ -99,6 +103,7 @@ namespace TankGame
             //    enemy.AddComponent(new Collider(enemy));
             gameObjects.Add(enemy);
             base.Initialize();
+
         }
 
         /// <summary>

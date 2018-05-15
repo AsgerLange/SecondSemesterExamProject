@@ -26,6 +26,7 @@ namespace TankGame
 
         protected IEnemyAI action;
         protected Alignment alignment;
+
         #region Attributes for object pool
         private bool canRelease;
 
@@ -35,6 +36,15 @@ namespace TankGame
             set { canRelease = value; }
         }
         #endregion;
+
+        /// <summary>
+        /// Enemy Constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="alignment">Alignment of the game object (enemy/friendly / neutral)</param>
+        /// <param name="health">The amount of health the enemy should have</param>
+        /// <param name="movementSpeed">Movement speed of the enemy</param>
+        /// <param name="attackRate">the attackrate of the enemy</param>
         public Enemy(GameObject gameObject, Alignment alignment, int health, float movementSpeed, float attackRate) : base(gameObject)
         {
             this.health = health;
@@ -47,6 +57,10 @@ namespace TankGame
 
         }
 
+        /// <summary>
+        /// Loads sprites and animations
+        /// </summary>
+        /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
             this.animator = (Animator)GameObject.GetComponent("Animator");
@@ -57,14 +71,17 @@ namespace TankGame
 
         }
 
+        /// <summary>
+        /// The Standard behaviour of an Enemy
+        /// </summary>
         public virtual void AI()
         {
 
             Vector2 translation = Vector2.Zero;
 
-            translation = Move(translation);
-            TranslateMovement(translation);
-            spriteRenderer.Rotation = rotation;
+            translation = Move(translation); //Moves left and right depending on x position
+            TranslateMovement(translation); // Translates the movement
+            spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
 
         }
 
@@ -80,30 +97,30 @@ namespace TankGame
         /// <returns></returns>
         public Vector2 Move(Vector2 translation)
         {
-
+            //DUMMY LOGIC REPLACE WITH ACTUAL AI
             if (this.GameObject.Transform.Position.X <= 501 && shouldMoveRight)
             {
                 translation += new Vector2(1, 0);
                 this.rotation = 90;
 
-                Console.WriteLine(this.GameObject.Transform.Position.ToString());
             }
             if (this.GameObject.Transform.Position.X <= 501 && shouldMoveRight == false)
             {
                 translation += new Vector2(-1, 0);
                 this.rotation = 270;
-                Console.WriteLine("moveleft");
 
             }
             if (this.GameObject.Transform.Position.X >= 500)
             {
                 shouldMoveRight = false;
-                Console.WriteLine("move right = false");
+                this.rotation = 180;
+
             }
             if (this.GameObject.Transform.Position.X <= 400)
             {
                 shouldMoveRight = true;
-                Console.WriteLine("move right = true");
+                this.rotation = 0;
+
 
             }
             return translation;

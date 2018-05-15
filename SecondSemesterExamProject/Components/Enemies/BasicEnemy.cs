@@ -9,6 +9,15 @@ namespace TankGame
 {
     class BasicEnemy : Enemy
     {
+
+        /// <summary>
+        /// Basic Enemy Constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="alignment"></param>
+        /// <param name="health"></param>
+        /// <param name="movementSpeed"></param>
+        /// <param name="attackRate"></param>
         public BasicEnemy(GameObject gameObject, Alignment alignment, int health, float movementSpeed,float attackRate) : base(gameObject,alignment, health, movementSpeed, attackRate)
         {
             
@@ -33,6 +42,13 @@ namespace TankGame
         }
 
         /// <summary>
+        /// Override for Enemy.AI()
+        /// </summary>
+        public override void AI()
+        {
+            base.AI();
+        }
+        /// <summary>
         /// handles which animation should the tank be running
         /// </summary>
         /// <param name="animationName"></param>
@@ -42,7 +58,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles what the tank does
+        /// handles what the enemy does
         /// </summary>
         public override void Update()
         {
@@ -50,7 +66,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles what happens when the tank dies
+        /// handles what happens when the basicEnemy dies
         /// </summary>
         protected override void Die()
         {
