@@ -1,29 +1,28 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace TankGame
 {
-    class Tank : Vehicle
+    class BasicEnemy : Enemy
     {
+
         /// <summary>
-        /// Creates the tank
+        /// Basic Enemy Constructor
         /// </summary>
         /// <param name="gameObject"></param>
-        /// <param name="control"></param>
+        /// <param name="alignment"></param>
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
-        /// <param name="fireRate"></param>
-        public Tank(GameObject gameObject, Alignment alignment,Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed) : base(gameObject,alignment, control, health, movementSpeed, fireRate, rotateSpeed)
+        /// <param name="attackRate"></param>
+        public BasicEnemy(GameObject gameObject, Alignment alignment, int health, float movementSpeed,float attackRate) : base(gameObject,alignment, health, movementSpeed, attackRate)
         {
-
+            
         }
+
 
         /// <summary>
         /// Creates the animations
@@ -43,6 +42,13 @@ namespace TankGame
         }
 
         /// <summary>
+        /// Override for Enemy.AI()
+        /// </summary>
+        public override void AI()
+        {
+            base.AI();
+        }
+        /// <summary>
         /// handles which animation should the tank be running
         /// </summary>
         /// <param name="animationName"></param>
@@ -52,7 +58,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles what the tank does
+        /// handles what the enemy does
         /// </summary>
         public override void Update()
         {
@@ -60,7 +66,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles what happens when the tank dies
+        /// handles what happens when the basicEnemy dies
         /// </summary>
         protected override void Die()
         {
