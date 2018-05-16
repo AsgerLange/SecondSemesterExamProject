@@ -16,8 +16,6 @@ namespace TankGame
         public Animator animator;
         protected int health;
         protected Controls control;
-        protected Alignment alignment;
-
         protected float movementSpeed;
         protected float fireRate;
         protected float rotation = 0;

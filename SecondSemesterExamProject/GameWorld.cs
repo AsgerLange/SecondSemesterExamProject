@@ -89,7 +89,7 @@ namespace TankGame
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankFireRate, Constant.tankRotateSpeed));
-            go.AddComponent(new Collider(go,Alignment.Friendly));
+            go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
             //adds test enemy
@@ -100,16 +100,16 @@ namespace TankGame
             enemy.AddComponent(new Animator(enemy));
             enemy.AddComponent(new BasicEnemy(enemy, Constant.basicEnemyHealth,
                 Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate));
-            enemy.AddComponent(new Collider(enemy,Alignment.Enemy));
+            enemy.AddComponent(new Collider(enemy, Alignment.Enemy));
             gameObjects.Add(enemy);
 
             //adds test enemy
             GameObject rock;
             rock = new GameObject();
             rock.Transform.Position = new Vector2(100, 100);
-            rock.AddComponent(new SpriteRenderer(rock, Constant.rockImage, 0));
+            rock.AddComponent(new SpriteRenderer(rock, Constant.rockImage, 1));
             rock.AddComponent(new Rock(rock, 100, 1, Alignment.Neutral));
-            rock.AddComponent(new Collider(rock,Alignment.Neutral));
+            rock.AddComponent(new Collider(rock, Alignment.Neutral));
             gameObjects.Add(rock);
 
 

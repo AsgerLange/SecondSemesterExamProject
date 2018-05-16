@@ -22,8 +22,7 @@ namespace TankGame
         protected float attackRate;
 
         protected int health;
-
-        protected IEnemyAI action;
+        
         
         #region Attributes for object pool
         private bool canRelease;
