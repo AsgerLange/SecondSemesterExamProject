@@ -107,7 +107,7 @@ namespace TankGame
             GameObject rock;
             rock = new GameObject();
             rock.Transform.Position = new Vector2(100, 100);
-            rock.AddComponent(new SpriteRenderer(rock, Constant.rockImage, 0));
+            rock.AddComponent(new SpriteRenderer(rock, Constant.rockImage, 1));
             rock.AddComponent(new Rock(rock, 100, 1, Alignment.Neutral));
             rock.AddComponent(new Collider(rock, Alignment.Neutral));
             gameObjects.Add(rock);
