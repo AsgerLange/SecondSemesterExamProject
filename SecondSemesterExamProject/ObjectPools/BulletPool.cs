@@ -64,7 +64,7 @@ namespace TankGame
                 GameObject tmp;
 
 
-                tmp = GameObjectDirector.Instance.Construct(position, BuilderType.BulletBuilder);
+                tmp = GameObjectDirector.Instance.Construct(position, BulletType.BaiscBullet);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeBullets.Add(tmp);
 

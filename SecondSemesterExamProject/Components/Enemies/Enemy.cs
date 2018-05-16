@@ -12,18 +12,20 @@ namespace TankGame
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable
     {
-        private bool shouldMoveRight = true; //delete
 
         public Animator animator;
         private SpriteRenderer spriteRenderer;
+
+        private GameObject targetGameObject; //HQ by default
 
         protected float rotation = 0;
         protected float movementSpeed;
         protected float attackRate;
 
         protected int health;
-        
-        
+
+        protected IEnemyAI action;
+
         #region Attributes for object pool
         private bool canRelease;
 
@@ -42,15 +44,17 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject,  int health, float movementSpeed, float attackRate) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
-            
+
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
+            //Temp target DELETE
+            targetGameObject = GameWorld.Instance.GameObjects[0];
         }
 
         /// <summary>
@@ -73,12 +77,8 @@ namespace TankGame
         public virtual void AI()
         {
 
-            MoveTo(GameWorld.Instance.GameObjects[0]); //Enemy moves towards player1
+            MoveTo(targetGameObject); //Enemy moves towards player1
 
-
-            //Vector2 translation = Vector2.Zero;
-            // translation = Move(translation); //Moves left and right depending on x position
-            // TranslateMovement(translation); // Translates the movement
             spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
 
         }
@@ -88,41 +88,8 @@ namespace TankGame
             AI();
         }
 
-        /// <summary>
-        /// moves the Enemy
-        /// </summary>
-        /// <param name="translation"></param>
-        /// <returns></returns>
-        public Vector2 Move(Vector2 translation)
-        {
-            //DUMMY LOGIC REPLACE WITH ACTUAL AI
-            if (this.GameObject.Transform.Position.X <= 501 && shouldMoveRight)
-            {
-                translation += new Vector2(1, 0);
-                this.rotation = 90;
-
-            }
-            if (this.GameObject.Transform.Position.X <= 501 && shouldMoveRight == false)
-            {
-                translation += new Vector2(-1, 0);
-                this.rotation = 270;
-
-            }
-            if (this.GameObject.Transform.Position.X >= 500)
-            {
-                shouldMoveRight = false;
-
-            }
-            if (this.GameObject.Transform.Position.X <= 400)
-            {
-                shouldMoveRight = true;
-
-            }
 
 
-            return translation;
-        }
-        
         /// <summary>
         /// Moves towards a targeted gameobject
         /// </summary>
@@ -131,57 +98,58 @@ namespace TankGame
         {
             float x = go.Transform.Position.X;
             float y = go.Transform.Position.Y;
-           
+
             Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
             direction.Normalize();
 
-            RotateToMatchDirection(direction);
 
-            
+            rotation = GetDegreesFromDestination(direction);
+
             TranslateMovement(direction);
         }
 
         /// <summary>
-        /// Rotates the enemy to fit its direction
+        /// Calculates the degrees from standart vector to destination vector.
         /// </summary>
-        /// <param name="vector"></param>
-        private void RotateToMatchDirection(Vector2 vector)
+        /// <param name="vector">The direction the enemy is moving</param>
+        private float GetDegreesFromDestination(Vector2 destinationVec)
         {
-            Console.WriteLine(vector);
-            if (vector.X > 0.5f && vector.X < 1.5f)
+            Vector2 positionVec = new Vector2(0, -1); //Standard position (UP)
+
+            float toppart = 0;
+
+            toppart += positionVec.X * destinationVec.X;
+            toppart += positionVec.Y * destinationVec.Y;
+
+
+
+            float destinationVector2 = 0; //destinationVec squared
+            float positionVector2 = 0; //positionVec squared
+
+
+            destinationVector2 += positionVec.X * positionVec.X;
+            destinationVector2 += positionVec.Y * positionVec.Y;
+
+            positionVector2 += destinationVec.X * destinationVec.X;
+            positionVector2 += destinationVec.Y * destinationVec.Y;
+
+
+            float bottompart = 0;
+            bottompart = (float)Math.Sqrt(destinationVector2 * positionVector2);
+
+
+            double returnValue = (float)Math.Acos(toppart / bottompart);
+
+            returnValue *= 360.0 / (2 * Math.PI); //Coverts the radian to degrees
+
+            if (destinationVec.X < 0)
             {
-                this.rotation = 90;
-            }
-            if (vector.Y > 0.5f && vector.Y < 1.5f)
-            {
-                this.rotation = 180;
-            }
-            if (vector.X < -0.5f && vector.X > -1.5f)
-            {
-                this.rotation = 270;
-            }
-            if (vector.Y < -0.5f && vector.Y > -1.5f)
-            {
-                this.rotation = 0;
+                returnValue -= (returnValue * 2);
             }
 
-            //TODO:
-            //if (vector.X > 0.25f && vector.X < 0.90f)
-            //{
-            //    this.rotation = 45;
-            //}
-            //if (vector.Y > 0.25f && vector.Y < 0.99f)
-            //{
-            //    this.rotation = 135;
-            //}
-            //if (vector.X < -0.48f && vector.X >= -0.92)
-            //{
-            //    this.rotation = 225;
-            //}
-
+            return (float)returnValue;
 
         }
-
 
         /// <summary>
         /// Makes the Enemy actually move
