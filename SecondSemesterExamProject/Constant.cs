@@ -18,6 +18,12 @@ namespace TankGame
         #endregion
         #endregion
 
+        #region Bullets
+        public static readonly string bulletSheet = "BasicBullet";
+        public static readonly float basicBulletMovementSpeed = 15;
+
+        #endregion;
+
         #region Enemies
         #region BasicEnemy
         public static readonly string basicEnemySpriteSheet = "EnemyBasic";

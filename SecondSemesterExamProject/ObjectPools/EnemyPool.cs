@@ -63,7 +63,7 @@ namespace TankGame
                 GameObject tmp;
 
               
-                tmp = GameObjectDirector.Instance.Construct(position, BuilderType.EnemyBuilder);
+                tmp = GameObjectDirector.Instance.Construct(position, EnemyType.BasicEnemy);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeEnemies.Add(tmp);
 

@@ -12,6 +12,9 @@ namespace TankGame
     {
         private static GameObjectDirector instance;
 
+        private BulletBuilder bulletBuilder;
+        private EnemyBuilder enemyBuilder;
+
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
         /// </summary>
@@ -28,20 +31,47 @@ namespace TankGame
                 return instance;
             }
         }
-            
+
 
 
         private GameObjectDirector()
         {
+            this.bulletBuilder = new BulletBuilder();
+            this.enemyBuilder = new EnemyBuilder();
 
         }
 
 
-        public GameObject Construct(Vector2 position,BuilderType type)
+        public GameObject Construct(Vector2 position, BulletType type)
         {
-            //Call Build on the correct Ibuilder, based on Buildertype enum
+            switch (type)
+            {
+                case BulletType.BaiscBullet:
+                    bulletBuilder.Build(position, type);
+                    break;
 
-            return null; //Gameobject
+                default:
+                    break;
+            }
+
+
+            return bulletBuilder.GetResult(); //returns the bullet that has been build
+        }
+
+        public GameObject Construct(Vector2 position, EnemyType type)
+        {
+            switch (type)
+            {
+                case EnemyType.BasicEnemy:
+                    enemyBuilder.Build(position, type);
+                    break;
+
+                default:
+                    break;
+            }
+
+
+            return enemyBuilder.GetResult(); //returns the bullet that has been build
         }
     }
 }
