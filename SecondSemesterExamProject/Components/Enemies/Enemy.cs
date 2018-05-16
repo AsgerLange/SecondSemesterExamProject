@@ -24,8 +24,7 @@ namespace TankGame
         protected int health;
 
         protected IEnemyAI action;
-        protected Alignment alignment;
-
+        
         #region Attributes for object pool
         private bool canRelease;
 
@@ -44,13 +43,12 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, Alignment alignment, int health, float movementSpeed, float attackRate) : base(gameObject)
+        public Enemy(GameObject gameObject,  int health, float movementSpeed, float attackRate) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
-            this.alignment = alignment;
-
+            
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
