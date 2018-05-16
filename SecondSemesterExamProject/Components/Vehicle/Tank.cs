@@ -20,7 +20,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Tank(GameObject gameObject, Alignment alignment,Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed) : base(gameObject,alignment, control, health, movementSpeed, fireRate, rotateSpeed)
+        public Tank(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed) : base(gameObject, control, health, movementSpeed, fireRate, rotateSpeed)
         {
 
         }

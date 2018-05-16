@@ -9,7 +9,7 @@ namespace TankGame
 {
     class Melee : Enemy
     {
-        public Melee(GameObject gameObject, Alignment alignment, int health, float movementSpeed, float attackRate) : base(gameObject, alignment, health, movementSpeed, attackRate)
+        public Melee(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject, health, movementSpeed, attackRate)
         {
         }
 
