@@ -15,12 +15,19 @@ namespace TankGame
         private Texture2D sprite;
         private string spriteName;
         private float layerDepth;
+        private float scale = 1;
         private GameObject gameObject;
         private bool useRect = false;
         public bool UseRect { get { return useRect; } set { useRect = value; } }
         private Vector2 offset;
         private float rotation = 0;//in radians
 
+
+        public float Scale
+        {
+            get { return scale; }
+            set { scale = value; }
+        }
         public float Rotation
         {
             get { return rotation; }
@@ -62,12 +69,12 @@ namespace TankGame
             if (UseRect)
             {
                 Vector2 origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
-                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, rectangle, Color.White, rotation, origin, 1, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, rectangle, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
             }
             else
             {
                 Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, null, Color.White, rotation, origin, 1, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, null, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
             }
         }
 

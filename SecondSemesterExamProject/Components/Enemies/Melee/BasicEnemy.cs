@@ -18,7 +18,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="attackRate"></param>
-        public BasicEnemy(GameObject gameObject, Alignment alignment, int health, float movementSpeed, float attackRate) : base(gameObject, alignment, health, movementSpeed, attackRate)
+        public BasicEnemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject, health, movementSpeed, attackRate)
         {
 
         }

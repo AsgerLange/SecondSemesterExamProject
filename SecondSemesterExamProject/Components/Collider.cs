@@ -16,6 +16,12 @@ namespace TankGame
         private bool doCollisionChecks;
         private List<Collider> otherColliders = new List<Collider>();
         private List<Collider> removeOtherColliders = new List<Collider>();
+        private Alignment alignment;
+
+        public Alignment GetAlignment
+        {
+            get { return alignment; }
+        }
 
         public List<Collider> RemoveOtherColliders
         {
@@ -29,8 +35,10 @@ namespace TankGame
             set { doCollisionChecks = value; }
         }
 
-        public Collider(GameObject gameObject) : base(gameObject)
+        public Collider(GameObject gameObject, Alignment alignment) : base(gameObject)
         {
+            this.alignment = alignment;
+
             doCollisionChecks = true;
             GameWorld.Instance.Colliders.Add(this);
         }
@@ -48,7 +56,7 @@ namespace TankGame
                     (new Vector2(
                         GameObject.Transform.Position.X,
                         GameObject.Transform.Position.Y),
-                        spriteRenderer.Rectangle.Width / 2);
+                        (spriteRenderer.Rectangle.Width / 2) * spriteRenderer.Scale);
                 }
                 else
                 {
@@ -56,7 +64,7 @@ namespace TankGame
                     (new Vector2(
                         GameObject.Transform.Position.X,
                         GameObject.Transform.Position.Y),
-                        spriteRenderer.Sprite.Width / 2);
+                        (spriteRenderer.Sprite.Width / 2) * spriteRenderer.Scale);
                 }
             }
         }

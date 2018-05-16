@@ -46,6 +46,7 @@
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
+    <Compile Include="Components\Rock.cs" />
     <Compile Include="Interfaces\IEnemyAI.cs" />
     <Compile Include="Interfaces\IEnemyBuilder.cs" />
     <Compile Include="Interfaces\IBulletBuilder.cs" />
