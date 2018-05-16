@@ -125,7 +125,7 @@ namespace TankGame
 
             return translation;
         }
-        
+
         /// <summary>
         /// Moves towards a targeted gameobject
         /// </summary>
@@ -134,57 +134,58 @@ namespace TankGame
         {
             float x = go.Transform.Position.X;
             float y = go.Transform.Position.Y;
-           
+
             Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
             direction.Normalize();
 
-            RotateToMatchDirection(direction);
 
-            
+            rotation = GetDegreesFromDestination(direction);
+
             TranslateMovement(direction);
         }
 
         /// <summary>
-        /// Rotates the enemy to fit its direction
+        /// Calculates the degrees from standart vector to destination vector.
         /// </summary>
-        /// <param name="vector"></param>
-        private void RotateToMatchDirection(Vector2 vector)
+        /// <param name="vector">The direction the enemy is moving</param>
+        private float GetDegreesFromDestination(Vector2 destinationVec)
         {
-            Console.WriteLine(vector);
-            if (vector.X > 0.5f && vector.X < 1.5f)
+            Vector2 positionVec = new Vector2(0, -1); //Standard position (UP)
+
+            float toppart = 0;
+
+            toppart += positionVec.X * destinationVec.X;
+            toppart += positionVec.Y * destinationVec.Y;
+
+
+
+            float destinationVector2 = 0; //destinationVec squared
+            float positionVector2 = 0; //positionVec squared
+
+
+            destinationVector2 += positionVec.X * positionVec.X;
+            destinationVector2 += positionVec.Y * positionVec.Y;
+
+            positionVector2 += destinationVec.X * destinationVec.X;
+            positionVector2 += destinationVec.Y * destinationVec.Y;
+
+
+            float bottompart = 0;
+            bottompart = (float)Math.Sqrt(destinationVector2 * positionVector2);
+
+
+            double returnValue = (float)Math.Acos(toppart / bottompart);
+
+            returnValue *= 360.0 / (2 * Math.PI); //Coverts the radian to degrees
+
+            if (destinationVec.X < 0)
             {
-                this.rotation = 90;
-            }
-            if (vector.Y > 0.5f && vector.Y < 1.5f)
-            {
-                this.rotation = 180;
-            }
-            if (vector.X < -0.5f && vector.X > -1.5f)
-            {
-                this.rotation = 270;
-            }
-            if (vector.Y < -0.5f && vector.Y > -1.5f)
-            {
-                this.rotation = 0;
+                returnValue -= (returnValue * 2);
             }
 
-            //TODO:
-            //if (vector.X > 0.25f && vector.X < 0.90f)
-            //{
-            //    this.rotation = 45;
-            //}
-            //if (vector.Y > 0.25f && vector.Y < 0.99f)
-            //{
-            //    this.rotation = 135;
-            //}
-            //if (vector.X < -0.48f && vector.X >= -0.92)
-            //{
-            //    this.rotation = 225;
-            //}
-
+            return (float)returnValue;
 
         }
-
 
         /// <summary>
         /// Makes the Enemy actually move

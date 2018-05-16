@@ -92,6 +92,7 @@ namespace TankGame
             go.AddComponent(new Collider(go));
             gameObjects.Add(go);
 
+
             //adds test enemy
             GameObject enemy;
             enemy = new GameObject();
