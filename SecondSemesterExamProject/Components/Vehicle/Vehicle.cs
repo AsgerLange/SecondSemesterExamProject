@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable
+    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter
     {
         public Animator animator;
         protected int health;
@@ -78,13 +78,15 @@ namespace TankGame
         public Vector2 Move(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(Keys.W))
+            if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
-                translation += new Vector2(1, 0);
+                translation += new Vector2(0, -1);
             }
-            else if (keyState.IsKeyDown(Keys.S))
+            else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
             {
-                translation += new Vector2(-1, 0);
+                translation += new Vector2(0, 1);
             }
             return translation;
         }
@@ -96,11 +98,13 @@ namespace TankGame
         public void Rotate(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(Keys.D))
+            if ((keyState.IsKeyDown(Keys.D) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Right) && control == Controls.UDLR))
             {
                 rotation += rotateSpeed;
             }
-            if (keyState.IsKeyDown(Keys.A))
+            if ((keyState.IsKeyDown(Keys.A) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Left) && control == Controls.UDLR))
             {
                 rotation -= rotateSpeed;
             }
@@ -125,7 +129,7 @@ namespace TankGame
         {
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
         }
-        
+
         /// <summary>
         /// handles animation for the vehicle
         /// </summary>
@@ -151,7 +155,22 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 40, 40, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 20, 40, 3, Vector2.Zero));
+        }
+
+        /// <summary>
+        /// what happens when something drives into the vehicle or the vehicle driwes into something?
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionEnter(Collider other)
+        {
+#if DEBUG
+            foreach (Component com in other.GameObject.GetComponentList)
+            {
+                Console.WriteLine("Collided with an object with this Component: " + com.ToString());
+            }
+            Console.WriteLine("At these Coordinates: " + GameObject.Transform.Position);
+#endif
         }
     }
 }

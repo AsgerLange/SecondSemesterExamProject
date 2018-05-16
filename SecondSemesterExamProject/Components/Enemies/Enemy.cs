@@ -16,7 +16,6 @@ namespace TankGame
 
         public Animator animator;
         private SpriteRenderer spriteRenderer;
-        protected GameObject vehicle;
 
         protected float rotation = 0;
         protected float movementSpeed;
@@ -50,9 +49,9 @@ namespace TankGame
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
+            this.alignment = alignment;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-
             spriteRenderer.UseRect = true;
 
         }
@@ -77,10 +76,12 @@ namespace TankGame
         public virtual void AI()
         {
 
-            Vector2 translation = Vector2.Zero;
+            MoveTo(GameWorld.Instance.GameObjects[0]); //Enemy moves towards player1
 
-            translation = Move(translation); //Moves left and right depending on x position
-            TranslateMovement(translation); // Translates the movement
+
+            //Vector2 translation = Vector2.Zero;
+            // translation = Move(translation); //Moves left and right depending on x position
+            // TranslateMovement(translation); // Translates the movement
             spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
 
         }
@@ -113,18 +114,78 @@ namespace TankGame
             if (this.GameObject.Transform.Position.X >= 500)
             {
                 shouldMoveRight = false;
-                this.rotation = 180;
 
             }
             if (this.GameObject.Transform.Position.X <= 400)
             {
                 shouldMoveRight = true;
-                this.rotation = 0;
-
 
             }
+
+
             return translation;
         }
+        
+        /// <summary>
+        /// Moves towards a targeted gameobject
+        /// </summary>
+        /// <param name="go"></param>
+        private void MoveTo(GameObject go)
+        {
+            float x = go.Transform.Position.X;
+            float y = go.Transform.Position.Y;
+           
+            Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
+            direction.Normalize();
+
+            RotateToMatchDirection(direction);
+
+            
+            TranslateMovement(direction);
+        }
+
+        /// <summary>
+        /// Rotates the enemy to fit its direction
+        /// </summary>
+        /// <param name="vector"></param>
+        private void RotateToMatchDirection(Vector2 vector)
+        {
+            Console.WriteLine(vector);
+            if (vector.X > 0.5f && vector.X < 1.5f)
+            {
+                this.rotation = 90;
+            }
+            if (vector.Y > 0.5f && vector.Y < 1.5f)
+            {
+                this.rotation = 180;
+            }
+            if (vector.X < -0.5f && vector.X > -1.5f)
+            {
+                this.rotation = 270;
+            }
+            if (vector.Y < -0.5f && vector.Y > -1.5f)
+            {
+                this.rotation = 0;
+            }
+
+            //TODO:
+            //if (vector.X > 0.25f && vector.X < 0.90f)
+            //{
+            //    this.rotation = 45;
+            //}
+            //if (vector.Y > 0.25f && vector.Y < 0.99f)
+            //{
+            //    this.rotation = 135;
+            //}
+            //if (vector.X < -0.48f && vector.X >= -0.92)
+            //{
+            //    this.rotation = 225;
+            //}
+
+
+        }
+
+
         /// <summary>
         /// Makes the Enemy actually move
         /// </summary>
@@ -138,7 +199,7 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 40, 40, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 24, 24, 3, Vector2.Zero));
         }
 
         /// <summary>
@@ -149,6 +210,7 @@ namespace TankGame
         {
             Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
         }
+
         /// <summary>
         /// handles what happens when a enemy dies
         /// </summary>
