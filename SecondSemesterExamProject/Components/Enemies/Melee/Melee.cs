@@ -7,22 +7,11 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class BasicEnemy : Enemy
+    class Melee : Enemy
     {
-
-        /// <summary>
-        /// Basic Enemy Constructor
-        /// </summary>
-        /// <param name="gameObject"></param>
-        /// <param name="alignment"></param>
-        /// <param name="health"></param>
-        /// <param name="movementSpeed"></param>
-        /// <param name="attackRate"></param>
-        public BasicEnemy(GameObject gameObject, Alignment alignment, int health, float movementSpeed,float attackRate) : base(gameObject,alignment, health, movementSpeed, attackRate)
+        public Melee(GameObject gameObject, Alignment alignment, int health, float movementSpeed, float attackRate) : base(gameObject, alignment, health, movementSpeed, attackRate)
         {
-            
         }
-
 
         /// <summary>
         /// Creates the animations
@@ -33,7 +22,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// loads the tank
+        /// loads the enemy
         /// </summary>
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
