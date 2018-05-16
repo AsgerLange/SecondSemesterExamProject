@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace TankGame
     {
         #region Attributes for object pool
         private bool canRelease;
+        private BulletType bulletType;
+        private Vector2 direction;
 
         public bool CanRelease
         {
@@ -18,5 +21,12 @@ namespace TankGame
             set { canRelease = value; }
         }
         #endregion;
+
+        public Bullet(GameObject gameObject, BulletType type) : base(gameObject)
+        {
+            canRelease = true;
+            this.bulletType = type;
+            this.direction= new Vector2(0, 0);
+        }
     }
 }

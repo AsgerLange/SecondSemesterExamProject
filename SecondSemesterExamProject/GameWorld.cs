@@ -98,15 +98,8 @@ namespace TankGame
 
 
             //adds test enemy
-            GameObject enemy;
-            enemy = new GameObject();
-            enemy.Transform.Position = new Vector2(450, 250);
-            enemy.AddComponent(new SpriteRenderer(enemy, Constant.basicEnemySpriteSheet, 0));
-            enemy.AddComponent(new Animator(enemy));
-            enemy.AddComponent(new BasicEnemy(enemy, Constant.basicEnemyHealth,
-                Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate));
-            enemy.AddComponent(new Collider(enemy,Alignment.Enemy));
-            gameObjects.Add(enemy);
+
+            EnemyPool.CreateEnemy(new Vector2(500, 500));
 
             //adds test enemy
             GameObject rock;
@@ -168,7 +161,14 @@ namespace TankGame
             {
                 go.Update();
             }
-
+            foreach (var go  in EnemyPool.ActiveEnemies)
+            {
+                go.Update();
+            }
+            foreach (var go in BulletPool.ActiveBullets)
+            {
+                go.Update();
+            }
             base.Update(gameTime);
         }
 
@@ -203,7 +203,14 @@ namespace TankGame
             {
                 go.Draw(spriteBatch);
             }
-
+            foreach (var go in EnemyPool.ActiveEnemies)
+            {
+                go.Draw(spriteBatch);
+            }
+            foreach (var go in BulletPool.ActiveBullets)
+            {
+                go.Draw(spriteBatch);
+            }
             spriteBatch.Draw(backGround, screenSize,null, Color.White,0,new Vector2(0,0),SpriteEffects.None,1);
             spriteBatch.End();
             base.Draw(gameTime);
