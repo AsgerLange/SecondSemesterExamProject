@@ -18,6 +18,10 @@ namespace TankGame
         private List<Collider> colliders = new List<Collider>();
         private float deltaTime;
 
+        //Background
+        Texture2D backGround;
+        Rectangle screenSize;
+
         public List<Collider> Colliders
         {
             get { return colliders; }
@@ -126,6 +130,8 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            backGround = Content.Load<Texture2D>("testBackground");
+            screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             // TODO: use this.Content to load your game content here
 
             //load objects
@@ -198,6 +204,7 @@ namespace TankGame
                 go.Draw(spriteBatch);
             }
 
+            spriteBatch.Draw(backGround, screenSize,null, Color.White,0,new Vector2(0,0),SpriteEffects.None,1);
             spriteBatch.End();
             base.Draw(gameTime);
         }

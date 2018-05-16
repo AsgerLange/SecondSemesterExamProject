@@ -17,6 +17,8 @@ namespace TankGame
         public Animator animator;
         private SpriteRenderer spriteRenderer;
 
+        private GameObject targetGameObject;
+
         protected float rotation = 0;
         protected float movementSpeed;
         protected float attackRate;
@@ -52,6 +54,8 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
+            //Temp target DELETE
+            targetGameObject = GameWorld.Instance.GameObjects[0];
         }
 
         /// <summary>
@@ -74,7 +78,7 @@ namespace TankGame
         public virtual void AI()
         {
 
-            MoveTo(GameWorld.Instance.GameObjects[0]); //Enemy moves towards player1
+            MoveTo(targetGameObject); //Enemy moves towards player1
 
 
             //Vector2 translation = Vector2.Zero;
