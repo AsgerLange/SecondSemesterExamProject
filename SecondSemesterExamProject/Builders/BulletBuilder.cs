@@ -18,6 +18,7 @@ namespace TankGame
             go.AddComponent(new SpriteRenderer(go, Constant.bulletSheet,0));
             go.AddComponent(new Bullet(go, type));
             go.AddComponent(new Collider(go,Alignment.Friendly));
+            go.AddComponent(new Animator(go));
             
         }
 

@@ -93,21 +93,23 @@ namespace TankGame
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankFireRate, Constant.tankRotateSpeed));
-            go.AddComponent(new Collider(go,Alignment.Friendly));
+            go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
 
-            //adds test enemy
 
+            //adds test enemy
             EnemyPool.CreateEnemy(new Vector2(500, 500));
 
+            //adds test bullet
+            BulletPool.CreateBullet(new Vector2(200, 200),Alignment.Friendly);
             //adds test enemy
             GameObject rock;
             rock = new GameObject();
             rock.Transform.Position = new Vector2(100, 100);
             rock.AddComponent(new SpriteRenderer(rock, Constant.rockImage, 0));
             rock.AddComponent(new Rock(rock, 100, 1, Alignment.Neutral));
-            rock.AddComponent(new Collider(rock,Alignment.Neutral));
+            rock.AddComponent(new Collider(rock, Alignment.Neutral));
             gameObjects.Add(rock);
 
 
@@ -161,7 +163,7 @@ namespace TankGame
             {
                 go.Update();
             }
-            foreach (var go  in EnemyPool.ActiveEnemies)
+            foreach (var go in EnemyPool.ActiveEnemies)
             {
                 go.Update();
             }
@@ -211,7 +213,7 @@ namespace TankGame
             {
                 go.Draw(spriteBatch);
             }
-            spriteBatch.Draw(backGround, screenSize,null, Color.White,0,new Vector2(0,0),SpriteEffects.None,1);
+            spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             spriteBatch.End();
             base.Draw(gameTime);
         }
