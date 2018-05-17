@@ -14,6 +14,7 @@ namespace TankGame
         float attackRate;
         float shootRotation = 0;
         float attackRange;
+        float shootTimeStamp;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
 
@@ -51,19 +52,23 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
-            Collider target;
-            target = FindEnemiesInRange();
 
-            Shoot(target);
+            Shoot();
         }
 
-        protected virtual void Shoot(Collider target)
+        protected virtual void Shoot()
         {
-            Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
-            direction.Normalize();
+            if (shootTimeStamp + attackRate <= GameWorld.Instance.DeltaTime)
+            {
+                Collider target;
+                target = FindEnemiesInRange();
 
-            float rotation = GetDegreesFromDestination(direction);
-            BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BaiscBullet);
+                Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
+                direction.Normalize();
+
+                float rotation = GetDegreesFromDestination(direction);
+                BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BaiscBullet);
+            }
         }
 
         /// <summary>
