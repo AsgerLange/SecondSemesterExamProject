@@ -11,9 +11,8 @@ namespace TankGame
     enum BulletType { BaiscBullet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
-        private bool canRelease;
         private BulletType bulletType;
-        private Vector2 direction;
+        private float bulletDmg;
         private float rotation;
         private float movementSpeed;
         private float vehicleRotation;
@@ -24,6 +23,7 @@ namespace TankGame
         private Animator animator;
 
         #region Attributes for object pool
+        private bool canRelease;
         public bool CanRelease
         {
             get { return canRelease; }
@@ -31,30 +31,50 @@ namespace TankGame
         }
         #endregion;
 
-
+        /// <summary>
+        /// the rotation of the vehicle which shoots the bullet
+        /// </summary>
         public float VehicleRotation
         {
             get { return vehicleRotation; }
             set { vehicleRotation = value; }
         }
+        /// <summary>
+        /// The amount of seconds a bullet should survive
+        /// </summary>
         public float LifeSpan
         {
             get { return lifeSpan; }
             set { lifeSpan = value; }
         }
+        /// <summary>
+        /// TimeStamp for when the bullet was created or recycled. - For controling firerate
+        /// </summary>
         public float TimeStamp
         {
             get { return timeStamp; }
             set { timeStamp = value; }
         }
+
         public Bullet(GameObject gameObject, BulletType type, float vehicleRotation) : base(gameObject)
         {
+
             canRelease = true;
+
+            switch (type)
+            {
+                case BulletType.BaiscBullet:
+                    this.movementSpeed = Constant.basicBulletMovementSpeed;
+                    this.lifeSpan = Constant.basicBulletLifeSpan;
+                    this.bulletDmg = Constant.basicBulletDmg;
+                    break;
+
+                default:
+                    break;
+            }
             this.bulletType = type;
-            this.direction = new Vector2(0, 0);
-            movementSpeed = Constant.basicBulletMovementSpeed;
+
             this.vehicleRotation = vehicleRotation;
-            this.lifeSpan = Constant.basicBulletLifeSpan;
             this.timeStamp = GameWorld.Instance.TotalGameTime;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -189,15 +209,29 @@ namespace TankGame
         {
             Console.WriteLine(new NotImplementedException());
         }
+
+
+        /// <summary>
+        /// Handles what happens when bullet collides with other colliders
+        /// </summary>
+        /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
             Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
 
             if (thisCollider != null)
             {
-                if (thisCollider.GetAlignment != other.GetAlignment)
+                if (thisCollider.GetAlignment != other.GetAlignment) 
                 {
-                    DestroyBullet();
+                    if (canRelease)
+                    {
+                        if (other.GameObject.GetComponent("BasicEnemy") is Enemy)
+                        {
+                            (other.GameObject.GetComponent("BasicEnemy") as Enemy).Health -= 50;
+                        }
+                        DestroyBullet();
+                        canRelease = false;
+                    }
                 }
             }
 
