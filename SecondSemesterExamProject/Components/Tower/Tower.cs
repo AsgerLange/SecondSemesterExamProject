@@ -8,11 +8,10 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter
+    class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
         protected int health;
         float attackRate;
-        float shootRotation = 0;
         float attackRange;
         float shootTimeStamp;
         protected SpriteRenderer spriteRenderer;
@@ -23,11 +22,11 @@ namespace TankGame
             this.health = health;
             this.attackRate = attackRate;
             this.attackRange = attackRange;
+            GameObject.Transform.canMove = false;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
         }
-
 
         /// <summary>
         /// handles animation
@@ -36,15 +35,6 @@ namespace TankGame
         public virtual void OnAnimationDone(string animationName)
         {
             Console.WriteLine(new NotImplementedException("OnAnimationDone Tower"));
-        }
-
-        /// <summary>
-        /// handles what happens when an enemy enters
-        /// </summary>
-        /// <param name="other"></param>
-        public virtual void OnCollisionEnter(Collider other)
-        {
-            Console.WriteLine(new NotImplementedException("OnCollisionEnter Tower"));
         }
 
         /// <summary>
@@ -58,16 +48,19 @@ namespace TankGame
 
         protected virtual void Shoot()
         {
-            if (shootTimeStamp + attackRate <= GameWorld.Instance.DeltaTime)
+            if (shootTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
             {
                 Collider target;
                 target = FindEnemiesInRange();
+                if (target != null)
+                {
+                    Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
+                    direction.Normalize();
 
-                Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
-                direction.Normalize();
-
-                float rotation = GetDegreesFromDestination(direction);
-                BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BaiscBullet);
+                    float rotation = GetDegreesFromDestination(direction);
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BaiscBullet, rotation);
+                    shootTimeStamp = GameWorld.Instance.TotalGameTime;
+                }
             }
         }
 
@@ -80,15 +73,11 @@ namespace TankGame
             Vector2 positionVec = new Vector2(0, -1); //Standard position (UP)
 
             float toppart = 0;
-
             toppart += positionVec.X * destinationVec.X;
             toppart += positionVec.Y * destinationVec.Y;
 
-
-
             float destinationVector2 = 0; //destinationVec squared
             float positionVector2 = 0; //positionVec squared
-
 
             destinationVector2 += positionVec.X * positionVec.X;
             destinationVector2 += positionVec.Y * positionVec.Y;
@@ -159,6 +148,42 @@ namespace TankGame
         }
 
         /// <summary>
+        /// handles what happens when an enemy enters
+        /// </summary>
+        /// <param name="other"></param>
+        public virtual void OnCollisionEnter(Collider other)
+        {
+            //push them a bit away
+            float force = Constant.PushForce;
+            if (other.GetAlignment != Alignment.Neutral)
+            {
+                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                dir.Normalize();
+
+                other.GameObject.Transform.Translate(dir * force);
+                Console.WriteLine("tower push: " + dir);
+            }
+        }
+
+        /// <summary>
+        /// if something enters the middle of the
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionStay(Collider other)
+        {
+            //push them a bit away
+            float force = Constant.PushForce * 2;
+            if (other.GetAlignment != Alignment.Neutral)
+            {
+                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                dir.Normalize();
+
+                other.GameObject.Transform.Translate(dir * force);
+                Console.WriteLine("tower push: " + dir);
+            }
+        }
+
+        /// <summary>
         /// loads Tower Content
         /// </summary>
         /// <param name="content"></param>
@@ -176,8 +201,8 @@ namespace TankGame
         /// </summary>
         protected virtual void CreateAnimation()
         {
-            //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 10, 10, 3, Vector2.Zero));
+
         }
+
     }
 }

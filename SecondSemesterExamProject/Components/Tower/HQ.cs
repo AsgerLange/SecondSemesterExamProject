@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
@@ -36,6 +37,8 @@ namespace TankGame
 
         protected override void CreateAnimation()
         {
+            //EKSEMPEL
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 100, 88, 3, Vector2.Zero));
             base.CreateAnimation();
         }
     }

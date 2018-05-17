@@ -28,20 +28,20 @@ namespace TankGame
         }
         #endregion;
 
-        private float vehicleRotation;
+        private float dirRotation;
 
-        public float VehicleRotation
+        public float DirRotation
         {
-            get { return vehicleRotation; }
-            set { vehicleRotation = value; }
+            get { return dirRotation; }
+            set { dirRotation = value; }
         }
-        public Bullet(GameObject gameObject, BulletType type, float vehicleRotation) : base(gameObject)
+        public Bullet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject)
         {
             canRelease = true;
             this.bulletType = type;
             this.direction = new Vector2(0, 0);
             movementSpeed = Constant.basicBulletMovementSpeed;
-            this.vehicleRotation = vehicleRotation;
+            this.dirRotation = dirRotation;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -60,6 +60,7 @@ namespace TankGame
             rotation = GetDegreesFromDestination(translation);
             spriteRenderer.Rotation = rotation;
         }
+
         /// <summary>
         /// Moves towards a targeted gameobject
         /// </summary>
@@ -78,7 +79,7 @@ namespace TankGame
         /// <returns></returns>
         public Vector2 RotateMove(Vector2 translation)
         {
-            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(vehicleRotation)));
+            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(dirRotation)));
         }
 
         /// <summary>
@@ -99,15 +100,11 @@ namespace TankGame
             Vector2 positionVec = new Vector2(0, -1); //Standard position (UP)
 
             float toppart = 0;
-
             toppart += positionVec.X * destinationVec.X;
             toppart += positionVec.Y * destinationVec.Y;
 
-
-
             float destinationVector2 = 0; //destinationVec squared
             float positionVector2 = 0; //positionVec squared
-
 
             destinationVector2 += positionVec.X * positionVec.X;
             destinationVector2 += positionVec.Y * positionVec.Y;
@@ -115,10 +112,8 @@ namespace TankGame
             positionVector2 += destinationVec.X * destinationVec.X;
             positionVector2 += destinationVec.Y * destinationVec.Y;
 
-
             float bottompart = 0;
             bottompart = (float)Math.Sqrt(destinationVector2 * positionVector2);
-
 
             double returnValue = (float)Math.Acos(toppart / bottompart);
 
@@ -128,13 +123,10 @@ namespace TankGame
             {
                 returnValue -= (returnValue * 2);
             }
-
             return (float)returnValue;
-
         }
 
-
-        public void LoadContent(ContentManager content)
+        public virtual void LoadContent(ContentManager content)
         {
             this.animator = (Animator)GameObject.GetComponent("Animator");
 
@@ -142,19 +134,22 @@ namespace TankGame
 
             animator.PlayAnimation("Idle");
         }
+
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 2, 9, 3, Vector2.Zero));
         }
-        public void OnAnimationDone(string animationName)
+
+        public virtual void OnAnimationDone(string animationName)
         {
             Console.WriteLine(new NotImplementedException());
         }
+
         public void OnCollisionEnter(Collider other)
         {
             BulletPool.releaseList.Add(this.GameObject);
-            
+
         }
     }
 }

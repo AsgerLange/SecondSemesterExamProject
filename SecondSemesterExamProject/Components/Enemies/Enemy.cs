@@ -10,7 +10,7 @@ namespace TankGame
 {
     enum EnemyType { BasicEnemy, };
 
-    class Enemy : Component, IAnimatable, IUpdatable, ILoadable
+    class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
 
         public Animator animator;
@@ -23,8 +23,6 @@ namespace TankGame
         protected float attackRate;
 
         protected int health;
-
-        protected IEnemyAI action;
 
         #region Attributes for object pool
         private bool canRelease;
@@ -196,6 +194,23 @@ namespace TankGame
         protected virtual void Die()
         {
             Console.WriteLine(new NotImplementedException("die enemy"));
+        }
+
+        /// <summary>
+        /// when somthing is inside the enemy
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionStay(Collider other)
+        {
+            if (other.GetAlignment != Alignment.Neutral)
+            {
+                float force = Constant.PushForce;
+
+                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                dir.Normalize();
+
+                other.GameObject.Transform.Translate(dir * force);
+            }
         }
     }
 }
