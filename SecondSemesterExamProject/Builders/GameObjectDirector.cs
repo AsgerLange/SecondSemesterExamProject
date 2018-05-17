@@ -12,6 +12,10 @@ namespace TankGame
     {
         private static GameObjectDirector instance;
 
+        private BulletBuilder bulletBuilder;
+        private EnemyBuilder enemyBuilder;
+        private RockBuilder rockBuilder;
+
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
         /// </summary>
@@ -28,20 +32,71 @@ namespace TankGame
                 return instance;
             }
         }
-            
+
 
 
         private GameObjectDirector()
         {
-
+            this.bulletBuilder = new BulletBuilder();
+            this.enemyBuilder = new EnemyBuilder();
+            this.rockBuilder = new RockBuilder();
         }
 
-
-        public GameObject Construct(Vector2 position,BuilderType type)
+        /// <summary>
+        /// construction of bullets
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public GameObject Construct(Vector2 position, BulletType type)
         {
-            //Call Build on the correct Ibuilder, based on Buildertype enum
+            switch (type)
+            {
+                case BulletType.BaiscBullet:
+                    bulletBuilder.Build(position, type);
+                    break;
 
-            return null; //Gameobject
+                default:
+                    break;
+            }
+
+
+            return bulletBuilder.GetResult(); //returns the bullet that has been build
+        }
+
+        /// <summary>
+        /// construction of enemies
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public GameObject Construct(Vector2 position, EnemyType type)
+        {
+            switch (type)
+            {
+                case EnemyType.BasicEnemy:
+                    enemyBuilder.Build(position, type);
+                    break;
+
+                default:
+                    break;
+            }
+
+
+            return enemyBuilder.GetResult(); //returns the bullet that has been build
+        }
+
+        /// <summary>
+        /// Constructs a rock
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public GameObject Construct(Vector2 position, int size, int rotation)
+        {
+            rockBuilder.Build(position, size, rotation);
+
+            return rockBuilder.GetResult(); //returns the bullet that has been build
         }
     }
 }

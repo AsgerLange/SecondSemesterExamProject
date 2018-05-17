@@ -12,18 +12,20 @@ namespace TankGame
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable
     {
-        private bool shouldMoveRight = true; //delete
 
         public Animator animator;
         private SpriteRenderer spriteRenderer;
+
+        protected GameObject targetGameObject = GameWorld.Instance.GameObjects[0]; //HQ by default
 
         protected float rotation = 0;
         protected float movementSpeed;
         protected float attackRate;
 
         protected int health;
-        
-        
+
+        protected IEnemyAI action;
+
         #region Attributes for object pool
         private bool canRelease;
 
@@ -42,12 +44,12 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject,  int health, float movementSpeed, float attackRate) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
-            
+
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
@@ -73,12 +75,8 @@ namespace TankGame
         public virtual void AI()
         {
 
-            MoveTo(GameWorld.Instance.GameObjects[0]); //Enemy moves towards player1
+            MoveTo(targetGameObject); //Enemy moves towards player1
 
-
-            //Vector2 translation = Vector2.Zero;
-            // translation = Move(translation); //Moves left and right depending on x position
-            // TranslateMovement(translation); // Translates the movement
             spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
 
         }
@@ -88,40 +86,7 @@ namespace TankGame
             AI();
         }
 
-        /// <summary>
-        /// moves the Enemy
-        /// </summary>
-        /// <param name="translation"></param>
-        /// <returns></returns>
-        public Vector2 Move(Vector2 translation)
-        {
-            //DUMMY LOGIC REPLACE WITH ACTUAL AI
-            if (this.GameObject.Transform.Position.X <= 501 && shouldMoveRight)
-            {
-                translation += new Vector2(1, 0);
-                this.rotation = 90;
 
-            }
-            if (this.GameObject.Transform.Position.X <= 501 && shouldMoveRight == false)
-            {
-                translation += new Vector2(-1, 0);
-                this.rotation = 270;
-
-            }
-            if (this.GameObject.Transform.Position.X >= 500)
-            {
-                shouldMoveRight = false;
-
-            }
-            if (this.GameObject.Transform.Position.X <= 400)
-            {
-                shouldMoveRight = true;
-
-            }
-
-
-            return translation;
-        }
 
         /// <summary>
         /// Moves towards a targeted gameobject

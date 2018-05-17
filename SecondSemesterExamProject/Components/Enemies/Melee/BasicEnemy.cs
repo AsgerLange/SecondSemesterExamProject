@@ -20,7 +20,14 @@ namespace TankGame
         /// <param name="attackRate"></param>
         public BasicEnemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject, health, movementSpeed, attackRate)
         {
-
+            foreach (var go in GameWorld.Instance.GameObjects)
+            {
+                if (go.GetComponent("Tank") is Tank)
+                {
+                    targetGameObject = go;
+                    break;
+                }
+            }
         }
 
 
