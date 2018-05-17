@@ -45,6 +45,12 @@ namespace UnitTestSceondSemester
         public void BulletDamage() //Test if the damage of the bullet does that amount
         {
 
+
+        }
+        public void BulletCollision() //Does the bullet collide with anything.
+        {
+
+
         }
         public void TowerView() //Test if the towers can see the things around them.
         {
@@ -74,6 +80,16 @@ namespace UnitTestSceondSemester
 
         }
         public void BuyTower()
+        {
+
+
+        }
+        public void SupplyCrateSpawn() //Test if a SupplyCrate Spawns within the maps size.
+        {
+
+
+        }
+        public void WeaponCrateSpawn() 
         {
 
 
