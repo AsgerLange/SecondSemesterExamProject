@@ -16,7 +16,7 @@ namespace TankGame
         public Animator animator;
         private SpriteRenderer spriteRenderer;
 
-        private GameObject targetGameObject; //HQ by default
+        protected GameObject targetGameObject = GameWorld.Instance.GameObjects[0]; //HQ by default
 
         protected float rotation = 0;
         protected float movementSpeed;
@@ -53,8 +53,6 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
-            //Temp target DELETE
-            targetGameObject = GameWorld.Instance.GameObjects[0];
         }
 
         /// <summary>

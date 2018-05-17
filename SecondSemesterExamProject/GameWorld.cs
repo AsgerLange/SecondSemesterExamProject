@@ -17,6 +17,7 @@ namespace TankGame
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
         private List<Collider> colliders = new List<Collider>();
         private float deltaTime;
+        private Map map;
 
         //Background
         Texture2D backGround;
@@ -85,6 +86,9 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //adds objects to the map
+            map = new Map();
+
             //Adds test player
             GameObject go;
             go = new GameObject();
@@ -96,22 +100,11 @@ namespace TankGame
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
-
-
             //adds test enemy
-            EnemyPool.CreateEnemy(new Vector2(500, 500));
+            EnemyPool.CreateEnemy(new Vector2(500, 500), EnemyType.BasicEnemy);
 
             //adds test bullet
-            BulletPool.CreateBullet(new Vector2(200, 200),Alignment.Friendly);
-            //adds test enemy
-            GameObject rock;
-            rock = new GameObject();
-            rock.Transform.Position = new Vector2(100, 100);
-            rock.AddComponent(new SpriteRenderer(rock, Constant.rockImage, 1));
-            rock.AddComponent(new Rock(rock, 100, 1, Alignment.Neutral));
-            rock.AddComponent(new Collider(rock, Alignment.Neutral));
-            gameObjects.Add(rock);
-
+            BulletPool.CreateBullet(new Vector2(200, 200), Alignment.Friendly, BulletType.BaiscBullet);
 
             base.Initialize();
         }

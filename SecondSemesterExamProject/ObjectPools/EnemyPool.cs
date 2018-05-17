@@ -33,9 +33,10 @@ namespace TankGame
         /// <summary>
         /// Recycles old Enemy objects, or Creates new ones if the inactiveEnemy list is empty
         /// </summary>
-        /// <param name="position">The position where the enemy should spawn</param>
+        /// <param name="position"></param>
+        /// <param name="enemyType"></param>
         /// <returns></returns>
-        public static GameObject CreateEnemy(Vector2 position)
+        public static GameObject CreateEnemy(Vector2 position, EnemyType enemyType)
         {
             if (inActiveEnemies.Count > 0)
             {
@@ -63,7 +64,7 @@ namespace TankGame
                 GameObject tmp;
 
               
-                tmp = GameObjectDirector.Instance.Construct(position, EnemyType.BasicEnemy);
+                tmp = GameObjectDirector.Instance.Construct(position, enemyType);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeEnemies.Add(tmp);
 
