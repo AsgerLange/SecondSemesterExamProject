@@ -14,6 +14,7 @@ namespace TankGame
 
         private BulletBuilder bulletBuilder;
         private EnemyBuilder enemyBuilder;
+        private RockBuilder rockBuilder;
 
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
@@ -38,10 +39,15 @@ namespace TankGame
         {
             this.bulletBuilder = new BulletBuilder();
             this.enemyBuilder = new EnemyBuilder();
-
+            this.rockBuilder = new RockBuilder();
         }
 
-
+        /// <summary>
+        /// construction of bullets
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public GameObject Construct(Vector2 position, BulletType type)
         {
             switch (type)
@@ -58,6 +64,12 @@ namespace TankGame
             return bulletBuilder.GetResult(); //returns the bullet that has been build
         }
 
+        /// <summary>
+        /// construction of enemies
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public GameObject Construct(Vector2 position, EnemyType type)
         {
             switch (type)
@@ -72,6 +84,19 @@ namespace TankGame
 
 
             return enemyBuilder.GetResult(); //returns the bullet that has been build
+        }
+
+        /// <summary>
+        /// Constructs a rock
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public GameObject Construct(Vector2 position, int size, int rotation)
+        {
+            rockBuilder.Build(position, size, rotation);
+
+            return rockBuilder.GetResult(); //returns the bullet that has been build
         }
     }
 }

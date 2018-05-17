@@ -65,7 +65,7 @@ namespace TankGame
             TranslateMovement(direction);
         }
         /// <summary>
-        /// Makes the Enemy actually move
+        /// Makes the Bullet actually move
         /// </summary>
         /// <param name="translation"></param>
         /// <param name="movementSpeed"></param>
