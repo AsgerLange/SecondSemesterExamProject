@@ -10,18 +10,20 @@ namespace TankGame
     {
         #region Vehicles
         #region Tank
-        public static readonly string tankSpriteSheet = "Tank";
+        public static readonly string tankSpriteSheet = "PlayerTank";
         public static readonly float tankMoveSpeed = 100;
-        public static readonly float tankFireRate = 2;
+        public static readonly float tankFireRate = 1;
         public static readonly int tankHealth = 1000;
         public static readonly float tankRotateSpeed = 2.0F;
         #endregion
         #endregion
 
         #region Bullets
+        #region BasicBullet
         public static readonly string bulletSheet = "BasicBullet";
-        public static readonly float basicBulletMovementSpeed = 15;
-
+        public static readonly float basicBulletMovementSpeed = 700;
+        public static readonly float basicBulletLifeSpan = 1f;
+        #endregion;
         #endregion;
 
         #region Enemies
@@ -35,7 +37,7 @@ namespace TankGame
         #endregion
 
         #region Rocks
-        public static readonly string rockImage = "Rock";
+        public static readonly string rockImage = "TerrainRock";
         public static readonly int rockPushForce = 2;
         #endregion
     }

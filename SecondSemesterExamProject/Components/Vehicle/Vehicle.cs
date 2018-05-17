@@ -21,6 +21,7 @@ namespace TankGame
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
+        protected float shotTimeStamp;
 
         /// <summary>
         /// creates a vehicle
@@ -55,6 +56,14 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
+            Movement();
+            Shoot();
+        }
+        /// <summary>
+        /// Handles Movement for Vehicles
+        /// </summary>
+        public void Movement()
+        {
             Vector2 translation = Vector2.Zero;
             //is the player Rotating?
             Rotate(translation);
@@ -66,6 +75,21 @@ namespace TankGame
             TranslateMovement(translation);
             //rotate sprite
             spriteRenderer.Rotation = rotation;
+        }
+
+        public virtual void Shoot()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate)<=GameWorld.Instance.TotalGameTime)
+            {
+                BulletPool.CreateBullet(this.GameObject.Transform.Position, Alignment.Friendly,
+                    BulletType.BaiscBullet, rotation);
+                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; 
+            }
+
+
+
         }
 
         /// <summary>
@@ -80,11 +104,13 @@ namespace TankGame
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, -1);
+                animator.PlayAnimation("MoveForward");
             }
             else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, 1);
+                animator.PlayAnimation("MoveBackward");
             }
             return translation;
         }
@@ -135,6 +161,7 @@ namespace TankGame
         public virtual void OnAnimationDone(string animationName)
         {
             Console.WriteLine(new NotImplementedException("OnAnimationDone Vehicle"));
+
         }
 
         /// <summary>
@@ -153,7 +180,10 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 20, 40, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
+            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
+            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 5, Vector2.Zero));
         }
 
         /// <summary>

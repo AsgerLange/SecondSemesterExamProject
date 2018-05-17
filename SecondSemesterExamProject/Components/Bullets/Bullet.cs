@@ -9,18 +9,21 @@ using System.Threading.Tasks;
 namespace TankGame
 {
     enum BulletType { BaiscBullet };
-    class Bullet : Component, IUpdatable, ILoadable,IAnimatable
+    class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
-        #region Attributes for object pool
         private bool canRelease;
         private BulletType bulletType;
         private Vector2 direction;
         private float rotation;
         private float movementSpeed;
+        private float vehicleRotation;
+        private float lifeSpan;
+        private float timeStamp;
 
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
+        #region Attributes for object pool
         public bool CanRelease
         {
             get { return canRelease; }
@@ -28,42 +31,94 @@ namespace TankGame
         }
         #endregion;
 
-        public Bullet(GameObject gameObject, BulletType type) : base(gameObject)
+
+        public float VehicleRotation
+        {
+            get { return vehicleRotation; }
+            set { vehicleRotation = value; }
+        }
+        public float LifeSpan
+        {
+            get { return lifeSpan; }
+            set { lifeSpan = value; }
+        }
+        public float TimeStamp
+        {
+            get { return timeStamp; }
+            set { timeStamp = value; }
+        }
+        public Bullet(GameObject gameObject, BulletType type, float vehicleRotation) : base(gameObject)
         {
             canRelease = true;
             this.bulletType = type;
             this.direction = new Vector2(0, 0);
             movementSpeed = Constant.basicBulletMovementSpeed;
-
+            this.vehicleRotation = vehicleRotation;
+            this.lifeSpan = Constant.basicBulletLifeSpan;
+            this.timeStamp = GameWorld.Instance.TotalGameTime;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
         }
 
         public void Update()
         {
-            MoveTowardsTarget(EnemyPool.ActiveEnemies[0]);
-
+            BulletMovement();
             spriteRenderer.Rotation = rotation;
+
+            CheckIfBulletIsExpired();
+
+        }
+
+        /// <summary>
+        /// Destroys bullet when it reaches the end of its lifespan
+        /// </summary>
+        public void CheckIfBulletIsExpired()
+        {
+            if (GameWorld.Instance.TotalGameTime >= (timeStamp + lifeSpan))
+            {
+                DestroyBullet();
+            }
         }
         /// <summary>
-        /// Moves towards a targeted gameobject
+        /// Handles movement for the bullet
+        /// </summary>
+        public void BulletMovement()
+        {
+            Vector2 translation = Vector2.Zero;
+            //Bullet travels forward
+            translation = MoveForward(translation);
+
+            //"forward" is changed to fit the angle
+            translation = RotateMove(translation);
+
+            //Translates movemement
+            TranslateMovement(translation);
+
+            //Rotates the bullet to fit its direction
+            rotation = GetDegreesFromDestination(translation);
+
+        }
+        /// <summary>
+        /// Moves forwards
         /// </summary>
         /// <param name="go"></param>
-        private void MoveTowardsTarget(GameObject go)
+        private Vector2 MoveForward(Vector2 translation)
         {
-            //TODO: MAKE BULLET TRAVEL TOWARDS LOCATION
+            translation += new Vector2(0, -1);
 
-            float x = go.Transform.Position.X;
-            float y = go.Transform.Position.Y;
-
-            Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
-            direction.Normalize();
-
-
-            rotation = GetDegreesFromDestination(direction);
-
-            TranslateMovement(direction);
+            return translation;
         }
+
+        /// <summary>
+        /// Returns a rotated version of the given translation
+        /// </summary>
+        /// <param name="translation"></param>
+        /// <returns></returns>
+        public Vector2 RotateMove(Vector2 translation)
+        {
+            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(vehicleRotation)));
+        }
+
         /// <summary>
         /// Makes the Bullet actually move
         /// </summary>
@@ -116,7 +171,7 @@ namespace TankGame
 
         }
 
-    
+
         public void LoadContent(ContentManager content)
         {
             this.animator = (Animator)GameObject.GetComponent("Animator");
@@ -128,11 +183,31 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 2, 9, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 1, 22, 3, Vector2.Zero));
         }
         public void OnAnimationDone(string animationName)
         {
-            Console.WriteLine(new  NotImplementedException()); 
+            Console.WriteLine(new NotImplementedException());
+        }
+        public void OnCollisionEnter(Collider other)
+        {
+            Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
+
+            if (thisCollider != null)
+            {
+                if (thisCollider.GetAlignment != other.GetAlignment)
+                {
+                    DestroyBullet();
+                }
+            }
+
+        }
+        /// <summary>
+        /// Adds the bullet to the bulletpool's release list, allowing it to be recycled.
+        /// </summary>
+        public void DestroyBullet()
+        {
+            BulletPool.releaseList.Add(this.GameObject);
         }
     }
 }
