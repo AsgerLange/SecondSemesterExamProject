@@ -113,11 +113,13 @@ namespace TankGame
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, -1);
+                animator.PlayAnimation("MoveForward");
             }
             else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, 1);
+                animator.PlayAnimation("MoveBackward");
             }
             return translation;
         }
@@ -168,6 +170,7 @@ namespace TankGame
         public virtual void OnAnimationDone(string animationName)
         {
             Console.WriteLine(new NotImplementedException("OnAnimationDone Vehicle"));
+
         }
 
         /// <summary>
@@ -186,7 +189,10 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 20, 40, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
+            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
+            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 5, Vector2.Zero));
         }
 
         /// <summary>
