@@ -10,7 +10,7 @@ namespace TankGame
     {
         #region Vehicles
         #region Tank
-        public static readonly string tankSpriteSheet = "Tank";
+        public static readonly string tankSpriteSheet = "PlayerTank";
         public static readonly float tankMoveSpeed = 100;
         public static readonly float tankFireRate = 2;
         public static readonly int tankHealth = 1000;
@@ -35,7 +35,7 @@ namespace TankGame
         #endregion
 
         #region Rocks
-        public static readonly string rockImage = "Rock";
+        public static readonly string rockImage = "TerrainRock";
         public static readonly int rockPushForce = 2;
         #endregion
     }
