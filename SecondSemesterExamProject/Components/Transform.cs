@@ -13,7 +13,12 @@ namespace TankGame
     class Transform : Component
     {
         private Vector2 position;
-
+        public bool canMove = true;
+        public bool CanMove
+        {
+            get { return canMove; }
+            set { canMove = value; }
+        }
         public Vector2 Position
         {
             get { return position; }
@@ -31,7 +36,10 @@ namespace TankGame
         /// <param name="translation"></param>
         public void Translate(Vector2 translation)
         {
-            position += translation;
+            if (canMove)
+            {
+                position += translation;
+            }
         }
     }
 }
