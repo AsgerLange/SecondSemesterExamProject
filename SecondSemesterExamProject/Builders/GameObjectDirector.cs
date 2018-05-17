@@ -48,12 +48,12 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public GameObject Construct(Vector2 position, BulletType type)
+        public GameObject Construct(Vector2 position, BulletType type, float vehicleRotation)
         {
             switch (type)
             {
                 case BulletType.BaiscBullet:
-                    bulletBuilder.Build(position, type);
+                    bulletBuilder.Build(position, type,vehicleRotation);
                     break;
 
                 default:

@@ -5,7 +5,7 @@ namespace TankGame
     interface IBulletBuilder
     {
 
-        void Build(Vector2 position, BulletType type);
+        void Build(Vector2 position, BulletType type, float vehicleRotation);
 
         GameObject GetResult();
 
