@@ -21,6 +21,7 @@ namespace TankGame
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
+        protected float shotTimeStamp;
 
         /// <summary>
         /// creates a vehicle
@@ -55,6 +56,14 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
+            Movement();
+            Shoot();
+        }
+        /// <summary>
+        /// Handles Movement for Vehicles
+        /// </summary>
+        public void Movement()
+        {
             Vector2 translation = Vector2.Zero;
             //is the player Rotating?
             Rotate(translation);
@@ -66,6 +75,21 @@ namespace TankGame
             TranslateMovement(translation);
             //rotate sprite
             spriteRenderer.Rotation = rotation;
+        }
+
+        public virtual void Shoot()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate)<=GameWorld.Instance.TotalGameTime)
+            {
+                BulletPool.CreateBullet(this.GameObject.Transform.Position, Alignment.Friendly,
+                    BulletType.BaiscBullet, rotation);
+                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; 
+            }
+
+
+
         }
 
         /// <summary>

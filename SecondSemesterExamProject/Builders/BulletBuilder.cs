@@ -11,12 +11,12 @@ namespace TankGame
     {
         private GameObject go;
 
-        public void Build(Vector2 position, BulletType type)
+        public void Build(Vector2 position, BulletType type, float vehicleRotation)
         {
             go = new GameObject();
             go.Transform.Position = position;
             go.AddComponent(new SpriteRenderer(go, Constant.bulletSheet, 0));
-            go.AddComponent(new Bullet(go, type));
+            go.AddComponent(new Bullet(go, type, vehicleRotation));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             go.AddComponent(new Animator(go));
 
