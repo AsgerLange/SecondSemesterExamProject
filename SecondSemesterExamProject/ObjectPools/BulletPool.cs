@@ -52,6 +52,12 @@ namespace TankGame
 
                 ((Bullet)tmp.GetComponent("Bullet")).CanRelease = true;
 
+                ((Bullet)tmp.GetComponent("Bullet")).VehicleRotation = vehicleRotation;
+
+                ((Bullet)tmp.GetComponent("Bullet")).LifeSpan = Constant.basicBulletLifeSpan;
+
+                ((Bullet)tmp.GetComponent("Bullet")).TimeStamp = GameWorld.Instance.TotalGameTime;
+
                 GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
                 tmp.Transform.Position = position;
 
@@ -95,6 +101,7 @@ namespace TankGame
             bullet.Transform.Position = new Vector2(100, 100);
             // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
+
             GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
             //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
 

@@ -24,6 +24,18 @@ namespace TankGame
 
         protected int health;
 
+        public int Health
+        {
+            get { return health; }
+            set
+            {
+                health = value;
+                if (health <= 0)
+                {
+                    Die();
+                }
+            }
+        }
         #region Attributes for object pool
         private bool canRelease;
 
@@ -193,7 +205,10 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            Console.WriteLine(new NotImplementedException("die enemy"));
+
+
+            EnemyPool.releaseList.Add(this.GameObject);
+
         }
 
         /// <summary>

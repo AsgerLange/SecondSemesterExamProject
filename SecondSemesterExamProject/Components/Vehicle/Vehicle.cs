@@ -61,6 +61,9 @@ namespace TankGame
             Movement();
             Shoot();
         }
+        /// <summary>
+        /// Handles Movement for Vehicles
+        /// </summary>
         public void Movement()
         {
             Vector2 translation = Vector2.Zero;
@@ -80,13 +83,22 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate)<=GameWorld.Instance.TotalGameTime)
+            if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
             {
                 BulletPool.CreateBullet(this.GameObject.Transform.Position, Alignment.Friendly,
                     BulletType.BaiscBullet, rotation);
-                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; 
+                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
 
+            if (keyState.IsKeyDown(Keys.F) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+            {
+
+
+                EnemyPool.CreateEnemy(new Vector2(GameObject.Transform.Position.X + 100,
+                    GameObject.Transform.Position.Y + 100), EnemyType.BasicEnemy);
+
+                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+            }
 
 
         }
@@ -103,11 +115,13 @@ namespace TankGame
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, -1);
+                animator.PlayAnimation("MoveForward");
             }
             else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, 1);
+                animator.PlayAnimation("MoveBackward");
             }
             return translation;
         }
@@ -158,6 +172,7 @@ namespace TankGame
         public virtual void OnAnimationDone(string animationName)
         {
             Console.WriteLine(new NotImplementedException("OnAnimationDone Vehicle"));
+
         }
 
         /// <summary>
@@ -176,7 +191,10 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 20, 40, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
+            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
+            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 5, Vector2.Zero));
         }
 
         /// <summary>
