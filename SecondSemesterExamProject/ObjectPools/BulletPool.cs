@@ -36,7 +36,7 @@ namespace TankGame
         /// <param name="position">The position where the bullet should spawn</param>
         /// <param name="alignment">The allignment of the bullet (Enemy/Friendly/neutral)</param>
         /// <returns></returns>
-        public static GameObject CreateBullet(Vector2 position, Alignment alignment, BulletType bulletType, float vehicleRotation)
+        public static GameObject CreateBullet(Vector2 position, Alignment alignment, BulletType bulletType, float directionRotation)
         {
             if (inActiveBullets.Count > 0)
             {
@@ -52,7 +52,7 @@ namespace TankGame
 
                 ((Bullet)tmp.GetComponent("Bullet")).CanRelease = true;
 
-                ((Bullet)tmp.GetComponent("Bullet")).VehicleRotation = vehicleRotation;
+                ((Bullet)tmp.GetComponent("Bullet")).DirRotation = directionRotation;
 
                 ((Bullet)tmp.GetComponent("Bullet")).LifeSpan = Constant.basicBulletLifeSpan;
 
@@ -70,7 +70,7 @@ namespace TankGame
                 GameObject tmp;
 
 
-                tmp = GameObjectDirector.Instance.Construct(position,bulletType, vehicleRotation);
+                tmp = GameObjectDirector.Instance.Construct(position,bulletType, directionRotation, alignment);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeBullets.Add(tmp);
 
