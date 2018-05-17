@@ -17,7 +17,9 @@ namespace TankGame
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
         private List<Collider> colliders = new List<Collider>();
         private float deltaTime;
+        private float totalGameTime;
         private Map map;
+       
 
         //Background
         Texture2D backGround;
@@ -27,6 +29,10 @@ namespace TankGame
         {
             get { return colliders; }
             set { colliders = value; }
+        }
+        public float TotalGameTime
+        {
+            get { return totalGameTime; }
         }
 
         public List<GameObject> GameObjectsToRemove
@@ -69,6 +75,7 @@ namespace TankGame
             graphics.PreferredBackBufferWidth = 1120;//Changes Window Size
             this.Window.Position = new Point(0, 0);
             graphics.ApplyChanges();
+           
         }
 
         /// <summary>
@@ -103,8 +110,7 @@ namespace TankGame
             //adds test enemy
             EnemyPool.CreateEnemy(new Vector2(500, 500), EnemyType.BasicEnemy);
 
-            //adds test bullet
-            BulletPool.CreateBullet(new Vector2(200, 200), Alignment.Friendly, BulletType.BaiscBullet);
+           
 
             base.Initialize();
         }
@@ -150,7 +156,7 @@ namespace TankGame
 
             // TODO: Add your update logic here
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Updates GameObjects
             foreach (var go in gameObjects)
             {

@@ -36,7 +36,7 @@ namespace TankGame
         /// <param name="position">The position where the bullet should spawn</param>
         /// <param name="alignment">The allignment of the bullet (Enemy/Friendly/neutral)</param>
         /// <returns></returns>
-        public static GameObject CreateBullet(Vector2 position, Alignment alignment, BulletType bulletType)
+        public static GameObject CreateBullet(Vector2 position, Alignment alignment, BulletType bulletType, float vehicleRotation)
         {
             if (inActiveBullets.Count > 0)
             {
@@ -64,7 +64,7 @@ namespace TankGame
                 GameObject tmp;
 
 
-                tmp = GameObjectDirector.Instance.Construct(position, bulletType);
+                tmp = GameObjectDirector.Instance.Construct(position,bulletType, vehicleRotation);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeBullets.Add(tmp);
 
