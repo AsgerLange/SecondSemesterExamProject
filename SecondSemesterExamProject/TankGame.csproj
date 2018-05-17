@@ -9,7 +9,7 @@
     <ProjectGuid>{83ACD278-6021-460D-AA5F-7CACBFADCD2D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SecondSemesterExamProject</RootNamespace>
+    <RootNamespace>TankGame</RootNamespace>
     <AssemblyName>SecondSemesterExamProject</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
@@ -43,11 +43,16 @@
   <ItemGroup>
     <Compile Include="Builders\BulletBuilder.cs" />
     <Compile Include="Builders\EnemyBuilder.cs" />
-    <Compile Include="Components\Enemies\BasicEnemy.cs" />
+    <Compile Include="Builders\RockBuilder.cs" />
+    <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
+    <Compile Include="Components\Enemies\Melee\Melee.cs" />
+    <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
+    <Compile Include="Components\Map.cs" />
+    <Compile Include="Components\Rock.cs" />
     <Compile Include="Interfaces\IEnemyAI.cs" />
     <Compile Include="Interfaces\IEnemyBuilder.cs" />
     <Compile Include="Interfaces\IBulletBuilder.cs" />
-    <Compile Include="Components\Bullet.cs" />
+    <Compile Include="Components\Bullets\Bullet.cs" />
     <Compile Include="Components\Enemies\Enemy.cs" />
     <Compile Include="Builders\GameObjectDirector.cs" />
     <Compile Include="ObjectPools\BulletPool.cs" />
