@@ -10,7 +10,7 @@ namespace TankGame
 {
     enum EnemyType { BasicEnemy, };
 
-    class Enemy : Component, IAnimatable, IUpdatable, ILoadable
+    class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
 
         public Animator animator;
@@ -36,8 +36,6 @@ namespace TankGame
                 }
             }
         }
-        protected IEnemyAI action;
-
         #region Attributes for object pool
         private bool canRelease;
 
@@ -65,6 +63,23 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
+
+            FollowHQ();
+        }
+
+        /// <summary>
+        /// finds the 
+        /// </summary>
+        private void FollowHQ()
+        {
+            foreach (var go in GameWorld.Instance.GameObjects)
+            {
+                if (go.GetComponent("HQ") is HQ)
+                {
+                    targetGameObject = go;
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -158,7 +173,6 @@ namespace TankGame
             }
 
             return (float)returnValue;
-
         }
 
         /// <summary>
@@ -201,5 +215,21 @@ namespace TankGame
 
         }
 
+        /// <summary>
+        /// when somthing is inside the enemy
+        /// </summary>
+        /// <param name="other"></param>
+        public void OnCollisionStay(Collider other)
+        {
+            if (other.GetAlignment != Alignment.Neutral)
+            {
+                float force = Constant.pushForce;
+
+                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                dir.Normalize();
+
+                other.GameObject.Transform.Translate(dir * force);
+            }
+        }
     }
 }
