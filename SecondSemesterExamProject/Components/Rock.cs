@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class Rock : Component, ICollisionEnter
+    class Rock : Component, ICollisionStay
     {
         private SpriteRenderer spriteRenderer;
 
@@ -18,7 +18,7 @@ namespace TankGame
             spriteRenderer.Rotation = rotation;
         }
 
-        public void OnCollisionEnter(Collider other)
+        public void OnCollisionStay(Collider other)
         {
             // force is how forcefully we will push the player away from the enemy.
             float force = Constant.rockPushForce;

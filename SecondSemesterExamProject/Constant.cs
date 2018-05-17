@@ -15,6 +15,16 @@ namespace TankGame
         public static readonly float tankFireRate = 2;
         public static readonly int tankHealth = 1000;
         public static readonly float tankRotateSpeed = 2.0F;
+        public static readonly int tankStartGold = 100;
+        #endregion
+        #endregion
+
+        #region Tower
+        #region HQ
+        public static readonly string HQSpriteSheet = "HQ";
+        public static readonly float HQFireRate = 2;
+        public static readonly int HQHealth = 1000;
+        public static readonly int HQAttackRange = 1000;
         #endregion
         #endregion
 

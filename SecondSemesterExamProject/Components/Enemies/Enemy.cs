@@ -53,6 +53,23 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
+
+            FollowHQ();
+        }
+
+        /// <summary>
+        /// finds the 
+        /// </summary>
+        private void FollowHQ()
+        {
+            foreach (var go in GameWorld.Instance.GameObjects)
+            {
+                if (go.GetComponent("HQ") is HQ)
+                {
+                    targetGameObject = go;
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -146,7 +163,6 @@ namespace TankGame
             }
 
             return (float)returnValue;
-
         }
 
         /// <summary>

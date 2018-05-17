@@ -45,7 +45,14 @@ namespace TankGame
         /// </summary>
         public void PlaceHQ()
         {
-
+            GameObject hq;
+            hq = new GameObject();
+            hq.Transform.Position = new Vector2(20, 20);
+            hq.AddComponent(new SpriteRenderer(hq, Constant.HQSpriteSheet, 0.8f));
+            hq.AddComponent(new Animator(hq));
+            hq.AddComponent(new HQ(hq, Constant.HQFireRate,Constant.HQHealth,Constant.HQAttackRange));
+            hq.AddComponent(new Collider(hq, Alignment.Friendly));
+            GameWorld.Instance.GameObjects.Add(hq);
         }
     }
 }
