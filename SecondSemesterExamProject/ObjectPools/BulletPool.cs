@@ -52,7 +52,7 @@ namespace TankGame
 
                 ((Bullet)tmp.GetComponent("Bullet")).CanRelease = true;
 
-                ((Bullet)tmp.GetComponent("Bullet")).VehicleRotation = vehicleRotation;
+                ((Bullet)tmp.GetComponent("Bullet")).DirRotation = directionRotation;
 
                 ((Bullet)tmp.GetComponent("Bullet")).LifeSpan = Constant.basicBulletLifeSpan;
 

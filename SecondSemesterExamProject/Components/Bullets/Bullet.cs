@@ -15,7 +15,7 @@ namespace TankGame
         private float bulletDmg;
         private float rotation;
         private float movementSpeed;
-        private float vehicleRotation;
+        private float dirRotation;
         private float lifeSpan;
         private float timeStamp;
 
@@ -31,7 +31,6 @@ namespace TankGame
         }
         #endregion;
 
-        private float dirRotation;
 
         public float DirRotation
         {
@@ -72,7 +71,6 @@ namespace TankGame
                     break;
             }
             this.bulletType = type;
-            this.direction = new Vector2(0, 0);
             movementSpeed = Constant.basicBulletMovementSpeed;
             this.dirRotation = dirRotation;
 
@@ -215,7 +213,7 @@ namespace TankGame
 
             if (thisCollider != null)
             {
-                if (thisCollider.GetAlignment != other.GetAlignment) 
+                if (thisCollider.GetAlignment != other.GetAlignment)
                 {
                     if (canRelease)
                     {
@@ -236,7 +234,7 @@ namespace TankGame
         public void DestroyBullet()
         {
             BulletPool.releaseList.Add(this.GameObject);
-            
+
         }
     }
 }

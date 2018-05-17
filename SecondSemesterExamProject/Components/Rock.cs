@@ -25,7 +25,7 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
         {
-            float force = Constant.PushForce * 2;
+            float force = Constant.pushForce * 2;
 
             if (other.GetAlignment != Alignment.Neutral)
             {
@@ -43,7 +43,7 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-            float force = Constant.PushForce;
+            float force = Constant.pushForce;
 
             if (other.GetAlignment != Alignment.Neutral)
             {

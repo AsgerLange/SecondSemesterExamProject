@@ -49,7 +49,7 @@ namespace TankGame
 
         #region Terrain
         public static readonly string rockImage = "TerrainRock";
-        public static readonly int rockPushForce = 2;
+        public static readonly int pushForce = 2;
         #endregion
     }
 }

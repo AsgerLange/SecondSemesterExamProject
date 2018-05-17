@@ -219,7 +219,7 @@ namespace TankGame
         {
             if (other.GetAlignment != Alignment.Neutral)
             {
-                float force = Constant.PushForce;
+                float force = Constant.pushForce;
 
                 Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
                 dir.Normalize();

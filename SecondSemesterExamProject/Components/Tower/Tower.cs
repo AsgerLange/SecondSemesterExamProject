@@ -154,7 +154,7 @@ namespace TankGame
         public virtual void OnCollisionEnter(Collider other)
         {
             //push them a bit away
-            float force = Constant.PushForce;
+            float force = Constant.pushForce;
             if (other.GetAlignment != Alignment.Neutral)
             {
                 Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
@@ -172,7 +172,7 @@ namespace TankGame
         public void OnCollisionStay(Collider other)
         {
             //push them a bit away
-            float force = Constant.PushForce * 2;
+            float force = Constant.pushForce * 2;
             if (other.GetAlignment != Alignment.Neutral)
             {
                 Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
