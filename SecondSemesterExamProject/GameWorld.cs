@@ -166,10 +166,12 @@ namespace TankGame
             {
                 go.Update();
             }
+            
             foreach (var go in BulletPool.ActiveBullets)
             {
                 go.Update();
             }
+           BulletPool.ReleaseList();
             base.Update(gameTime);
         }
 

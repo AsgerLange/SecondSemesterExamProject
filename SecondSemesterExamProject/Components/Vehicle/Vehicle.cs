@@ -59,6 +59,9 @@ namespace TankGame
             Movement();
             Shoot();
         }
+        /// <summary>
+        /// Handles Movement for Vehicles
+        /// </summary>
         public void Movement()
         {
             Vector2 translation = Vector2.Zero;
