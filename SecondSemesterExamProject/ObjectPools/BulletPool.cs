@@ -36,7 +36,7 @@ namespace TankGame
         /// <param name="position">The position where the bullet should spawn</param>
         /// <param name="alignment">The allignment of the bullet (Enemy/Friendly/neutral)</param>
         /// <returns></returns>
-        public static GameObject CreateBullet(Vector2 position, Alignment alignment)
+        public static GameObject CreateBullet(Vector2 position, Alignment alignment, BulletType bulletType)
         {
             if (inActiveBullets.Count > 0)
             {
@@ -64,7 +64,7 @@ namespace TankGame
                 GameObject tmp;
 
 
-                tmp = GameObjectDirector.Instance.Construct(position, BulletType.BaiscBullet);
+                tmp = GameObjectDirector.Instance.Construct(position, bulletType);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeBullets.Add(tmp);
 
@@ -93,7 +93,7 @@ namespace TankGame
 
 
             bullet.Transform.Position = new Vector2(100, 100);
-           // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
+            // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
             GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
             //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
