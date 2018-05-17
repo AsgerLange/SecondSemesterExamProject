@@ -16,6 +16,9 @@ namespace TankGame
         private Vector2 direction;
         private float rotation;
         private float movementSpeed;
+        private float vehicleRotation;
+        private float lifeSpan;
+        private float timeStamp;
 
         private SpriteRenderer spriteRenderer;
         private Animator animator;
@@ -28,12 +31,21 @@ namespace TankGame
         }
         #endregion;
 
-        private float vehicleRotation;
 
         public float VehicleRotation
         {
             get { return vehicleRotation; }
             set { vehicleRotation = value; }
+        }
+        public float LifeSpan
+        {
+            get { return lifeSpan; }
+            set { lifeSpan = value; }
+        }
+        public float TimeStamp
+        {
+            get { return timeStamp; }
+            set { timeStamp = value; }
         }
         public Bullet(GameObject gameObject, BulletType type, float vehicleRotation) : base(gameObject)
         {
@@ -42,26 +54,52 @@ namespace TankGame
             this.direction = new Vector2(0, 0);
             movementSpeed = Constant.basicBulletMovementSpeed;
             this.vehicleRotation = vehicleRotation;
-
+            this.lifeSpan = Constant.basicBulletLifeSpan;
+            this.timeStamp = GameWorld.Instance.TotalGameTime;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
         }
 
         public void Update()
         {
-            Vector2 translation = Vector2.Zero;
-
-            translation = MoveForward(translation);
-
-            translation = RotateMove(translation);
-
-            TranslateMovement(translation);
-
-            rotation = GetDegreesFromDestination(translation);
+            BulletMovement();
             spriteRenderer.Rotation = rotation;
+
+            CheckIfBulletIsExpired();
+
+        }
+
+        /// <summary>
+        /// Destroys bullet when it reaches the end of its lifespan
+        /// </summary>
+        public void CheckIfBulletIsExpired()
+        {
+            if (GameWorld.Instance.TotalGameTime >= (timeStamp + lifeSpan))
+            {
+                DestroyBullet();
+            }
         }
         /// <summary>
-        /// Moves towards a targeted gameobject
+        /// Handles movement for the bullet
+        /// </summary>
+        public void BulletMovement()
+        {
+            Vector2 translation = Vector2.Zero;
+            //Bullet travels forward
+            translation = MoveForward(translation);
+
+            //"forward" is changed to fit the angle
+            translation = RotateMove(translation);
+
+            //Translates movemement
+            TranslateMovement(translation);
+
+            //Rotates the bullet to fit its direction
+            rotation = GetDegreesFromDestination(translation);
+
+        }
+        /// <summary>
+        /// Moves forwards
         /// </summary>
         /// <param name="go"></param>
         private Vector2 MoveForward(Vector2 translation)
@@ -153,8 +191,23 @@ namespace TankGame
         }
         public void OnCollisionEnter(Collider other)
         {
+            Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
+
+            if (thisCollider != null)
+            {
+                if (thisCollider.GetAlignment != other.GetAlignment)
+                {
+                    DestroyBullet();
+                }
+            }
+
+        }
+        /// <summary>
+        /// Adds the bullet to the bulletpool's release list, allowing it to be recycled.
+        /// </summary>
+        public void DestroyBullet()
+        {
             BulletPool.releaseList.Add(this.GameObject);
-            
         }
     }
 }
