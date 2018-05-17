@@ -81,13 +81,22 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate)<=GameWorld.Instance.TotalGameTime)
+            if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
             {
                 BulletPool.CreateBullet(this.GameObject.Transform.Position, Alignment.Friendly,
                     BulletType.BaiscBullet, rotation);
-                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; 
+                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
 
+            if (keyState.IsKeyDown(Keys.F) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+            {
+
+
+                EnemyPool.CreateEnemy(new Vector2(GameObject.Transform.Position.X + 100,
+                    GameObject.Transform.Position.Y + 100), EnemyType.BasicEnemy);
+
+                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+            }
 
 
         }

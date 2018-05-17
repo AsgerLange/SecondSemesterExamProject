@@ -50,7 +50,10 @@ namespace TankGame
 
                 ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
 
-                ((Enemy)tmp.GetComponent("Enemy")).CanRelease = true;
+                ((Enemy)tmp.GetComponent("BasicEnemy")).CanRelease = true;
+
+                ((Enemy)tmp.GetComponent("BasicEnemy")).Health = Constant.basicEnemyHealth;
+
 
                 GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
                 tmp.Transform.Position = position;
@@ -89,7 +92,16 @@ namespace TankGame
         /// <param name="enemy"></param>
         public static void CleanUp(GameObject enemy)
         {
-            //Reset all enemy attrubutes
+
+            enemy.Transform.Position = new Vector2(100, 100);
+            // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
+            ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
+
+            GameWorld.Instance.Colliders.Remove((Collider)enemy.GetComponent("Collider"));
+            //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
+
+            activeEnemies.Remove(enemy);
+            inActiveEnemies.Add(enemy);
         }
 
         /// <summary>

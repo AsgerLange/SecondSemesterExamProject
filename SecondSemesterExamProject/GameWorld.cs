@@ -107,8 +107,7 @@ namespace TankGame
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
-            //adds test enemy
-            EnemyPool.CreateEnemy(new Vector2(500, 500), EnemyType.BasicEnemy);
+           
 
            
 
@@ -166,7 +165,8 @@ namespace TankGame
             {
                 go.Update();
             }
-            
+            EnemyPool.ReleaseList();
+
             foreach (var go in BulletPool.ActiveBullets)
             {
                 go.Update();

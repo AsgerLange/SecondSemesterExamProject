@@ -12,7 +12,7 @@ namespace TankGame
         #region Tank
         public static readonly string tankSpriteSheet = "Tank";
         public static readonly float tankMoveSpeed = 100;
-        public static readonly float tankFireRate = 1;
+        public static readonly float tankFireRate = 0.1f;
         public static readonly int tankHealth = 1000;
         public static readonly float tankRotateSpeed = 2.0F;
         #endregion
@@ -23,13 +23,14 @@ namespace TankGame
         public static readonly string bulletSheet = "BasicBullet";
         public static readonly float basicBulletMovementSpeed = 700;
         public static readonly float basicBulletLifeSpan = 1f;
+        public static readonly float basicBulletDmg = 50;
         #endregion;
         #endregion;
 
         #region Enemies
         #region BasicEnemy
         public static readonly string basicEnemySpriteSheet = "EnemyBasic";
-        public static readonly int basicEnemyHealth = 250;
+        public static readonly int basicEnemyHealth = 50;
         public static readonly float basicEnemyMovementSpeed = 25;
         public static readonly float basicEnemyAttackRate = 1;
 
