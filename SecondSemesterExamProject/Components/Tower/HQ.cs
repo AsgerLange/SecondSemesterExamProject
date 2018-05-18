@@ -41,5 +41,13 @@ namespace TankGame
             animator.CreateAnimation("Idle", new Animation(6, 96, 0, 96, 96, 8, Vector2.Zero));
             base.CreateAnimation();
         }
+
+        /// <summary>
+        /// handles what happens when a HQ dies
+        /// </summary>
+        protected override void Die()
+        {
+
+        }
     }
 }
