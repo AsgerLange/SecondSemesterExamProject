@@ -19,7 +19,7 @@ namespace TankGame
         //List containing enemies to be released
         public static List<GameObject> releaseList = new List<GameObject>();
 
-        
+
 
         /// <summary>
         /// Get/set property for the activeEnemies list
@@ -48,14 +48,10 @@ namespace TankGame
 
                 tmp.LoadContent(GameWorld.Instance.Content);
 
-                ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
-
-                ((Enemy)tmp.GetComponent("BasicEnemy")).CanRelease = true;
-
-                ((Enemy)tmp.GetComponent("BasicEnemy")).Health = Constant.basicEnemyHealth;
-
-
+                ((Enemy)tmp.GetComponent("BasicEnemy")).IsAlive = true;
                 GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+
+
                 tmp.Transform.Position = position;
 
                 activeEnemies.Add(tmp);
@@ -66,7 +62,7 @@ namespace TankGame
             {
                 GameObject tmp;
 
-              
+
                 tmp = GameObjectDirector.Instance.Construct(position, enemyType);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeEnemies.Add(tmp);
@@ -97,8 +93,15 @@ namespace TankGame
             // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
-            GameWorld.Instance.Colliders.Remove((Collider)enemy.GetComponent("Collider"));
             //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
+
+            ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
+
+
+
+            ((Enemy)enemy.GetComponent("BasicEnemy")).CanRelease = true;
+
+            ((Enemy)enemy.GetComponent("BasicEnemy")).Health = Constant.basicEnemyHealth;
 
             activeEnemies.Remove(enemy);
             inActiveEnemies.Add(enemy);
