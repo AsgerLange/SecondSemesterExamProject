@@ -33,7 +33,7 @@ namespace TankGame
             animator.CreateAnimation("Idle", new Animation(4, 23, 0, 23, 23, 3, Vector2.Zero));
             animator.CreateAnimation("Walk", new Animation(4, 46, 0, 23, 25, 3, Vector2.Zero));
             animator.CreateAnimation("Attack", new Animation(4, 71, 0, 23, 29, 3, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(6, 100, 0, 23, 23, 3, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(6, 100, 0, 23, 23, 8, Vector2.Zero));
             base.CreateAnimation();
         }
 
