@@ -38,7 +38,7 @@ namespace TankGame
         protected override void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 100, 88, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(6, 96, 0, 96, 96, 8, Vector2.Zero));
             base.CreateAnimation();
         }
     }
