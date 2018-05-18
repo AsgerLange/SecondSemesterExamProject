@@ -15,6 +15,7 @@ namespace TankGame
     {
         public Animator animator;
         protected int health;
+        protected int money;
         protected Controls control;
         protected float movementSpeed;
         protected float fireRate;
@@ -31,13 +32,14 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed) : base(gameObject)
+        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money) : base(gameObject)
         {
             this.control = control;
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.fireRate = fireRate;
             this.rotateSpeed = rotateSpeed;
+            this.money = money;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
