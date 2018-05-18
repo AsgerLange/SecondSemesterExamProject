@@ -39,7 +39,7 @@ namespace TankGame
 
         #region Enemies
         #region BasicEnemy
-        public static readonly string basicEnemySpriteSheet = "EnemyBasic";
+        public static readonly string basicEnemySpriteSheet = "BasicEnemy";
         public static readonly int basicEnemyHealth = 50;
         public static readonly float basicEnemyMovementSpeed = 25;
         public static readonly float basicEnemyAttackRate = 1;
