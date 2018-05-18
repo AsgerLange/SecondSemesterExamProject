@@ -52,7 +52,7 @@ namespace TankGame
         {
             switch (type)
             {
-                case BulletType.BaiscBullet:
+                case BulletType.BasicBullet:
                     bulletBuilder.Build(position, type,rotation, alignment);
                     break;
 
