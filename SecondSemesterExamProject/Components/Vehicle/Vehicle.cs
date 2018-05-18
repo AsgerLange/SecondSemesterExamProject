@@ -24,6 +24,20 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
 
+        public int Health
+        {
+            get { return health; }
+            set
+            {
+                health = value;
+                if (health <= 0)
+                {
+                    health = 0;
+                    Die();
+                }
+            }
+        }
+
         /// <summary>
         /// creates a vehicle
         /// </summary>

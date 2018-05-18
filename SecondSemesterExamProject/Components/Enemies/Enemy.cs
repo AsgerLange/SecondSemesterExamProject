@@ -59,7 +59,7 @@ namespace TankGame
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
-
+            this.canRelease = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
@@ -206,8 +206,12 @@ namespace TankGame
         protected virtual void Die()
         {
 
+            if (canRelease)
+            {
 
-            EnemyPool.releaseList.Add(this.GameObject);
+                EnemyPool.releaseList.Add(this.GameObject);
+                canRelease = false;
+            }
 
         }
 
