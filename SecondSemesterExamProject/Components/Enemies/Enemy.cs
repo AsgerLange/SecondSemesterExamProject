@@ -207,7 +207,7 @@ namespace TankGame
             }
             else
             {
-                animator.PlayAnimation("Attack2");
+                animator.PlayAnimation("Walk");
             }
         }
 
