@@ -59,7 +59,7 @@ namespace TankGame
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
-
+            this.canRelease = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
@@ -92,7 +92,7 @@ namespace TankGame
 
             CreateAnimation();
 
-            animator.PlayAnimation("Idle");
+            animator.PlayAnimation("TPose");
 
         }
 
@@ -187,8 +187,8 @@ namespace TankGame
 
         public virtual void CreateAnimation()
         {
-            //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 24, 24, 3, Vector2.Zero));
+            //Enemy Animation Set
+            animator.CreateAnimation("TPose", new Animation(1, 0, 0, 23, 23, 3, Vector2.Zero));
         }
 
         /// <summary>
@@ -197,6 +197,14 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
+            if (animationName == "Death")
+            {
+                if (canRelease)
+                {
+                    EnemyPool.releaseList.Add(this.GameObject);
+                    canRelease = false;
+                }
+            }
             Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
         }
 
@@ -205,9 +213,6 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-
-
-            EnemyPool.releaseList.Add(this.GameObject);
 
         }
 
