@@ -15,7 +15,7 @@ namespace TankGame
         private float bulletDmg;
         private float rotation;
         private float movementSpeed;
-        private float vehicleRotation;
+        private float dirRotation;
         private float lifeSpan;
         private float timeStamp;
 
@@ -31,13 +31,11 @@ namespace TankGame
         }
         #endregion;
 
-        /// <summary>
-        /// the rotation of the vehicle which shoots the bullet
-        /// </summary>
-        public float VehicleRotation
+
+        public float DirRotation
         {
-            get { return vehicleRotation; }
-            set { vehicleRotation = value; }
+            get { return dirRotation; }
+            set { dirRotation = value; }
         }
         /// <summary>
         /// The amount of seconds a bullet should survive
@@ -56,7 +54,7 @@ namespace TankGame
             set { timeStamp = value; }
         }
 
-        public Bullet(GameObject gameObject, BulletType type, float vehicleRotation) : base(gameObject)
+        public Bullet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject)
         {
 
             canRelease = true;
@@ -73,8 +71,9 @@ namespace TankGame
                     break;
             }
             this.bulletType = type;
+            movementSpeed = Constant.basicBulletMovementSpeed;
+            this.dirRotation = dirRotation;
 
-            this.vehicleRotation = vehicleRotation;
             this.timeStamp = GameWorld.Instance.TotalGameTime;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -118,6 +117,7 @@ namespace TankGame
             rotation = GetDegreesFromDestination(translation);
 
         }
+
         /// <summary>
         /// Moves forwards
         /// </summary>
@@ -136,7 +136,7 @@ namespace TankGame
         /// <returns></returns>
         public Vector2 RotateMove(Vector2 translation)
         {
-            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(vehicleRotation)));
+            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(dirRotation)));
         }
 
         /// <summary>
@@ -157,15 +157,11 @@ namespace TankGame
             Vector2 positionVec = new Vector2(0, -1); //Standard position (UP)
 
             float toppart = 0;
-
             toppart += positionVec.X * destinationVec.X;
             toppart += positionVec.Y * destinationVec.Y;
 
-
-
             float destinationVector2 = 0; //destinationVec squared
             float positionVector2 = 0; //positionVec squared
-
 
             destinationVector2 += positionVec.X * positionVec.X;
             destinationVector2 += positionVec.Y * positionVec.Y;
@@ -173,10 +169,8 @@ namespace TankGame
             positionVector2 += destinationVec.X * destinationVec.X;
             positionVector2 += destinationVec.Y * destinationVec.Y;
 
-
             float bottompart = 0;
             bottompart = (float)Math.Sqrt(destinationVector2 * positionVector2);
-
 
             double returnValue = (float)Math.Acos(toppart / bottompart);
 
@@ -186,13 +180,10 @@ namespace TankGame
             {
                 returnValue -= (returnValue * 2);
             }
-
             return (float)returnValue;
-
         }
 
-
-        public void LoadContent(ContentManager content)
+        public virtual void LoadContent(ContentManager content)
         {
             this.animator = (Animator)GameObject.GetComponent("Animator");
 
@@ -200,16 +191,17 @@ namespace TankGame
 
             animator.PlayAnimation("Idle");
         }
+
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 1, 22, 3, Vector2.Zero));
         }
-        public void OnAnimationDone(string animationName)
+
+        public virtual void OnAnimationDone(string animationName)
         {
             Console.WriteLine(new NotImplementedException());
         }
-
 
         /// <summary>
         /// Handles what happens when bullet collides with other colliders
@@ -221,7 +213,7 @@ namespace TankGame
 
             if (thisCollider != null)
             {
-                if (thisCollider.GetAlignment != other.GetAlignment) 
+                if (thisCollider.GetAlignment != other.GetAlignment)
                 {
                     if (canRelease)
                     {
@@ -242,6 +234,7 @@ namespace TankGame
         public void DestroyBullet()
         {
             BulletPool.releaseList.Add(this.GameObject);
+
         }
     }
 }
