@@ -220,7 +220,11 @@ namespace TankGame
         {
             if (animationName == "Death")
             {
-                EnemyPool.releaseList.Add(this.GameObject);
+                if (canRelease)
+                {
+                    EnemyPool.releaseList.Add(this.GameObject);
+                    canRelease = false;
+                }
             }
             Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
         }
@@ -230,10 +234,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            if (canRelease)
-            {
-                canRelease = false;
-            }
+
         }
 
         /// <summary>
