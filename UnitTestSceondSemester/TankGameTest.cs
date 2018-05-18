@@ -1,30 +1,44 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework;
 using TankGame;
+
 
 namespace UnitTestSceondSemester
 {
     [TestClass]
     public class TankGameTest
     {
-        //private test;
+        
 
-        //[TestInitialize]
-        //public void TestStart()
-        //{
-        //    test = new TankGame();
-        //}
+        [TestInitialize]
+        public void TestStart()
+        {
+         
+        }
 
         [TestMethod]
-
-        public void AddComponent() //Test if componenets are added... maybe
+        public void CreateGameWorldSingleton()
         {
+            GameWorld gameWorld = GameWorld.Instance;
 
+            Assert.IsFalse(gameWorld != null);
+        }
+
+        [TestMethod]
+               
+        public void GameObjectHasTransform() 
+        {
+            GameObject go;
+
+            go = new GameObject(); //Gameobject constructor adds a "Transform" component
+            
+            Assert.IsTrue(go.GetComponent("Transform") is Transform);
         }
 
         public void EnemyTakesDamage()
         {
-            
+
 
         }
         public void PlayerTakesDamage()
@@ -42,9 +56,13 @@ namespace UnitTestSceondSemester
 
 
         }
-        public void BulletDamage() //Test if the damage of the bullet does that amount
+        [TestMethod]
+        public void CanCreateBullet() //Test if the damage of the bullet does that amount
         {
 
+            BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BaiscBullet, 0);
+
+            Assert.IsTrue(BulletPool.ActiveBullets.Count > 0);
 
         }
         public void BulletCollision() //Does the bullet collide with anything.
@@ -89,7 +107,7 @@ namespace UnitTestSceondSemester
 
 
         }
-        public void WeaponCrateSpawn() 
+        public void WeaponCrateSpawn()
         {
 
 
