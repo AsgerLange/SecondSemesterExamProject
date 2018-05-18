@@ -217,9 +217,20 @@ namespace TankGame
                 {
                     if (canRelease)
                     {
-                        if (other.GameObject.GetComponent("BasicEnemy") is Enemy)
+                        foreach (Component go in other.GameObject.GetComponentList)
                         {
-                            (other.GameObject.GetComponent("BasicEnemy") as Enemy).Health -= 50;
+                            if (go is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+                            {
+                                (go as Enemy).Health -= 50;
+                            }
+                            if (go is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
+                            {
+                                (go as Vehicle).Health -= 50;
+                            }
+                            if (go is Tower && thisCollider.GetAlignment == Alignment.Enemy)
+                            {
+                                (go as Tower).Health -= 50;
+                            }
                         }
                         DestroyBullet();
                         canRelease = false;
