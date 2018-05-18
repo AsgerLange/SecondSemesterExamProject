@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,10 @@ namespace TankGame
         /// </summary>
         public override void CreateAnimation()
         {
+            animator.CreateAnimation("Idle", new Animation(4, 23, 0, 23, 23, 3, Vector2.Zero));
+            animator.CreateAnimation("Walk", new Animation(4, 46, 0, 23, 25, 3, Vector2.Zero));
+            animator.CreateAnimation("Attack", new Animation(4, 71, 0, 23, 29, 3, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(6, 100, 0, 23, 23, 3, Vector2.Zero));
             base.CreateAnimation();
         }
 
@@ -70,6 +75,7 @@ namespace TankGame
         /// </summary>
         protected override void Die()
         {
+            animator.PlayAnimation("Death");
             base.Die();
         }
     }
