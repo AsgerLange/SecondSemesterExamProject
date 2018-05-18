@@ -194,7 +194,7 @@ namespace TankGame
 
         public virtual void CreateAnimation()
         {
-            //EKSEMPEL
+            //Bullet Animation
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 1, 22, 3, Vector2.Zero));
         }
 
