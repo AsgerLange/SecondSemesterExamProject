@@ -35,11 +35,12 @@ namespace UnitTestSceondSemester
             
             Assert.IsTrue(go.GetComponent("Transform") is Transform);
         }
-
-        public void EnemyTakesDamage()
+        [TestMethod]
+        public void ObjectDirectorBuildBullet()
         {
+            Component test = GameObjectDirector.Instance.Construct(Vector2.Zero,BulletType.BaiscBullet,0,Alignment.Friendly);
 
-
+            Assert.IsTrue(test.GameObject.GetComponent("Bullet") is Bullet);
         }
         public void PlayerTakesDamage()
         {
@@ -51,6 +52,7 @@ namespace UnitTestSceondSemester
 
 
         }
+        [TestMethod]
         public void PlayerShoot()
         {
 
