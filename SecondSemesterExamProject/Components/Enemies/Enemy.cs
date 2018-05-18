@@ -234,7 +234,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-
+            animator.PlayAnimation("Death");
         }
 
         /// <summary>

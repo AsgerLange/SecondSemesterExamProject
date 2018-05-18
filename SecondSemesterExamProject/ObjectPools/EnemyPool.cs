@@ -44,11 +44,12 @@ namespace TankGame
 
                 tmp = inActiveEnemies[0];
 
+                ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+
                 inActiveEnemies.Remove(tmp);
 
                 tmp.LoadContent(GameWorld.Instance.Content);
 
-                ((Enemy)tmp.GetComponent("BasicEnemy")).IsAlive = true;
                 GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
 
 
@@ -97,6 +98,7 @@ namespace TankGame
 
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
 
+            ((Enemy)enemy.GetComponent("BasicEnemy")).IsAlive = true;
 
 
             ((Enemy)enemy.GetComponent("BasicEnemy")).CanRelease = true;
