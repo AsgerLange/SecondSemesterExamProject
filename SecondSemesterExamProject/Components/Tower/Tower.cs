@@ -17,6 +17,20 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
 
+        public int Health
+        {
+            get { return health; }
+            set
+            {
+                health = value;
+                if (health <= 0)
+                {
+                    health = 0;
+                    Die();
+                }
+            }
+        }
+
         public Tower(GameObject gameObject, float attackRate, int health, float attackRange) : base(gameObject)
         {
             this.health = health;
@@ -204,5 +218,12 @@ namespace TankGame
 
         }
 
+        /// <summary>
+        /// handles what happens when a tower dies
+        /// </summary>
+        protected virtual void Die()
+        {
+
+        }
     }
 }
