@@ -226,11 +226,14 @@ namespace TankGame
                     canRelease = false;
                 }
             }
-            Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
+            else
+            {
+                animator.PlayAnimation("Walk");
+            }
         }
 
         /// <summary>
-        /// handles what happens when a enemy dies
+        /// handles what happens when an enemy dies
         /// </summary>
         protected virtual void Die()
         {
@@ -238,7 +241,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// when somthing is inside the enemy
+        /// when something is inside the enemy
         /// </summary>
         /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
