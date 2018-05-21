@@ -51,16 +51,12 @@ namespace UnitTestSceondSemester
 
 
         }
-        public void PlayerShoot()
-        {
 
-
-        }
         [TestMethod]
         public void CanCreateBullet() //Test if the damage of the bullet does that amount
         {
 
-            BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BaiscBullet, 0);
+            BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BasicBullet, 0);
 
             Assert.IsTrue(BulletPool.ActiveBullets.Count > 0);
 
@@ -82,16 +78,6 @@ namespace UnitTestSceondSemester
 
         }
 
-        public void EnemyDoDamage() //Test if enemy lowers the health of player to the amount that we know
-        {
-
-
-        }
-        public void Collision() //To test if collision happends
-        {
-
-
-        }
         public void EnemyView() //For testing if enemy see's something that they will move towards it
         {
 
