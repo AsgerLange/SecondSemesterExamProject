@@ -99,8 +99,8 @@ namespace TankGame
 
             if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
             {
-                BulletPool.CreateBullet(this.GameObject.Transform.Position, Alignment.Friendly,
-                    BulletType.BaiscBullet, rotation);
+                BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
+                    BulletType.BasicBullet, rotation);
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
 
@@ -185,7 +185,7 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            Console.WriteLine(new NotImplementedException("OnAnimationDone Vehicle"));
+            animator.PlayAnimation("Idle");
 
         }
 
