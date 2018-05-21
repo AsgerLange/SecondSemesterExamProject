@@ -21,7 +21,7 @@ namespace TankGame
         /// <param name="attackRate"></param>
         public BasicEnemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject, health, movementSpeed, attackRate)
         {
-            
+
         }
 
 
@@ -76,7 +76,6 @@ namespace TankGame
         /// </summary>
         protected override void Die()
         {
-            animator.PlayAnimation("Death");
             base.Die();
         }
     }

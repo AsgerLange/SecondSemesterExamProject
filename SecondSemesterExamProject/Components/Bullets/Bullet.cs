@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum BulletType { BaiscBullet };
+    enum BulletType { BasicBullet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
         private BulletType bulletType;
@@ -61,7 +61,7 @@ namespace TankGame
 
             switch (type)
             {
-                case BulletType.BaiscBullet:
+                case BulletType.BasicBullet:
                     this.movementSpeed = Constant.basicBulletMovementSpeed;
                     this.lifeSpan = Constant.basicBulletLifeSpan;
                     this.bulletDmg = Constant.basicBulletDmg;
@@ -217,23 +217,27 @@ namespace TankGame
                 {
                     if (canRelease)
                     {
-                        foreach (Component go in other.GameObject.GetComponentList)
+                        if (!(other.GameObject.GetComponent("HQ") is HQ) && thisCollider.GetAlignment == Alignment.Friendly || thisCollider.GetAlignment == Alignment.Enemy)
                         {
-                            if (go is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+
+                            foreach (Component go in other.GameObject.GetComponentList)
                             {
-                                (go as Enemy).Health -= 50;
+                                if (go is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+                                {
+                                    (go as Enemy).Health -= 50;
+                                }
+                                if (go is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
+                                {
+                                    (go as Vehicle).Health -= 50;
+                                }
+                                if (go is Tower && thisCollider.GetAlignment == Alignment.Enemy)
+                                {
+                                    (go as Tower).Health -= 50;
+                                }
                             }
-                            if (go is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
-                            {
-                                (go as Vehicle).Health -= 50;
-                            }
-                            if (go is Tower && thisCollider.GetAlignment == Alignment.Enemy)
-                            {
-                                (go as Tower).Health -= 50;
-                            }
+                            DestroyBullet();
+                            canRelease = false;
                         }
-                        DestroyBullet();
-                        canRelease = false;
                     }
                 }
             }

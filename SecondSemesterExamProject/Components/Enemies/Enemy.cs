@@ -21,9 +21,15 @@ namespace TankGame
         protected float rotation = 0;
         protected float movementSpeed;
         protected float attackRate;
-
+        protected bool isAlive;
         protected int health;
 
+
+        public bool IsAlive
+        {
+            get { return isAlive; }
+            set { isAlive = value; }
+        }
         public int Health
         {
             get { return health; }
@@ -32,6 +38,7 @@ namespace TankGame
                 health = value;
                 if (health <= 0)
                 {
+                    isAlive = false;
                     Die();
                 }
             }
@@ -59,6 +66,7 @@ namespace TankGame
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
+            this.isAlive = true;
             this.canRelease = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -110,7 +118,20 @@ namespace TankGame
 
         public virtual void Update()
         {
-            AI();
+            if (isAlive)
+            {
+                AI();
+
+            }
+            else
+            {
+                if (this.GameObject.GetComponent("Collider") is Collider)
+                {
+
+                    GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                }
+
+            }
         }
 
 
@@ -216,7 +237,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-
+            animator.PlayAnimation("Death");
         }
 
         /// <summary>
@@ -225,15 +246,21 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
         {
-            if (other.GetAlignment != Alignment.Neutral)
+            if (IsAlive)
             {
-                float force = Constant.pushForce;
 
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
+                if (other.GetAlignment != Alignment.Neutral)
+                {
+                    float force = Constant.pushForce;
 
-                other.GameObject.Transform.Translate(dir * force);
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
+
+                    other.GameObject.Transform.Translate(dir * force);
+                }
             }
         }
+
     }
 }
+
