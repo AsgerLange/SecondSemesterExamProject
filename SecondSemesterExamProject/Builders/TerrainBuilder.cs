@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class RockBuilder
+    class TerrainBuilder
     {
         private GameObject go;
 
@@ -16,7 +16,7 @@ namespace TankGame
             go = new GameObject();
             go.Transform.Position = position;
             go.AddComponent(new SpriteRenderer(go, Constant.rockImage, 0.99f));
-            go.AddComponent(new Rock(go, size, rotation, Alignment.Neutral));
+            go.AddComponent(new Terrain(go, size, rotation, Alignment.Neutral));
             go.AddComponent(new Collider(go, Alignment.Neutral));
 
         }
