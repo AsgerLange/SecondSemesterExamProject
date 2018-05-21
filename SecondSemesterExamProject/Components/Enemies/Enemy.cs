@@ -15,13 +15,10 @@ namespace TankGame
 
         public Animator animator;
         private SpriteRenderer spriteRenderer;
-
         protected GameObject targetGameObject = GameWorld.Instance.GameObjects[0]; //HQ by default
-
         protected float rotation = 0;
         protected float movementSpeed;
         protected float attackRate;
-
         protected int health;
 
         public int Health
@@ -101,19 +98,18 @@ namespace TankGame
         /// </summary>
         public virtual void AI()
         {
-
             MoveTo(targetGameObject); //Enemy moves towards player1
 
             spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
-
         }
 
+        /// <summary>
+        /// updates the Enemy
+        /// </summary>
         public virtual void Update()
         {
             AI();
         }
-
-
 
         /// <summary>
         /// Moves towards a targeted gameobject
@@ -137,7 +133,7 @@ namespace TankGame
         /// Calculates the degrees from standart vector to destination vector.
         /// </summary>
         /// <param name="vector">The direction the enemy is moving</param>
-        private float GetDegreesFromDestination(Vector2 destinationVec)
+        protected float GetDegreesFromDestination(Vector2 destinationVec)
         {
             Vector2 positionVec = new Vector2(0, -1); //Standard position (UP)
 
@@ -146,18 +142,14 @@ namespace TankGame
             toppart += positionVec.X * destinationVec.X;
             toppart += positionVec.Y * destinationVec.Y;
 
-
-
             float destinationVector2 = 0; //destinationVec squared
             float positionVector2 = 0; //positionVec squared
-
 
             destinationVector2 += positionVec.X * positionVec.X;
             destinationVector2 += positionVec.Y * positionVec.Y;
 
             positionVector2 += destinationVec.X * destinationVec.X;
             positionVector2 += destinationVec.Y * destinationVec.Y;
-
 
             float bottompart = 0;
             bottompart = (float)Math.Sqrt(destinationVector2 * positionVector2);
@@ -185,6 +177,9 @@ namespace TankGame
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
         }
 
+        /// <summary>
+        /// creates an animation
+        /// </summary>
         public virtual void CreateAnimation()
         {
             //Enemy Animation Set
@@ -205,7 +200,6 @@ namespace TankGame
                     canRelease = false;
                 }
             }
-            Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
         }
 
         /// <summary>
@@ -213,7 +207,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-
+            animator.PlayAnimation("Death");
         }
 
         /// <summary>

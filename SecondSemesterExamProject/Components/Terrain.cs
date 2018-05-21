@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class Rock : Component, ICollisionStay, ICollisionEnter
+    class Terrain : Component, ICollisionStay, ICollisionEnter
     {
         private SpriteRenderer spriteRenderer;
 
-        public Rock(GameObject gameObject, float size, float rotation, Alignment alignment) : base(gameObject)
+        public Terrain(GameObject gameObject, float size, float rotation, Alignment alignment) : base(gameObject)
         {
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             GameObject.Transform.canMove = false;
