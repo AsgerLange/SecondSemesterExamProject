@@ -16,6 +16,7 @@ namespace TankGame
         protected float shootTimeStamp;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
+        protected BulletType bulletType = BulletType.BasicBullet;
 
         public int Health
         {
