@@ -19,7 +19,8 @@ namespace TankGame
         private float deltaTime;
         private float totalGameTime;
         private Map map;
-       
+
+        private bool gameOver = false;
 
         //Background
         Texture2D backGround;
@@ -50,6 +51,12 @@ namespace TankGame
         public float DeltaTime
         {
             get { return deltaTime; }
+        }
+
+        public bool GameOver
+        {
+            get { return gameOver; }
+            set { gameOver = value; }
         }
 
         /// <summary>
@@ -150,6 +157,7 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+           
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 

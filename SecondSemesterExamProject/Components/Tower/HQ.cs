@@ -22,6 +22,10 @@ namespace TankGame
 
         public override void OnAnimationDone(string animationName)
         {
+            if (animationName == "Death")
+            {
+                GameWorld.Instance.GameOver = true;
+            }
             base.OnAnimationDone(animationName);
         }
 
