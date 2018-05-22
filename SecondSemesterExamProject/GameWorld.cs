@@ -106,7 +106,7 @@ namespace TankGame
             //Adds test player
             GameObject go;
             go = new GameObject();
-            go.Transform.Position = new Vector2(20, 20);
+            go.Transform.Position = new Vector2(650, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
