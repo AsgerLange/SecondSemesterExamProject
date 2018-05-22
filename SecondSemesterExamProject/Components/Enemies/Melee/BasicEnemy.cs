@@ -10,6 +10,7 @@ namespace TankGame
 {
     class BasicEnemy : Melee
     {
+        private int attackVariation =1;
 
         /// <summary>
         /// Basic Enemy Constructor
@@ -19,7 +20,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="attackRate"></param>
-        public BasicEnemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject, health, movementSpeed, attackRate)
+        public BasicEnemy(GameObject gameObject, int health,int damage, float movementSpeed, float attackRate) : base(gameObject, health, damage, movementSpeed, attackRate)
         {
 
         }
@@ -77,6 +78,21 @@ namespace TankGame
         protected override void Die()
         {
             base.Die();
+        }
+
+        protected override void Attack(Collider other)
+        {
+            if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime)
+            {
+                base.Attack(other);
+
+                if (attackVariation > 2)
+                {
+                    attackVariation = 1;
+                }
+                animator.PlayAnimation("Attack" + attackVariation);
+                attackVariation++;
+            }
         }
     }
 }

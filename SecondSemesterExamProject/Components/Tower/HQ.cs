@@ -49,6 +49,7 @@ namespace TankGame
         protected override void Die()
         {
 
+            animator.PlayAnimation("Death");
         }
     }
 }
