@@ -14,7 +14,7 @@ namespace TankGame
 
         private BulletBuilder bulletBuilder;
         private EnemyBuilder enemyBuilder;
-        private RockBuilder rockBuilder;
+        private TerrainBuilder rockBuilder;
 
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
@@ -39,7 +39,7 @@ namespace TankGame
         {
             this.bulletBuilder = new BulletBuilder();
             this.enemyBuilder = new EnemyBuilder();
-            this.rockBuilder = new RockBuilder();
+            this.rockBuilder = new TerrainBuilder();
         }
 
         /// <summary>
