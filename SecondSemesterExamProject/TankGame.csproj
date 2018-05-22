@@ -43,14 +43,14 @@
   <ItemGroup>
     <Compile Include="Builders\BulletBuilder.cs" />
     <Compile Include="Builders\EnemyBuilder.cs" />
-    <Compile Include="Builders\RockBuilder.cs" />
+    <Compile Include="Builders\TerrainBuilder.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
     <Compile Include="Components\Tower\Tower.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="Components\Rock.cs" />
+    <Compile Include="Components\Terrain.cs" />
     <Compile Include="Interfaces\IEnemyAI.cs" />
     <Compile Include="Interfaces\IEnemyBuilder.cs" />
     <Compile Include="Interfaces\IBulletBuilder.cs" />
