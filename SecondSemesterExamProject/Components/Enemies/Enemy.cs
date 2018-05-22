@@ -21,7 +21,8 @@ namespace TankGame
         protected float attackRate;
         protected bool isAlive;
         protected int health;
-
+        protected int damage;
+        protected float attackTimeStamp;
 
         public bool IsAlive
         {
@@ -59,11 +60,12 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
+            this.damage = damage;
             this.isAlive = true;
             this.canRelease = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -222,7 +224,11 @@ namespace TankGame
                     canRelease = false;
                 }
             }
-            Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
+            if (animationName.Contains("Attack"))
+            {
+                animator.PlayAnimation("Idle");
+            }
+                Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
         }
 
         /// <summary>
@@ -233,17 +239,22 @@ namespace TankGame
             animator.PlayAnimation("Death");
         }
 
+       
         /// <summary>
         /// when something is inside the enemy
         /// </summary>
         /// <param name="other"></param>
-        public void OnCollisionStay(Collider other)
+        public virtual void OnCollisionStay(Collider other)
         {
             if (IsAlive)
             {
 
                 if (other.GetAlignment != Alignment.Neutral)
                 {
+                    if (other.GetAlignment == Alignment.Friendly)
+                    {
+                        Attack(other);
+                    }
                     float force = Constant.pushForce;
 
                     Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
@@ -254,6 +265,28 @@ namespace TankGame
             }
         }
 
+        protected virtual void Attack(Collider other)
+        {
+            if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime)
+            {
+                foreach (Component component in other.GameObject.GetComponentList)
+                {
+                    if (component is Vehicle)
+                    {
+                        (component as Vehicle).Health -= damage;
+
+                    }
+
+                    if (component is Tower)
+                    {
+                        (component as Tower).Health -= damage;
+
+                    }
+                    attackTimeStamp = GameWorld.Instance.TotalGameTime;
+                }
+            }
+            
+        }
     }
 }
 

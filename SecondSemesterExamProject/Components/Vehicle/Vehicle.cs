@@ -64,6 +64,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
+            GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             Console.WriteLine(new NotImplementedException("die Vehicle"));
         }
 
@@ -105,6 +106,7 @@ namespace TankGame
             {
                 BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
                     BulletType.BasicBullet, rotation);
+                animator.PlayAnimation("Shoot");
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
 
@@ -213,7 +215,8 @@ namespace TankGame
             animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
             animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
             animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 5, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10/Constant.tankFireRate, Vector2.Zero));
+
         }
 
         /// <summary>
