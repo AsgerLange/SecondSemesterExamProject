@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,12 @@ namespace TankGame
         private int waveSize = 0;
         private int spawned = 0;
         private Random rnd = new Random();
+        private Rectangle topZone;
+        private Rectangle leftZone;
+        private Rectangle rightZone;
+        private Rectangle bottomZone;
+        private float spawnStamp;
+        private float waveStamp;
 
         /// <summary>
         /// returns the current wave number
@@ -32,9 +39,23 @@ namespace TankGame
         /// <summary>
         /// Prepers the waveSpavner
         /// </summary>
-        public Spawn()
+        public Spawn(int width, int hight)
         {
+            SetSpawnZones(width, hight);
+            CreateWave();
+        }
 
+        /// <summary>
+        /// sets the spawnZones
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="hight"></param>
+        private void SetSpawnZones(int width, int hight)
+        {
+            topZone = new Rectangle(0, -50, width, 50);
+            leftZone = new Rectangle(-50, 0, 50, hight);
+            rightZone = new Rectangle(width, 0, 50, hight);
+            bottomZone = new Rectangle(0, hight, width, 50);
         }
 
         /// <summary>
@@ -49,6 +70,14 @@ namespace TankGame
         /// creates a new wave
         /// </summary>
         private void CreateWave()
+        {
+
+        }
+
+        /// <summary>
+        /// spawns a lone Critter
+        /// </summary>
+        private void SpawnSingle()
         {
 
         }

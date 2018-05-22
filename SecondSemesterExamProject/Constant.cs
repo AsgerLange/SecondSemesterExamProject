@@ -8,6 +8,9 @@ namespace TankGame
 {
     class Constant
     {
+        public readonly static int width = 1240;
+        public readonly static int higth = 720;
+
         #region Vehicles
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
