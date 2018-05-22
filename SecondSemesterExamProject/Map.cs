@@ -22,22 +22,22 @@ namespace TankGame
         /// </summary>
         public void PlaceRocks()
         {
-            GameObject rock;
-            rock = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(100, 200), 100), rnd.Next(50, 150), rnd.Next(0, 361));
-            rock.LoadContent(GameWorld.Instance.Content);
-            GameWorld.Instance.GameObjects.Add(rock);
+            GameObject terrain;
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(100, 200), 100), rnd.Next(50, 150), rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
 
-            rock = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(150, 250), rnd.Next(200, 300)), rnd.Next(50, 150), rnd.Next(0, 361));
-            rock.LoadContent(GameWorld.Instance.Content);
-            GameWorld.Instance.GameObjects.Add(rock);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(150, 250), rnd.Next(200, 300)), rnd.Next(50, 150), rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
 
-            rock = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(700, 750), rnd.Next(80, 190)), rnd.Next(50, 150), rnd.Next(0, 361));
-            rock.LoadContent(GameWorld.Instance.Content);
-            GameWorld.Instance.GameObjects.Add(rock);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(700, 750), rnd.Next(80, 190)), rnd.Next(50, 150), rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
 
-            rock = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(600, 800), rnd.Next(450, 600)), rnd.Next(50, 150), rnd.Next(0, 361));
-            rock.LoadContent(GameWorld.Instance.Content);
-            GameWorld.Instance.GameObjects.Add(rock);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(600, 800), rnd.Next(450, 600)), rnd.Next(50, 150), rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
         }
 
         /// <summary>

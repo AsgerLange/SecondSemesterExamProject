@@ -11,9 +11,9 @@ namespace TankGame
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
         protected int health;
-        float attackRate;
-        float attackRange;
-        float shootTimeStamp;
+        protected float attackRate;
+        protected float attackRange;
+        protected float shootTimeStamp;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
 

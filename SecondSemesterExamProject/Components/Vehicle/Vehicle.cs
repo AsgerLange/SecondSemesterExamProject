@@ -75,10 +75,11 @@ namespace TankGame
             Movement();
             Shoot();
         }
+
         /// <summary>
         /// Handles Movement for Vehicles
         /// </summary>
-        public void Movement()
+        protected void Movement()
         {
             Vector2 translation = Vector2.Zero;
             //is the player Rotating?
@@ -93,7 +94,10 @@ namespace TankGame
             spriteRenderer.Rotation = rotation;
         }
 
-        public virtual void Shoot()
+        /// <summary>
+        /// handles the shooting
+        /// </summary>
+        protected virtual void Shoot()
         {
             KeyboardState keyState = Keyboard.GetState();
 
@@ -113,8 +117,6 @@ namespace TankGame
 
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
-
-
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        public Vector2 Move(Vector2 translation)
+        protected Vector2 Move(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
             if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
@@ -144,7 +146,7 @@ namespace TankGame
         /// Rotates the vehicle depending on the reotateSpeed
         /// </summary>
         /// <param name="translation"></param>
-        public void Rotate(Vector2 translation)
+        protected void Rotate(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
             if ((keyState.IsKeyDown(Keys.D) && control == Controls.WASD)
@@ -164,7 +166,7 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        public Vector2 RotateMove(Vector2 translation)
+        protected Vector2 RotateMove(Vector2 translation)
         {
             return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)));
         }
@@ -174,7 +176,7 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <param name="movementSpeed"></param>
-        public void TranslateMovement(Vector2 translation)
+        protected void TranslateMovement(Vector2 translation)
         {
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
         }
@@ -202,6 +204,9 @@ namespace TankGame
             animator.PlayAnimation("Idle");
         }
 
+        /// <summary>
+        /// creates the animations
+        /// </summary>
         public virtual void CreateAnimation()
         {
             //EKSEMPEL

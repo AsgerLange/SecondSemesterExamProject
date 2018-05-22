@@ -18,12 +18,11 @@ namespace TankGame
         private float dirRotation;
         private float lifeSpan;
         private float timeStamp;
-
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
         #region Attributes for object pool
-        private bool canRelease;
+        protected bool canRelease;
         public bool CanRelease
         {
             get { return canRelease; }
@@ -122,7 +121,7 @@ namespace TankGame
         /// Moves forwards
         /// </summary>
         /// <param name="go"></param>
-        private Vector2 MoveForward(Vector2 translation)
+        protected Vector2 MoveForward(Vector2 translation)
         {
             translation += new Vector2(0, -1);
 
@@ -148,11 +147,12 @@ namespace TankGame
         {
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
         }
+
         /// <summary>
         /// Calculates the degrees from standart vector to destination vector.
         /// </summary>
         /// <param name="vector">The direction the enemy is moving</param>
-        private float GetDegreesFromDestination(Vector2 destinationVec)
+        protected float GetDegreesFromDestination(Vector2 destinationVec)
         {
             Vector2 positionVec = new Vector2(0, -1); //Standard position (UP)
 
