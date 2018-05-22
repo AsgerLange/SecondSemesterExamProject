@@ -5,6 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//GameObject tmp = null;
+//                foreach (GameObject bul in inActiveBullets)
+//                {
+//                    foreach (Component comp in bul.GetComponentList)
+//                    {
+//                        if (comp is Bullet)
+//                        {
+//                            if (((Bullet) comp).GetBulletType == bulletType)
+//                            {
+//                                tmp = bul;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    if (tmp != null)
+//                    {
+//                        break;
+//                    }
+//                }
+//                if (tmp != null)
+
 namespace TankGame
 {
 

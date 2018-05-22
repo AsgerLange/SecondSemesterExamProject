@@ -33,7 +33,14 @@ namespace TankGame
         public static readonly string bulletSheet = "BasicBullet";
         public static readonly float basicBulletMovementSpeed = 700;
         public static readonly float basicBulletLifeSpan = 1f;
-        public static readonly float basicBulletDmg = 50;
+        public static readonly float basicBulletDmg = 25;
+        #endregion;
+
+        #region BiggerBullet
+        public static readonly string biggerBulletSheet = "BiggerBullet";
+        public static readonly float biggerBulletMovementSpeed = 700;
+        public static readonly float biggerBulletLifeSpan = 1.5f;
+        public static readonly float biggerBulletDmg = 50;
         #endregion;
         #endregion;
 

@@ -16,6 +16,7 @@ namespace TankGame
         protected float shootTimeStamp;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
+        protected BulletType bulletType = BulletType.BasicBullet;
 
         public int Health
         {
@@ -72,7 +73,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position + new Vector2(-50, -50), Alignment.Friendly, BulletType.BasicBullet, rotation);
+                    BulletPool.CreateBullet(GameObject.Transform.Position + new Vector2(-50, -50), Alignment.Friendly, bulletType, rotation);
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }

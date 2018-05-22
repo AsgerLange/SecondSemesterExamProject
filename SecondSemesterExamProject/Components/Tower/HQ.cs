@@ -12,7 +12,7 @@ namespace TankGame
     {
         public HQ(GameObject gameObject, float attackRate, int health, float attackRange) : base(gameObject, attackRate, health, attackRange)
         {
-
+            bulletType = BulletType.BiggerBullet;
         }
 
         public override void LoadContent(ContentManager content)
@@ -33,6 +33,11 @@ namespace TankGame
         public override void Update()
         {
             base.Update();
+        }
+
+        protected override void Shoot()
+        {
+            base.Shoot();
         }
 
         protected override void CreateAnimation()
