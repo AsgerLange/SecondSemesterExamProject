@@ -50,16 +50,7 @@ namespace TankGame
         /// <returns></returns>
         public GameObject Construct(Vector2 position, BulletType type, float rotation, Alignment alignment)
         {
-            switch (type)
-            {
-                case BulletType.BasicBullet:
-                    bulletBuilder.Build(position, type,rotation, alignment);
-                    break;
-
-                default:
-                    break;
-            }
-
+            bulletBuilder.Build(position, type, rotation, alignment);
 
             return bulletBuilder.GetResult(); //returns the bullet that has been build
         }

@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum BulletType { BasicBullet };
+    enum BulletType { BasicBullet, BiggerBullet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
-        private BulletType bulletType;
-        private float bulletDmg;
-        private float rotation;
-        private float movementSpeed;
-        private float dirRotation;
-        private float lifeSpan;
-        private float timeStamp;
-        private SpriteRenderer spriteRenderer;
-        private Animator animator;
+        protected BulletType bulletType;
+        protected float bulletDmg;
+        protected float rotation;
+        protected float movementSpeed;
+        protected float dirRotation;
+        protected float lifeSpan;
+        protected float timeStamp;
+        protected SpriteRenderer spriteRenderer;
+        protected Animator animator;
 
         #region Attributes for object pool
         protected bool canRelease;
@@ -30,7 +30,10 @@ namespace TankGame
         }
         #endregion;
 
-
+        public BulletType GetBulletType
+        {
+            get { return bulletType; }
+        }
         public float DirRotation
         {
             get { return dirRotation; }
@@ -65,6 +68,11 @@ namespace TankGame
                     this.lifeSpan = Constant.basicBulletLifeSpan;
                     this.bulletDmg = Constant.basicBulletDmg;
                     break;
+                case BulletType.BiggerBullet:
+                    this.movementSpeed = Constant.biggerBulletMovementSpeed;
+                    this.lifeSpan = Constant.biggerBulletLifeSpan;
+                    this.bulletDmg = Constant.biggerBulletDmg;
+                    break;
 
                 default:
                     break;
@@ -78,7 +86,7 @@ namespace TankGame
             spriteRenderer.UseRect = true;
         }
 
-        public void Update()
+        public virtual void Update()
         {
             BulletMovement();
             spriteRenderer.Rotation = rotation;
@@ -107,7 +115,7 @@ namespace TankGame
             translation = MoveForward(translation);
 
             //"forward" is changed to fit the angle
-            translation = RotateMove(translation);
+            translation = RotateVector(translation);
 
             //Translates movemement
             TranslateMovement(translation);
@@ -133,7 +141,7 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        public Vector2 RotateMove(Vector2 translation)
+        public Vector2 RotateVector(Vector2 translation)
         {
             return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(dirRotation)));
         }
@@ -194,8 +202,8 @@ namespace TankGame
 
         public virtual void CreateAnimation()
         {
-            //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 1, 22, 3, Vector2.Zero));
+            //PlaceHolder Animation
+            //animator.CreateAnimation("Idle", new Animation(1, 0, 0, 1, 22, 3, Vector2.Zero));
         }
 
         public virtual void OnAnimationDone(string animationName)
@@ -207,7 +215,7 @@ namespace TankGame
         /// Handles what happens when bullet collides with other colliders
         /// </summary>
         /// <param name="other"></param>
-        public void OnCollisionEnter(Collider other)
+        public virtual void OnCollisionEnter(Collider other)
         {
             Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
 

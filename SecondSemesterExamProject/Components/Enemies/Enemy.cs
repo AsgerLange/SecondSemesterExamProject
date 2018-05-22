@@ -19,8 +19,17 @@ namespace TankGame
         protected float rotation = 0;
         protected float movementSpeed;
         protected float attackRate;
+        protected bool isAlive;
         protected int health;
+        protected int damage;
+        protected float attackTimeStamp;
+        private int attackVariation = 1;
 
+        public bool IsAlive
+        {
+            get { return isAlive; }
+            set { isAlive = value; }
+        }
         public int Health
         {
             get { return health; }
@@ -29,6 +38,7 @@ namespace TankGame
                 health = value;
                 if (health <= 0)
                 {
+                    isAlive = false;
                     Die();
                 }
             }
@@ -51,11 +61,13 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
+            this.damage = damage;
+            this.isAlive = true;
             this.canRelease = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -108,7 +120,20 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
-            AI();
+            if (isAlive)
+            {
+                AI();
+
+            }
+            else
+            {
+                if (this.GameObject.GetComponent("Collider") is Collider)
+                {
+
+                    GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                }
+
+            }
         }
 
         /// <summary>
@@ -200,31 +225,96 @@ namespace TankGame
                     canRelease = false;
                 }
             }
+            else
+            {
+                animator.PlayAnimation("Idle");
+            }
+
         }
 
         /// <summary>
-        /// handles what happens when a enemy dies
+        /// handles what happens when an enemy dies
         /// </summary>
         protected virtual void Die()
         {
             animator.PlayAnimation("Death");
         }
 
+
         /// <summary>
-        /// when somthing is inside the enemy
+        /// when something is inside the enemy
         /// </summary>
         /// <param name="other"></param>
-        public void OnCollisionStay(Collider other)
+        public virtual void OnCollisionStay(Collider other)
         {
-            if (other.GetAlignment != Alignment.Neutral)
+            if (IsAlive)
             {
-                float force = Constant.pushForce;
 
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
+                if (other.GetAlignment != Alignment.Neutral)
+                {
+                    if (other.GetAlignment == Alignment.Friendly)
+                    {
+                        Attack(other);
+                    }
+                    float force = Constant.pushForce;
 
-                other.GameObject.Transform.Translate(dir * force);
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
+
+                    other.GameObject.Transform.Translate(dir * force);
+                }
             }
         }
+
+        /// <summary>
+        /// The standard overwritable attack method for all enemies
+        /// </summary>
+        /// <param name="other"></param>
+        protected virtual void Attack(Collider other)
+        {
+            {//can enemy attack yet?
+                if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime) 
+                {
+                    foreach (Component component in other.GameObject.GetComponentList)
+
+                    {//does other object contain a vehicle?
+                        if ((component is Vehicle && (component as Vehicle).Health > 0))
+                        {
+                            (component as Vehicle).Health -= damage; // damage vehicle
+
+                            if (attackVariation > 2)//Adds animation variation
+                            {
+                                attackVariation = 1;
+                            }
+                            animator.PlayAnimation("Attack" + attackVariation);
+                            attackVariation++;
+
+                            attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack
+                            break;
+                        }
+
+                        if ((component is Tower && (component as Tower).Health > 0))
+                        {
+
+                            (component as Tower).Health -= damage;  //damage Tower
+
+                            if (attackVariation > 2)//Adds animation variation
+                            {
+                                attackVariation = 1;
+                            }
+                            animator.PlayAnimation("Attack" + attackVariation);
+                            attackVariation++;
+
+                            attackTimeStamp = GameWorld.Instance.TotalGameTime;
+                            break;
+                        }
+                        
+                    }
+                }
+            }
+        }
+
     }
 }
+
+

@@ -44,6 +44,8 @@
     <Compile Include="Builders\BulletBuilder.cs" />
     <Compile Include="Builders\EnemyBuilder.cs" />
     <Compile Include="Builders\TerrainBuilder.cs" />
+    <Compile Include="Components\Bullets\BasicBullet.cs" />
+    <Compile Include="Components\Bullets\BiggerBullet.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />

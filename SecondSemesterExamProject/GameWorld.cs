@@ -21,6 +21,7 @@ namespace TankGame
         private Map map;
         private Spawn spawner;
 
+        private bool gameOver = false;
 
         //Background
         Texture2D backGround;
@@ -51,6 +52,12 @@ namespace TankGame
         public float DeltaTime
         {
             get { return deltaTime; }
+        }
+
+        public bool GameOver
+        {
+            get { return gameOver; }
+            set { gameOver = value; }
         }
 
         /// <summary>
@@ -100,7 +107,7 @@ namespace TankGame
             //Adds test player
             GameObject go;
             go = new GameObject();
-            go.Transform.Position = new Vector2(20, 20);
+            go.Transform.Position = new Vector2(650, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
@@ -151,6 +158,7 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+           
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -176,7 +184,9 @@ namespace TankGame
             {
                 go.Update();
             }
-            BulletPool.ReleaseList();
+           BulletPool.ReleaseList();
+
+            RemoveObjects();
             base.Update(gameTime);
         }
 
@@ -223,5 +233,7 @@ namespace TankGame
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+       
     }
 }

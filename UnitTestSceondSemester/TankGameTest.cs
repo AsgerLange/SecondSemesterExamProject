@@ -1,31 +1,46 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework;
 using TankGame;
+
 
 namespace UnitTestSceondSemester
 {
     [TestClass]
     public class TankGameTest
     {
-        //private test;
+        
 
-        //[TestInitialize]
-        //public void TestStart()
-        //{
-        //    test = new TankGame();
-        //}
-
-        [TestMethod]
-
-        public void AddComponent() //Test if componenets are added... maybe
+        [TestInitialize]
+        public void TestStart()
         {
-
+         
         }
 
-        public void EnemyTakesDamage()
+        [TestMethod]
+        public void CreateGameWorldSingleton()
         {
-            
+            GameWorld gameWorld = GameWorld.Instance;
 
+            Assert.IsFalse(gameWorld != null);
+        }
+
+        [TestMethod]
+               
+        public void GameObjectHasTransform() 
+        {
+            GameObject go;
+
+            go = new GameObject(); //Gameobject constructor adds a "Transform" component
+            
+            Assert.IsTrue(go.GetComponent("Transform") is Transform);
+        }
+        [TestMethod]
+        public void ObjectDirectorBuildBullet()
+        {
+         //   Component test = GameObjectDirector.Instance.Construct(Vector2.Zero,BulletType.BaiscBullet,0,Alignment.Friendly);
+
+            //Assert.IsTrue(test.GameObject.GetComponent("Bullet") is Bullet);
         }
         public void PlayerTakesDamage()
         {
@@ -37,14 +52,19 @@ namespace UnitTestSceondSemester
 
 
         }
+        [TestMethod]
         public void PlayerShoot()
         {
 
 
         }
-        public void BulletDamage() //Test if the damage of the bullet does that amount
+        [TestMethod]
+        public void CanCreateBullet() //Test if the damage of the bullet does that amount
         {
 
+       //     BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BaiscBullet, 0);
+
+            Assert.IsTrue(BulletPool.ActiveBullets.Count > 0);
 
         }
         public void BulletCollision() //Does the bullet collide with anything.
@@ -89,7 +109,7 @@ namespace UnitTestSceondSemester
 
 
         }
-        public void WeaponCrateSpawn() 
+        public void WeaponCrateSpawn()
         {
 
 
