@@ -48,6 +48,7 @@
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
+    <Compile Include="Spawn.cs" />
     <Compile Include="Components\Tower\Tower.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Components\Terrain.cs" />
