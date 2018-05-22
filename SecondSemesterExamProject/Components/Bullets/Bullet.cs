@@ -115,7 +115,7 @@ namespace TankGame
             translation = MoveForward(translation);
 
             //"forward" is changed to fit the angle
-            translation = RotateMove(translation);
+            translation = RotateVector(translation);
 
             //Translates movemement
             TranslateMovement(translation);
@@ -141,7 +141,7 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        public Vector2 RotateMove(Vector2 translation)
+        public Vector2 RotateVector(Vector2 translation)
         {
             return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(dirRotation)));
         }

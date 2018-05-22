@@ -23,6 +23,7 @@ namespace TankGame
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
+        protected bool isPlayingAnimation = false;
 
         public int Health
         {
@@ -73,8 +74,11 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
+
+
             Movement();
             Shoot();
+           // spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
         }
 
         /// <summary>
@@ -88,7 +92,7 @@ namespace TankGame
             //Is the player moving
             translation = Move(translation);
             //calculate direction of movement
-            translation = RotateMove(translation);
+            translation = RotateVector(translation);
             //move the vehicle
             TranslateMovement(translation);
             //rotate sprite
@@ -107,6 +111,7 @@ namespace TankGame
                 BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
                     BulletType.BasicBullet, rotation);
                 animator.PlayAnimation("Shoot");
+                isPlayingAnimation = true;
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
 
@@ -133,13 +138,20 @@ namespace TankGame
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, -1);
-                animator.PlayAnimation("MoveForward");
+                if (isPlayingAnimation == false)
+                {
+                    animator.PlayAnimation("MoveForward");
+                }
             }
             else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, 1);
-                animator.PlayAnimation("MoveBackward");
+                if (isPlayingAnimation == false)
+                {
+                    animator.PlayAnimation("MoveBackward");
+
+                }
             }
             return translation;
         }
@@ -168,7 +180,7 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        protected Vector2 RotateMove(Vector2 translation)
+        protected Vector2 RotateVector(Vector2 translation)
         {
             return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)));
         }
@@ -189,7 +201,15 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            animator.PlayAnimation("Idle");
+            if (animationName == "Shoot")
+            {
+                isPlayingAnimation = false;
+            }
+            if (isPlayingAnimation == false)
+            {
+                animator.PlayAnimation("Idle");
+
+            }
 
         }
 
@@ -215,7 +235,7 @@ namespace TankGame
             animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
             animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
             animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10/Constant.tankFireRate, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / Constant.tankFireRate, new Vector2(0, -4)));
             animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
             animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
         }
