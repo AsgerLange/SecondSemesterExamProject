@@ -49,6 +49,11 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
+
+            if (animationName == "Death")
+            {
+                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            }
             Console.WriteLine(new NotImplementedException("OnAnimationDone Tower"));
         }
 
@@ -73,7 +78,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position + new Vector2(-50, -50), Alignment.Friendly, bulletType, rotation);
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation);
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }
@@ -168,15 +173,26 @@ namespace TankGame
         /// <param name="other"></param>
         public virtual void OnCollisionEnter(Collider other)
         {
+            bool push = true;
             //push them a bit away
             float force = Constant.pushForce;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
+                foreach (Component go in other.GameObject.GetComponentList)
+                {
+                    if (go is Bullet)
+                    {
+                        push = false;
+                    }
+                }
+                if (push)
+                {
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
 
-                other.GameObject.Transform.Translate(dir * force);
-                Console.WriteLine("tower push: " + dir);
+                    other.GameObject.Transform.Translate(dir * force);
+                    Console.WriteLine("tower push: " + dir);
+                }
             }
         }
 
@@ -186,15 +202,26 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
         {
+            bool push = true;
             //push them a bit away
             float force = Constant.pushForce * 2;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
+                foreach (Component go in other.GameObject.GetComponentList)
+                {
+                    if (go is Bullet)
+                    {
+                        push = false;
+                    }
+                }
+                if (push)
+                {
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
 
-                other.GameObject.Transform.Translate(dir * force);
-                Console.WriteLine("tower push: " + dir);
+                    other.GameObject.Transform.Translate(dir * force);
+                    Console.WriteLine("tower push: " + dir);
+                }
             }
         }
 

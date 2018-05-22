@@ -172,6 +172,8 @@ namespace TankGame
                 go.Update();
             }
            BulletPool.ReleaseList();
+
+            RemoveObjects();
             base.Update(gameTime);
         }
 
@@ -218,5 +220,7 @@ namespace TankGame
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+       
     }
 }
