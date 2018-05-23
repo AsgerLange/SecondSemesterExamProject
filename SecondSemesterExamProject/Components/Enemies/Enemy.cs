@@ -23,6 +23,7 @@ namespace TankGame
         protected int health;
         protected int damage;
         protected float attackTimeStamp;
+        private int attackVariation = 1;
 
         public bool IsAlive
         {
@@ -41,6 +42,11 @@ namespace TankGame
                     Die();
                 }
             }
+        }
+        public float MovementSpeed
+        {
+            get { return movementSpeed; }
+            set { movementSpeed = value; }
         }
         #region Attributes for object pool
         private bool canRelease;
@@ -224,11 +230,12 @@ namespace TankGame
                     canRelease = false;
                 }
             }
-            if (animationName.Contains("Attack"))
+            
+            else
             {
                 animator.PlayAnimation("Idle");
             }
-                Console.WriteLine(new NotImplementedException("OnAnimationDone Enemy"));
+
         }
 
         /// <summary>
@@ -239,7 +246,7 @@ namespace TankGame
             animator.PlayAnimation("Death");
         }
 
-       
+
         /// <summary>
         /// when something is inside the enemy
         /// </summary>
@@ -253,7 +260,7 @@ namespace TankGame
                 {
                     if (other.GetAlignment == Alignment.Friendly)
                     {
-                        Attack(other);
+                        CheckIfCanAttack(other);
                     }
                     float force = Constant.pushForce;
 
@@ -265,28 +272,72 @@ namespace TankGame
             }
         }
 
-        protected virtual void Attack(Collider other)
+        /// <summary>
+        /// The standard overwritable attack method for all enemies
+        /// </summary>
+        /// <param name="other"></param>
+        protected virtual void CheckIfCanAttack(Collider other)
         {
-            if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime)
-            {
-                foreach (Component component in other.GameObject.GetComponentList)
+            {//can enemy attack yet?
+                if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime) 
                 {
-                    if (component is Vehicle)
-                    {
-                        (component as Vehicle).Health -= damage;
+                    foreach (Component component in other.GameObject.GetComponentList)
 
+                    {//does other object contain a vehicle?
+                        if ((component is Vehicle && (component as Vehicle).Health > 0))
+                        {
+                            AttackVehicle(component as Vehicle);
+                            break;
+                        }
+
+                        if ((component is Tower && (component as Tower).Health > 0))
+                        {
+                            AttackTower(component as Tower);
+                            break;
+                        }
+                        
                     }
-
-                    if (component is Tower)
-                    {
-                        (component as Tower).Health -= damage;
-
-                    }
-                    attackTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
+
             }
             
         }
+        /// <summary>
+        /// Handles attack interaction between enemy and vehicle
+        /// </summary>
+        /// <param name="tower">Targeted Tower component</param>
+        protected virtual void AttackTower(Tower tower)
+        {
+           tower.Health -= damage;  //damage Tower
+
+            if (attackVariation > 2)//Adds animation variation
+            {
+                attackVariation = 1;
+            }
+            animator.PlayAnimation("Attack" + attackVariation);
+            attackVariation++;
+            attackTimeStamp = GameWorld.Instance.TotalGameTime;
+            
+        }
+        /// <summary>
+        /// Handles attack interaction between Enemy and Vehicle
+        /// </summary>
+        /// <param name="vehicle">Targeted vehicle component</param>
+        protected virtual void AttackVehicle(Vehicle vehicle)
+        {
+           vehicle.Health -= damage; // damage vehicle
+
+            if (attackVariation > 2)//Adds animation variation
+            {
+                attackVariation = 1;
+            }
+
+            animator.PlayAnimation("Attack" + attackVariation);
+            attackVariation++;
+
+            attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack
+        }
     }
 }
+
 

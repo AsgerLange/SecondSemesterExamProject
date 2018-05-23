@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace TankGame
@@ -13,13 +14,15 @@ namespace TankGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
+        private List<GameObject> gameObjectsToAdd = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
         private List<Collider> colliders = new List<Collider>();
         private float deltaTime;
         private float totalGameTime;
         private Map map;
-       
+
+        private bool gameOver = false;
 
         //Background
         Texture2D backGround;
@@ -47,9 +50,20 @@ namespace TankGame
             set { gameObjects = value; }
         }
 
+        public List<GameObject> GameObjectsToAdd
+        {
+            get { return gameObjectsToAdd; }
+            set { gameObjectsToAdd = value; }
+        }
         public float DeltaTime
         {
             get { return deltaTime; }
+        }
+
+        public bool GameOver
+        {
+            get { return gameOver; }
+            set { gameOver = value; }
         }
 
         /// <summary>
@@ -75,7 +89,7 @@ namespace TankGame
             graphics.PreferredBackBufferWidth = 1120;//Changes Window Size
             this.Window.Position = new Point(0, 0);
             graphics.ApplyChanges();
-           
+
         }
 
         /// <summary>
@@ -107,9 +121,9 @@ namespace TankGame
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
-           
 
-           
+
+
 
             base.Initialize();
         }
@@ -150,12 +164,15 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //adds Gameobjects
+            AddGameObjects();
             //Updates GameObjects
             foreach (var go in gameObjects)
             {
@@ -171,10 +188,25 @@ namespace TankGame
             {
                 go.Update();
             }
-           BulletPool.ReleaseList();
+            BulletPool.ReleaseList();
 
             RemoveObjects();
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// adds GameObjects
+        /// </summary>
+        private void AddGameObjects()
+        {
+            if (gameObjectsToAdd.Count > 0)
+            {
+                foreach (GameObject go in gameObjectsToAdd)
+                {
+                    gameObjects.Add(go);
+                }
+                gameObjectsToAdd.Clear();
+            }
         }
 
         /// <summary>
@@ -221,6 +253,6 @@ namespace TankGame
             base.Draw(gameTime);
         }
 
-       
+
     }
 }

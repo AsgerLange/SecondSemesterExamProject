@@ -23,6 +23,9 @@ namespace TankGame
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
+        protected float builtTimeStamp;
+
+        protected bool isPlayingAnimation = false;
 
         public int Health
         {
@@ -73,8 +76,13 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
-            Movement();
-            Shoot();
+            Movement(); //Checks if vehicle is moving, and moves if so
+
+            Shoot(); //same for shooting
+
+            BuildTower(); //and building tower
+
+            // spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
         }
 
         /// <summary>
@@ -88,7 +96,7 @@ namespace TankGame
             //Is the player moving
             translation = Move(translation);
             //calculate direction of movement
-            translation = RotateMove(translation);
+            translation = RotateVector(translation);
             //move the vehicle
             TranslateMovement(translation);
             //rotate sprite
@@ -107,17 +115,36 @@ namespace TankGame
                 BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
                     BulletType.BasicBullet, rotation);
                 animator.PlayAnimation("Shoot");
+                isPlayingAnimation = true;
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
 
-            if (keyState.IsKeyDown(Keys.F) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+        }
+
+        /// <summary>
+        /// Spawns a tower on the vehicle's postition, if the spawn button is pressed and the vehicle has sufficient amount of money.
+        /// </summary>
+        private void BuildTower()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.G) && (builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
             {
 
+                GameObject tower;
 
-                EnemyPool.CreateEnemy(new Vector2(GameObject.Transform.Position.X + 100,
-                    GameObject.Transform.Position.Y + 100), EnemyType.BasicEnemy);
+                //Gameobjectdirector builds a new tower
+                tower = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
+                    GameObject.Transform.Position.Y + 1), TowerType.BasicTower);
 
-                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                //its content is loaded
+                tower.LoadContent(GameWorld.Instance.Content);
+
+                //it's added to gameworld next update cycle
+                GameWorld.Instance.GameObjectsToAdd.Add(tower);
+
+                //time stamps for when the tower is build (used for cooldown)
+                builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
         }
 
@@ -133,13 +160,20 @@ namespace TankGame
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, -1);
-                animator.PlayAnimation("MoveForward");
+                if (isPlayingAnimation == false)
+                {
+                    animator.PlayAnimation("MoveForward");
+                }
             }
             else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, 1);
-                animator.PlayAnimation("MoveBackward");
+                if (isPlayingAnimation == false)
+                {
+                    animator.PlayAnimation("MoveBackward");
+
+                }
             }
             return translation;
         }
@@ -168,7 +202,7 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        protected Vector2 RotateMove(Vector2 translation)
+        protected Vector2 RotateVector(Vector2 translation)
         {
             return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)));
         }
@@ -189,7 +223,15 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            animator.PlayAnimation("Idle");
+            if (animationName == "Shoot")
+            {
+                isPlayingAnimation = false;
+            }
+            if (isPlayingAnimation == false)
+            {
+                animator.PlayAnimation("Idle");
+
+            }
 
         }
 
@@ -215,7 +257,7 @@ namespace TankGame
             animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
             animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
             animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10/Constant.tankFireRate, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / Constant.tankFireRate, new Vector2(0, -4)));
             animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
             animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
         }

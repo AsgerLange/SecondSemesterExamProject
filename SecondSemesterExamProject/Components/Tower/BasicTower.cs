@@ -8,13 +8,14 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    class HQ : Tower
+    class BasicTower : Tower
     {
-        public HQ(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType) : base(gameObject, attackRate, health, attackRange, bulletType)
-        {
-            
-        }
 
+        public BasicTower(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType)
+            : base(gameObject, attackRate,health,attackRange, bulletType)
+        {
+
+        }
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
@@ -22,7 +23,6 @@ namespace TankGame
 
         public override void OnAnimationDone(string animationName)
         {
-            
             base.OnAnimationDone(animationName);
         }
 
@@ -36,25 +36,24 @@ namespace TankGame
             base.Update();
         }
 
+        protected override void CreateAnimation()
+        {
+            animator.CreateAnimation("Idle", new Animation(5, 32, 0, 32, 32, 4, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(6, 64, 0, 32, 32, 6, Vector2.Zero));
+
+
+            base.CreateAnimation();
+
+        }
+
+        protected override void Die()
+        {
+            base.Die();
+        }
+
         protected override void Shoot()
         {
             base.Shoot();
-        }
-
-        protected override void CreateAnimation()
-        {
-            //HQ Animation
-            animator.CreateAnimation("Idle", new Animation(6, 96, 0, 96, 96, 6, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(7, 192, 0, 96, 96, 4, Vector2.Zero));
-            base.CreateAnimation();
-        }
-
-        /// <summary>
-        /// handles what happens when a HQ dies
-        /// </summary>
-        protected override void Die()
-        {
-            
         }
     }
 }
