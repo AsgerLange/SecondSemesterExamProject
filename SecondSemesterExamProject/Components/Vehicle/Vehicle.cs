@@ -23,6 +23,8 @@ namespace TankGame
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
+        protected float builtTimeStamp;
+
         protected bool isPlayingAnimation = false;
 
         public int Health
@@ -74,11 +76,13 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
+            Movement(); //Checks if vehicle is moving, and moves if so
 
+            Shoot(); //same for shooting
 
-            Movement();
-            Shoot();
-           // spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
+            BuildTower(); //and building tower
+
+            // spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
         }
 
         /// <summary>
@@ -115,13 +119,31 @@ namespace TankGame
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
 
-            if (keyState.IsKeyDown(Keys.F) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+        }
+
+        /// <summary>
+        /// Spawns a tower on the vehicle's postition, if the spawn button is pressed and the vehicle has sufficient amount of money.
+        /// </summary>
+        private void BuildTower()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.G) && (builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
             {
 
+                GameObject tower;
 
-                EnemyPool.CreateEnemy(new Vector2(GameObject.Transform.Position.X + 100,
-                    GameObject.Transform.Position.Y + 100), EnemyType.BasicEnemy);
+                //Gameobjectdirector builds a new tower
+                tower = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
+                    GameObject.Transform.Position.Y + 1), TowerType.BasicTower);
 
+                //its content is loaded
+                tower.LoadContent(GameWorld.Instance.Content);
+
+                //it's added to gameworld next update cycle
+                GameWorld.Instance.GameObjectsToAdd.Add(tower);
+
+                //time stamps for when the tower is build (used for cooldown)
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
         }
