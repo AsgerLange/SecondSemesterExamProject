@@ -70,6 +70,9 @@ namespace TankGame
             Shoot();
         }
 
+        /// <summary>
+        /// Standard shooting behaviour for all towers
+        /// </summary>
         protected virtual void Shoot()
         {
             if (shootTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
