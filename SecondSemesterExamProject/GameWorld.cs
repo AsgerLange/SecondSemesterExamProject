@@ -21,6 +21,7 @@ namespace TankGame
         private float deltaTime;
         private float totalGameTime;
         private Map map;
+        private Spawn spawner;
 
         private bool gameOver = false;
 
@@ -85,8 +86,8 @@ namespace TankGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 672;//Changes Window Size
-            graphics.PreferredBackBufferWidth = 1120;//Changes Window Size
+            graphics.PreferredBackBufferHeight = Constant.higth;//Changes Window Size
+            graphics.PreferredBackBufferWidth = Constant.width;//Changes Window Size
             this.Window.Position = new Point(0, 0);
             graphics.ApplyChanges();
 
@@ -117,10 +118,12 @@ namespace TankGame
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold));
+                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
+            //Creates the new spawner that spawns the waves
+            spawner = new Spawn(Constant.width, Constant.higth);
 
 
 
@@ -168,11 +171,15 @@ namespace TankGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // Updates the Time
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //adds Gameobjects
             AddGameObjects();
+
+            //call the Spawner
+            spawner.Update();
+
             //Updates GameObjects
             foreach (var go in gameObjects)
             {

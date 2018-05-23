@@ -47,7 +47,7 @@ namespace TankGame
         {
             GameObject hq;
             hq = new GameObject();
-            hq.Transform.Position = new Vector2(1120 / 2, 672 / 2);
+            hq.Transform.Position = new Vector2(Constant.width / 2, Constant.higth / 2);
             hq.AddComponent(new SpriteRenderer(hq, Constant.HQSpriteSheet, 0.4f));
             hq.AddComponent(new Animator(hq));
             hq.AddComponent(new HQ(hq, Constant.HQFireRate, Constant.HQHealth, Constant.HQAttackRange, Constant.HQbulletType));

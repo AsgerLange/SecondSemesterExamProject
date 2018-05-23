@@ -11,12 +11,16 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter
+    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
+        private SpriteFont font;
         public Animator animator;
         protected int health;
         protected int money;
         protected Controls control;
+        protected BulletType cannonAmmo;
+        protected TowerType tower;
+        protected int towerBuildCost;
         protected float movementSpeed;
         protected float fireRate;
         protected float rotation = 0;
@@ -41,6 +45,19 @@ namespace TankGame
             }
         }
 
+        public int Money
+        {
+            get { return money; }
+            set
+            {
+                money = value;
+                if (money < 0)
+                {
+                    money = 0;
+                }
+            }
+        }
+
         /// <summary>
         /// creates a vehicle
         /// </summary>
@@ -49,7 +66,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money) : base(gameObject)
+        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money, BulletType cannonAmmo, TowerType tower) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -57,6 +74,8 @@ namespace TankGame
             this.fireRate = fireRate;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
+            this.cannonAmmo = cannonAmmo;
+            this.tower = tower;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -81,8 +100,6 @@ namespace TankGame
             Shoot(); //same for shooting
 
             BuildTower(); //and building tower
-
-            // spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
         }
 
         /// <summary>
@@ -113,7 +130,7 @@ namespace TankGame
             if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
             {
                 BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                    BulletType.BasicBullet, rotation);
+                    cannonAmmo, rotation);
                 animator.PlayAnimation("Shoot");
                 isPlayingAnimation = true;
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
@@ -130,21 +147,43 @@ namespace TankGame
 
             if (keyState.IsKeyDown(Keys.G) && (builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
             {
+                SetTowerBuildCost();
+                if (money >= towerBuildCost)
+                {
+                    GameObject towerGO;
 
-                GameObject tower;
+                    //Gameobjectdirector builds a new tower
+                    towerGO = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
+                        GameObject.Transform.Position.Y + 1), tower);
 
-                //Gameobjectdirector builds a new tower
-                tower = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
-                    GameObject.Transform.Position.Y + 1), TowerType.BasicTower);
+                    //its content is loaded
+                    towerGO.LoadContent(GameWorld.Instance.Content);
 
-                //its content is loaded
-                tower.LoadContent(GameWorld.Instance.Content);
+                    //it's added to gameworld next update cycle
+                    GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
 
-                //it's added to gameworld next update cycle
-                GameWorld.Instance.GameObjectsToAdd.Add(tower);
+                    //takes the money for building away
+                    money -= towerBuildCost;
 
-                //time stamps for when the tower is build (used for cooldown)
-                builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                    //time stamps for when the tower is build (used for cooldown)
+                    builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                }
+            }
+        }
+
+        /// <summary>
+        /// sets the price for building a tower
+        /// </summary>
+        private void SetTowerBuildCost()
+        {
+            switch (tower)
+            {
+                case TowerType.BasicTower:
+                    towerBuildCost = Constant.basicTowerPrice;
+                    break;
+                default:
+                    towerBuildCost = Constant.basicTowerPrice;
+                    break;
             }
         }
 
@@ -242,6 +281,7 @@ namespace TankGame
         public virtual void LoadContent(ContentManager content)
         {
             this.animator = (Animator)GameObject.GetComponent("Animator");
+            font = content.Load<SpriteFont>("Stat");
 
             CreateAnimation();
 
@@ -271,10 +311,36 @@ namespace TankGame
 #if DEBUG
             foreach (Component com in other.GameObject.GetComponentList)
             {
-                Console.WriteLine("Collided with an object with this Component: " + com.ToString());
+                Console.WriteLine("Vehicle Collided with an object with this Component: " + com.ToString());
             }
             Console.WriteLine("At these Coordinates: " + GameObject.Transform.Position);
 #endif
+        }
+
+        /// <summary>
+        /// Draws the vehicles stats
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            DrawMoney(spriteBatch);
+        }
+
+        /// <summary>
+        /// Draws the money out to screen depending on the controls used
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        protected void DrawMoney(SpriteBatch spriteBatch)
+        {
+            if (control == Controls.WASD)
+            {
+                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.YellowGreen);
+
+            }
+            else if (control == Controls.UDLR)
+            {
+                spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - 50, 2), Color.YellowGreen);
+            }
         }
     }
 }

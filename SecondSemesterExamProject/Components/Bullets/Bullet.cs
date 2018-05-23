@@ -12,7 +12,7 @@ namespace TankGame
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
         protected BulletType bulletType;
-        protected float bulletDmg;
+        protected int bulletDmg;
         protected float rotation;
         protected float movementSpeed;
         protected float dirRotation;
@@ -58,7 +58,6 @@ namespace TankGame
 
         public Bullet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject)
         {
-
             canRelease = true;
 
             switch (type)
@@ -208,7 +207,7 @@ namespace TankGame
 
         public virtual void OnAnimationDone(string animationName)
         {
-            Console.WriteLine(new NotImplementedException());
+
         }
 
         /// <summary>
@@ -232,15 +231,15 @@ namespace TankGame
                             {
                                 if (go is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
                                 {
-                                    (go as Enemy).Health -= 50;
+                                    (go as Enemy).Health -= bulletDmg;
                                 }
                                 if (go is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
                                 {
-                                    (go as Vehicle).Health -= 50;
+                                    (go as Vehicle).Health -= bulletDmg;
                                 }
                                 if (go is Tower && thisCollider.GetAlignment == Alignment.Enemy)
                                 {
-                                    (go as Tower).Health -= 50;
+                                    (go as Tower).Health -= bulletDmg;
                                 }
                             }
                             DestroyBullet();
