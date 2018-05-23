@@ -18,6 +18,8 @@ namespace TankGame
         #endregion
 
         #region Vehicles
+        public static readonly float buildTowerCoolDown = 2;
+
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
         public static readonly float tankMoveSpeed = 100;
@@ -34,7 +36,16 @@ namespace TankGame
         public static readonly float HQFireRate = 2;
         public static readonly int HQHealth = 1000;
         public static readonly int HQAttackRange = 450;
+        public static readonly BulletType HQbulletType = BulletType.BiggerBullet;
         #endregion
+
+        #region BasicTower
+        public static readonly string basicTowerSpriteSheet = "TowerBasic";
+        public static readonly float basicTowerFireRate =1;
+        public static readonly int basicTowerHealth = 100;
+        public static readonly BulletType basicTowerBulletType = BulletType.BasicBullet;
+        public static readonly int basicTowerAttackRange = 150;
+        #endregion;
         #endregion
 
         #region Bullets
@@ -57,9 +68,9 @@ namespace TankGame
         public readonly static int baseEnemyGold = 2;
         #region BasicEnemy
         public static readonly string basicEnemySpriteSheet = "BasicEnemy";
-        public static readonly int basicEnemyHealth = 50;
+        public static readonly int basicEnemyHealth = 200;
         public static readonly float basicEnemyMovementSpeed = 25;
-        public static readonly float basicEnemyAttackRate = 1;
+        public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
 
         #endregion

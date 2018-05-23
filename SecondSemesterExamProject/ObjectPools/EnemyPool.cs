@@ -111,21 +111,32 @@ namespace TankGame
         /// <param name="enemy"></param>
         public static void CleanUp(GameObject enemy)
         {
-
             enemy.Transform.Position = new Vector2(100, 100);
-            // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
-            ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
-            //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
+            ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
 
-            ((Enemy)enemy.GetComponent("BasicEnemy")).IsAlive = true;
+
+            foreach (var component in enemy.GetComponentList)
+            {
+                if (component is Enemy)
+                {
+                    var tmp = component as Enemy;
+
+                    tmp.IsAlive = true;
+                    tmp.CanRelease = true;
+
+                    if (component is BasicEnemy)
+                    {
+                        tmp.Health = Constant.basicEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
+
+                    }
 
 
-            ((Enemy)enemy.GetComponent("BasicEnemy")).CanRelease = true;
-
-            ((Enemy)enemy.GetComponent("BasicEnemy")).Health = Constant.basicEnemyHealth;
+                }
+            }
 
             activeEnemies.Remove(enemy);
             inActiveEnemies.Add(enemy);
