@@ -181,3 +181,10 @@
 /processorParam:TextureFormat=Color
 /build:HQ.png
 
+#begin Stat.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Stat.spritefont
+

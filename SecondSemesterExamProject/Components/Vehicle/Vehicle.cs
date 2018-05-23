@@ -11,12 +11,14 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter
+    class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
+        private SpriteFont font;
         public Animator animator;
         protected int health;
         protected int money;
         protected Controls control;
+        protected BulletType cannonAmmo;
         protected float movementSpeed;
         protected float fireRate;
         protected float rotation = 0;
@@ -39,6 +41,19 @@ namespace TankGame
             }
         }
 
+        public int Money
+        {
+            get { return money; }
+            set
+            {
+                money = value;
+                if (money < 0)
+                {
+                    money = 0;
+                }
+            }
+        }
+
         /// <summary>
         /// creates a vehicle
         /// </summary>
@@ -55,6 +70,7 @@ namespace TankGame
             this.fireRate = fireRate;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
+            this.cannonAmmo = BulletType.BiggerBullet;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -78,7 +94,7 @@ namespace TankGame
 
             Movement();
             Shoot();
-           // spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
+            // spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
         }
 
         /// <summary>
@@ -109,7 +125,7 @@ namespace TankGame
             if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
             {
                 BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                    BulletType.BasicBullet, rotation);
+                    cannonAmmo, rotation);
                 animator.PlayAnimation("Shoot");
                 isPlayingAnimation = true;
                 shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
@@ -220,6 +236,7 @@ namespace TankGame
         public virtual void LoadContent(ContentManager content)
         {
             this.animator = (Animator)GameObject.GetComponent("Animator");
+            font = content.Load<SpriteFont>("Stat");
 
             CreateAnimation();
 
@@ -249,10 +266,36 @@ namespace TankGame
 #if DEBUG
             foreach (Component com in other.GameObject.GetComponentList)
             {
-                Console.WriteLine("Collided with an object with this Component: " + com.ToString());
+                Console.WriteLine("Vehicle Collided with an object with this Component: " + com.ToString());
             }
             Console.WriteLine("At these Coordinates: " + GameObject.Transform.Position);
 #endif
+        }
+
+        /// <summary>
+        /// Draws the vehicles stats
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            DrawMoney(spriteBatch);
+        }
+
+        /// <summary>
+        /// Draws the money out to screen depending on the controls used
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        protected void DrawMoney(SpriteBatch spriteBatch)
+        {
+            if (control == Controls.WASD)
+            {
+                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.YellowGreen);
+
+            }
+            else if (control == Controls.UDLR)
+            {
+                spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - 50, 2), Color.YellowGreen);
+            }
         }
     }
 }
