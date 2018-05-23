@@ -19,6 +19,8 @@ namespace TankGame
         protected int money;
         protected Controls control;
         protected BulletType cannonAmmo;
+        protected TowerType tower;
+        protected int towerBuildCost;
         protected float movementSpeed;
         protected float fireRate;
         protected float rotation = 0;
@@ -64,7 +66,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money) : base(gameObject)
+        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money, BulletType cannonAmmo, TowerType tower) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -72,7 +74,8 @@ namespace TankGame
             this.fireRate = fireRate;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
-            this.cannonAmmo = BulletType.BiggerBullet;
+            this.cannonAmmo = cannonAmmo;
+            this.tower = tower;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -144,21 +147,43 @@ namespace TankGame
 
             if (keyState.IsKeyDown(Keys.G) && (builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
             {
+                SetTowerBuildCost();
+                if (money >= towerBuildCost)
+                {
+                    GameObject towerGO;
 
-                GameObject tower;
+                    //Gameobjectdirector builds a new tower
+                    towerGO = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
+                        GameObject.Transform.Position.Y + 1), tower);
 
-                //Gameobjectdirector builds a new tower
-                tower = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
-                    GameObject.Transform.Position.Y + 1), TowerType.BasicTower);
+                    //its content is loaded
+                    towerGO.LoadContent(GameWorld.Instance.Content);
 
-                //its content is loaded
-                tower.LoadContent(GameWorld.Instance.Content);
+                    //it's added to gameworld next update cycle
+                    GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
 
-                //it's added to gameworld next update cycle
-                GameWorld.Instance.GameObjectsToAdd.Add(tower);
+                    //takes the money for building away
+                    money -= towerBuildCost;
 
-                //time stamps for when the tower is build (used for cooldown)
-                builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                    //time stamps for when the tower is build (used for cooldown)
+                    builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                }
+            }
+        }
+
+        /// <summary>
+        /// sets the price for building a tower
+        /// </summary>
+        private void SetTowerBuildCost()
+        {
+            switch (tower)
+            {
+                case TowerType.BasicTower:
+                    towerBuildCost = Constant.basicTowerPrice;
+                    break;
+                default:
+                    towerBuildCost = Constant.basicTowerPrice;
+                    break;
             }
         }
 

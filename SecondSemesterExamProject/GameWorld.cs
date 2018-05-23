@@ -118,7 +118,7 @@ namespace TankGame
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold));
+                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
