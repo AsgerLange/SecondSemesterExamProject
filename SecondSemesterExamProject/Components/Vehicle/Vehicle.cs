@@ -144,7 +144,7 @@ namespace TankGame
                 GameWorld.Instance.GameObjectsToAdd.Add(tower);
 
                 //time stamps for when the tower is build (used for cooldown)
-                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
             }
         }
 
