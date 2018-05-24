@@ -11,6 +11,7 @@ namespace TankGame
     /// </summary>
     class GameWorld : Game
     {
+        public static readonly object colliderKey = new object();
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
@@ -18,6 +19,7 @@ namespace TankGame
         private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
         private List<Collider> colliders = new List<Collider>();
+        public bool gameRunning = true;
         private float deltaTime;
         private float totalGameTime;
         private Map map;
@@ -31,8 +33,20 @@ namespace TankGame
 
         public List<Collider> Colliders
         {
-            get { return colliders; }
-            set { colliders = value; }
+            get
+            {
+                lock (colliderKey)
+                {
+                    return colliders;
+                }
+            }
+            set
+            {
+                lock (colliderKey)
+                {
+                    colliders = value;
+                }
+            }
         }
         public float TotalGameTime
         {
@@ -185,11 +199,7 @@ namespace TankGame
             {
                 go.Update();
             }
-            foreach (var go in EnemyPool.ActiveEnemies)
-            {
-                go.Update();
-            }
-            EnemyPool.ReleaseList();
+            EnemyPool.Instance.Release();
 
             foreach (var go in BulletPool.ActiveBullets)
             {
@@ -225,7 +235,10 @@ namespace TankGame
             {
                 if (go.GetComponent("Collider") is Collider collider)
                 {
-                    Colliders.Remove(collider);
+                    lock (colliderKey)
+                    {
+                        Colliders.Remove(collider);
+                    }
                 }
                 gameObjects.Remove(go);
             }
@@ -247,9 +260,12 @@ namespace TankGame
             {
                 go.Draw(spriteBatch);
             }
-            foreach (var go in EnemyPool.ActiveEnemies)
+            lock (EnemyPool.activeKey)
             {
-                go.Draw(spriteBatch);
+                foreach (var go in EnemyPool.Instance.ActiveEnemies)
+                {
+                    go.Draw(spriteBatch);
+                }
             }
             foreach (var go in BulletPool.ActiveBullets)
             {

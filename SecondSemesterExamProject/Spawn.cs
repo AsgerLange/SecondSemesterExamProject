@@ -163,7 +163,7 @@ namespace TankGame
                 enemyTypeInt = rnd.Next((Enum.GetNames(typeof(EnemyType)).Length));
                 enemyType = (EnemyType)enemyTypeInt;
 
-                EnemyPool.CreateEnemy(spawnPos, enemyType);
+                EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
 
                 spawned++;
             }

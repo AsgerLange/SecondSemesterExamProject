@@ -85,7 +85,10 @@ namespace TankGame
 
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 
-                    GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                    lock (GameWorld.colliderKey)
+                    {
+                        GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                    }
                     tmp.Transform.Position = position;
 
                     activeBullets.Add(tmp);
@@ -131,13 +134,13 @@ namespace TankGame
         public static void CleanUp(GameObject bullet)
         {
             //Reset all bullet attributes
-
-
             bullet.Transform.Position = new Vector2(100, 100);
             // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
-
-            GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
+            lock (GameWorld.colliderKey)
+            {
+                GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
+            }
             //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
 
             activeBullets.Remove(bullet);
@@ -152,7 +155,6 @@ namespace TankGame
 
             foreach (GameObject go in releaseList)
             {
-
                 ReleaseBullet(go);
             }
             releaseList.Clear();

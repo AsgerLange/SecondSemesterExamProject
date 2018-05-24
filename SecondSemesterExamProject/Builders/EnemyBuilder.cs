@@ -17,10 +17,10 @@ namespace TankGame
             go.AddComponent(new SpriteRenderer(go, Constant.basicEnemySpriteSheet, 0));
             go.AddComponent(new Animator(go));
             go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
-                    Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate));
+                    Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate, type));
             go.AddComponent(new Collider(go, Alignment.Enemy));
         }
-        
+
 
         public GameObject GetResult()
         {

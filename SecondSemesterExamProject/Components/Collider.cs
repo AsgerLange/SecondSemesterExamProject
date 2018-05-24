@@ -11,6 +11,9 @@ namespace TankGame
 {
     class Collider : Component, IDrawable, ILoadable, IUpdatable
     {
+        public static readonly object alignmentKey = new object();
+        public static readonly object removeOtherCollidersKey = new object();
+        public static readonly object doCollsionChecksKey = new object();
         private Texture2D texture;
         private SpriteRenderer spriteRenderer;
         private bool doCollisionChecks;
@@ -20,19 +23,56 @@ namespace TankGame
 
         public Alignment GetAlignment
         {
-            get { return alignment; }
+            get
+            {
+                lock (alignmentKey)
+                {
+                    return alignment;
+                }
+            }
+            set
+            {
+                lock (alignmentKey)
+                {
+                    alignment = value;
+                }
+            }
         }
 
         public List<Collider> RemoveOtherColliders
         {
-            get { return removeOtherColliders; }
-            set { removeOtherColliders = value; }
+            get
+            {
+                lock (removeOtherCollidersKey)
+                {
+                    return removeOtherColliders;
+                }
+            }
+            set
+            {
+                lock (removeOtherCollidersKey)
+                {
+                    removeOtherColliders = value;
+                }
+            }
         }
 
         public bool DoCollsionChecks
         {
-            get { return doCollisionChecks; }
-            set { doCollisionChecks = value; }
+            get
+            {
+                lock (doCollsionChecksKey)
+                {
+                    return doCollisionChecks;
+                }
+            }
+            set
+            {
+                lock (doCollsionChecksKey)
+                {
+                    doCollisionChecks = value;
+                }
+            }
         }
 
         public Collider(GameObject gameObject, Alignment alignment) : base(gameObject)
@@ -40,7 +80,10 @@ namespace TankGame
             this.alignment = alignment;
 
             doCollisionChecks = true;
-            GameWorld.Instance.Colliders.Add(this);
+            lock (GameWorld.colliderKey)
+            {
+                GameWorld.Instance.Colliders.Add(this);
+            }
         }
 
         /// <summary> 
@@ -106,16 +149,19 @@ namespace TankGame
         {
             if (doCollisionChecks)
             {
-                foreach (Collider other in GameWorld.Instance.Colliders)
+                lock (GameWorld.colliderKey)
                 {
-                    if (other != this)
+                    foreach (Collider other in GameWorld.Instance.Colliders)
                     {
-                        if (CollisionBox.Intersects(other.CollisionBox))
+                        if (other != this)
                         {
-                            if (!(otherColliders.Contains(other)))
+                            if (CollisionBox.Intersects(other.CollisionBox))
                             {
-                                GameObject.OnCollisionEnter(other);
-                                otherColliders.Add(other);
+                                if (!(otherColliders.Contains(other)))
+                                {
+                                    GameObject.OnCollisionEnter(other);
+                                    otherColliders.Add(other);
+                                }
                             }
                         }
                     }
@@ -138,6 +184,7 @@ namespace TankGame
                         }
                     }
                 }
+
             }
             RemoveCollider();
         }
@@ -155,15 +202,6 @@ namespace TankGame
                 }
                 removeOtherColliders.Clear();
             }
-        }
-
-        /// <summary>
-        /// empties all list for referances to a collider
-        /// </summary>
-        public void EmptyLists()
-        {
-            removeOtherColliders.Clear();
-            otherColliders.Clear();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace TankGame
     {
 
         public Animator animator;
+        protected EnemyType enemyType;
         private SpriteRenderer spriteRenderer;
         protected GameObject targetGameObject = GameWorld.Instance.GameObjects[0]; //HQ by default
         protected float rotation = 0;
@@ -25,6 +26,11 @@ namespace TankGame
         protected float attackTimeStamp;
         private int attackVariation = 1;
 
+
+        public EnemyType GetEnemyType
+        {
+            get { return enemyType; }
+        }
         public bool IsAlive
         {
             get { return isAlive; }
@@ -66,7 +72,7 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate,EnemyType enemyType) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
@@ -74,6 +80,7 @@ namespace TankGame
             this.damage = damage;
             this.isAlive = true;
             this.canRelease = true;
+            this.enemyType = enemyType;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
@@ -134,8 +141,10 @@ namespace TankGame
             {
                 if (this.GameObject.GetComponent("Collider") is Collider)
                 {
-
-                    GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                    lock (GameWorld.colliderKey)
+                    {
+                        GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                    }
                 }
 
             }
@@ -226,7 +235,7 @@ namespace TankGame
             {
                 if (canRelease)
                 {
-                    EnemyPool.releaseList.Add(this.GameObject);
+                    EnemyPool.Instance.ReleaseList.Add(this.GameObject);
                     canRelease = false;
                 }
             }
