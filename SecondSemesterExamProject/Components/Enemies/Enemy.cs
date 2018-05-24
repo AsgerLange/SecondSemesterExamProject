@@ -243,9 +243,28 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
+            foreach (GameObject go in GameWorld.Instance.GameObjects)
+            {
+                foreach (Component com in go.GetComponentList)
+                {
+                    if (com is Vehicle)
+                    {
+                        (com as Vehicle).Money += EnemyGold();
+                        break;
+                    }
+                }
+            }
             animator.PlayAnimation("Death");
         }
 
+        /// <summary>
+        /// returns the amount of gold the enemy gives
+        /// </summary>
+        /// <returns></returns>
+        protected virtual int EnemyGold()
+        {
+            return Constant.baseEnemyGold;
+        }
 
         /// <summary>
         /// when something is inside the enemy
@@ -279,7 +298,7 @@ namespace TankGame
         protected virtual void CheckIfCanAttack(Collider other)
         {
             {//can enemy attack yet?
-                if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime) 
+                if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime)
                 {
                     foreach (Component component in other.GameObject.GetComponentList)
 
@@ -295,7 +314,7 @@ namespace TankGame
                             AttackTower(component as Tower);
                             break;
                         }
-                        
+
                     }
                 }
 

@@ -58,7 +58,6 @@ namespace TankGame
             {
                 GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             }
-            Console.WriteLine(new NotImplementedException("OnAnimationDone Tower"));
         }
 
         /// <summary>
@@ -198,7 +197,6 @@ namespace TankGame
                     dir.Normalize();
 
                     other.GameObject.Transform.Translate(dir * force);
-                    Console.WriteLine("tower push: " + dir);
                 }
             }
         }
@@ -227,7 +225,6 @@ namespace TankGame
                     dir.Normalize();
 
                     other.GameObject.Transform.Translate(dir * force);
-                    Console.WriteLine("tower push: " + dir);
                 }
             }
         }
