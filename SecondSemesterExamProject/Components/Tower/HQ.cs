@@ -54,7 +54,7 @@ namespace TankGame
         /// </summary>
         protected override void Die()
         {
-            
+            base.Die();
         }
     }
 }

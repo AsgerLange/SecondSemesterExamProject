@@ -122,6 +122,16 @@ namespace TankGame
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
+            //adds player2
+            go = new GameObject();
+            go.Transform.Position = new Vector2(350, 350);
+            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
+            go.AddComponent(new Animator(go));
+            go.AddComponent(new Tank(go, Controls.UDLR, Constant.tankHealth, Constant.tankMoveSpeed,
+                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
+            go.AddComponent(new Collider(go, Alignment.Friendly));
+            gameObjects.Add(go);
+
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
 

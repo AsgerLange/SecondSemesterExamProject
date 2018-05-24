@@ -56,6 +56,17 @@ namespace TankGame
             set { timeStamp = value; }
         }
 
+        public float MovementSpeed
+        {
+            get { return movementSpeed; }
+            set { movementSpeed = value; }
+        }
+
+        public int BulletDamage
+        {
+            get { return bulletDmg; }
+            set { bulletDmg = value; }
+        }
         public Bullet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject)
         {
             canRelease = true;
@@ -243,7 +254,7 @@ namespace TankGame
                                 }
                             }
                             DestroyBullet();
-                            canRelease = false;
+
                         }
                     }
                 }
@@ -255,8 +266,8 @@ namespace TankGame
         /// </summary>
         public void DestroyBullet()
         {
+            canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);
-
         }
     }
 }
