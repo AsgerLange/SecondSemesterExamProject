@@ -23,7 +23,7 @@ namespace TankGame
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
         public static readonly float tankMoveSpeed = 100;
-        public static readonly float tankFireRate = 0.2f;
+        public static readonly float tankFireRate = 1f;
         public static readonly int tankHealth = 1000;
         public static readonly float tankRotateSpeed = 2.0F;
         public static readonly int tankStartGold = 100;
@@ -61,7 +61,7 @@ namespace TankGame
         #region BiggerBullet
         public static readonly string biggerBulletSheet = "BiggerBullet";
         public static readonly float biggerBulletMovementSpeed = 700;
-        public static readonly float biggerBulletLifeSpan = 0.7f;
+        public static readonly float biggerBulletLifeSpan = 1.5f;
         public static readonly int biggerBulletDmg = 150;
         #endregion;
         #endregion;
