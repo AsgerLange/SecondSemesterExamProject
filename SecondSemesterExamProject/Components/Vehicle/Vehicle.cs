@@ -13,6 +13,7 @@ namespace TankGame
     enum Controls { WASD, UDLR }
     class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
+        private Random rnd = new Random();
         private SpriteFont font;
         public Animator animator;
         protected int health;
@@ -133,8 +134,11 @@ namespace TankGame
                 if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
                     || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
                 {
+                    
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                        cannonAmmo, rotation);
+                        cannonAmmo, rotation + (rnd.Next(-15, 15)));
+
+                    
                     animator.PlayAnimation("Shoot");
                     isPlayingAnimation = true;
                     shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
