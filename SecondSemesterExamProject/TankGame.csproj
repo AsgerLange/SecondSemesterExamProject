@@ -44,13 +44,17 @@
     <Compile Include="Builders\BulletBuilder.cs" />
     <Compile Include="Builders\EnemyBuilder.cs" />
     <Compile Include="Builders\TerrainBuilder.cs" />
+    <Compile Include="Builders\TowerBuilder.cs" />
     <Compile Include="Components\Bullets\BasicBullet.cs" />
     <Compile Include="Components\Bullets\BiggerBullet.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
+    <Compile Include="Components\Tower\BasicTower.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
+    <Compile Include="Spawn.cs" />
     <Compile Include="Components\Tower\Tower.cs" />
+    <Compile Include="Interfaces\ITowerBuilder.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Components\Terrain.cs" />
     <Compile Include="Interfaces\IEnemyAI.cs" />

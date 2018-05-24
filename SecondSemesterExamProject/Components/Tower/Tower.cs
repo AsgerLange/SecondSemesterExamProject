@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
+    enum TowerType { BasicTower,};
+
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
         protected int health;
@@ -16,7 +18,7 @@ namespace TankGame
         protected float shootTimeStamp;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
-        protected BulletType bulletType = BulletType.BasicBullet;
+        protected BulletType bulletType;
 
         public int Health
         {
@@ -24,6 +26,7 @@ namespace TankGame
             set
             {
                 health = value;
+               
                 if (health <= 0)
                 {
                     health = 0;
@@ -32,11 +35,12 @@ namespace TankGame
             }
         }
 
-        public Tower(GameObject gameObject, float attackRate, int health, float attackRange) : base(gameObject)
+        public Tower(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType) : base(gameObject)
         {
             this.health = health;
             this.attackRate = attackRate;
             this.attackRange = attackRange;
+            this.bulletType = bulletType;
             GameObject.Transform.canMove = false;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -54,7 +58,6 @@ namespace TankGame
             {
                 GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             }
-            Console.WriteLine(new NotImplementedException("OnAnimationDone Tower"));
         }
 
         /// <summary>
@@ -191,7 +194,6 @@ namespace TankGame
                     dir.Normalize();
 
                     other.GameObject.Transform.Translate(dir * force);
-                    Console.WriteLine("tower push: " + dir);
                 }
             }
         }
@@ -220,7 +222,6 @@ namespace TankGame
                     dir.Normalize();
 
                     other.GameObject.Transform.Translate(dir * force);
-                    Console.WriteLine("tower push: " + dir);
                 }
             }
         }
@@ -251,6 +252,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
+            animator.PlayAnimation("Death");
 
         }
     }
