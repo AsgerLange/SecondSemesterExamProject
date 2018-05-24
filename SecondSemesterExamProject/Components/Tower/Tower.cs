@@ -8,10 +8,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum TowerType { BasicTower,};
+    enum TowerType { BasicTower, };
 
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
+        Random rnd = new Random();
         protected int health;
         protected float attackRate;
         protected float attackRange;
@@ -26,7 +27,7 @@ namespace TankGame
             set
             {
                 health = value;
-               
+
                 if (health <= 0)
                 {
                     health = 0;
@@ -84,7 +85,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation);
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation + (rnd.Next(-3, 3)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }

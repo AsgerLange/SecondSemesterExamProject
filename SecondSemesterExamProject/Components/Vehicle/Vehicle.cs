@@ -127,15 +127,20 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if (keyState.IsKeyDown(Keys.Space) && (shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+            if ((shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
             {
-                BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                    cannonAmmo, rotation);
-                animator.PlayAnimation("Shoot");
-                isPlayingAnimation = true;
-                shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
-            }
 
+                if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
+                    || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
+                {
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
+                        cannonAmmo, rotation);
+                    animator.PlayAnimation("Shoot");
+                    isPlayingAnimation = true;
+                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                }
+
+            }
         }
 
         /// <summary>
@@ -145,28 +150,34 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if (keyState.IsKeyDown(Keys.G) && (builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
+            if ((builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
             {
-                SetTowerBuildCost();
-                if (money >= towerBuildCost)
+               
+                if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
+                    || (keyState.IsKeyDown(Keys.Back) && control == Controls.UDLR))
                 {
-                    GameObject towerGO;
 
-                    //Gameobjectdirector builds a new tower
-                    towerGO = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
-                        GameObject.Transform.Position.Y + 1), tower);
+                    SetTowerBuildCost();
+                    if (money >= towerBuildCost)
+                    {
+                        GameObject towerGO;
 
-                    //its content is loaded
-                    towerGO.LoadContent(GameWorld.Instance.Content);
+                        //Gameobjectdirector builds a new tower
+                        towerGO = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
+                            GameObject.Transform.Position.Y + 1), tower);
 
-                    //it's added to gameworld next update cycle
-                    GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
+                        //its content is loaded
+                        towerGO.LoadContent(GameWorld.Instance.Content);
 
-                    //takes the money for building away
-                    money -= towerBuildCost;
+                        //it's added to gameworld next update cycle
+                        GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
 
-                    //time stamps for when the tower is build (used for cooldown)
-                    builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                        //takes the money for building away
+                        money -= towerBuildCost;
+
+                        //time stamps for when the tower is build (used for cooldown)
+                        builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                    }
                 }
             }
         }
