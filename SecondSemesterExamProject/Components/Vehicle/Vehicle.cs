@@ -135,7 +135,7 @@ namespace TankGame
                 {
                     
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                        cannonAmmo, rotation + (rnd.Next(-15, 15)));
+                        cannonAmmo, rotation + (rnd.Next(-3, 3)));
                     animator.PlayAnimation("Shoot");
                 spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
                     isPlayingAnimation = true;
