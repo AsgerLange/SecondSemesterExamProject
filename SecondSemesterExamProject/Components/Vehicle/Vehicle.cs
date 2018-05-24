@@ -130,20 +130,17 @@ namespace TankGame
 
             if ((shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
             {
-
                 if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
                     || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
                 {
                     
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
                         cannonAmmo, rotation + (rnd.Next(-15, 15)));
-
-                    
                     animator.PlayAnimation("Shoot");
+                spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
                     isPlayingAnimation = true;
                     shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
                 }
-
             }
         }
 
@@ -280,6 +277,7 @@ namespace TankGame
             if (animationName == "Shoot")
             {
                 isPlayingAnimation = false;
+                spriteRenderer.Offset = Vector2.Zero;
             }
             if (isPlayingAnimation == false)
             {
@@ -312,9 +310,10 @@ namespace TankGame
             animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
             animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
             animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / Constant.tankFireRate, new Vector2(0, -4)));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / Constant.tankFireRate, new Vector2(0, -3)));
             animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
             animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(7, 305, 0, 28, 40, 5, Vector2.Zero));
         }
 
         /// <summary>
