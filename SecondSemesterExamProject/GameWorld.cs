@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -24,8 +23,10 @@ namespace TankGame
         private Map map;
         private Spawn spawner;
         private bool gameOver = false;
-        Score statsScore;
-
+        Rectangle textBox;
+        Texture2D theBox;
+        SpriteFont font;
+        private string parsedText;
 
 
         //Background
@@ -137,9 +138,7 @@ namespace TankGame
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
-            
-            //Score keeps track og´f stats and highscore
-            statsScore = new Score();
+            textBox = new Rectangle(10, 10, 150, 150);
             base.Initialize();
         }
 
@@ -151,13 +150,17 @@ namespace TankGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            theBox = Content.Load<Texture2D>("Button");
+            font = Content.Load<SpriteFont>("spritefont");
+
+            parsedText = ParseText(Score.name);
 
             backGround = Content.Load<Texture2D>("testBackground");
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            statsScore.LoadContent(Content);
+            
             // TODO: use this.Content to load your game content here
 
-
+            
 
             //load objects
             foreach (var go in gameObjects)
@@ -182,7 +185,7 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+           
 
             // Updates the Time
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -255,7 +258,6 @@ namespace TankGame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront);
-            //statsScore.Draw(spriteBatch);
             //Draw Gameobjects
             foreach (var go in gameObjects)
             {
@@ -270,9 +272,27 @@ namespace TankGame
                 go.Draw(spriteBatch);
             }
             spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
-
+            spriteBatch.Draw(theBox, textBox, Color.White);
+            spriteBatch.DrawString(font, Score.name, new Vector2(textBox.X, textBox.Y), Color.Black);
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+        private string ParseText(string text)
+        {
+            string line = String.Empty;
+            string returnString = String.Empty;
+            string[] wordArray = text.Split(' ');
+
+            foreach (string word in wordArray)
+            {
+                if (font.MeasureString(line + word).Length() > textBox.Width)
+                {
+                    returnString = returnString + line + '\n';
+                    line = string.Empty;
+                }
+                line = line + word + ' ';
+            }
+            return returnString + line;
         }
 
 
