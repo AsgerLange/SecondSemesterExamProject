@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class BasicEnemy : Melee
+    class BasicEliteEnemy : Melee
     {
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="attackRate"></param>
-        public BasicEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType)
+        public BasicEliteEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate) : base(gameObject, health, damage, movementSpeed, attackRate)
         {
 
         }
@@ -63,7 +63,7 @@ namespace TankGame
             base.OnAnimationDone(animationName);
             if (animationName.Contains("Attack"))
             {
-                movementSpeed = Constant.basicEnemyMovementSpeed;
+                movementSpeed = Constant.basicEliteEnemyMovementSpeed;
             }
         }
 

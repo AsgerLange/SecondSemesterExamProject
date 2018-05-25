@@ -140,7 +140,7 @@ namespace TankGame
             //Adds test player
             GameObject go;
             go = new GameObject();
-            go.Transform.Position = new Vector2(650, 350);
+            go.Transform.Position = new Vector2(500, 360);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
@@ -150,7 +150,7 @@ namespace TankGame
 
             //adds player2
             go = new GameObject();
-            go.Transform.Position = new Vector2(350, 350);
+            go.Transform.Position = new Vector2(740, 360);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.UDLR, Constant.tankHealth, Constant.tankMoveSpeed,
