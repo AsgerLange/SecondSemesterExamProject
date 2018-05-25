@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace TankGame
 {
@@ -11,6 +12,8 @@ namespace TankGame
     /// </summary>
     class GameWorld : Game
     {
+        public static readonly object colliderKey = new object();
+        public static Barrier barrier;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
@@ -18,6 +21,7 @@ namespace TankGame
         private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
         private List<Collider> colliders = new List<Collider>();
+        public bool gameRunning = true;
         private float deltaTime;
         private float totalGameTime;
         private Map map;
@@ -31,8 +35,20 @@ namespace TankGame
 
         public List<Collider> Colliders
         {
-            get { return colliders; }
-            set { colliders = value; }
+            get
+            {
+                lock (colliderKey)
+                {
+                    return colliders;
+                }
+            }
+            set
+            {
+                lock (colliderKey)
+                {
+                    colliders = value;
+                }
+            }
         }
         public float TotalGameTime
         {
@@ -108,6 +124,12 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //secure that enemyPool has been started
+            EnemyPool ep = EnemyPool.Instance;
+
+            //initializes the barrier
+            barrier = new Barrier(2);
+
             //adds objects to the map
             map = new Map();
 
@@ -177,10 +199,7 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
+            barrier.SignalAndWait();
             // Updates the Time
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -195,11 +214,6 @@ namespace TankGame
             {
                 go.Update();
             }
-            foreach (var go in EnemyPool.ActiveEnemies)
-            {
-                go.Update();
-            }
-            EnemyPool.ReleaseList();
 
             foreach (var go in BulletPool.ActiveBullets)
             {
@@ -235,7 +249,10 @@ namespace TankGame
             {
                 if (go.GetComponent("Collider") is Collider collider)
                 {
-                    Colliders.Remove(collider);
+                    lock (colliderKey)
+                    {
+                        Colliders.Remove(collider);
+                    }
                 }
                 gameObjects.Remove(go);
             }
@@ -257,9 +274,12 @@ namespace TankGame
             {
                 go.Draw(spriteBatch);
             }
-            foreach (var go in EnemyPool.ActiveEnemies)
+            lock (EnemyPool.activeKey)
             {
-                go.Draw(spriteBatch);
+                foreach (var go in EnemyPool.Instance.ActiveEnemies)
+                {
+                    go.Draw(spriteBatch);
+                }
             }
             foreach (var go in BulletPool.ActiveBullets)
             {

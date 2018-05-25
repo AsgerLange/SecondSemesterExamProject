@@ -52,10 +52,10 @@ namespace TankGame
         /// <param name="hight"></param>
         private void SetSpawnZones(int width, int hight)
         {
-            topZone = new Rectangle(0, -50, width, 50);
-            leftZone = new Rectangle(-50, 0, 50, hight);
-            rightZone = new Rectangle(width, 0, 50, hight);
-            bottomZone = new Rectangle(0, hight, width, 50);
+            topZone = new Rectangle(0, -Constant.spawnZoneSize, width, Constant.spawnZoneSize);
+            leftZone = new Rectangle(-Constant.spawnZoneSize, 0, Constant.spawnZoneSize, hight);
+            rightZone = new Rectangle(width, 0, Constant.spawnZoneSize, hight);
+            bottomZone = new Rectangle(0, hight, width, Constant.spawnZoneSize);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace TankGame
                 enemyTypeInt = rnd.Next((Enum.GetNames(typeof(EnemyType)).Length));
                 enemyType = (EnemyType)enemyTypeInt;
 
-                EnemyPool.CreateEnemy(spawnPos, enemyType);
+                EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
 
                 spawned++;
             }
