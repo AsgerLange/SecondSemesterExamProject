@@ -26,8 +26,12 @@ namespace TankGame
         private float totalGameTime;
         private Map map;
         private Spawn spawner;
-
         private bool gameOver = false;
+        Rectangle textBox;
+        Texture2D theBox;
+        SpriteFont font;
+        private string parsedText;
+
 
         //Background
         Texture2D backGround;
@@ -156,10 +160,7 @@ namespace TankGame
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
-
-
-
-
+            textBox = new Rectangle(10, 10, 150, 150);
             base.Initialize();
         }
 
@@ -171,10 +172,17 @@ namespace TankGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            theBox = Content.Load<Texture2D>("Button");
+            font = Content.Load<SpriteFont>("spritefont");
+
+            parsedText = ParseText(Score.name);
 
             backGround = Content.Load<Texture2D>("testBackground");
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            
             // TODO: use this.Content to load your game content here
+
+            
 
             //load objects
             foreach (var go in gameObjects)
@@ -286,8 +294,27 @@ namespace TankGame
                 go.Draw(spriteBatch);
             }
             spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            spriteBatch.Draw(theBox, textBox, Color.White);
+            spriteBatch.DrawString(font, Score.name, new Vector2(textBox.X, textBox.Y), Color.Black);
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+        private string ParseText(string text)
+        {
+            string line = String.Empty;
+            string returnString = String.Empty;
+            string[] wordArray = text.Split(' ');
+
+            foreach (string word in wordArray)
+            {
+                if (font.MeasureString(line + word).Length() > textBox.Width)
+                {
+                    returnString = returnString + line + '\n';
+                    line = string.Empty;
+                }
+                line = line + word + ' ';
+            }
+            return returnString + line;
         }
 
 
