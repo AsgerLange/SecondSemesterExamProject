@@ -26,7 +26,7 @@ namespace TankGame
 
         public static readonly float tankMoveSpeed = 100;
         public static readonly float tankFireRate = 0.7f;
-        public static readonly int tankHealth = 1;
+        public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
         public static readonly int tankStartGold = 100;
         public static readonly BulletType tankAmmo = BulletType.BiggerBullet;

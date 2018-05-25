@@ -88,7 +88,7 @@ namespace TankGame
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferHeight = Constant.higth;//Changes Window Size
             graphics.PreferredBackBufferWidth = Constant.width;//Changes Window Size
-            this.Window.Position = new Point(0, 0);
+            //this.Window.Position = new Point(0, 0);
             graphics.ApplyChanges();
 
         }
