@@ -136,26 +136,29 @@ namespace TankGame
         {
             Collider closestEnemy = null;
             float distance = 0;
-            foreach (Collider other in GameWorld.Instance.Colliders)
+            lock (GameWorld.colliderKey)
             {
-                if (other.GetAlignment == Alignment.Enemy)
+                foreach (Collider other in GameWorld.Instance.Colliders)
                 {
-                    if (AttackRadius.Contains(other.CollisionBox.Center))
+                    if (other.GetAlignment == Alignment.Enemy)
                     {
-                        float otherDistance;
-                        otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                            * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                            + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
-                            * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
-                        if (closestEnemy == null)
+                        if (AttackRadius.Contains(other.CollisionBox.Center))
                         {
-                            closestEnemy = other;
-                            distance = otherDistance;
-                        }
-                        else if (distance > otherDistance)
-                        {
-                            closestEnemy = other;
-                            distance = otherDistance;
+                            float otherDistance;
+                            otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                            if (closestEnemy == null)
+                            {
+                                closestEnemy = other;
+                                distance = otherDistance;
+                            }
+                            else if (distance > otherDistance)
+                            {
+                                closestEnemy = other;
+                                distance = otherDistance;
+                            }
                         }
                     }
                 }

@@ -141,7 +141,7 @@ namespace TankGame
                 {
 
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                        cannonAmmo, rotation + (rnd.Next(-3, 3)));
+                        cannonAmmo, rotation);
                     animator.PlayAnimation("Shoot");
                     spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
                     isPlayingAnimation = true;
@@ -333,13 +333,7 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-#if DEBUG
-            foreach (Component com in other.GameObject.GetComponentList)
-            {
-                Console.WriteLine("Vehicle Collided with an object with this Component: " + com.ToString());
-            }
-            Console.WriteLine("At these Coordinates: " + GameObject.Transform.Position);
-#endif
+
         }
 
         /// <summary>
