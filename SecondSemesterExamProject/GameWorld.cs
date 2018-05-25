@@ -199,8 +199,7 @@ namespace TankGame
             {
                 go.Update();
             }
-            EnemyPool.Instance.Release();
-
+            
             foreach (var go in BulletPool.ActiveBullets)
             {
                 go.Update();

@@ -33,7 +33,6 @@ namespace TankGame
                 dir.Normalize();
 
                 other.GameObject.Transform.Translate(dir * force);
-                Console.WriteLine("push: " + dir);
             }
         }
 

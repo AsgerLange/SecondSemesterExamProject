@@ -98,7 +98,6 @@ namespace TankGame
                 else
                 {
                     tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
-                    tmp.LoadContent(GameWorld.Instance.Content);
                     activeBullets.Add(tmp);
 
                     return tmp;
@@ -109,7 +108,6 @@ namespace TankGame
                 GameObject tmp;
 
                 tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
-                tmp.LoadContent(GameWorld.Instance.Content);
                 activeBullets.Add(tmp);
 
                 return tmp;

@@ -65,6 +65,7 @@ namespace TankGame
                         go.Update();
                     }
                 }
+                Release();
                 Thread.Sleep(16);
             }
         }
@@ -76,10 +77,8 @@ namespace TankGame
         {
             get
             {
-                lock (activeKey)
-                {
-                    return activeEnemies;
-                }
+                return activeEnemies;
+
             }
             set
             {
@@ -178,15 +177,20 @@ namespace TankGame
                     }
                     tmp.Transform.Position = position;
 
-                    ActiveEnemies.Add(tmp);
+                    lock (activeKey)
+                    {
+                        ActiveEnemies.Add(tmp);
+                    }
 
                     return tmp;
                 }
                 else
                 {
                     tmp = GameObjectDirector.Instance.Construct(position, enemyType);
-                    tmp.LoadContent(GameWorld.Instance.Content);
-                    ActiveEnemies.Add(tmp);
+                    lock (activeKey)
+                    {
+                        ActiveEnemies.Add(tmp);
+                    }
 
                     return tmp;
                 }
@@ -196,8 +200,10 @@ namespace TankGame
                 GameObject tmp;
 
                 tmp = GameObjectDirector.Instance.Construct(position, enemyType);
-                tmp.LoadContent(GameWorld.Instance.Content);
-                ActiveEnemies.Add(tmp);
+                lock (activeKey)
+                {
+                    ActiveEnemies.Add(tmp);
+                }
 
                 return tmp;
             }
@@ -242,12 +248,12 @@ namespace TankGame
                         tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
 
                     }
-
-
                 }
             }
-
-            ActiveEnemies.Remove(enemy);
+            lock (activeKey)
+            {
+                ActiveEnemies.Remove(enemy);
+            }
             InActiveEnemies.Add(enemy);
         }
 
