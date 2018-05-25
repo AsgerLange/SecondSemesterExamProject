@@ -18,7 +18,7 @@ namespace TankGame
         #endregion
 
         #region Vehicles
-        public static readonly float buildTowerCoolDown = 2;
+        public static readonly float buildTowerCoolDown = 0.5f;
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";

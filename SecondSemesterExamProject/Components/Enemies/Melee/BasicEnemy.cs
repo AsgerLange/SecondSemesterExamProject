@@ -97,7 +97,7 @@ namespace TankGame
         /// <param name="vehicle"></param>
         protected override void AttackVehicle(Vehicle vehicle)
         {
-            this.movementSpeed = -10; //Slows enemy down when attacking ( Resets after attackanimation is done)
+            this.movementSpeed = -10; //Enemy backpedals when attacking ( Resets after attackanimation is done)
             base.AttackVehicle(vehicle);
         }
 
@@ -107,7 +107,7 @@ namespace TankGame
         /// <param name="tower"></param>
         protected override void AttackTower(Tower tower)
         {
-            this.movementSpeed = -5;//Slows enemy down when attacking ( Resets after attackanimation is done)
+            this.movementSpeed = -5; //Enemy backpedals when attacking ( Resets after attackanimation is done)
             base.AttackTower(tower);
         }
 
