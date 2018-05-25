@@ -35,11 +35,12 @@ namespace UnitTestSceondSemester
             
             Assert.IsTrue(go.GetComponent("Transform") is Transform);
         }
-
-        public void EnemyTakesDamage()
+        [TestMethod]
+        public void ObjectDirectorBuildBullet()
         {
+         //   Component test = GameObjectDirector.Instance.Construct(Vector2.Zero,BulletType.BaiscBullet,0,Alignment.Friendly);
 
-
+            //Assert.IsTrue(test.GameObject.GetComponent("Bullet") is Bullet);
         }
         public void PlayerTakesDamage()
         {
@@ -56,7 +57,7 @@ namespace UnitTestSceondSemester
         public void CanCreateBullet() //Test if the damage of the bullet does that amount
         {
 
-            BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BasicBullet, 0);
+       //     BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BaiscBullet, 0);
 
             Assert.IsTrue(BulletPool.ActiveBullets.Count > 0);
 

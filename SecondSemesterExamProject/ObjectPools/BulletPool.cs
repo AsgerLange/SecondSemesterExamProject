@@ -40,37 +40,71 @@ namespace TankGame
         {
             if (inActiveBullets.Count > 0)
             {
-                GameObject tmp;
+                GameObject tmp = null;
+                foreach (GameObject bul in inActiveBullets)
+                {
+                    foreach (Component comp in bul.GetComponentList)
+                    {
+                        if (comp is Bullet)
+                        {
+                            if (((Bullet)comp).GetBulletType == bulletType)
+                            {
+                                tmp = bul;
+                                break;
+                            }
+                        }
+                    }
+                    if (tmp != null)
+                    {
+                        break;
+                    }
+                }
+                if (tmp != null)
+                {
+                    inActiveBullets.Remove(tmp);
 
-                tmp = inActiveBullets[0];
+                    tmp.LoadContent(GameWorld.Instance.Content);
 
-                inActiveBullets.Remove(tmp);
+                    ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
 
-                tmp.LoadContent(GameWorld.Instance.Content);
+                    Component bullet = null;
+                    foreach (Component comp in tmp.GetComponentList)
+                    {
+                        if (comp is Bullet)
+                        {
+                            bullet = comp;
+                            break;
+                        }
+                    }
 
-                ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+                    ((Bullet)bullet).CanRelease = true;
 
-                ((Bullet)tmp.GetComponent("Bullet")).CanRelease = true;
+                    ((Bullet)bullet).DirRotation = directionRotation;
 
-                ((Bullet)tmp.GetComponent("Bullet")).DirRotation = directionRotation;
+                    ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 
-                ((Bullet)tmp.GetComponent("Bullet")).LifeSpan = Constant.basicBulletLifeSpan;
+                    GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
 
-                ((Bullet)tmp.GetComponent("Bullet")).TimeStamp = GameWorld.Instance.TotalGameTime;
+                    tmp.Transform.Position = position;
 
-                GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
-                tmp.Transform.Position = position;
+                    activeBullets.Add(tmp);
 
-                activeBullets.Add(tmp);
+                    return tmp;
+                }
+                else
+                {
+                    tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
+                    tmp.LoadContent(GameWorld.Instance.Content);
+                    activeBullets.Add(tmp);
 
-                return tmp;
+                    return tmp;
+                }
             }
             else
             {
                 GameObject tmp;
 
-
-                tmp = GameObjectDirector.Instance.Construct(position,bulletType, directionRotation, alignment);
+                tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
                 tmp.LoadContent(GameWorld.Instance.Content);
                 activeBullets.Add(tmp);
 
@@ -96,16 +130,44 @@ namespace TankGame
         public static void CleanUp(GameObject bullet)
         {
             //Reset all bullet attributes
-
-
             bullet.Transform.Position = new Vector2(100, 100);
-            // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
+          //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
+          //GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
 
-            GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
-            //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
+            foreach (var component in bullet.GetComponentList)
+            {
+                if (component is Bullet)
+                {
+                    var tmp = component as Bullet;
 
-            activeBullets.Remove(bullet);
+                    tmp.DirRotation = 0;
+
+
+                    if (component is BasicBullet)
+                    {
+                        tmp = component as BasicBullet;
+                        tmp.LifeSpan = Constant.basicBulletLifeSpan;
+                        tmp.BulletDamage = Constant.basicBulletDmg;
+                        tmp.MovementSpeed = Constant.basicBulletMovementSpeed;
+
+
+                    }
+                    if (component is BiggerBullet)
+                    {
+
+                        tmp = component as BiggerBullet;
+                        tmp.LifeSpan = Constant.biggerBulletLifeSpan;
+                        tmp.BulletDamage = Constant.biggerBulletDmg;
+                        tmp.MovementSpeed = Constant.biggerBulletMovementSpeed;
+
+                    }
+
+
+                }
+            }
+
+            ActiveBullets.Remove(bullet);
             inActiveBullets.Add(bullet);
         }
 

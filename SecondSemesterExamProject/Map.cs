@@ -23,21 +23,54 @@ namespace TankGame
         public void PlaceRocks()
         {
             GameObject terrain;
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(100, 200), 100), rnd.Next(50, 150), rnd.Next(0, 361));
+
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(550, 150), 115, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(150, 250), rnd.Next(200, 300)), rnd.Next(50, 150), rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(750, 170), 70, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(785, 185), 60, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(783, 154), 55, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(700, 750), rnd.Next(80, 190)), rnd.Next(50, 150), rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(1000, 230), 70, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(rnd.Next(600, 800), rnd.Next(450, 600)), rnd.Next(50, 150), rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(630, 600), 140, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
+
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(305, 450), 80, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(340, 470), 60, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(285, 415), 65, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(278, 437), 60, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(905, 450), 95, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(125, 145), 100, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(825, 575), 70, rnd.Next(0, 361));
+            terrain.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjects.Add(terrain);
+
         }
 
         /// <summary>
@@ -47,10 +80,10 @@ namespace TankGame
         {
             GameObject hq;
             hq = new GameObject();
-            hq.Transform.Position = new Vector2(1120 / 2, 672 / 2);
+            hq.Transform.Position = new Vector2(Constant.width / 2, Constant.higth / 2);
             hq.AddComponent(new SpriteRenderer(hq, Constant.HQSpriteSheet, 0.4f));
             hq.AddComponent(new Animator(hq));
-            hq.AddComponent(new HQ(hq, Constant.HQFireRate, Constant.HQHealth, Constant.HQAttackRange));
+            hq.AddComponent(new HQ(hq, Constant.HQFireRate, Constant.HQHealth, Constant.HQAttackRange, Constant.HQbulletType));
             hq.AddComponent(new Collider(hq, Alignment.Friendly));
             GameWorld.Instance.GameObjects.Add(hq);
         }

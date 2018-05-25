@@ -8,14 +8,18 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
+    enum TowerType { BasicTower, };
+
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
+        Random rnd = new Random();
         protected int health;
         protected float attackRate;
         protected float attackRange;
         protected float shootTimeStamp;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
+        protected BulletType bulletType;
 
         public int Health
         {
@@ -23,6 +27,7 @@ namespace TankGame
             set
             {
                 health = value;
+
                 if (health <= 0)
                 {
                     health = 0;
@@ -31,11 +36,12 @@ namespace TankGame
             }
         }
 
-        public Tower(GameObject gameObject, float attackRate, int health, float attackRange) : base(gameObject)
+        public Tower(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType) : base(gameObject)
         {
             this.health = health;
             this.attackRate = attackRate;
             this.attackRange = attackRange;
+            this.bulletType = bulletType;
             GameObject.Transform.canMove = false;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -48,7 +54,11 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            Console.WriteLine(new NotImplementedException("OnAnimationDone Tower"));
+
+            if (animationName == "Death")
+            {
+                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            }
         }
 
         /// <summary>
@@ -60,6 +70,9 @@ namespace TankGame
             Shoot();
         }
 
+        /// <summary>
+        /// Standard shooting behaviour for all towers
+        /// </summary>
         protected virtual void Shoot()
         {
             if (shootTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
@@ -72,7 +85,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position + new Vector2(-50, -50), Alignment.Friendly, BulletType.BasicBullet, rotation);
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation + (rnd.Next(-3, 3)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }
@@ -167,15 +180,25 @@ namespace TankGame
         /// <param name="other"></param>
         public virtual void OnCollisionEnter(Collider other)
         {
+            bool push = true;
             //push them a bit away
             float force = Constant.pushForce;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
+                foreach (Component go in other.GameObject.GetComponentList)
+                {
+                    if (go is Bullet)
+                    {
+                        push = false;
+                    }
+                }
+                if (push)
+                {
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
 
-                other.GameObject.Transform.Translate(dir * force);
-                Console.WriteLine("tower push: " + dir);
+                    other.GameObject.Transform.Translate(dir * force);
+                }
             }
         }
 
@@ -185,15 +208,25 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
         {
+            bool push = true;
             //push them a bit away
             float force = Constant.pushForce * 2;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
+                foreach (Component go in other.GameObject.GetComponentList)
+                {
+                    if (go is Bullet)
+                    {
+                        push = false;
+                    }
+                }
+                if (push)
+                {
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
 
-                other.GameObject.Transform.Translate(dir * force);
-                Console.WriteLine("tower push: " + dir);
+                    other.GameObject.Transform.Translate(dir * force);
+                }
             }
         }
 
@@ -223,6 +256,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
+            animator.PlayAnimation("Death");
 
         }
     }

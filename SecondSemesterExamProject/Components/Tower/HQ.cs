@@ -10,9 +10,9 @@ namespace TankGame
 {
     class HQ : Tower
     {
-        public HQ(GameObject gameObject, float attackRate, int health, float attackRange) : base(gameObject, attackRate, health, attackRange)
+        public HQ(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType) : base(gameObject, attackRate, health, attackRange, bulletType)
         {
-
+            
         }
 
         public override void LoadContent(ContentManager content)
@@ -22,6 +22,7 @@ namespace TankGame
 
         public override void OnAnimationDone(string animationName)
         {
+            
             base.OnAnimationDone(animationName);
         }
 
@@ -35,11 +36,16 @@ namespace TankGame
             base.Update();
         }
 
+        protected override void Shoot()
+        {
+            base.Shoot();
+        }
+
         protected override void CreateAnimation()
         {
             //HQ Animation
-            animator.CreateAnimation("Idle", new Animation(6, 96, 0, 96, 96, 8, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(7, 192, 0, 96, 96, 6, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(6, 96, 0, 96, 96, 6, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(7, 192, 0, 96, 96, 4, Vector2.Zero));
             base.CreateAnimation();
         }
 
@@ -48,7 +54,7 @@ namespace TankGame
         /// </summary>
         protected override void Die()
         {
-
+            base.Die();
         }
     }
 }

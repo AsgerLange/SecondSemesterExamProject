@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace TankGame
@@ -13,13 +14,16 @@ namespace TankGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
+        private List<GameObject> gameObjectsToAdd = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
         private List<Collider> colliders = new List<Collider>();
         private float deltaTime;
         private float totalGameTime;
         private Map map;
-       
+        private Spawn spawner;
+
+        private bool gameOver = false;
 
         //Background
         Texture2D backGround;
@@ -47,9 +51,20 @@ namespace TankGame
             set { gameObjects = value; }
         }
 
+        public List<GameObject> GameObjectsToAdd
+        {
+            get { return gameObjectsToAdd; }
+            set { gameObjectsToAdd = value; }
+        }
         public float DeltaTime
         {
             get { return deltaTime; }
+        }
+
+        public bool GameOver
+        {
+            get { return gameOver; }
+            set { gameOver = value; }
         }
 
         /// <summary>
@@ -71,11 +86,11 @@ namespace TankGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 672;//Changes Window Size
-            graphics.PreferredBackBufferWidth = 1120;//Changes Window Size
+            graphics.PreferredBackBufferHeight = Constant.higth;//Changes Window Size
+            graphics.PreferredBackBufferWidth = Constant.width;//Changes Window Size
             this.Window.Position = new Point(0, 0);
             graphics.ApplyChanges();
-           
+
         }
 
         /// <summary>
@@ -99,13 +114,29 @@ namespace TankGame
             //Adds test player
             GameObject go;
             go = new GameObject();
-            go.Transform.Position = new Vector2(20, 20);
+            go.Transform.Position = new Vector2(650, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
             go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold));
+                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
+
+            //adds player2
+            go = new GameObject();
+            go.Transform.Position = new Vector2(350, 350);
+            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
+            go.AddComponent(new Animator(go));
+            go.AddComponent(new Tank(go, Controls.UDLR, Constant.tankHealth, Constant.tankMoveSpeed,
+                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
+            go.AddComponent(new Collider(go, Alignment.Friendly));
+            gameObjects.Add(go);
+
+            //Creates the new spawner that spawns the waves
+            spawner = new Spawn(Constant.width, Constant.higth);
+
+
+
 
             base.Initialize();
         }
@@ -148,9 +179,15 @@ namespace TankGame
         {
            
 
-            // TODO: Add your update logic here
+            // Updates the Time
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //adds Gameobjects
+            AddGameObjects();
+
+            //call the Spawner
+            spawner.Update();
+
             //Updates GameObjects
             foreach (var go in gameObjects)
             {
@@ -166,8 +203,25 @@ namespace TankGame
             {
                 go.Update();
             }
-           BulletPool.ReleaseList();
+            BulletPool.ReleaseList();
+
+            RemoveObjects();
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// adds GameObjects
+        /// </summary>
+        private void AddGameObjects()
+        {
+            if (gameObjectsToAdd.Count > 0)
+            {
+                foreach (GameObject go in gameObjectsToAdd)
+                {
+                    gameObjects.Add(go);
+                }
+                gameObjectsToAdd.Clear();
+            }
         }
 
         /// <summary>
@@ -213,5 +267,7 @@ namespace TankGame
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+
     }
 }

@@ -5,6 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//GameObject tmp = null;
+//                foreach (GameObject bul in inActiveBullets)
+//                {
+//                    foreach (Component comp in bul.GetComponentList)
+//                    {
+//                        if (comp is Bullet)
+//                        {
+//                            if (((Bullet) comp).GetBulletType == bulletType)
+//                            {
+//                                tmp = bul;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    if (tmp != null)
+//                    {
+//                        break;
+//                    }
+//                }
+//                if (tmp != null)
+
 namespace TankGame
 {
 
@@ -89,21 +111,34 @@ namespace TankGame
         /// <param name="enemy"></param>
         public static void CleanUp(GameObject enemy)
         {
-
             enemy.Transform.Position = new Vector2(100, 100);
-            // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
-            ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
-            //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
+            ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
 
-            ((Enemy)enemy.GetComponent("BasicEnemy")).IsAlive = true;
+           
 
 
-            ((Enemy)enemy.GetComponent("BasicEnemy")).CanRelease = true;
+            foreach (var component in enemy.GetComponentList)
+            {
+                if (component is Enemy)
+                {
+                    var tmp = component as Enemy;
 
-            ((Enemy)enemy.GetComponent("BasicEnemy")).Health = Constant.basicEnemyHealth;
+                    tmp.IsAlive = true;
+                    tmp.CanRelease = true;
+
+                    if (component is BasicEnemy)
+                    {
+                        tmp.Health = Constant.basicEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
+
+                    }
+
+
+                }
+            }
 
             activeEnemies.Remove(enemy);
             inActiveEnemies.Add(enemy);

@@ -16,7 +16,7 @@ namespace TankGame
             go.Transform.Position = position;
             go.AddComponent(new SpriteRenderer(go, Constant.basicEnemySpriteSheet, 0));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth,
+            go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
                     Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate));
             go.AddComponent(new Collider(go, Alignment.Enemy));
         }

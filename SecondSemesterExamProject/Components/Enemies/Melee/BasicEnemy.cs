@@ -19,7 +19,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="attackRate"></param>
-        public BasicEnemy(GameObject gameObject, int health, float movementSpeed, float attackRate) : base(gameObject, health, movementSpeed, attackRate)
+        public BasicEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate) : base(gameObject, health, damage, movementSpeed, attackRate)
         {
 
         }
@@ -61,6 +61,10 @@ namespace TankGame
         public override void OnAnimationDone(string animationName)
         {
             base.OnAnimationDone(animationName);
+            if (animationName.Contains("Attack"))
+            {
+                movementSpeed = Constant.basicEnemyMovementSpeed;
+            }
         }
 
         /// <summary>
@@ -78,5 +82,34 @@ namespace TankGame
         {
             base.Die();
         }
+
+        protected override void CheckIfCanAttack(Collider other)
+        {
+
+            base.CheckIfCanAttack(other);
+
+
+        }
+
+        /// <summary>
+        /// Basic Enemy's custom Attack method for attacking vehicles
+        /// </summary>
+        /// <param name="vehicle"></param>
+        protected override void AttackVehicle(Vehicle vehicle)
+        {
+            this.movementSpeed = 10; //Slows enemy down when attacking ( Resets after attackanimation is done)
+            base.AttackVehicle(vehicle);
+        }
+
+        /// <summary>
+        /// Basic Enemy's custon attack method for attacking vehicles
+        /// </summary>
+        /// <param name="tower"></param>
+        protected override void AttackTower(Tower tower)
+        {
+            this.movementSpeed = 0;//Slows enemy down when attacking ( Resets after attackanimation is done)
+            base.AttackTower(tower);
+        }
+
     }
 }

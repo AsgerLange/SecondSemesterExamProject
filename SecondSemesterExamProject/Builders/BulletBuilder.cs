@@ -15,8 +15,21 @@ namespace TankGame
         {
             go = new GameObject();
             go.Transform.Position = position;
-            go.AddComponent(new SpriteRenderer(go, Constant.bulletSheet, 0));
-            go.AddComponent(new Bullet(go, type, rotation));
+
+            switch (type)
+            {
+                case BulletType.BasicBullet:
+                    go.AddComponent(new SpriteRenderer(go, Constant.bulletSheet, 0));
+                    go.AddComponent(new BasicBullet(go, type, rotation));
+                    break;
+                case BulletType.BiggerBullet:
+                    go.AddComponent(new SpriteRenderer(go, Constant.biggerBulletSheet, 0));
+                    go.AddComponent(new BiggerBullet(go, type, rotation));
+                    break;
+                default:
+                    break;
+            }
+
             go.AddComponent(new Collider(go, alignment));
             go.AddComponent(new Animator(go));
 

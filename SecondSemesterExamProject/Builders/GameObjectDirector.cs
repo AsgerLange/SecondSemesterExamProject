@@ -14,6 +14,7 @@ namespace TankGame
 
         private BulletBuilder bulletBuilder;
         private EnemyBuilder enemyBuilder;
+        private TowerBuilder towerBuilder;
         private TerrainBuilder rockBuilder;
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace TankGame
         {
             this.bulletBuilder = new BulletBuilder();
             this.enemyBuilder = new EnemyBuilder();
+            this.towerBuilder = new TowerBuilder();
             this.rockBuilder = new TerrainBuilder();
         }
 
@@ -50,16 +52,7 @@ namespace TankGame
         /// <returns></returns>
         public GameObject Construct(Vector2 position, BulletType type, float rotation, Alignment alignment)
         {
-            switch (type)
-            {
-                case BulletType.BasicBullet:
-                    bulletBuilder.Build(position, type,rotation, alignment);
-                    break;
-
-                default:
-                    break;
-            }
-
+            bulletBuilder.Build(position, type, rotation, alignment);
 
             return bulletBuilder.GetResult(); //returns the bullet that has been build
         }
@@ -84,6 +77,20 @@ namespace TankGame
 
 
             return enemyBuilder.GetResult(); //returns the bullet that has been build
+        }
+        public GameObject Construct(Vector2 position, TowerType type)
+        {
+            switch (type)
+            {
+                case TowerType.BasicTower:
+                    towerBuilder.Build(position, type);
+
+                    break;
+
+                default:
+                    break;
+            }
+            return towerBuilder.GetResult();
         }
 
         /// <summary>
