@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
@@ -14,13 +15,15 @@ namespace TankGame
     {
         //Fields
         private int score;
-        private string name;
+        public static string name = string.Empty;//Contains the string we need to use for player input
         private bool databseState = true;
         Keys[] lastKeys;//The list of all our keys pressed
         KeyboardState lastKeyboardState;//Checks last key pressed
         private float updateStamp;
-        Rectangle textbox;
+        Rectangle textBox;
+        Texture2D theBox;
         SpriteFont font;
+        private string parsedText;
 
         //Properties
         public int GetScore
@@ -28,40 +31,36 @@ namespace TankGame
             get { return score; }
             set { score = value; }
         }
-        public string GetName
-        {
-            get { return name; }
-            set { name = value; }
-        }
+
 
         //Methods
-        public void SetupServer()
-        {
+        //public void SetupServer()
+        //{
 
-            if (databseState == true)
-            {
-                SQLiteConnection.CreateFile("TankGameDatabase.db");
-                databseState = false;
-            }
+        //    if (databseState == true)
+        //    {
+        //        SQLiteConnection.CreateFile("TankGameDatabase.db");
+        //        databseState = false;
+        //    }
 
-        }
-        public void CreateTables()
-        {
-            SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
-            dbConnect.Open();
-            string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
-            string log = "Create table Log (ID varchar, Total int)";
-            string tower = "Create table Tower (TotalKillTowers int, Tower1Kill int, Tower2Kill int, Tower3Kill int, TowerBuild int, TowerDead int)";
-            string player = "Create table Player (TotalKills int)";
-            string enemies = "Create table Enemies (Wave int, TotalKill int, Enemy1Kills int, Enemy2Kills int, Enemy3Kills int)";
-            SQLiteCommand command = new SQLiteCommand(highscore, dbConnect);
-            SQLiteCommand command2 = new SQLiteCommand(log, dbConnect);
-            SQLiteCommand command3 = new SQLiteCommand(tower, dbConnect);
-            SQLiteCommand command4 = new SQLiteCommand(player, dbConnect);
-            SQLiteCommand command5 = new SQLiteCommand(enemies, dbConnect);
-            command.ExecuteNonQuery();
-            dbConnect.Close();
-        }
+        //}
+        //public void CreateTables()
+        //{
+        //    SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
+        //    dbConnect.Open();
+        //    string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
+        //    string log = "Create table Log (ID varchar, Total int)";
+        //    string tower = "Create table Tower (TotalKillTowers int, Tower1Kill int, Tower2Kill int, Tower3Kill int, TowerBuild int, TowerDead int)";
+        //    string player = "Create table Player (TotalKills int)";
+        //    string enemies = "Create table Enemies (Wave int, TotalKill int, Enemy1Kills int, Enemy2Kills int, Enemy3Kills int)";
+        //    SQLiteCommand command = new SQLiteCommand(highscore, dbConnect);
+        //    SQLiteCommand command2 = new SQLiteCommand(log, dbConnect);
+        //    SQLiteCommand command3 = new SQLiteCommand(tower, dbConnect);
+        //    SQLiteCommand command4 = new SQLiteCommand(player, dbConnect);
+        //    SQLiteCommand command5 = new SQLiteCommand(enemies, dbConnect);
+        //    command.ExecuteNonQuery();
+        //    dbConnect.Close();
+        //}
         public virtual void Update()
         {
             PlayerInput();
@@ -97,7 +96,7 @@ namespace TankGame
             lastKeys = keys; //The Keys array here gives its value to the lastKeys variable
         }
 
-        private void HandleKey(float totalGameTime, Keys currentKeys)
+        public void HandleKey(float totalGameTime, Keys currentKeys)
         {
             string playerInputString = currentKeys.ToString();//Makes the currentkeys into a string
             if (currentKeys == Keys.Space)
@@ -106,27 +105,59 @@ namespace TankGame
                 playerInputString = playerInputString.Remove(playerInputString.Length - 1);
             else if (currentKeys == Keys.Enter)
             {
-                playerInputString += GetName;
-                InsertScore();
+                playerInputString += name;
+                //InsertScore();
             }
         }
 
-        public void InsertScore()
-        {
-            SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
-            string insert = "insert into Higscores (name, score) values (" + name + "," + score + ")";
-            SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
-            command.ExecuteNonQuery();
-        }
-        public void LoadScoreToScreen()
-        {
-            string highscore = "select Highscore.Placing, Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
-            SQLiteCommand command = new SQLiteCommand(highscore);
-            SQLiteDataReader highscoreReader = command.ExecuteReader();
-            while (highscoreReader.Read())
-            {
-                //Draw out a highscorelist in the middle of the screen.  
-            }
-        }
+
+        //public virtual void LoadContent(ContentManager contentManager)
+        //{
+        //    theBox = contentManager.Load<Texture2D>("Button");
+        //    font = contentManager.Load<SpriteFont>("spritefont");
+
+        //    parsedText = ParseText(name);
+        //}
+
+        //public void Draw(SpriteBatch spriteBatch)
+        //{
+        //    spriteBatch.Draw(theBox, textBox, Color.White);
+        //    spriteBatch.DrawString(font, name, new Vector2(textBox.X, textBox.Y), Color.Black);
+        //}
+        //private string ParseText(string text)
+        //{
+        //    string line = String.Empty;
+        //    string returnString = String.Empty;
+        //    string[] wordArray = text.Split(' ');
+
+        //    foreach (string word in wordArray)
+        //    {
+        //        if (font.MeasureString(line + word).Length() > textBox.Width)
+        //        {
+        //            returnString = returnString + line + '\n';
+        //            line = string.Empty;
+        //        }
+        //        line = line + word + ' ';
+        //    }
+        //    return returnString + line;
+        //}
+
+        //public void InsertScore()
+        //{
+        //    SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
+        //    string insert = "insert into Higscores (name, score) values (" + name + "," + score + ")";
+        //    SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
+        //    command.ExecuteNonQuery();
+        //}
+        //public void LoadScoreToScreen()
+        //{
+        //    string highscore = "select Highscore.Placing, Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
+        //    SQLiteCommand command = new SQLiteCommand(highscore);
+        //    SQLiteDataReader highscoreReader = command.ExecuteReader();
+        //    while (highscoreReader.Read())
+        //    {
+        //        //Draw out a highscorelist in the middle of the screen.  
+        //    }
+        //}
     }
 }
