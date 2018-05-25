@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace TankGame
 {
@@ -12,6 +13,8 @@ namespace TankGame
     class GameWorld : Game
     {
         public static readonly object colliderKey = new object();
+        public static ManualResetEvent mainReset = new ManualResetEvent(false);
+        public static ManualResetEvent enemyPoolReset = new ManualResetEvent(false);
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
@@ -209,7 +212,7 @@ namespace TankGame
             {
                 go.Update();
             }
-            
+
             foreach (var go in BulletPool.ActiveBullets)
             {
                 go.Update();

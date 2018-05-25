@@ -131,9 +131,9 @@ namespace TankGame
         {
             //Reset all bullet attributes
             bullet.Transform.Position = new Vector2(100, 100);
-          //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
+            //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
-          //GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
+            //GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
 
             foreach (var component in bullet.GetComponentList)
             {
@@ -150,23 +150,16 @@ namespace TankGame
                         tmp.LifeSpan = Constant.basicBulletLifeSpan;
                         tmp.BulletDamage = Constant.basicBulletDmg;
                         tmp.MovementSpeed = Constant.basicBulletMovementSpeed;
-
-
                     }
                     if (component is BiggerBullet)
                     {
-
                         tmp = component as BiggerBullet;
                         tmp.LifeSpan = Constant.biggerBulletLifeSpan;
                         tmp.BulletDamage = Constant.biggerBulletDmg;
                         tmp.MovementSpeed = Constant.biggerBulletMovementSpeed;
-
                     }
-
-
                 }
             }
-
             ActiveBullets.Remove(bullet);
             inActiveBullets.Add(bullet);
         }

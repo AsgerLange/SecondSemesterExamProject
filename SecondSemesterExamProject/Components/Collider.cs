@@ -93,21 +93,28 @@ namespace TankGame
         {
             get
             {
-                if (spriteRenderer.UseRect)
+                if (spriteRenderer != null)
                 {
-                    return new Circle
-                    (new Vector2(
-                        GameObject.Transform.Position.X,
-                        GameObject.Transform.Position.Y),
-                        (spriteRenderer.Rectangle.Width / 2) * spriteRenderer.Scale);
+                    if (spriteRenderer.UseRect)
+                    {
+                        return new Circle
+                        (new Vector2(
+                            GameObject.Transform.Position.X,
+                            GameObject.Transform.Position.Y),
+                            (spriteRenderer.Rectangle.Width / 2) * spriteRenderer.Scale);
+                    }
+                    else
+                    {
+                        return new Circle
+                        (new Vector2(
+                            GameObject.Transform.Position.X,
+                            GameObject.Transform.Position.Y),
+                            (spriteRenderer.Sprite.Width / 2) * spriteRenderer.Scale);
+                    }
                 }
-                else
-                {
-                    return new Circle
-                    (new Vector2(
-                        GameObject.Transform.Position.X,
-                        GameObject.Transform.Position.Y),
-                        (spriteRenderer.Sprite.Width / 2) * spriteRenderer.Scale);
+                else//failure fallback circle if spriterenderer is null to awoid crash in some situations
+                {   //new collisionbox will be given next check
+                    return new Circle(new Vector2(-1000, -1000), 1);
                 }
             }
         }
