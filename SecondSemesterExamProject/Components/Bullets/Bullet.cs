@@ -20,6 +20,7 @@ namespace TankGame
         protected float timeStamp;
         protected SpriteRenderer spriteRenderer;
         protected Animator animator;
+        protected bool isRotated = false;
 
         #region Attributes for object pool
         protected bool canRelease;
@@ -38,6 +39,11 @@ namespace TankGame
         {
             get { return dirRotation; }
             set { dirRotation = value; }
+        }
+        public bool IsRotated
+        {
+            get { return isRotated; }
+            set { isRotated = value; }
         }
         /// <summary>
         /// The amount of seconds a bullet should survive
@@ -73,6 +79,7 @@ namespace TankGame
 
             switch (type)
             {
+
                 case BulletType.BasicBullet:
                     this.movementSpeed = Constant.basicBulletMovementSpeed;
                     this.lifeSpan = Constant.basicBulletLifeSpan;
@@ -130,9 +137,12 @@ namespace TankGame
             //Translates movemement
             TranslateMovement(translation);
 
-            //Rotates the bullet to fit its direction
-            rotation = GetDegreesFromDestination(translation);
-
+            if (isRotated == false)
+            {
+                //Rotates the bullet to fit its direction
+                rotation = GetDegreesFromDestination(translation);
+                isRotated = true;
+            }
         }
 
         /// <summary>

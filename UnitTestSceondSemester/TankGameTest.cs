@@ -9,12 +9,12 @@ namespace UnitTestSceondSemester
     [TestClass]
     public class TankGameTest
     {
-        
+
 
         [TestInitialize]
         public void TestStart()
         {
-         
+
         }
 
         [TestMethod]
@@ -26,21 +26,21 @@ namespace UnitTestSceondSemester
         }
 
         [TestMethod]
-               
-        public void GameObjectHasTransform() 
+
+        public void GameObjectHasTransform()
         {
             GameObject go;
 
             go = new GameObject(); //Gameobject constructor adds a "Transform" component
-            
+
             Assert.IsTrue(go.GetComponent("Transform") is Transform);
         }
         [TestMethod]
         public void ObjectDirectorBuildBullet()
         {
-         //   Component test = GameObjectDirector.Instance.Construct(Vector2.Zero,BulletType.BaiscBullet,0,Alignment.Friendly);
+            Component test = GameObjectDirector.Instance.Construct(Vector2.Zero, BulletType.BasicBullet, 0, Alignment.Friendly);
 
-            //Assert.IsTrue(test.GameObject.GetComponent("Bullet") is Bullet);
+            Assert.IsTrue(test.GameObject.GetComponent("Bullet") is Bullet);
         }
         public void PlayerTakesDamage()
         {
@@ -57,7 +57,7 @@ namespace UnitTestSceondSemester
         public void CanCreateBullet() //Test if the damage of the bullet does that amount
         {
 
-       //     BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BaiscBullet, 0);
+            BulletPool.CreateBullet(Vector2.Zero, Alignment.Friendly, BulletType.BasicBullet, 0);
 
             Assert.IsTrue(BulletPool.ActiveBullets.Count > 0);
 

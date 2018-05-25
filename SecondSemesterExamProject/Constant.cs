@@ -22,9 +22,11 @@ namespace TankGame
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
+        public static readonly string tankSpriteSheet2 = "PlayerTank2";
+
         public static readonly float tankMoveSpeed = 100;
-        public static readonly float tankFireRate = 1f;
-        public static readonly int tankHealth = 1000;
+        public static readonly float tankFireRate = 0.7f;
+        public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
         public static readonly int tankStartGold = 100;
         public static readonly BulletType tankAmmo = BulletType.BiggerBullet;

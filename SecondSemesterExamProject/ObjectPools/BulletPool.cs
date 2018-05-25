@@ -142,7 +142,7 @@ namespace TankGame
                     var tmp = component as Bullet;
 
                     tmp.DirRotation = 0;
-
+                    tmp.IsRotated = false;
 
                     if (component is BasicBullet)
                     {
