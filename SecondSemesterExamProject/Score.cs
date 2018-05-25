@@ -15,7 +15,7 @@ namespace TankGame
     {
         //Fields
         private int score;
-        public static string name = string.Empty;//Contains the string we need to use for player input
+        private string name = string.Empty;//Contains the string we need to use for player input
         private bool databseState = true;
         Keys[] lastKeys;//The list of all our keys pressed
         KeyboardState lastKeyboardState;//Checks last key pressed
@@ -24,6 +24,8 @@ namespace TankGame
         Texture2D theBox;
         SpriteFont font;
         private string parsedText;
+        private double timer;
+       
 
         //Properties
         public int GetScore
@@ -32,7 +34,10 @@ namespace TankGame
             set { score = value; }
         }
 
-
+        public Score()
+        {
+            textBox = new Rectangle(20,20,200,50);
+        }
         //Methods
         //public void SetupServer()
         //{
@@ -61,12 +66,7 @@ namespace TankGame
         //    command.ExecuteNonQuery();
         //    dbConnect.Close();
         //}
-        public virtual void Update()
-        {
-            PlayerInput();
-        }
-
-        public void PlayerInput()
+        public virtual void Update(GameTime gameTime)
         {
             //Get the current keyboard state and keys that are pressed
             KeyboardState keyboardState = Keyboard.GetState();
@@ -79,24 +79,25 @@ namespace TankGame
                     //If we have pressed the same key twice, wait atleast 125ms before adding it again
                     if (lastKeys.Contains(currentKey))
                     {
-                        if ((GameWorld.Instance.TotalGameTime > updateStamp+0.50))
-                        {
-                            HandleKey(GameWorld.Instance.TotalGameTime, currentKey);
-                            updateStamp = GameWorld.Instance.TotalGameTime;
-                        }
+                        if ((gameTime.TotalGameTime.TotalMilliseconds - timer > 125))
+                            HandleKey(gameTime, currentKey);
                     }
                     //If we press a new key, add it
                     else if (!lastKeys.Contains(currentKey))
-                        HandleKey(GameWorld.Instance.TotalGameTime, currentKey);
+                        HandleKey(gameTime, currentKey);
                 }
+            
+            
             }
-
             //Save the last keys and pressed keys array
             lastKeyboardState = keyboardState; //Puts the last keyboard state into the variable
             lastKeys = keys; //The Keys array here gives its value to the lastKeys variable
+
         }
 
-        public void HandleKey(float totalGameTime, Keys currentKeys)
+
+
+        public void HandleKey(GameTime gameTime, Keys currentKeys)
         {
             string playerInputString = currentKeys.ToString();//Makes the currentkeys into a string
             if (currentKeys == Keys.Space)
@@ -108,56 +109,58 @@ namespace TankGame
                 playerInputString += name;
                 //InsertScore();
             }
+            timer = gameTime.TotalGameTime.TotalMilliseconds;
         }
 
 
-        //public virtual void LoadContent(ContentManager contentManager)
-        //{
-        //    theBox = contentManager.Load<Texture2D>("Button");
-        //    font = contentManager.Load<SpriteFont>("spritefont");
+        public virtual void LoadContent(ContentManager contentManager)
+        {
+            theBox = contentManager.Load<Texture2D>("Button");
+            font = contentManager.Load<SpriteFont>("stat");
 
-        //    parsedText = ParseText(name);
-        //}
+            parsedText = ParseText(name);
+            
+        }
 
         //public void Draw(SpriteBatch spriteBatch)
         //{
-        //    spriteBatch.Draw(theBox, textBox, Color.White);
+        //    spriteBatch.Draw(theBox, textBox, null,Color.White,0,Vector2.Zero,SpriteEffects.None,0.4f);
         //    spriteBatch.DrawString(font, name, new Vector2(textBox.X, textBox.Y), Color.Black);
         //}
-        //private string ParseText(string text)
-        //{
-        //    string line = String.Empty;
-        //    string returnString = String.Empty;
-        //    string[] wordArray = text.Split(' ');
+        private string ParseText(string text)
+        {
+            string line = String.Empty;
+            string returnString = String.Empty;
+            string[] wordArray = text.Split(' ');
 
-        //    foreach (string word in wordArray)
-        //    {
-        //        if (font.MeasureString(line + word).Length() > textBox.Width)
-        //        {
-        //            returnString = returnString + line + '\n';
-        //            line = string.Empty;
-        //        }
-        //        line = line + word + ' ';
-        //    }
-        //    return returnString + line;
-        //}
+            foreach (string word in wordArray)
+            {
+                if (font.MeasureString(line + word).Length() > textBox.Width)
+                {
+                    returnString = returnString + line + '\n';
+                    line = string.Empty;
+                }
+                line = line + word + ' ';
+            }
+            return returnString + line;
+        }
 
-        //public void InsertScore()
-        //{
-        //    SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
-        //    string insert = "insert into Higscores (name, score) values (" + name + "," + score + ")";
-        //    SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
-        //    command.ExecuteNonQuery();
-        //}
-        //public void LoadScoreToScreen()
-        //{
-        //    string highscore = "select Highscore.Placing, Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
-        //    SQLiteCommand command = new SQLiteCommand(highscore);
-        //    SQLiteDataReader highscoreReader = command.ExecuteReader();
-        //    while (highscoreReader.Read())
-        //    {
-        //        //Draw out a highscorelist in the middle of the screen.  
-        //    }
-        //}
+        public void InsertScore()
+        {
+            SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
+            string insert = "insert into Higscores (name, score) values (" + name + "," + score + ")";
+            SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
+            command.ExecuteNonQuery();
+        }
+        public void LoadScoreToScreen()
+        {
+            string highscore = "select Highscore.Placing, Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
+            SQLiteCommand command = new SQLiteCommand(highscore);
+            SQLiteDataReader highscoreReader = command.ExecuteReader();
+            while (highscoreReader.Read())
+            {
+                //Draw out a highscorelist in the middle of the screen.  
+            }
+        }
     }
 }
