@@ -33,7 +33,6 @@ namespace TankGame
                 dir.Normalize();
 
                 other.GameObject.Transform.Translate(dir * force);
-                Console.WriteLine("push: " + dir);
             }
         }
 
@@ -43,10 +42,9 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-            float force = Constant.pushForce;
-
             if (other.GetAlignment != Alignment.Neutral)
             {
+                float force = Constant.pushForce;
                 Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
                 dir.Normalize();
 

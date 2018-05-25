@@ -52,12 +52,7 @@ namespace UnitTestSceondSemester
 
 
         }
-       
-        public void PlayerShoot()
-        {
 
-
-        }
         [TestMethod]
         public void CanCreateBullet() //Test if the damage of the bullet does that amount
         {
@@ -84,16 +79,6 @@ namespace UnitTestSceondSemester
 
         }
 
-        public void EnemyDoDamage() //Test if enemy lowers the health of player to the amount that we know
-        {
-
-
-        }
-        public void Collision() //To test if collision happends
-        {
-
-
-        }
         public void EnemyView() //For testing if enemy see's something that they will move towards it
         {
 
