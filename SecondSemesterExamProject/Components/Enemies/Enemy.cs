@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, BasicEliteEnemy };
+    enum EnemyType { BasicEnemy, };
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {

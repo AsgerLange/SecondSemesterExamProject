@@ -65,12 +65,31 @@ namespace TankGame
         /// <returns></returns>
         public GameObject Construct(Vector2 position, EnemyType type)
         {
-            enemyBuilder.Build(position, type);
+            switch (type)
+            {
+                case EnemyType.BasicEnemy:
+                    enemyBuilder.Build(position, type);
+                    break;
+
+                default:
+                    break;
+            }
+
+
             return enemyBuilder.GetResult(); //returns the bullet that has been build
         }
         public GameObject Construct(Vector2 position, TowerType type)
         {
-            towerBuilder.Build(position, type);
+            switch (type)
+            {
+                case TowerType.BasicTower:
+                    towerBuilder.Build(position, type);
+
+                    break;
+
+                default:
+                    break;
+            }
             return towerBuilder.GetResult();
         }
 

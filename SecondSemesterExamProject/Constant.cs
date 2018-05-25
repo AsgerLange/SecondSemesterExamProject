@@ -18,7 +18,7 @@ namespace TankGame
         #endregion
 
         #region Vehicles
-        public static readonly float buildTowerCoolDown = 0.5f;
+        public static readonly float buildTowerCoolDown = 2;
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
@@ -76,13 +76,7 @@ namespace TankGame
         public static readonly float basicEnemyMovementSpeed = 25;
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
-        #endregion
-        #region BasicEliteEnemy
-        public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
-        public static readonly int basicEliteEnemyHealth = 500;
-        public static readonly float basicEliteEnemyMovementSpeed = 30;
-        public static readonly float basicEliteEnemyAttackRate = 0.7f;
-        public static readonly int basicEliteEnemyDamage = 20;
+
         #endregion
         #endregion
 
