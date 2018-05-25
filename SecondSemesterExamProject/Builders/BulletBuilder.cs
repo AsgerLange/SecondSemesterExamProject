@@ -38,6 +38,7 @@ namespace TankGame
 
         public GameObject GetResult()
         {
+            go.LoadContent(GameWorld.Instance.Content);
             return go;
         }
     }

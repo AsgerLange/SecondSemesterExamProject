@@ -3,35 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-
-
-//GameObject tmp = null;
-//                foreach (GameObject bul in inActiveBullets)
-//                {
-//                    foreach (Component comp in bul.GetComponentList)
-//                    {
-//                        if (comp is Bullet)
-//                        {
-//                            if (((Bullet) comp).GetBulletType == bulletType)
-//                            {
-//                                tmp = bul;
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    if (tmp != null)
-//                    {
-//                        break;
-//                    }
-//                }
-//                if (tmp != null)
 
 namespace TankGame
 {
 
-    static class EnemyPool
+    class EnemyPool
     {
+        public static readonly object activeKey = new object();
+        public static readonly object inActiveKey = new object();
+        public static readonly object releaseKey = new object();
+        //Private instance of the EnemyPool
+        private static EnemyPool instance;
+        //The enemyPool is in its own thread
+        private Thread enemyPoolThread;
         //List containing active Enemies
         private static List<GameObject> inActiveEnemies = new List<GameObject>();
 
@@ -39,17 +25,110 @@ namespace TankGame
         private static List<GameObject> activeEnemies = new List<GameObject>();
 
         //List containing enemies to be released
-        public static List<GameObject> releaseList = new List<GameObject>();
+        private static List<GameObject> releaseList = new List<GameObject>();
 
+        public static EnemyPool Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new EnemyPool();
+                }
+                return instance;
+            }
+        }
 
+        /// <summary>
+        /// creates the enemyPool and makes it its own thread
+        /// </summary>
+        private EnemyPool()
+        {
+            enemyPoolThread = new Thread(Update)
+            {
+                IsBackground = true
+            };
+            enemyPoolThread.Start();
+        }
+
+        /// <summary>
+        /// keeps the enemies updated
+        /// </summary>
+        private void Update()
+        {
+            while (GameWorld.Instance.gameRunning)
+            {
+                GameWorld.barrier.SignalAndWait();
+                lock (activeKey)
+                {
+                    foreach (var go in ActiveEnemies)
+                    {
+                        go.Update();
+                    }
+                }
+                Release();
+            }
+        }
 
         /// <summary>
         /// Get/set property for the activeEnemies list
         /// </summary>
-        public static List<GameObject> ActiveEnemies
+        public List<GameObject> ActiveEnemies
         {
-            get { return activeEnemies; }
-            set { activeEnemies = value; }
+            get
+            {
+                return activeEnemies;
+
+            }
+            set
+            {
+                lock (activeKey)
+                {
+                    activeEnemies = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get/set property for the activeEnemies list
+        /// </summary>
+        private List<GameObject> InActiveEnemies
+        {
+            get
+            {
+                lock (inActiveKey)
+                {
+                    return inActiveEnemies;
+                }
+            }
+            set
+            {
+                lock (inActiveKey)
+                {
+                    inActiveEnemies = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get/set property for the releaseList list
+        /// </summary>
+        public List<GameObject> ReleaseList
+        {
+            get
+            {
+                lock (releaseKey)
+                {
+                    return releaseList;
+                }
+            }
+            set
+            {
+                lock (releaseKey)
+                {
+                    releaseList = value;
+                }
+            }
         }
 
         /// <summary>
@@ -58,37 +137,73 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="enemyType"></param>
         /// <returns></returns>
-        public static GameObject CreateEnemy(Vector2 position, EnemyType enemyType)
+        public GameObject CreateEnemy(Vector2 position, EnemyType enemyType)
         {
             if (inActiveEnemies.Count > 0)
             {
-                GameObject tmp;
+                GameObject tmp = null;
+                lock (inActiveKey)
+                {
+                    foreach (GameObject en in inActiveEnemies)
+                    {
+                        foreach (Component comp in en.GetComponentList)
+                        {
+                            if (comp is Enemy)
+                            {
+                                if (((Enemy)comp).GetEnemyType == enemyType)
+                                {
+                                    tmp = en;
+                                    break;
+                                }
+                            }
+                        }
+                        if (tmp != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (tmp != null)
+                {
+                    ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
 
-                tmp = inActiveEnemies[0];
+                    inActiveEnemies.Remove(tmp);
 
-                ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+                    tmp.LoadContent(GameWorld.Instance.Content);
 
-                inActiveEnemies.Remove(tmp);
+                    lock (GameWorld.colliderKey)
+                    {
+                        GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                    }
+                    tmp.Transform.Position = position;
 
-                tmp.LoadContent(GameWorld.Instance.Content);
+                    lock (activeKey)
+                    {
+                        ActiveEnemies.Add(tmp);
+                    }
 
-                GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                    return tmp;
+                }
+                else
+                {
+                    tmp = GameObjectDirector.Instance.Construct(position, enemyType);
+                    lock (activeKey)
+                    {
+                        ActiveEnemies.Add(tmp);
+                    }
 
-
-                tmp.Transform.Position = position;
-
-                activeEnemies.Add(tmp);
-
-                return tmp;
+                    return tmp;
+                }
             }
             else
             {
                 GameObject tmp;
 
-
                 tmp = GameObjectDirector.Instance.Construct(position, enemyType);
-                tmp.LoadContent(GameWorld.Instance.Content);
-                activeEnemies.Add(tmp);
+                lock (activeKey)
+                {
+                    ActiveEnemies.Add(tmp);
+                }
 
                 return tmp;
             }
@@ -98,7 +213,7 @@ namespace TankGame
         /// </summary>
         /// <param name="enemy"></param>
         /// <returns></returns>
-        public static GameObject ReleaseEnemy(GameObject enemy)
+        public GameObject ReleaseEnemy(GameObject enemy)
         {
             CleanUp(enemy);
 
@@ -109,7 +224,7 @@ namespace TankGame
         /// Cleans up the enemy (resets attributes)
         /// </summary>
         /// <param name="enemy"></param>
-        public static void CleanUp(GameObject enemy)
+        public void CleanUp(GameObject enemy)
         {
             enemy.Transform.Position = new Vector2(100, 100);
 
@@ -117,7 +232,7 @@ namespace TankGame
 
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
 
-           
+
 
 
             foreach (var component in enemy.GetComponentList)
@@ -135,25 +250,26 @@ namespace TankGame
                         tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
 
                     }
-
-
                 }
             }
-
-            activeEnemies.Remove(enemy);
-            inActiveEnemies.Add(enemy);
+            lock (activeKey)
+            {
+                ActiveEnemies.Remove(enemy);
+            }
+            InActiveEnemies.Add(enemy);
         }
 
         /// <summary>
         /// Calls ReleaseEnemy() on all enemies in ReleaseList
         /// </summary>
-        public static void ReleaseList()
+        public void Release()
         {
-
-            foreach (GameObject go in releaseList)
+            lock (releaseKey)
             {
-
-                ReleaseEnemy(go);
+                foreach (GameObject go in releaseList)
+                {
+                    ReleaseEnemy(go);
+                }
             }
             releaseList.Clear();
         }

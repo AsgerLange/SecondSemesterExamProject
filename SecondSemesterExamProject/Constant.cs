@@ -45,7 +45,7 @@ namespace TankGame
         #region BasicTower
         public static readonly int basicTowerPrice = 100;
         public static readonly string basicTowerSpriteSheet = "TowerBasic";
-        public static readonly float basicTowerFireRate =1;
+        public static readonly float basicTowerFireRate = 1;
         public static readonly int basicTowerHealth = 100;
         public static readonly BulletType basicTowerBulletType = BulletType.BasicBullet;
         public static readonly int basicTowerAttackRange = 150;
@@ -81,6 +81,7 @@ namespace TankGame
         #endregion
 
         #region Terrain
+        public static readonly int spawnZoneSize = 100;
         public static readonly string rockImage = "TerrainRock";
         public static readonly int pushForce = 2;
         #endregion

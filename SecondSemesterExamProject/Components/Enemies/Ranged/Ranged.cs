@@ -9,7 +9,7 @@ namespace TankGame
 {
     class Ranged : Enemy
     {
-        public Ranged(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate) : base(gameObject, health, damage, movementSpeed, attackRate)
+        public Ranged(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType)
         {
         }
 
