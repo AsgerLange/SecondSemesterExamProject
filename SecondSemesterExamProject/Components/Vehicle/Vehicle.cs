@@ -29,6 +29,7 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
         protected float builtTimeStamp;
+        protected bool isAlive;
 
         protected bool isPlayingAnimation = false;
 
@@ -77,7 +78,7 @@ namespace TankGame
             this.money = money;
             this.cannonAmmo = cannonAmmo;
             this.tower = tower;
-
+            isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
         }
@@ -87,8 +88,10 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
-            Console.WriteLine(new NotImplementedException("die Vehicle"));
+            animator.PlayAnimation("Death");
+            isAlive = false;
+            isPlayingAnimation = true;
+
         }
 
         /// <summary>
@@ -96,11 +99,14 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
-            Movement(); //Checks if vehicle is moving, and moves if so
+            if (isAlive)
+            {
+                Movement(); //Checks if vehicle is moving, and moves if so
 
-            Shoot(); //same for shooting
+                Shoot(); //same for shooting
 
-            BuildTower(); //and building tower
+                BuildTower(); //and building tower
+            }
         }
 
         /// <summary>
@@ -133,11 +139,11 @@ namespace TankGame
                 if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
                     || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
                 {
-                    
+
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
                         cannonAmmo, rotation + (rnd.Next(-3, 3)));
                     animator.PlayAnimation("Shoot");
-                spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
+                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
                     isPlayingAnimation = true;
                     shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
                 }
@@ -153,7 +159,7 @@ namespace TankGame
 
             if ((builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
             {
-               
+
                 if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
                     || (keyState.IsKeyDown(Keys.Back) && control == Controls.UDLR))
                 {
@@ -278,6 +284,11 @@ namespace TankGame
             {
                 isPlayingAnimation = false;
                 spriteRenderer.Offset = Vector2.Zero;
+            }
+            if (animationName == "Death")
+            {
+                isPlayingAnimation = false;
+                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             }
             if (isPlayingAnimation == false)
             {
