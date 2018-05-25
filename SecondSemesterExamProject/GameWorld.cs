@@ -13,8 +13,7 @@ namespace TankGame
     class GameWorld : Game
     {
         public static readonly object colliderKey = new object();
-        public static ManualResetEvent mainReset = new ManualResetEvent(false);
-        public static ManualResetEvent enemyPoolReset = new ManualResetEvent(false);
+        public static Barrier barrier;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
@@ -125,6 +124,12 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //secure that enemyPool has been started
+            EnemyPool ep = EnemyPool.Instance;
+
+            //initializes the barrier
+            barrier = new Barrier(2);
+
             //adds objects to the map
             map = new Map();
 
@@ -194,10 +199,7 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
+            barrier.SignalAndWait();
             // Updates the Time
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;

@@ -58,6 +58,7 @@ namespace TankGame
         {
             while (GameWorld.Instance.gameRunning)
             {
+                GameWorld.barrier.SignalAndWait();
                 lock (activeKey)
                 {
                     foreach (var go in ActiveEnemies)
@@ -66,7 +67,6 @@ namespace TankGame
                     }
                 }
                 Release();
-                Thread.Sleep(16);
             }
         }
 
@@ -232,7 +232,7 @@ namespace TankGame
 
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
 
-           
+
 
 
             foreach (var component in enemy.GetComponentList)
