@@ -12,6 +12,7 @@ namespace TankGame
 
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
+        Random rnd = new Random();
         protected int health;
         protected float attackRate;
         protected float attackRange;
@@ -69,6 +70,9 @@ namespace TankGame
             Shoot();
         }
 
+        /// <summary>
+        /// Standard shooting behaviour for all towers
+        /// </summary>
         protected virtual void Shoot()
         {
             if (shootTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
@@ -81,7 +85,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation);
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation + (rnd.Next(-3, 3)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }

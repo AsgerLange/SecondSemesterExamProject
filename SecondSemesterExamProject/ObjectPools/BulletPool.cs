@@ -81,8 +81,6 @@ namespace TankGame
 
                     ((Bullet)bullet).DirRotation = directionRotation;
 
-                    ((Bullet)bullet).LifeSpan = Constant.basicBulletLifeSpan;
-
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 
                     lock (GameWorld.colliderKey)
@@ -133,15 +131,43 @@ namespace TankGame
         {
             //Reset all bullet attributes
             bullet.Transform.Position = new Vector2(100, 100);
-            // ((Collider)bullet.GetComponent("Collider")).EmptyLists();
+          //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
-            lock (GameWorld.colliderKey)
-            {
-                GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
-            }
-            //((Bullet)bullet.GetComponent("Bullet")).Speed = Constant.baseProjectileSpeed;
+          //GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
 
-            activeBullets.Remove(bullet);
+            foreach (var component in bullet.GetComponentList)
+            {
+                if (component is Bullet)
+                {
+                    var tmp = component as Bullet;
+
+                    tmp.DirRotation = 0;
+                    tmp.IsRotated = false;
+
+                    if (component is BasicBullet)
+                    {
+                        tmp = component as BasicBullet;
+                        tmp.LifeSpan = Constant.basicBulletLifeSpan;
+                        tmp.BulletDamage = Constant.basicBulletDmg;
+                        tmp.MovementSpeed = Constant.basicBulletMovementSpeed;
+
+
+                    }
+                    if (component is BiggerBullet)
+                    {
+
+                        tmp = component as BiggerBullet;
+                        tmp.LifeSpan = Constant.biggerBulletLifeSpan;
+                        tmp.BulletDamage = Constant.biggerBulletDmg;
+                        tmp.MovementSpeed = Constant.biggerBulletMovementSpeed;
+
+                    }
+
+
+                }
+            }
+
+            ActiveBullets.Remove(bullet);
             inActiveBullets.Add(bullet);
         }
 

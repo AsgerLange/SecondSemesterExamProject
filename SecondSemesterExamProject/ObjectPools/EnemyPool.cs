@@ -232,6 +232,8 @@ namespace TankGame
 
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
 
+           
+
 
             foreach (var component in enemy.GetComponentList)
             {

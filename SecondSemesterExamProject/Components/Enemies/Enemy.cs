@@ -43,7 +43,7 @@ namespace TankGame
             {
                 health = value;
                 if (health <= 0)
-                {
+                  {
                     isAlive = false;
                     Die();
                 }

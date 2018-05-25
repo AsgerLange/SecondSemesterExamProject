@@ -20,6 +20,7 @@ namespace TankGame
         protected float timeStamp;
         protected SpriteRenderer spriteRenderer;
         protected Animator animator;
+        protected bool isRotated = false;
 
         #region Attributes for object pool
         protected bool canRelease;
@@ -39,6 +40,11 @@ namespace TankGame
             get { return dirRotation; }
             set { dirRotation = value; }
         }
+        public bool IsRotated
+        {
+            get { return isRotated; }
+            set { isRotated = value; }
+        }
         /// <summary>
         /// The amount of seconds a bullet should survive
         /// </summary>
@@ -56,12 +62,24 @@ namespace TankGame
             set { timeStamp = value; }
         }
 
+        public float MovementSpeed
+        {
+            get { return movementSpeed; }
+            set { movementSpeed = value; }
+        }
+
+        public int BulletDamage
+        {
+            get { return bulletDmg; }
+            set { bulletDmg = value; }
+        }
         public Bullet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject)
         {
             canRelease = true;
 
             switch (type)
             {
+
                 case BulletType.BasicBullet:
                     this.movementSpeed = Constant.basicBulletMovementSpeed;
                     this.lifeSpan = Constant.basicBulletLifeSpan;
@@ -119,9 +137,12 @@ namespace TankGame
             //Translates movemement
             TranslateMovement(translation);
 
-            //Rotates the bullet to fit its direction
-            rotation = GetDegreesFromDestination(translation);
-
+            if (isRotated == false)
+            {
+                //Rotates the bullet to fit its direction
+                rotation = GetDegreesFromDestination(translation);
+                isRotated = true;
+            }
         }
 
         /// <summary>
@@ -243,7 +264,7 @@ namespace TankGame
                                 }
                             }
                             DestroyBullet();
-                            canRelease = false;
+
                         }
                     }
                 }
@@ -255,8 +276,8 @@ namespace TankGame
         /// </summary>
         public void DestroyBullet()
         {
+            canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);
-
         }
     }
 }
