@@ -31,6 +31,17 @@ namespace TankGame
         public static readonly int tankStartGold = 100;
         public static readonly BulletType tankAmmo = BulletType.BiggerBullet;
         #endregion
+        #region Plane
+        public static readonly string planeSpriteSheet = "PlayerTank";
+        public static readonly string planeSpriteSheet2 = "PlayerTank2";
+
+        public static readonly float planeMoveSpeed = 200;
+        public static readonly float planeFireRate = 0.3f;
+        public static readonly int planeHealth = 500;
+        public static readonly float planeRotateSpeed = 1.5F;
+        public static readonly int planeStartGold = 100;
+        public static readonly BulletType planeAmmo = BulletType.BasicBullet;
+        #endregion;
         #endregion
 
         #region Tower

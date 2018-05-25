@@ -212,25 +212,46 @@ namespace TankGame
         /// <returns></returns>
         protected Vector2 Move(Vector2 translation)
         {
+
             KeyboardState keyState = Keyboard.GetState();
-            if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
+            if (!(this.GameObject.GetComponent("Plane") is Plane))
+            {
+
+
+                if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
+                    || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
+                {
+                    translation += new Vector2(0, -1);
+                    if (isPlayingAnimation == false)
+                    {
+                        animator.PlayAnimation("MoveForward");
+                    }
+                }
+                else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
+                    || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
+                {
+                    translation += new Vector2(0, 1);
+                    if (isPlayingAnimation == false)
+                    {
+                        animator.PlayAnimation("MoveBackward");
+
+                    }
+                }
+            }
+            else
             {
                 translation += new Vector2(0, -1);
                 if (isPlayingAnimation == false)
                 {
                     animator.PlayAnimation("MoveForward");
                 }
-            }
-            else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
-            {
-                translation += new Vector2(0, 1);
-                if (isPlayingAnimation == false)
+                if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
+                    || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
                 {
-                    animator.PlayAnimation("MoveBackward");
+                    translation += new Vector2(0, 0.4f);
 
                 }
+
             }
             return translation;
         }

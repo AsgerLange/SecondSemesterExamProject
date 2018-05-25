@@ -1,26 +1,25 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace TankGame
 {
-    class Tank : Vehicle
+    class Plane : Vehicle
     {
         /// <summary>
-        /// Creates the tank
+        /// Creates the Pláne
         /// </summary>
         /// <param name="gameObject"></param>
         /// <param name="control"></param>
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Tank(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money, 
+        public Plane(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
             BulletType cannonAmmo, TowerType tower) : base(gameObject, control, health, movementSpeed, fireRate, rotateSpeed, money, cannonAmmo, tower)
         {
 
@@ -66,6 +65,26 @@ namespace TankGame
         protected override void Die()
         {
             base.Die();
+        }
+
+        protected override void Shoot()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            if ((shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+            {
+                if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
+                    || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
+                {
+
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
+                        cannonAmmo, rotation + (GameWorld.Instance.Rnd.Next(-5, 5)));
+                    animator.PlayAnimation("Shoot");
+                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
+                    isPlayingAnimation = true;
+                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                }
+            }
         }
     }
 }
