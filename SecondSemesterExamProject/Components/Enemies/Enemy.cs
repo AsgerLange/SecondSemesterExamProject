@@ -283,21 +283,25 @@ namespace TankGame
         {
             if (IsAlive)
             {
-
-                if (other.GetAlignment != Alignment.Neutral)
+                if (!(other.GameObject.GetComponent("Plane") is Plane))
                 {
-                    if (other.GetAlignment == Alignment.Friendly)
-                    {
-                        CheckIfCanAttack(other);
-                    }
-                    else if (other.GetAlignment == Alignment.Enemy)
-                    {
-                        float force = Constant.pushForce;
 
-                        Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                        dir.Normalize();
 
-                        other.GameObject.Transform.Translate(dir * force);
+                    if (other.GetAlignment != Alignment.Neutral)
+                    {
+                        if (other.GetAlignment == Alignment.Friendly)
+                        {
+                            CheckIfCanAttack(other);
+                        }
+                        else if (other.GetAlignment == Alignment.Enemy)
+                        {
+                            float force = Constant.pushForce;
+
+                            Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                            dir.Normalize();
+
+                            other.GameObject.Transform.Translate(dir * force);
+                        }
                     }
                 }
             }
