@@ -31,7 +31,7 @@ namespace TankGame
         Texture2D theBox;
         SpriteFont font;
         private Random rnd = new Random();
-        Score score;
+        //Score score;
 
 
         //Background
@@ -179,7 +179,7 @@ namespace TankGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            score.LoadContent(Content);
+            //score.LoadContent(Content);
             backGround = Content.Load<Texture2D>("testBackground");
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -233,7 +233,7 @@ namespace TankGame
             RemoveObjects();
 
             //handles score funktions
-            score.Update();
+            //score.Update();
 
             base.Update(gameTime);
         }
@@ -301,7 +301,7 @@ namespace TankGame
             spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
 
             //draw score
-            score.Draw(spriteBatch);
+            //score.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

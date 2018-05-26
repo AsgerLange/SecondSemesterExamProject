@@ -79,6 +79,13 @@ namespace TankGame
         #endregion;
         #endregion;
 
+        #region Weapons
+        public readonly static float basicWeaponFireRate = 0.2f;
+        public readonly static int basicWeaponAmmo = int.MaxValue;
+        public readonly static BulletType basicWeaponBulletType = BulletType.BiggerBullet;
+
+        #endregion;
+
         #region Enemies
         public readonly static int baseEnemyGold = 2;
         #region BasicEnemy

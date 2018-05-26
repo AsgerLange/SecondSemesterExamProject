@@ -16,6 +16,8 @@ namespace TankGame
         private Random rnd = new Random();
         private SpriteFont font;
         public Animator animator;
+
+        protected Weapon weapon;
         protected int health;
         protected int money;
         protected Controls control;
@@ -81,6 +83,8 @@ namespace TankGame
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
+
+            this.weapon = new BasicWeapon(this.GameObject);
         }
 
         /// <summary>
@@ -133,15 +137,16 @@ namespace TankGame
         protected virtual void Shoot()
         {
             KeyboardState keyState = Keyboard.GetState();
-
-            if ((shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+            
+            if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
             {
-                if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
+                if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                        cannonAmmo, rotation);
+                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly,
+                         rotation);
+
                     animator.PlayAnimation("Shoot");
                     spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
                     isPlayingAnimation = true;

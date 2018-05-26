@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankGame", "TankGame.csproj", "{83ACD278-6021-460D-AA5F-7CACBFADCD2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestSceondSemester", "..\UnitTestSceondSemester\UnitTestSceondSemester.csproj", "{F821DF67-EC80-4489-8C8E-A97E5D9A34AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Weapons", "Weapons", "{9C3B3758-3C3C-421E-A1D9-647CE60D38FD}"
+	ProjectSection(SolutionItems) = preProject
+		Interfaces\BasicWeapon.cs = Interfaces\BasicWeapon.cs
+		Weapon.cs = Weapon.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
