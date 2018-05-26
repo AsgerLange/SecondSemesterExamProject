@@ -29,7 +29,7 @@ namespace TankGame
         public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
         public static readonly int tankStartGold = 100;
-        public static readonly BulletType tankAmmo = BulletType.BiggerBullet;
+       
         #endregion
         #region Plane
         public static readonly string planeSpriteSheet = "PlayerTank";
@@ -40,7 +40,7 @@ namespace TankGame
         public static readonly int planeHealth = 500;
         public static readonly float planeRotateSpeed = 1.5F;
         public static readonly int planeStartGold = 100;
-        public static readonly BulletType planeAmmo = BulletType.BasicBullet;
+        
         #endregion;
         #endregion
 
@@ -77,13 +77,34 @@ namespace TankGame
         public static readonly float biggerBulletLifeSpan = 1.5f;
         public static readonly int biggerBulletDmg = 150;
         #endregion;
+
+        #region shotgunPellet
+        public static readonly string shotgunPelletSheet = "ShotgunPellet";
+        public static readonly float shotgunPelletMovementSpeed = 600;
+        public static readonly float shotgunPelletLifeSpan = 0.3f;
+        public static readonly int shotgunPelletDmg = 50;
+        #endregion;
         #endregion;
 
         #region Weapons
-        public readonly static float basicWeaponFireRate = 0.2f;
+        #region BasicWeapon
+        public readonly static float basicWeaponFireRate = 0.5f;
         public readonly static int basicWeaponAmmo = int.MaxValue;
         public readonly static BulletType basicWeaponBulletType = BulletType.BiggerBullet;
+        #endregion;
 
+        #region Shotgun
+        public readonly static float shotGunFireRate = 1f;
+        public readonly static int shotGunAmmo = 50;
+        public readonly static BulletType shotgunBulletType = BulletType.ShotgunPellet;
+
+        #endregion;
+        #region MachineGun
+        public readonly static float MachineGunFireRate = 0.1f;
+        public readonly static int MachineGunGunAmmo = 10000;
+        public readonly static BulletType MachineGunBulletType = BulletType.BasicBullet;
+
+        #endregion;
         #endregion;
 
         #region Enemies

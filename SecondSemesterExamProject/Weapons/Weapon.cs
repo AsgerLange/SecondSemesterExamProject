@@ -23,21 +23,39 @@ namespace TankGame
             set { fireRate = value; }
         }
 
-        public int Ammo 
+        public int Ammo
         {
             get { return ammo; }
-            set { ammo= value; }
+            set
+            {
+                ammo = value;
+                if (ammo <= 0)
+                {
+                    SwitchBackToBasicWeapon();
+                }
+            }
         }
         public Weapon(GameObject go)
         {
             this.go = go;
         }
-        public virtual void Shoot(Vector2 vector2, Alignment alignment
-                       , float rotation)
+        public virtual void Shoot(Vector2 vector2, Alignment alignment, float rotation)
         {
 
             BulletPool.CreateBullet(vector2, alignment,
                        bulletType, rotation);
+            Ammo--;
+
+        }
+        protected void SwitchBackToBasicWeapon()
+        {
+            foreach (Component comp in go.GetComponentList)
+            {
+                if (comp is Vehicle)
+                {
+                    (comp as Vehicle).Weapon = new BasicWeapon(go.GameObject);
+                }
+            }
         }
 
     }

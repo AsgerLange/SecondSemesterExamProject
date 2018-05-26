@@ -19,8 +19,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Plane(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
-            BulletType cannonAmmo, TowerType tower) : base(gameObject, control, health, movementSpeed, fireRate, rotateSpeed, money, cannonAmmo, tower)
+        public Plane(GameObject gameObject, Controls control, Weapon weapon, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
+              TowerType tower) : base(gameObject, weapon, control, health, movementSpeed, fireRate, rotateSpeed, money, tower)
         {
 
         }
@@ -59,6 +59,7 @@ namespace TankGame
             base.Update();
         }
 
+
         /// <summary>
         /// handles what happens when the tank dies
         /// </summary>
@@ -67,24 +68,35 @@ namespace TankGame
             base.Die();
         }
 
-        protected override void Shoot()
+        protected override Vector2 Move(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
-            {
-                if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
-                {
+            translation += new Vector2(0, -1);
 
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                        cannonAmmo, rotation + (GameWorld.Instance.Rnd.Next(-5, 5)));
-                    animator.PlayAnimation("Shoot");
-                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
-                    isPlayingAnimation = true;
-                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
-                }
+            if (isPlayingAnimation == false)
+            {
+                animator.PlayAnimation("MoveForward");
             }
+
+            if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
+            {
+                translation += new Vector2(0, 0.4f);
+
+            }
+            else if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
+            {
+                translation += new Vector2(0, -0.6f);
+
+            }
+            return translation;
+        }
+
+        protected override void Shoot()
+        {
+            base.Shoot();
         }
     }
 }

@@ -21,7 +21,6 @@ namespace TankGame
         protected int health;
         protected int money;
         protected Controls control;
-        protected BulletType cannonAmmo;
         protected TowerType tower;
         protected int towerBuildCost;
         protected float movementSpeed;
@@ -35,6 +34,11 @@ namespace TankGame
 
         protected bool isPlayingAnimation = false;
 
+        public Weapon Weapon
+        {
+            get { return weapon; }
+            set { weapon = value; }
+        }
         public int Health
         {
             get { return health; }
@@ -70,7 +74,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money, BulletType cannonAmmo, TowerType tower) : base(gameObject)
+        public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
+            TowerType tower) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -78,13 +83,13 @@ namespace TankGame
             this.fireRate = fireRate;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
-            this.cannonAmmo = cannonAmmo;
+
             this.tower = tower;
+            this.weapon = weapon;
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
-            this.weapon = new BasicWeapon(this.GameObject);
         }
 
         /// <summary>
@@ -137,7 +142,7 @@ namespace TankGame
         protected virtual void Shoot()
         {
             KeyboardState keyState = Keyboard.GetState();
-            
+
             if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
             {
@@ -215,48 +220,28 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        protected Vector2 Move(Vector2 translation)
+        protected virtual Vector2 Move(Vector2 translation)
         {
 
             KeyboardState keyState = Keyboard.GetState();
-            if (!(this.GameObject.GetComponent("Plane") is Plane))
-            {
 
-
-                if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
-                {
-                    translation += new Vector2(0, -1);
-                    if (isPlayingAnimation == false)
-                    {
-                        animator.PlayAnimation("MoveForward");
-                    }
-                }
-                else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
-                {
-                    translation += new Vector2(0, 1);
-                    if (isPlayingAnimation == false)
-                    {
-                        animator.PlayAnimation("MoveBackward");
-
-                    }
-                }
-            }
-            else
+            if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
                 translation += new Vector2(0, -1);
                 if (isPlayingAnimation == false)
                 {
                     animator.PlayAnimation("MoveForward");
                 }
-                if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
+            }
+            else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
+            {
+                translation += new Vector2(0, 1);
+                if (isPlayingAnimation == false)
                 {
-                    translation += new Vector2(0, 0.4f);
-
+                    animator.PlayAnimation("MoveBackward");
                 }
-
             }
             return translation;
         }

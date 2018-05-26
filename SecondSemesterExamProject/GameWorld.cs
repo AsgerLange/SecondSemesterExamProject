@@ -147,8 +147,8 @@ namespace TankGame
             go.Transform.Position = new Vector2(650, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Plane(go, Controls.WASD, Constant.planeHealth, Constant.planeMoveSpeed,
-                Constant.planeFireRate, Constant.planeRotateSpeed, Constant.planeStartGold, Constant.planeAmmo, TowerType.BasicTower));
+            go.AddComponent(new Plane(go, Controls.WASD,new Shotgun(go), Constant.planeHealth, Constant.planeMoveSpeed,
+                Constant.planeFireRate, Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
@@ -157,8 +157,8 @@ namespace TankGame
             go.Transform.Position = new Vector2(350, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Tank(go, Controls.UDLR, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
+            go.AddComponent(new Tank(go, Controls.UDLR, new Shotgun(go), Constant.tankHealth, Constant.tankMoveSpeed,
+                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
