@@ -81,6 +81,7 @@ namespace TankGame
 
                     ((Bullet)bullet).DirRotation = directionRotation;
 
+                   
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 
                     lock (GameWorld.colliderKey)
@@ -164,6 +165,13 @@ namespace TankGame
                         tmp.LifeSpan = Constant.shotgunPelletLifeSpan;
                         tmp.BulletDamage = Constant.shotgunPelletDmg;
                         tmp.MovementSpeed = Constant.shotgunPelletMovementSpeed;
+                    }
+                    if (component is RicochetBullet)
+                    {
+                        tmp = component as RicochetBullet;
+                        tmp.LifeSpan = Constant.richochetBulletLifeSpan;
+                        tmp.BulletDamage = Constant.richochetBulletBulletDmg;
+                        tmp.MovementSpeed = Constant.richochetBulletMovementSpeed;
                     }
                 }
             }

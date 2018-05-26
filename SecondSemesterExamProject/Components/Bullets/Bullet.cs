@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet };
+    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, RicochetBullet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
         protected BulletType bulletType;
@@ -21,6 +21,8 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         protected Animator animator;
         protected bool isRotated = false;
+        
+
 
         #region Attributes for object pool
         protected bool canRelease;
@@ -38,7 +40,7 @@ namespace TankGame
         public float DirRotation
         {
             get { return dirRotation; }
-            set { dirRotation = value; }
+            set{dirRotation = value;}
         }
         public bool IsRotated
         {
@@ -94,6 +96,11 @@ namespace TankGame
                     this.movementSpeed = Constant.shotgunPelletMovementSpeed;
                     this.lifeSpan = Constant.shotgunPelletLifeSpan;
                     this.bulletDmg = Constant.shotgunPelletDmg;
+                    break;
+                case BulletType.RicochetBullet:
+                    this.movementSpeed = Constant.richochetBulletMovementSpeed;
+                    this.lifeSpan = Constant.richochetBulletLifeSpan;
+                    this.bulletDmg = Constant.richochetBulletBulletDmg;
                     break;
 
                 default:
@@ -279,7 +286,7 @@ namespace TankGame
         /// <summary>
         /// Adds the bullet to the bulletpool's release list, allowing it to be recycled.
         /// </summary>
-        public void DestroyBullet()
+        public virtual void DestroyBullet()
         {
             canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);

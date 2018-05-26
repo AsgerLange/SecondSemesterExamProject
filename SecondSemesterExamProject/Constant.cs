@@ -78,6 +78,13 @@ namespace TankGame
         public static readonly int biggerBulletDmg = 150;
         #endregion;
 
+        #region richochetBullet
+        public static readonly string richochetBulletSheet = "BiggerBullet";
+        public static readonly float richochetBulletMovementSpeed = 600;
+        public static readonly float richochetBulletLifeSpan = 1.5f;
+        public static readonly int richochetBulletBulletDmg = 200;
+        #endregion;
+
         #region shotgunPellet
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
@@ -92,6 +99,14 @@ namespace TankGame
         public readonly static int basicWeaponAmmo = int.MaxValue;
         public readonly static BulletType basicWeaponBulletType = BulletType.BiggerBullet;
         public readonly static int basicWeaponSpread = 3;
+
+        #endregion;
+
+        #region RichochetGun
+        public readonly static float RichochetGunFireRate = 1f;
+        public readonly static int RichochetGunAmmo = int.MaxValue;
+        public readonly static BulletType RichochetGunBulletType = BulletType.RicochetBullet;
+        public readonly static int RichochetGunSpread = 0;
 
         #endregion;
 
