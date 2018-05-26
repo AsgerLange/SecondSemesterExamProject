@@ -80,28 +80,34 @@ namespace TankGame
 
         #region shotgunPellet
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
-        public static readonly float shotgunPelletMovementSpeed = 600;
+        public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.3f;
-        public static readonly int shotgunPelletDmg = 50;
+        public static readonly int shotgunPelletDmg = 30;
         #endregion;
         #endregion;
 
         #region Weapons
         #region BasicWeapon
-        public readonly static float basicWeaponFireRate = 0.5f;
+        public readonly static float basicWeaponFireRate = 0.7f;
         public readonly static int basicWeaponAmmo = int.MaxValue;
         public readonly static BulletType basicWeaponBulletType = BulletType.BiggerBullet;
+        public readonly static int basicWeaponSpread = 3;
+
         #endregion;
 
         #region Shotgun
         public readonly static float shotGunFireRate = 1f;
         public readonly static int shotGunAmmo = 50;
         public readonly static BulletType shotgunBulletType = BulletType.ShotgunPellet;
+        public readonly static int shotGunSpread = 15;
+
 
         #endregion;
         #region MachineGun
         public readonly static float MachineGunFireRate = 0.1f;
         public readonly static int MachineGunGunAmmo = 10000;
+        public readonly static int MachineGunSpread = 7;
+
         public readonly static BulletType MachineGunBulletType = BulletType.BasicBullet;
 
         #endregion;

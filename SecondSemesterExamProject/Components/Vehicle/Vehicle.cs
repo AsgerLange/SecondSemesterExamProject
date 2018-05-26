@@ -143,19 +143,24 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
+            //if the player is pressing the "Shoot" button
             if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
             {
+
+                //if enough time has passed since last shot
                 if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly,
-                         rotation);
+                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly, rotation); //Fires the weapon
 
-                    animator.PlayAnimation("Shoot");
-                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
-                    isPlayingAnimation = true;
-                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                    animator.PlayAnimation("Shoot"); //play shooting animation
+
+                    isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
+
+                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
+
+                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; //Timestamp for when shot is fired (used to determine when the next shot can be fired)
                 }
             }
         }

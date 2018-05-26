@@ -90,6 +90,11 @@ namespace TankGame
                     this.lifeSpan = Constant.biggerBulletLifeSpan;
                     this.bulletDmg = Constant.biggerBulletDmg;
                     break;
+                case BulletType.ShotgunPellet:
+                    this.movementSpeed = Constant.shotgunPelletMovementSpeed;
+                    this.lifeSpan = Constant.shotgunPelletLifeSpan;
+                    this.bulletDmg = Constant.shotgunPelletDmg;
+                    break;
 
                 default:
                     break;

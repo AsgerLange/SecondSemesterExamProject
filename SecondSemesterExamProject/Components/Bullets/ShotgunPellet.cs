@@ -16,7 +16,7 @@ namespace TankGame
 
         public override void CreateAnimation()
         {
-            //currently using basicbullet spritesheet
+            
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 3, 13, 3, Vector2.Zero));
 
             base.CreateAnimation();
