@@ -38,6 +38,31 @@ namespace TankGame
         {
             if (canMove)
             {
+                Component comp = null;
+                foreach (Component bul in GameObject.GetComponentList)
+                {
+                    if (bul is Bullet)
+                    {
+                        comp = bul;
+                        break;
+                    }
+                }
+                if (position.Y <= 0 && translation.Y <= 0 && comp == null)
+                {
+                    translation.Y = 0;
+                }
+                if (position.X <= 0 && translation.X <= 0 && comp == null)
+                {
+                    translation.X = 0;
+                }
+                if (position.Y >= Constant.higth && translation.Y >= 0 && comp == null)
+                {
+                    translation.Y = 0;
+                }
+                if (position.X >= Constant.width && translation.X >= 0 && comp == null)
+                {
+                    translation.X = 0;
+                }
                 position += translation;
             }
         }
