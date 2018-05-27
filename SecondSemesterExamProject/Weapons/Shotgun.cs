@@ -29,7 +29,7 @@ namespace TankGame
         /// <param name="rotation"></param>
         public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 12; i++)
             {
                 BulletPool.CreateBullet(vector2, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             }

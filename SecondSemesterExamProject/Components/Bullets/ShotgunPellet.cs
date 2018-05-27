@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace TankGame
 { 
+    /// <summary>
+    /// A short range, low damage round.
+    /// </summary>
     class ShotgunPellet : Bullet
     {
         public ShotgunPellet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject, type, dirRotation)
@@ -17,7 +20,7 @@ namespace TankGame
         public override void CreateAnimation()
         {
             
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 3, 13, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 3, 12, 3, Vector2.Zero));
 
             base.CreateAnimation();
         }

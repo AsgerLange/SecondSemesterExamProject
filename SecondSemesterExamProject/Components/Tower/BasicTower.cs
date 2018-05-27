@@ -11,10 +11,12 @@ namespace TankGame
     class BasicTower : Tower
     {
 
-        public BasicTower(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType)
-            : base(gameObject, attackRate,health,attackRange, bulletType)
+        public BasicTower(GameObject gameObject): base(gameObject)
         {
-
+            this.attackRate = Constant.basicTowerFireRate;
+            this.health = Constant.basicTowerHealth;
+            this.attackRange = Constant.basicTowerAttackRange;
+            this.bulletType = Constant.basicTowerBulletType;
         }
         /// <summary>
         /// loads content
