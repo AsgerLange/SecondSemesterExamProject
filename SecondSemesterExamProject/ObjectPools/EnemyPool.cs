@@ -136,6 +136,13 @@ namespace TankGame
 
                     }
 
+                    if (component is BasicEliteEnemy)
+                    {
+                        tmp.Health = Constant.basicEliteEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
+
+                    }
+
 
                 }
             }

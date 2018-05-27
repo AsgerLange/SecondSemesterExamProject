@@ -11,6 +11,7 @@ namespace TankGame
     {
         private int wave = 0;
         private int waveSize = 0;
+        private int waveTech = 0;
         private int spawned = 0;
         private Random rnd = new Random();
         private Rectangle topZone;
@@ -34,6 +35,11 @@ namespace TankGame
         public int WaveSize
         {
             get { return waveSize; }
+        }
+
+        public int WaveTech
+        {
+            get { return waveTech; }
         }
 
         /// <summary>
