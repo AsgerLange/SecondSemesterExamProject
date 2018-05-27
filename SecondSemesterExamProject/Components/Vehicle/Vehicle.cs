@@ -354,13 +354,7 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
-            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / Constant.tankFireRate, new Vector2(0, -3)));
-            animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(7, 305, 0, 28, 40, 5, Vector2.Zero));
+            
         }
 
         /// <summary>
@@ -389,7 +383,7 @@ namespace TankGame
         {
             if (control == Controls.WASD)
             {
-                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.YellowGreen);
+                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
 
             }
             else if (control == Controls.UDLR)

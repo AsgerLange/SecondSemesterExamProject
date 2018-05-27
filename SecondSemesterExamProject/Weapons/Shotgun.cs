@@ -22,14 +22,14 @@ namespace TankGame
         }
 
         /// <summary>
-        /// Shoots 12 pellets, with a wide spread
+        /// Shoots an amount of  pellets, with a wide spread
         /// </summary>
         /// <param name="vector2"></param>
         /// <param name="alignment"></param>
         /// <param name="rotation"></param>
         public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < Constant.shotgunPelletAmount; i++)
             {
                 BulletPool.CreateBullet(vector2, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             }

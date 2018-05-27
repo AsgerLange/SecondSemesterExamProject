@@ -55,7 +55,8 @@ namespace TankGame
         }
 
         /// <summary>
-        /// Standard shooting behaviour for shotgun tower (Shoots 8 shotgun pellets)
+        /// Standard shooting behaviour for shotgun tower (Shoots an amount of  pellets, with a wide spread
+
         /// </summary>
         protected override void Shoot()
         {
@@ -69,7 +70,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i < Constant.shotgunTowerPelletAmount; i++)
                     {
                         BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread,spread)));
 
