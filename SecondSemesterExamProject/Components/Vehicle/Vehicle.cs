@@ -231,6 +231,9 @@ namespace TankGame
                 case TowerType.BasicTower:
                     towerBuildCost = Constant.basicTowerPrice;
                     break;
+                case TowerType.ShotgunTower:
+                    towerBuildCost = Constant.shotgunTowerPrice;
+                    break;
                 default:
                     towerBuildCost = Constant.basicTowerPrice;
                     break;

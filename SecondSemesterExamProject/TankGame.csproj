@@ -55,6 +55,7 @@
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
     <Compile Include="Components\Tower\BasicTower.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
+    <Compile Include="Components\Tower\ShotgunTower.cs" />
     <Compile Include="Components\Vehicle\Bike.cs" />
     <Compile Include="Components\Vehicle\Plane.cs" />
     <Compile Include="Weapons\BasicWeapon.cs" />

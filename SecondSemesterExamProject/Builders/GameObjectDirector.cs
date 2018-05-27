@@ -84,7 +84,10 @@ namespace TankGame
             {
                 case TowerType.BasicTower:
                     towerBuilder.Build(position, type);
+                    break;
 
+                case TowerType.ShotgunTower:
+                    towerBuilder.Build(position, type);
                     break;
 
                 default:
