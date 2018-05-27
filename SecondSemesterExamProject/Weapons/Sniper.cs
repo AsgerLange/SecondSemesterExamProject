@@ -22,5 +22,18 @@ namespace TankGame
             base.Shoot(vector2, alignment, rotation);
         }
 
+    public override string ToString()
+    {
+            if (ammo > 1000)
+            {
+                return "Sniper: LOTS!";
+            }
+            else
+            {
+
+            return "Sniper: " + ammo.ToString(); 
+            }
+    }
+
     }
 }

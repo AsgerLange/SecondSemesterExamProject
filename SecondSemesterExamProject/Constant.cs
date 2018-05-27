@@ -37,7 +37,7 @@ namespace TankGame
 
         public static readonly float planeMoveSpeed = 200;
         public static readonly float planeFireRate = 0.3f;
-        public static readonly int planeHealth = 500;
+        public static readonly int planeHealth = 100;
         public static readonly float planeRotateSpeed = 1.5F;
         public static readonly int planeStartGold = 100;
 
@@ -49,7 +49,7 @@ namespace TankGame
         public static readonly float bikeMoveSpeed = 200;
         public static readonly float bikeFireRate = 0.3f;
         public static readonly int bikeHealth = 250;
-        public static readonly float bikeRotateSpeed = 2.5f;
+        public static readonly float bikeRotateSpeed = 3f;
         public static readonly int bikeStartGold = 100;
 
         #endregion;
@@ -132,7 +132,7 @@ namespace TankGame
 
         #region Sniper
         public readonly static float sniperFireRate = 1.8f;
-        public readonly static int sniperAmmo = int.MaxValue;
+        public readonly static int sniperAmmo = 20;
         public readonly static BulletType sniperBulletType = BulletType.SniperBullet;
         public readonly static int sniperSpread = 0;
 
@@ -140,7 +140,7 @@ namespace TankGame
 
         #region Shotgun
         public readonly static float shotGunFireRate = 1f;
-        public readonly static int shotGunAmmo = int.MaxValue;
+        public readonly static int shotGunAmmo = 20;
         public readonly static BulletType shotgunBulletType = BulletType.ShotgunPellet;
         public readonly static int shotGunSpread = 15;
         public static readonly int shotgunPelletAmount = 20;
@@ -149,7 +149,7 @@ namespace TankGame
         #endregion;
         #region MachineGun
         public readonly static float MachineGunFireRate = 0.1f;
-        public readonly static int MachineGunGunAmmo = int.MaxValue;
+        public readonly static int MachineGunGunAmmo = 200;
         public readonly static int MachineGunSpread = 7;
 
         public readonly static BulletType MachineGunBulletType = BulletType.BasicBullet;

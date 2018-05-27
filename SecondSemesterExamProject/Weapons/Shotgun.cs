@@ -35,5 +35,16 @@ namespace TankGame
             }
             Ammo--;
         }
+        public override string ToString()
+        {
+            if (ammo > 1000)
+            {
+                return "Shotgun: LOTS!";
+            }
+            else
+            {
+                return "Shotgun: " + ammo.ToString();
+            }
+        }
     }
 }
