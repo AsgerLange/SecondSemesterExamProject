@@ -90,7 +90,7 @@ namespace TankGame
         #endregion;
 
         #region sniperBullet
-        public static readonly string sniperBulletSheet = "BiggerBullet";
+        public static readonly string sniperBulletSheet = "SniperBullet";
         public static readonly float sniperBulletMovementSpeed = 1100;
         public static readonly float sniperBulletLifeSpan = 1f;
         public static readonly int sniperBulletBulletDmg = 400;
@@ -100,7 +100,7 @@ namespace TankGame
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.3f;
-        public static readonly int shotgunPelletDmg = 30;
+        public static readonly int shotgunPelletDmg = 50;
         #endregion;
         #endregion;
 
@@ -125,7 +125,7 @@ namespace TankGame
         public readonly static float shotGunFireRate = 1f;
         public readonly static int shotGunAmmo = 50;
         public readonly static BulletType shotgunBulletType = BulletType.ShotgunPellet;
-        public readonly static int shotGunSpread = 15;
+        public readonly static int shotGunSpread = 10;
 
 
         #endregion;

@@ -126,7 +126,7 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
 #if DEBUG
-            spriteBatch.Draw(texture, new Rectangle(CollisionBox.Bounds.X - (CollisionBox.Bounds.Width / 2) + (int)spriteRenderer.Offset.X, CollisionBox.Bounds.Y - (CollisionBox.Bounds.Height / 2) + (int)spriteRenderer.Offset.Y, CollisionBox.Bounds.Width, CollisionBox.Bounds.Height), Color.Red);
+           // spriteBatch.Draw(texture, new Rectangle(CollisionBox.Bounds.X - (CollisionBox.Bounds.Width / 2) + (int)spriteRenderer.Offset.X, CollisionBox.Bounds.Y - (CollisionBox.Bounds.Height / 2) + (int)spriteRenderer.Offset.Y, CollisionBox.Bounds.Width, CollisionBox.Bounds.Height), Color.Red);
 #endif
         }
 
