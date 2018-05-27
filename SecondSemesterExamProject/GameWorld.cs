@@ -167,7 +167,7 @@ namespace TankGame
             go.Transform.Position = new Vector2(350, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Bike(go, Controls.UDLR, new Sniper(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
+            go.AddComponent(new Bike(go, Controls.UDLR, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
                 Constant.bikeFireRate, Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.ShotgunTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);

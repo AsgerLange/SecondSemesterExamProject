@@ -82,7 +82,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-4, 4)));
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread,spread)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }

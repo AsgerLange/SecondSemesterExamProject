@@ -16,6 +16,7 @@ namespace TankGame
             this.health = Constant.HQHealth;
             this.attackRange = Constant.HQAttackRange;
             this.bulletType = Constant.HQbulletType;
+            this.spread = Constant.HQSpread;
         }
 
         public override void LoadContent(ContentManager content)

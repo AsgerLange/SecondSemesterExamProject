@@ -37,7 +37,7 @@ namespace TankGame
 
         public static readonly float planeMoveSpeed = 200;
         public static readonly float planeFireRate = 0.3f;
-        public static readonly int planeHealth = 500;
+        public static readonly int planeHealth = 100;
         public static readonly float planeRotateSpeed = 1.5F;
         public static readonly int planeStartGold = 100;
 
@@ -49,7 +49,7 @@ namespace TankGame
         public static readonly float bikeMoveSpeed = 200;
         public static readonly float bikeFireRate = 0.3f;
         public static readonly int bikeHealth = 250;
-        public static readonly float bikeRotateSpeed = 2.5f;
+        public static readonly float bikeRotateSpeed = 3f;
         public static readonly int bikeStartGold = 100;
 
         #endregion;
@@ -84,7 +84,9 @@ namespace TankGame
         public static readonly int ShotgunTowerHealth = 100;
         public static readonly BulletType ShotgunTowerBulletType = BulletType.ShotgunPellet;
         public static readonly int shotgunTowerAttackRange = 150;
-        public static readonly int ShotgunTowerSpread = 20;
+        public static readonly int ShotgunTowerSpread = 15;
+        public static readonly int shotgunTowerPelletAmount= 12;
+
 
         #endregion;
         #endregion
@@ -115,7 +117,7 @@ namespace TankGame
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.3f;
-        public static readonly int shotgunPelletDmg = 50;
+        public static readonly int shotgunPelletDmg = 30;
         #endregion;
         #endregion;
 
@@ -130,7 +132,7 @@ namespace TankGame
 
         #region Sniper
         public readonly static float sniperFireRate = 1.8f;
-        public readonly static int sniperAmmo = int.MaxValue;
+        public readonly static int sniperAmmo = 20;
         public readonly static BulletType sniperBulletType = BulletType.SniperBullet;
         public readonly static int sniperSpread = 0;
 
@@ -138,15 +140,16 @@ namespace TankGame
 
         #region Shotgun
         public readonly static float shotGunFireRate = 1f;
-        public readonly static int shotGunAmmo = 50;
+        public readonly static int shotGunAmmo = 20;
         public readonly static BulletType shotgunBulletType = BulletType.ShotgunPellet;
-        public readonly static int shotGunSpread = 10;
+        public readonly static int shotGunSpread = 15;
+        public static readonly int shotgunPelletAmount = 20;
 
 
         #endregion;
         #region MachineGun
         public readonly static float MachineGunFireRate = 0.1f;
-        public readonly static int MachineGunGunAmmo = 10000;
+        public readonly static int MachineGunGunAmmo = 200;
         public readonly static int MachineGunSpread = 7;
 
         public readonly static BulletType MachineGunBulletType = BulletType.BasicBullet;

@@ -18,18 +18,19 @@ namespace TankGame
         public Animator animator;
 
         protected Weapon weapon;
+        protected TowerPlacer towerPlacer;
         protected int health;
         protected int money;
         protected Controls control;
-        protected TowerType tower;
-        protected int towerBuildCost;
+
+
         protected float movementSpeed;
         protected float fireRate;
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
-        protected float builtTimeStamp;
+
         protected bool isAlive;
 
         protected bool isPlayingAnimation = false;
@@ -38,6 +39,11 @@ namespace TankGame
         {
             get { return weapon; }
             set { weapon = value; }
+        }
+        public TowerPlacer TowerPlacer
+        {
+            get { return towerPlacer; }
+            set { towerPlacer = value; }
         }
         public int Health
         {
@@ -92,7 +98,7 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
         public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
-            TowerType tower) : base(gameObject)
+            TowerType towerType) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -101,7 +107,7 @@ namespace TankGame
             this.rotateSpeed = rotateSpeed;
             this.money = money;
 
-            this.tower = tower;
+            this.towerPlacer = new TowerPlacer(this, towerType, 1);
             this.weapon = weapon;
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -189,56 +195,17 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
+
+            if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Back) && control == Controls.UDLR))
             {
+                TowerPlacer.PlaceTower();
 
-                if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Back) && control == Controls.UDLR))
-                {
-
-                    SetTowerBuildCost();
-                    if (money >= towerBuildCost)
-                    {
-                        GameObject towerGO;
-
-                        //Gameobjectdirector builds a new tower
-                        towerGO = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
-                            GameObject.Transform.Position.Y + 1), tower);
-
-                        //its content is loaded
-                        towerGO.LoadContent(GameWorld.Instance.Content);
-
-                        //it's added to gameworld next update cycle
-                        GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
-
-                        //takes the money for building away
-                        money -= towerBuildCost;
-
-                        //time stamps for when the tower is build (used for cooldown)
-                        builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
-                    }
-                }
             }
+
         }
 
-        /// <summary>
-        /// sets the price for building a tower
-        /// </summary>
-        private void SetTowerBuildCost()
-        {
-            switch (tower)
-            {
-                case TowerType.BasicTower:
-                    towerBuildCost = Constant.basicTowerPrice;
-                    break;
-                case TowerType.ShotgunTower:
-                    towerBuildCost = Constant.shotgunTowerPrice;
-                    break;
-                default:
-                    towerBuildCost = Constant.basicTowerPrice;
-                    break;
-            }
-        }
+
 
         /// <summary>
         /// moves the vehicle
@@ -354,13 +321,7 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
-            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / Constant.tankFireRate, new Vector2(0, -3)));
-            animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(7, 305, 0, 28, 40, 5, Vector2.Zero));
+
         }
 
         /// <summary>
@@ -389,12 +350,24 @@ namespace TankGame
         {
             if (control == Controls.WASD)
             {
-                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.YellowGreen);
+                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth-20), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, "HP: "+Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
+
+
+
 
             }
             else if (control == Controls.UDLR)
             {
                 spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - 50, 2), Color.YellowGreen);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - 200, Constant.higth - 20), Color.YellowGreen);
+                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - 200, Constant.higth - 40), Color.YellowGreen);
+                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - 200, Constant.higth - 60), Color.YellowGreen);
+
+
+
             }
         }
     }
