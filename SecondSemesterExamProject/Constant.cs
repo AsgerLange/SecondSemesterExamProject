@@ -40,7 +40,18 @@ namespace TankGame
         public static readonly int planeHealth = 500;
         public static readonly float planeRotateSpeed = 1.5F;
         public static readonly int planeStartGold = 100;
-        
+
+        #endregion;
+        #region Bike
+        public static readonly string bikeSpriteSheet = "PlayerTank";
+        public static readonly string bikeSpriteSheet2 = "PlayerTank2";
+
+        public static readonly float bikeMoveSpeed = 200;
+        public static readonly float bikeFireRate = 0.3f;
+        public static readonly int bikeHealth = 250;
+        public static readonly float bikeRotateSpeed = 2.5f;
+        public static readonly int bikeStartGold = 100;
+
         #endregion;
         #endregion
 

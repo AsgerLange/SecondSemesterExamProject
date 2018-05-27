@@ -153,12 +153,22 @@ namespace TankGame
             gameObjects.Add(go);
 
             //adds player2
+            //go = new GameObject();
+            //go.Transform.Position = new Vector2(350, 350);
+            //go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
+            //go.AddComponent(new Animator(go));
+            //go.AddComponent(new Tank(go, Controls.UDLR, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed,
+            //    Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+            //go.AddComponent(new Collider(go, Alignment.Friendly));
+            //gameObjects.Add(go);
+
+            //adds player2 Bike
             go = new GameObject();
             go.Transform.Position = new Vector2(350, 350);
-            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
+            go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Tank(go, Controls.UDLR, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+            go.AddComponent(new Bike(go, Controls.UDLR, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
+                Constant.bikeFireRate, Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
