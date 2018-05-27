@@ -158,6 +158,13 @@ namespace TankGame
                         tmp.BulletDamage = Constant.biggerBulletDmg;
                         tmp.MovementSpeed = Constant.biggerBulletMovementSpeed;
                     }
+                    if (component is ShotgunPellet)
+                    {
+                        tmp = component as ShotgunPellet;
+                        tmp.LifeSpan = Constant.shotgunPelletLifeSpan;
+                        tmp.BulletDamage = Constant.shotgunPelletDmg;
+                        tmp.MovementSpeed = Constant.shotgunPelletMovementSpeed;
+                    }
                 }
             }
             ActiveBullets.Remove(bullet);
@@ -180,3 +187,4 @@ namespace TankGame
     }
 
 }
+    

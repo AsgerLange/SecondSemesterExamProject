@@ -30,6 +30,7 @@ namespace TankGame
         Rectangle textBox;
         Texture2D theBox;
         SpriteFont font;
+        private Random rnd = new Random();
         Score score;
 
 
@@ -86,7 +87,10 @@ namespace TankGame
             get { return gameOver; }
             set { gameOver = value; }
         }
-
+        public Random Rnd
+        {
+            get { return rnd; }
+        }
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
@@ -143,8 +147,8 @@ namespace TankGame
             go.Transform.Position = new Vector2(650, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Tank(go, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
+            go.AddComponent(new Plane(go, Controls.WASD,new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed,
+                Constant.planeFireRate, Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
@@ -153,8 +157,8 @@ namespace TankGame
             go.Transform.Position = new Vector2(350, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Tank(go, Controls.UDLR, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, Constant.tankAmmo, TowerType.BasicTower));
+            go.AddComponent(new Tank(go, Controls.UDLR, new Shotgun(go), Constant.tankHealth, Constant.tankMoveSpeed,
+                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
@@ -163,7 +167,7 @@ namespace TankGame
             textBox = new Rectangle(10, 10, 150, 150);
 
             //creates a score to keep track of scores and stats
-            score = new Score();
+           // score = new Score();
             base.Initialize();
         }
 
@@ -229,7 +233,7 @@ namespace TankGame
             RemoveObjects();
 
             //handles score funktions
-            //score.Update();
+            score.Update();
 
             base.Update(gameTime);
         }
@@ -297,7 +301,7 @@ namespace TankGame
             spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
 
             //draw score
-            //score.Draw(spriteBatch);
+            score.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);
