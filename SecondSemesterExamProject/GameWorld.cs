@@ -157,7 +157,7 @@ namespace TankGame
             go.Transform.Position = new Vector2(350, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Tank(go, Controls.UDLR, new RicochetGun(go), Constant.tankHealth, Constant.tankMoveSpeed,
+            go.AddComponent(new Tank(go, Controls.UDLR, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);

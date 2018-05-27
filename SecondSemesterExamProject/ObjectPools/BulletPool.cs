@@ -78,6 +78,8 @@ namespace TankGame
                     }
 
                     ((Bullet)bullet).CanRelease = true;
+                    ((Bullet)bullet).ShouldDie = false;
+
 
                     ((Bullet)bullet).DirRotation = directionRotation;
 
@@ -144,7 +146,7 @@ namespace TankGame
 
                     tmp.DirRotation = 0;
                     tmp.IsRotated = false;
-
+                    
                     if (component is BasicBullet)
                     {
                         tmp = component as BasicBullet;
@@ -166,12 +168,13 @@ namespace TankGame
                         tmp.BulletDamage = Constant.shotgunPelletDmg;
                         tmp.MovementSpeed = Constant.shotgunPelletMovementSpeed;
                     }
-                    if (component is RicochetBullet)
+                    if (component is SniperBullet)
                     {
-                        tmp = component as RicochetBullet;
-                        tmp.LifeSpan = Constant.richochetBulletLifeSpan;
-                        tmp.BulletDamage = Constant.richochetBulletBulletDmg;
-                        tmp.MovementSpeed = Constant.richochetBulletMovementSpeed;
+                        tmp = component as SniperBullet;
+                        tmp.LifeSpan = Constant.sniperBulletLifeSpan;
+                        tmp.BulletDamage = Constant.sniperBulletBulletDmg;
+                        tmp.MovementSpeed = Constant.sniperBulletMovementSpeed;
+                        
                     }
                 }
             }

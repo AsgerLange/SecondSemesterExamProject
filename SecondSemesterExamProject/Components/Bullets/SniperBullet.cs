@@ -8,22 +8,38 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    class RicochetBullet : Bullet
+    /// <summary>
+    /// A high damaging, fast moving, long range, piercing round.
+    /// </summary>
+    class SniperBullet : Bullet
     {
+        protected int enemiesPierced;
 
-        protected int bounceCount;
-
-        public int BounceCount
+        public int EnemiesPierced
         {
-            get { return bounceCount; }
-            set { bounceCount = value; }
+            get { return enemiesPierced; }
+            set { enemiesPierced = value; }
         }
 
-        public RicochetBullet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject, type, dirRotation)
+        public SniperBullet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject, type, dirRotation)
         {
-            bounceCount = 0;
-        }
+            enemiesPierced = 0;
 
+        }
+        /// <summary>
+        /// Allows the sniper bullet to pierce multiple enemies, but lowers for each piercing 
+        /// </summary>
+        protected override void BulletSpecialEffect()
+        {
+            enemiesPierced++;
+
+            this.bulletDmg = bulletDmg / 2;
+
+            if (enemiesPierced > 5)
+            {
+                base.BulletSpecialEffect();
+            }
+        }
         public override void CreateAnimation()
         {
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 3, 22, 3, Vector2.Zero));
@@ -39,11 +55,13 @@ namespace TankGame
         {
             base.OnAnimationDone(animationName);
         }
-
+        /// <summary>
+        /// Overwrites base collision to allow sniper bullet to penetrate enemies but not terrain
+        /// </summary>
+        /// <param name="other"></param>
         public override void OnCollisionEnter(Collider other)
         {
             Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
-            Console.WriteLine(dirRotation);
 
             if (thisCollider != null)
             {
@@ -51,7 +69,8 @@ namespace TankGame
                 {
                     if (canRelease)
                     {
-                        if (!(other.GameObject.GetComponent("HQ") is HQ) && thisCollider.GetAlignment == Alignment.Friendly || thisCollider.GetAlignment == Alignment.Enemy)
+                        if (!(other.GameObject.GetComponent("HQ") is HQ) && thisCollider.GetAlignment == Alignment.Friendly
+                            || thisCollider.GetAlignment == Alignment.Enemy)
                         {
 
                             foreach (Component go in other.GameObject.GetComponentList)
@@ -69,25 +88,20 @@ namespace TankGame
                                     (go as Tower).Health -= bulletDmg;
                                 }
                             }
-                            if (BounceCount <= 4)
+                            BulletSpecialEffect();
+
+                            if (shouldDie)
                             {
-                                //TODO: Mirror angle properly
-                                if (dirRotation <= 180)
-                                {
-                                    dirRotation = 180 - dirRotation;
-                                }
-                                else
-                                {
-                                    dirRotation= 360 - dirRotation;
-                                }
-                                
-                                bounceCount++;
-                            }
-                            else
-                            {
+
                                 DestroyBullet();
-                                bounceCount = 0;
                             }
+
+
+                        }
+                        if ((other.GameObject.GetComponent("Terrain") is Terrain))
+                        {
+                            base.BulletSpecialEffect();
+                            DestroyBullet();
 
                         }
                     }
@@ -95,6 +109,15 @@ namespace TankGame
             }
         }
 
+        /// <summary>
+        /// Destroys sniper bullet and resets the counter for enemies pierced.
+        /// </summary>
+        public override void DestroyBullet()
+        {
+            base.DestroyBullet();
+            enemiesPierced = 0;
+
+        }
         public override void Update()
         {
             base.Update();

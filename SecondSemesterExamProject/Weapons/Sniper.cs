@@ -7,14 +7,14 @@ using Microsoft.Xna.Framework;
 
 namespace TankGame
 {
-    class RicochetGun : Weapon
+    class Sniper : Weapon
     {
-        public RicochetGun(GameObject go) : base(go)
+        public Sniper(GameObject go) : base(go)
         {
-            this.Ammo = Constant.RichochetGunAmmo;
-            this.fireRate = Constant.RichochetGunFireRate;
-            this.bulletType = Constant.RichochetGunBulletType;
-            this.weaponSpread = Constant.RichochetGunSpread;
+            this.Ammo = Constant.sniperAmmo;
+            this.fireRate = Constant.sniperFireRate;
+            this.bulletType = Constant.sniperBulletType;
+            this.weaponSpread = Constant.sniperSpread;
         }
 
         public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)

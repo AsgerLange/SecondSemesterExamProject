@@ -30,9 +30,9 @@ namespace TankGame
                     go.AddComponent(new SpriteRenderer(go, Constant.shotgunPelletSheet, 0));
                     go.AddComponent(new ShotgunPellet(go, type, rotation));
                     break;
-                case BulletType.RicochetBullet:
-                    go.AddComponent(new SpriteRenderer(go, Constant.richochetBulletSheet, 0));
-                    go.AddComponent(new RicochetBullet(go, type, rotation));
+                case BulletType.SniperBullet:
+                    go.AddComponent(new SpriteRenderer(go, Constant.sniperBulletSheet, 0));
+                    go.AddComponent(new SniperBullet(go, type, rotation));
                     break;
                 default:
                     break;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, RicochetBullet };
+    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
         protected BulletType bulletType;
@@ -21,7 +21,8 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         protected Animator animator;
         protected bool isRotated = false;
-        
+        protected bool shouldDie;
+
 
 
         #region Attributes for object pool
@@ -40,12 +41,18 @@ namespace TankGame
         public float DirRotation
         {
             get { return dirRotation; }
-            set{dirRotation = value;}
+            set { dirRotation = value; }
         }
         public bool IsRotated
         {
             get { return isRotated; }
             set { isRotated = value; }
+        }
+
+        public bool ShouldDie
+        {
+            get { return shouldDie; }
+            set { shouldDie = value; }
         }
         /// <summary>
         /// The amount of seconds a bullet should survive
@@ -97,19 +104,19 @@ namespace TankGame
                     this.lifeSpan = Constant.shotgunPelletLifeSpan;
                     this.bulletDmg = Constant.shotgunPelletDmg;
                     break;
-                case BulletType.RicochetBullet:
-                    this.movementSpeed = Constant.richochetBulletMovementSpeed;
-                    this.lifeSpan = Constant.richochetBulletLifeSpan;
-                    this.bulletDmg = Constant.richochetBulletBulletDmg;
+                case BulletType.SniperBullet:
+                    this.movementSpeed = Constant.sniperBulletMovementSpeed;
+                    this.lifeSpan = Constant.sniperBulletLifeSpan;
+                    this.bulletDmg = Constant.sniperBulletBulletDmg;
                     break;
 
                 default:
                     break;
             }
             this.bulletType = type;
-            movementSpeed = Constant.basicBulletMovementSpeed;
             this.dirRotation = dirRotation;
 
+            shouldDie = false;
             this.timeStamp = GameWorld.Instance.TotalGameTime;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -131,6 +138,7 @@ namespace TankGame
         {
             if (GameWorld.Instance.TotalGameTime >= (timeStamp + lifeSpan))
             {
+                shouldDie = true;
                 DestroyBullet();
             }
         }
@@ -257,7 +265,8 @@ namespace TankGame
                 {
                     if (canRelease)
                     {
-                        if (!(other.GameObject.GetComponent("HQ") is HQ) && thisCollider.GetAlignment == Alignment.Friendly || thisCollider.GetAlignment == Alignment.Enemy)
+                        if (!(other.GameObject.GetComponent("HQ") is HQ) && thisCollider.GetAlignment == Alignment.Friendly
+                            || thisCollider.GetAlignment == Alignment.Enemy)
                         {
 
                             foreach (Component go in other.GameObject.GetComponentList)
@@ -275,7 +284,11 @@ namespace TankGame
                                     (go as Tower).Health -= bulletDmg;
                                 }
                             }
-                            DestroyBullet();
+                            BulletSpecialEffect();
+                            if (shouldDie)
+                            {
+                                DestroyBullet();
+                            }
 
                         }
                     }
@@ -283,13 +296,23 @@ namespace TankGame
             }
 
         }
+
+        /// <summary>
+        /// Handles a bullet's special effect that occures before it dies - Allows to be destroyed by default
+        /// </summary>
+        protected virtual void BulletSpecialEffect()
+        {
+            shouldDie = true;
+        }
         /// <summary>
         /// Adds the bullet to the bulletpool's release list, allowing it to be recycled.
         /// </summary>
         public virtual void DestroyBullet()
         {
+
             canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);
+
         }
     }
 }

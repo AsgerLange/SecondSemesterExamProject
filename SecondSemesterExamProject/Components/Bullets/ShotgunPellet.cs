@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace TankGame
 { 
+    /// <summary>
+    /// A short range, low damage round.
+    /// </summary>
     class ShotgunPellet : Bullet
     {
         public ShotgunPellet(GameObject gameObject, BulletType type, float dirRotation) : base(gameObject, type, dirRotation)
