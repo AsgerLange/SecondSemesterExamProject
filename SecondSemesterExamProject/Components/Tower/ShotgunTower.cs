@@ -16,6 +16,8 @@ namespace TankGame
             this.health = Constant.ShotgunTowerHealth;
             this.attackRange = Constant.shotgunTowerAttackRange;
             this.bulletType = Constant.ShotgunTowerBulletType;
+            this.spread = Constant.ShotgunTowerSpread;
+
         }
 
         public override void LoadContent(ContentManager content)
@@ -53,7 +55,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// Standard shooting behaviour for all towers
+        /// Standard shooting behaviour for shotgun tower (Shoots 8 shotgun pellets)
         /// </summary>
         protected override void Shoot()
         {
@@ -67,9 +69,9 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    for (int i = 0; i < 12; i++)
+                    for (int i = 0; i < 8; i++)
                     {
-                        BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-20, 20)));
+                        BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread,spread)));
 
                     }
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;

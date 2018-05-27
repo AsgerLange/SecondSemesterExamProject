@@ -84,7 +84,7 @@ namespace TankGame
         public static readonly int ShotgunTowerHealth = 100;
         public static readonly BulletType ShotgunTowerBulletType = BulletType.ShotgunPellet;
         public static readonly int shotgunTowerAttackRange = 150;
-        public static readonly int ShotgunTowerSpread = 20;
+        public static readonly int ShotgunTowerSpread = 15;
 
         #endregion;
         #endregion
