@@ -25,15 +25,17 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
         {
-            float force = Constant.pushForce * 2;
-
-            if (other.GetAlignment != Alignment.Neutral)
+            if (!(other.GameObject.GetComponent("Plane") is Plane))
             {
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
+                float force = Constant.pushForce * 2;
 
-                other.GameObject.Transform.Translate(dir * force);
-                Console.WriteLine("push: " + dir);
+                if (other.GetAlignment != Alignment.Neutral)
+                {
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
+
+                    other.GameObject.Transform.Translate(dir * force);
+                }
             }
         }
 
@@ -43,14 +45,17 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-            float force = Constant.pushForce;
-
-            if (other.GetAlignment != Alignment.Neutral)
+            if (!(other.GameObject.GetComponent("Plane") is Plane))
             {
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                dir.Normalize();
 
-                other.GameObject.Transform.Translate(dir * force);
+                if (other.GetAlignment != Alignment.Neutral)
+                {
+                    float force = Constant.pushForce;
+                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    dir.Normalize();
+
+                    other.GameObject.Transform.Translate(dir * force);
+                }
             }
         }
     }

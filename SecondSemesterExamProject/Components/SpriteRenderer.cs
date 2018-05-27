@@ -16,7 +16,6 @@ namespace TankGame
         private string spriteName;
         private float layerDepth;
         private float scale = 1;
-        private GameObject gameObject;
         private bool useRect = false;
         public bool UseRect { get { return useRect; } set { useRect = value; } }
         private Vector2 offset;
@@ -52,12 +51,10 @@ namespace TankGame
         }
 
 
-        public SpriteRenderer(GameObject gameObject, string spriteName, float layerDepth)
+        public SpriteRenderer(GameObject gameObject, string spriteName, float layerDepth) : base(gameObject)
         {
             this.spriteName = spriteName;
             this.layerDepth = layerDepth;
-            this.gameObject = gameObject;
-
         }
 
         /// <summary>
@@ -69,12 +66,12 @@ namespace TankGame
             if (UseRect)
             {
                 Vector2 origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
-                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, rectangle, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, GameObject.Transform.Position + offset, rectangle, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
             }
             else
             {
                 Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-                spriteBatch.Draw(sprite, gameObject.Transform.Position + offset, null, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, GameObject.Transform.Position + offset, null, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
             }
         }
 

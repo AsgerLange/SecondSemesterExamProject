@@ -12,7 +12,7 @@ namespace TankGame
 
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
-        Random rnd = new Random();
+        
         protected int health;
         protected float attackRate;
         protected float attackRange;
@@ -85,7 +85,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation + (rnd.Next(-3, 3)));
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation + (GameWorld.Instance.Rnd.Next(-3, 3)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }
@@ -136,26 +136,29 @@ namespace TankGame
         {
             Collider closestEnemy = null;
             float distance = 0;
-            foreach (Collider other in GameWorld.Instance.Colliders)
+            lock (GameWorld.colliderKey)
             {
-                if (other.GetAlignment == Alignment.Enemy)
+                foreach (Collider other in GameWorld.Instance.Colliders)
                 {
-                    if (AttackRadius.Contains(other.CollisionBox.Center))
+                    if (other.GetAlignment == Alignment.Enemy)
                     {
-                        float otherDistance;
-                        otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                            * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                            + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
-                            * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
-                        if (closestEnemy == null)
+                        if (AttackRadius.Contains(other.CollisionBox.Center))
                         {
-                            closestEnemy = other;
-                            distance = otherDistance;
-                        }
-                        else if (distance > otherDistance)
-                        {
-                            closestEnemy = other;
-                            distance = otherDistance;
+                            float otherDistance;
+                            otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                            if (closestEnemy == null)
+                            {
+                                closestEnemy = other;
+                                distance = otherDistance;
+                            }
+                            else if (distance > otherDistance)
+                            {
+                                closestEnemy = other;
+                                distance = otherDistance;
+                            }
                         }
                     }
                 }
@@ -185,19 +188,22 @@ namespace TankGame
             float force = Constant.pushForce;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                foreach (Component go in other.GameObject.GetComponentList)
+                if (!(other.GameObject.GetComponent("Plane") is Plane))
                 {
-                    if (go is Bullet)
+                    foreach (Component go in other.GameObject.GetComponentList)
                     {
-                        push = false;
+                        if (go is Bullet)
+                        {
+                            push = false;
+                        }
                     }
-                }
-                if (push)
-                {
-                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                    dir.Normalize();
+                    if (push)
+                    {
+                        Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                        dir.Normalize();
 
-                    other.GameObject.Transform.Translate(dir * force);
+                        other.GameObject.Transform.Translate(dir * force);
+                    }
                 }
             }
         }
@@ -213,19 +219,22 @@ namespace TankGame
             float force = Constant.pushForce * 2;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                foreach (Component go in other.GameObject.GetComponentList)
+                if (!(other.GameObject.GetComponent("Plane") is Plane))
                 {
-                    if (go is Bullet)
+                    foreach (Component go in other.GameObject.GetComponentList)
                     {
-                        push = false;
+                        if (go is Bullet)
+                        {
+                            push = false;
+                        }
                     }
-                }
-                if (push)
-                {
-                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                    dir.Normalize();
+                    if (push)
+                    {
+                        Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                        dir.Normalize();
 
-                    other.GameObject.Transform.Translate(dir * force);
+                        other.GameObject.Transform.Translate(dir * force);
+                    }
                 }
             }
         }

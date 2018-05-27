@@ -169,6 +169,18 @@
 /processorParam:TextureFormat=Color
 /build:HQ.png
 
+#begin PlayerTank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayerTank.png
+
 #begin Stat.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -188,7 +200,7 @@
 /processorParam:TextureFormat=Color
 /build:PlayerTank2.png
 
-#begin PlayerTank.png
+#begin ShotgunPellet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -198,17 +210,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:PlayerTank.png
-
-#begin BasicEliteEnemy.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:BasicEliteEnemy.png
+/build:ShotgunPellet.png
 

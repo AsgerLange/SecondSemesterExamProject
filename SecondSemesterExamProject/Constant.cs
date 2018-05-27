@@ -18,7 +18,7 @@ namespace TankGame
         #endregion
 
         #region Vehicles
-        public static readonly float buildTowerCoolDown = 0.5f;
+        public static readonly float buildTowerCoolDown = 2;
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
@@ -29,8 +29,19 @@ namespace TankGame
         public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
         public static readonly int tankStartGold = 100;
-        public static readonly BulletType tankAmmo = BulletType.BiggerBullet;
+       
         #endregion
+        #region Plane
+        public static readonly string planeSpriteSheet = "PlayerTank";
+        public static readonly string planeSpriteSheet2 = "PlayerTank2";
+
+        public static readonly float planeMoveSpeed = 200;
+        public static readonly float planeFireRate = 0.3f;
+        public static readonly int planeHealth = 500;
+        public static readonly float planeRotateSpeed = 1.5F;
+        public static readonly int planeStartGold = 100;
+        
+        #endregion;
         #endregion
 
         #region Tower
@@ -45,7 +56,7 @@ namespace TankGame
         #region BasicTower
         public static readonly int basicTowerPrice = 100;
         public static readonly string basicTowerSpriteSheet = "TowerBasic";
-        public static readonly float basicTowerFireRate =1;
+        public static readonly float basicTowerFireRate = 1;
         public static readonly int basicTowerHealth = 100;
         public static readonly BulletType basicTowerBulletType = BulletType.BasicBullet;
         public static readonly int basicTowerAttackRange = 150;
@@ -66,6 +77,40 @@ namespace TankGame
         public static readonly float biggerBulletLifeSpan = 1.5f;
         public static readonly int biggerBulletDmg = 150;
         #endregion;
+
+        #region shotgunPellet
+        public static readonly string shotgunPelletSheet = "ShotgunPellet";
+        public static readonly float shotgunPelletMovementSpeed = 750;
+        public static readonly float shotgunPelletLifeSpan = 0.3f;
+        public static readonly int shotgunPelletDmg = 30;
+        #endregion;
+        #endregion;
+
+        #region Weapons
+        #region BasicWeapon
+        public readonly static float basicWeaponFireRate = 0.7f;
+        public readonly static int basicWeaponAmmo = int.MaxValue;
+        public readonly static BulletType basicWeaponBulletType = BulletType.BiggerBullet;
+        public readonly static int basicWeaponSpread = 3;
+
+        #endregion;
+
+        #region Shotgun
+        public readonly static float shotGunFireRate = 1f;
+        public readonly static int shotGunAmmo = 50;
+        public readonly static BulletType shotgunBulletType = BulletType.ShotgunPellet;
+        public readonly static int shotGunSpread = 15;
+
+
+        #endregion;
+        #region MachineGun
+        public readonly static float MachineGunFireRate = 0.1f;
+        public readonly static int MachineGunGunAmmo = 10000;
+        public readonly static int MachineGunSpread = 7;
+
+        public readonly static BulletType MachineGunBulletType = BulletType.BasicBullet;
+
+        #endregion;
         #endregion;
 
         #region Enemies
@@ -76,17 +121,12 @@ namespace TankGame
         public static readonly float basicEnemyMovementSpeed = 25;
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
-        #endregion
-        #region BasicEliteEnemy
-        public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
-        public static readonly int basicEliteEnemyHealth = 500;
-        public static readonly float basicEliteEnemyMovementSpeed = 30;
-        public static readonly float basicEliteEnemyAttackRate = 0.7f;
-        public static readonly int basicEliteEnemyDamage = 20;
+
         #endregion
         #endregion
 
         #region Terrain
+        public static readonly int spawnZoneSize = 100;
         public static readonly string rockImage = "TerrainRock";
         public static readonly int pushForce = 2;
         #endregion

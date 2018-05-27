@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum BulletType { BasicBullet, BiggerBullet };
+    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
         protected BulletType bulletType;
@@ -89,6 +89,11 @@ namespace TankGame
                     this.movementSpeed = Constant.biggerBulletMovementSpeed;
                     this.lifeSpan = Constant.biggerBulletLifeSpan;
                     this.bulletDmg = Constant.biggerBulletDmg;
+                    break;
+                case BulletType.ShotgunPellet:
+                    this.movementSpeed = Constant.shotgunPelletMovementSpeed;
+                    this.lifeSpan = Constant.shotgunPelletLifeSpan;
+                    this.bulletDmg = Constant.shotgunPelletDmg;
                     break;
 
                 default:

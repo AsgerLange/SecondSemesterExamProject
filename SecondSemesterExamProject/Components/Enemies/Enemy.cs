@@ -8,12 +8,13 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, BasicEliteEnemy };
+    enum EnemyType { BasicEnemy, };
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
 
         public Animator animator;
+        protected EnemyType enemyType;
         private SpriteRenderer spriteRenderer;
         protected GameObject targetGameObject = GameWorld.Instance.GameObjects[0]; //HQ by default
         protected float rotation = 0;
@@ -25,6 +26,11 @@ namespace TankGame
         protected float attackTimeStamp;
         private int attackVariation = 1;
 
+
+        public EnemyType GetEnemyType
+        {
+            get { return enemyType; }
+        }
         public bool IsAlive
         {
             get { return isAlive; }
@@ -37,7 +43,7 @@ namespace TankGame
             {
                 health = value;
                 if (health <= 0)
-                  {
+                {
                     isAlive = false;
                     Die();
                 }
@@ -68,7 +74,7 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
@@ -76,6 +82,7 @@ namespace TankGame
             this.damage = damage;
             this.isAlive = true;
             this.canRelease = true;
+            this.enemyType = enemyType;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
@@ -136,8 +143,10 @@ namespace TankGame
             {
                 if (this.GameObject.GetComponent("Collider") is Collider)
                 {
-
-                    GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                    lock (GameWorld.colliderKey)
+                    {
+                        GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                    }
                 }
 
             }
@@ -234,7 +243,7 @@ namespace TankGame
             {
                 if (canRelease)
                 {
-                    EnemyPool.releaseList.Add(this.GameObject);
+                    EnemyPool.Instance.ReleaseList.Add(this.GameObject);
                     canRelease = false;
                 }
             }
@@ -291,19 +300,26 @@ namespace TankGame
         {
             if (IsAlive)
             {
-
-                if (other.GetAlignment != Alignment.Neutral)
+                if (!(other.GameObject.GetComponent("Plane") is Plane))
                 {
-                    if (other.GetAlignment == Alignment.Friendly)
+
+
+                    if (other.GetAlignment != Alignment.Neutral)
                     {
-                        CheckIfCanAttack(other);
+                        if (other.GetAlignment == Alignment.Friendly)
+                        {
+                            CheckIfCanAttack(other);
+                        }
+                        else if (other.GetAlignment == Alignment.Enemy)
+                        {
+                            float force = Constant.pushForce;
+
+                            Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                            dir.Normalize();
+
+                            other.GameObject.Transform.Translate(dir * force);
+                        }
                     }
-                    float force = Constant.pushForce;
-
-                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                    dir.Normalize();
-
-                    other.GameObject.Transform.Translate(dir * force);
                 }
             }
         }
@@ -336,7 +352,7 @@ namespace TankGame
                 }
 
             }
-            
+
         }
         /// <summary>
         /// Handles attack interaction between enemy and vehicle
@@ -344,7 +360,7 @@ namespace TankGame
         /// <param name="tower">Targeted Tower component</param>
         protected virtual void AttackTower(Tower tower)
         {
-           tower.Health -= damage;  //damage Tower
+            tower.Health -= damage;  //damage Tower
 
             if (attackVariation > 2)//Adds animation variation
             {
@@ -353,7 +369,7 @@ namespace TankGame
             animator.PlayAnimation("Attack" + attackVariation);
             attackVariation++;
             attackTimeStamp = GameWorld.Instance.TotalGameTime;
-            
+
         }
         /// <summary>
         /// Handles attack interaction between Enemy and Vehicle
@@ -361,7 +377,7 @@ namespace TankGame
         /// <param name="vehicle">Targeted vehicle component</param>
         protected virtual void AttackVehicle(Vehicle vehicle)
         {
-           vehicle.Health -= damage; // damage vehicle
+            vehicle.Health -= damage; // damage vehicle
 
             if (attackVariation > 2)//Adds animation variation
             {

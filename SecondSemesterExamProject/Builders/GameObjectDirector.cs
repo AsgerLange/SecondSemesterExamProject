@@ -15,7 +15,7 @@ namespace TankGame
         private BulletBuilder bulletBuilder;
         private EnemyBuilder enemyBuilder;
         private TowerBuilder towerBuilder;
-        private TerrainBuilder rockBuilder;
+        private TerrainBuilder terrainBuilder;
 
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
@@ -41,7 +41,7 @@ namespace TankGame
             this.bulletBuilder = new BulletBuilder();
             this.enemyBuilder = new EnemyBuilder();
             this.towerBuilder = new TowerBuilder();
-            this.rockBuilder = new TerrainBuilder();
+            this.terrainBuilder = new TerrainBuilder();
         }
 
         /// <summary>
@@ -65,12 +65,31 @@ namespace TankGame
         /// <returns></returns>
         public GameObject Construct(Vector2 position, EnemyType type)
         {
-            enemyBuilder.Build(position, type);
+            switch (type)
+            {
+                case EnemyType.BasicEnemy:
+                    enemyBuilder.Build(position, type);
+                    break;
+
+                default:
+                    break;
+            }
+
+
             return enemyBuilder.GetResult(); //returns the bullet that has been build
         }
         public GameObject Construct(Vector2 position, TowerType type)
         {
-            towerBuilder.Build(position, type);
+            switch (type)
+            {
+                case TowerType.BasicTower:
+                    towerBuilder.Build(position, type);
+
+                    break;
+
+                default:
+                    break;
+            }
             return towerBuilder.GetResult();
         }
 
@@ -82,9 +101,9 @@ namespace TankGame
         /// <returns></returns>
         public GameObject Construct(Vector2 position, int size, int rotation)
         {
-            rockBuilder.Build(position, size, rotation);
+            terrainBuilder.Build(position, size, rotation);
 
-            return rockBuilder.GetResult(); //returns the bullet that has been build
+            return terrainBuilder.GetResult(); //returns the bullet that has been build
         }
     }
 }

@@ -46,7 +46,7 @@ namespace TankGame
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(305, 450), 90, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(305, 450), 80, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
             terrain = GameObjectDirector.Instance.Construct(new Vector2(320, 470), 60, rnd.Next(0, 361));

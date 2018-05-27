@@ -16,10 +16,11 @@ namespace TankGame
         private Random rnd = new Random();
         private SpriteFont font;
         public Animator animator;
+
+        protected Weapon weapon;
         protected int health;
         protected int money;
         protected Controls control;
-        protected BulletType cannonAmmo;
         protected TowerType tower;
         protected int towerBuildCost;
         protected float movementSpeed;
@@ -33,6 +34,11 @@ namespace TankGame
 
         protected bool isPlayingAnimation = false;
 
+        public Weapon Weapon
+        {
+            get { return weapon; }
+            set { weapon = value; }
+        }
         public int Health
         {
             get { return health; }
@@ -68,7 +74,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money, BulletType cannonAmmo, TowerType tower) : base(gameObject)
+        public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
+            TowerType tower) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -76,11 +83,13 @@ namespace TankGame
             this.fireRate = fireRate;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
-            this.cannonAmmo = cannonAmmo;
+
             this.tower = tower;
+            this.weapon = weapon;
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
+
         }
 
         /// <summary>
@@ -134,18 +143,24 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+            //if the player is pressing the "Shoot" button
+            if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
             {
-                if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
+
+                //if enough time has passed since last shot
+                if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                        cannonAmmo, rotation + (rnd.Next(-3, 3)));
-                    animator.PlayAnimation("Shoot");
-                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
-                    isPlayingAnimation = true;
-                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly, rotation); //Fires the weapon
+
+                    animator.PlayAnimation("Shoot"); //play shooting animation
+
+                    isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
+
+                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
+
+                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; //Timestamp for when shot is fired (used to determine when the next shot can be fired)
                 }
             }
         }
@@ -210,9 +225,11 @@ namespace TankGame
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        protected Vector2 Move(Vector2 translation)
+        protected virtual Vector2 Move(Vector2 translation)
         {
+
             KeyboardState keyState = Keyboard.GetState();
+
             if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
@@ -229,7 +246,6 @@ namespace TankGame
                 if (isPlayingAnimation == false)
                 {
                     animator.PlayAnimation("MoveBackward");
-
                 }
             }
             return translation;
@@ -333,13 +349,7 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-#if DEBUG
-            foreach (Component com in other.GameObject.GetComponentList)
-            {
-                Console.WriteLine("Vehicle Collided with an object with this Component: " + com.ToString());
-            }
-            Console.WriteLine("At these Coordinates: " + GameObject.Transform.Position);
-#endif
+
         }
 
         /// <summary>

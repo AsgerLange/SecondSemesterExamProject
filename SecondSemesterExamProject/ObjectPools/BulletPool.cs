@@ -83,8 +83,10 @@ namespace TankGame
 
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 
-                    GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
-
+                    lock (GameWorld.colliderKey)
+                    {
+                        GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                    }
                     tmp.Transform.Position = position;
 
                     activeBullets.Add(tmp);
@@ -94,7 +96,6 @@ namespace TankGame
                 else
                 {
                     tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
-                    tmp.LoadContent(GameWorld.Instance.Content);
                     activeBullets.Add(tmp);
 
                     return tmp;
@@ -105,7 +106,6 @@ namespace TankGame
                 GameObject tmp;
 
                 tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
-                tmp.LoadContent(GameWorld.Instance.Content);
                 activeBullets.Add(tmp);
 
                 return tmp;
@@ -131,9 +131,9 @@ namespace TankGame
         {
             //Reset all bullet attributes
             bullet.Transform.Position = new Vector2(100, 100);
-          //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
+            //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
-          //GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
+            //GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
 
             foreach (var component in bullet.GetComponentList)
             {
@@ -150,23 +150,23 @@ namespace TankGame
                         tmp.LifeSpan = Constant.basicBulletLifeSpan;
                         tmp.BulletDamage = Constant.basicBulletDmg;
                         tmp.MovementSpeed = Constant.basicBulletMovementSpeed;
-
-
                     }
                     if (component is BiggerBullet)
                     {
-
                         tmp = component as BiggerBullet;
                         tmp.LifeSpan = Constant.biggerBulletLifeSpan;
                         tmp.BulletDamage = Constant.biggerBulletDmg;
                         tmp.MovementSpeed = Constant.biggerBulletMovementSpeed;
-
                     }
-
-
+                    if (component is ShotgunPellet)
+                    {
+                        tmp = component as ShotgunPellet;
+                        tmp.LifeSpan = Constant.shotgunPelletLifeSpan;
+                        tmp.BulletDamage = Constant.shotgunPelletDmg;
+                        tmp.MovementSpeed = Constant.shotgunPelletMovementSpeed;
+                    }
                 }
             }
-
             ActiveBullets.Remove(bullet);
             inActiveBullets.Add(bullet);
         }
@@ -179,7 +179,6 @@ namespace TankGame
 
             foreach (GameObject go in releaseList)
             {
-
                 ReleaseBullet(go);
             }
             releaseList.Clear();
@@ -188,3 +187,4 @@ namespace TankGame
     }
 
 }
+    
