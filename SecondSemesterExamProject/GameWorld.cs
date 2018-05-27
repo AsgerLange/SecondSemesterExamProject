@@ -190,7 +190,7 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //score.LoadContent(Content);
-            backGround = Content.Load<Texture2D>("Background");
+            backGround = Content.Load<Texture2D>("Background1");
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // TODO: use this.Content to load your game content here

@@ -153,7 +153,7 @@ namespace TankGame
 
         #region Terrain
         public static readonly int spawnZoneSize = 100;
-        public static readonly string rockImage = "TerrainRock";
+        public static readonly string rockImage = "Rock1";
         public static readonly int pushForce = 2;
         #endregion
     }
