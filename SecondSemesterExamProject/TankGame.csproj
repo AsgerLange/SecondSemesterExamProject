@@ -48,12 +48,15 @@
     <Compile Include="Builders\TowerBuilder.cs" />
     <Compile Include="Components\Bullets\BasicBullet.cs" />
     <Compile Include="Components\Bullets\BiggerBullet.cs" />
+    <Compile Include="Components\Bullets\SniperBullet.cs" />
     <Compile Include="Components\Bullets\ShotgunPellet.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
     <Compile Include="Components\Tower\BasicTower.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
+    <Compile Include="Components\Tower\ShotgunTower.cs" />
+    <Compile Include="Components\Vehicle\Bike.cs" />
     <Compile Include="Components\Vehicle\Plane.cs" />
     <Compile Include="Weapons\BasicWeapon.cs" />
     <Compile Include="Spawn.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="Components\Transform.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Weapons\MachineGun.cs" />
+    <Compile Include="Weapons\Sniper.cs" />
     <Compile Include="Weapons\Shotgun.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>

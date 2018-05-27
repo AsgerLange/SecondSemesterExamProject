@@ -40,7 +40,18 @@ namespace TankGame
         public static readonly int planeHealth = 500;
         public static readonly float planeRotateSpeed = 1.5F;
         public static readonly int planeStartGold = 100;
-        
+
+        #endregion;
+        #region Bike
+        public static readonly string bikeSpriteSheet = "PlayerTank";
+        public static readonly string bikeSpriteSheet2 = "PlayerTank2";
+
+        public static readonly float bikeMoveSpeed = 200;
+        public static readonly float bikeFireRate = 0.3f;
+        public static readonly int bikeHealth = 250;
+        public static readonly float bikeRotateSpeed = 2.5f;
+        public static readonly int bikeStartGold = 100;
+
         #endregion;
         #endregion
 
@@ -51,6 +62,8 @@ namespace TankGame
         public static readonly int HQHealth = 1000;
         public static readonly int HQAttackRange = 450;
         public static readonly BulletType HQbulletType = BulletType.BasicBullet;
+        public static readonly int HQSpread = 4;
+
         #endregion
 
         #region BasicTower
@@ -59,7 +72,20 @@ namespace TankGame
         public static readonly float basicTowerFireRate = 1;
         public static readonly int basicTowerHealth = 100;
         public static readonly BulletType basicTowerBulletType = BulletType.BasicBullet;
-        public static readonly int basicTowerAttackRange = 150;
+        public static readonly int basicTowerAttackRange = 200;
+        public static readonly int basicTowerSpread = 4;
+
+        #endregion;
+
+        #region ShotgunTower
+        public static readonly int shotgunTowerPrice = 100;
+        public static readonly string ShotgunTowerSpriteSheet = "TowerBasic";
+        public static readonly float ShotgunTowerFireRate = 2.5f;
+        public static readonly int ShotgunTowerHealth = 100;
+        public static readonly BulletType ShotgunTowerBulletType = BulletType.ShotgunPellet;
+        public static readonly int shotgunTowerAttackRange = 150;
+        public static readonly int ShotgunTowerSpread = 20;
+
         #endregion;
         #endregion
 
@@ -78,11 +104,18 @@ namespace TankGame
         public static readonly int biggerBulletDmg = 150;
         #endregion;
 
+        #region sniperBullet
+        public static readonly string sniperBulletSheet = "SniperBullet";
+        public static readonly float sniperBulletMovementSpeed = 1100;
+        public static readonly float sniperBulletLifeSpan = 1f;
+        public static readonly int sniperBulletBulletDmg = 400;
+        #endregion;
+
         #region shotgunPellet
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.3f;
-        public static readonly int shotgunPelletDmg = 30;
+        public static readonly int shotgunPelletDmg = 50;
         #endregion;
         #endregion;
 
@@ -95,11 +128,19 @@ namespace TankGame
 
         #endregion;
 
+        #region Sniper
+        public readonly static float sniperFireRate = 1.8f;
+        public readonly static int sniperAmmo = int.MaxValue;
+        public readonly static BulletType sniperBulletType = BulletType.SniperBullet;
+        public readonly static int sniperSpread = 0;
+
+        #endregion;
+
         #region Shotgun
         public readonly static float shotGunFireRate = 1f;
         public readonly static int shotGunAmmo = 50;
         public readonly static BulletType shotgunBulletType = BulletType.ShotgunPellet;
-        public readonly static int shotGunSpread = 15;
+        public readonly static int shotGunSpread = 10;
 
 
         #endregion;
@@ -127,7 +168,7 @@ namespace TankGame
 
         #region Terrain
         public static readonly int spawnZoneSize = 100;
-        public static readonly string rockImage = "TerrainRock";
+        public static readonly string rockImage = "Rock1";
         public static readonly int pushForce = 2;
         #endregion
     }

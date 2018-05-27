@@ -53,6 +53,23 @@ namespace TankGame
             }
         }
 
+        private float Rotation
+        {
+            get { return rotation; }
+            set
+            {
+                rotation = value;
+                if (rotation >= 360)
+                {
+                    rotation = 0;
+                }
+                if (rotation < 0)
+                {
+                    rotation = 360;
+                }
+            }
+        }
+
         public int Money
         {
             get { return money; }
@@ -133,7 +150,7 @@ namespace TankGame
             //move the vehicle
             TranslateMovement(translation);
             //rotate sprite
-            spriteRenderer.Rotation = rotation;
+            spriteRenderer.Rotation = Rotation;
         }
 
         /// <summary>
@@ -152,7 +169,7 @@ namespace TankGame
                 if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly, rotation); //Fires the weapon
+                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly, Rotation); //Fires the weapon
 
                     animator.PlayAnimation("Shoot"); //play shooting animation
 
@@ -214,6 +231,9 @@ namespace TankGame
                 case TowerType.BasicTower:
                     towerBuildCost = Constant.basicTowerPrice;
                     break;
+                case TowerType.ShotgunTower:
+                    towerBuildCost = Constant.shotgunTowerPrice;
+                    break;
                 default:
                     towerBuildCost = Constant.basicTowerPrice;
                     break;
@@ -261,12 +281,12 @@ namespace TankGame
             if ((keyState.IsKeyDown(Keys.D) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Right) && control == Controls.UDLR))
             {
-                rotation += rotateSpeed;
+                Rotation += rotateSpeed;
             }
             if ((keyState.IsKeyDown(Keys.A) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Left) && control == Controls.UDLR))
             {
-                rotation -= rotateSpeed;
+                Rotation -= rotateSpeed;
             }
         }
 
@@ -277,7 +297,7 @@ namespace TankGame
         /// <returns></returns>
         protected Vector2 RotateVector(Vector2 translation)
         {
-            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)));
+            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation)));
         }
 
         /// <summary>
