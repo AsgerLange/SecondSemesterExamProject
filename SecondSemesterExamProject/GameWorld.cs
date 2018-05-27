@@ -27,9 +27,6 @@ namespace TankGame
         private Map map;
         private Spawn spawner;
         private bool gameOver = false;
-        Rectangle textBox;
-        Texture2D theBox;
-        SpriteFont font;
         Score score;
 
 
@@ -160,10 +157,11 @@ namespace TankGame
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
-            textBox = new Rectangle(10, 10, 150, 150);
+            
 
             //creates a score to keep track of scores and stats
-            score = new Score();
+            //score = new Score();
+            
             base.Initialize();
         }
 
@@ -175,7 +173,7 @@ namespace TankGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            score.LoadContent(Content);
+            //score.LoadContent(Content);
             backGround = Content.Load<Texture2D>("testBackground");
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -229,7 +227,7 @@ namespace TankGame
             RemoveObjects();
 
             //handles score funktions
-            //score.Update();
+            //score.Update(gameTime);
 
             base.Update(gameTime);
         }

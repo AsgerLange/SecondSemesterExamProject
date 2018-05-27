@@ -17,13 +17,15 @@ namespace TankGame
         private int score;
         public static string name = string.Empty;//Contains the string we need to use for player input
         private bool databseState = true;
-        Keys[] lastKeys;//The list of all our keys pressed
-        KeyboardState lastKeyboardState;//Checks last key pressed
-        private float updateStamp;
         Rectangle textBox;
         Texture2D theBox;
         SpriteFont font;
+        private KeyboardState lastKeyboardState;//Checks the last key pressed
+        private Keys[] lastKey;//Contains a array of the keys that has been pressed.
         private string parsedText;
+        private double timer;
+
+
 
         //Properties
         public int GetScore
@@ -34,7 +36,9 @@ namespace TankGame
 
         public Score()
         {
-            textBox = new Rectangle(20, 20, 20, 20);
+            textBox = new Rectangle(20, 20, 150, 50);
+            
+
         }
 
         //public void SetupServer()
@@ -53,9 +57,9 @@ namespace TankGame
         //    dbConnect.Open();
         //    string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
         //    string log = "Create table Log (ID varchar, Total int)";
-        //    string tower = "Create table Tower (TotalKillTowers int, Tower1Kill int, Tower2Kill int, Tower3Kill int, TowerBuild int, TowerDead int)";
-        //    string player = "Create table Player (TotalKills int)";
-        //    string enemies = "Create table Enemies (Wave int, TotalKill int, Enemy1Kills int, Enemy2Kills int, Enemy3Kills int)";
+        //    string tower = "Create table Tower (TotalKillTowers int, TowerBuild int, TowerDead int)";
+        //    string player = "Create table Player (TotalKills int, Gold int, Wave int)";
+        //    string enemies = "Create table Enemies (Total kill int, Total spawn int)";
         //    SQLiteCommand command = new SQLiteCommand(highscore, dbConnect);
         //    SQLiteCommand command2 = new SQLiteCommand(log, dbConnect);
         //    SQLiteCommand command3 = new SQLiteCommand(tower, dbConnect);
@@ -64,56 +68,54 @@ namespace TankGame
         //    command.ExecuteNonQuery();
         //    dbConnect.Close();
         //}
-        public virtual void Update()
-        {
-            PlayerInput();
-        }
 
-        public void PlayerInput()
+        /// <summary>
+        /// Updates the pressed keys for score
+        /// </summary>
+        public virtual void Update(GameTime gameTime)
         {
-            //Get the current keyboard state and keys that are pressed
-            KeyboardState keyboardState = Keyboard.GetState();
-            Keys[] keys = keyboardState.GetPressedKeys();
-
-            foreach (Keys currentKey in keys)
+            KeyboardState keyboardState = Keyboard.GetState();//Gets the state
+            Keys[] keys = keyboardState.GetPressedKeys();//Gets a array of what keys had been pressed
+            
+            foreach(Keys currentKeys in keys)//foreach key there is do something
             {
-                if (currentKey != Keys.None)
+                if (currentKeys != Keys.None)//checks if the current is not none.
                 {
-                    //If we have pressed the same key twice, wait atleast 125ms before adding it again
-                    if (lastKeys.Contains(currentKey))
+                    if (lastKey.Contains(currentKeys))//If the lastkey containst the same value as the current key pressed.
                     {
-                        if ((GameWorld.Instance.TotalGameTime > updateStamp + 0.50))
-                        {
-                            HandleKey(GameWorld.Instance.TotalGameTime, currentKey);
-                            updateStamp = GameWorld.Instance.TotalGameTime;
-                        }
+                        if ((gameTime.TotalGameTime.TotalMilliseconds - timer > 200))//Makes sure that if we press the same key again that it will set a delay
+                            HandleKey(gameTime, currentKeys);
                     }
-                    //If we press a new key, add it
-                    else if (!lastKeys.Contains(currentKey))
-                        HandleKey(GameWorld.Instance.TotalGameTime, currentKey);
+                    else if (!lastKey.Contains(currentKeys))//If the next key is not the same then just write it out
+                        HandleKey(gameTime, currentKeys);
                 }
+                    
             }
-
-            //Save the last keys and pressed keys array
-            lastKeyboardState = keyboardState; //Puts the last keyboard state into the variable
-            lastKeys = keys; //The Keys array here gives its value to the lastKeys variable
+            lastKeyboardState = keyboardState;//Sets the lastkeystate to be the keyboard state we get
+            lastKey = keys;//Saves the last key that was pressed.
+            
         }
-
-        public void HandleKey(float totalGameTime, Keys currentKeys)
+        /// <summary>
+        /// Handles spesific keys such as space, backspace, delete and enter.
+        /// </summary>
+        public void HandleKey(GameTime gameTime, Keys currentKey)
         {
-            string playerInputString = currentKeys.ToString();//Makes the currentkeys into a string
-            if (currentKeys == Keys.Space)
-                playerInputString += " ";
-            else if ((currentKeys == Keys.Back || currentKeys == Keys.Delete) && playerInputString.Length > 0)
-                playerInputString = playerInputString.Remove(playerInputString.Length - 1);
-            else if (currentKeys == Keys.Enter)
-            {
-                playerInputString += name;
+            string keyString = currentKey.ToString();//Turns the currentkeys into a string
+            if (currentKey == Keys.Space)
+                name += " ";
+            else if ((currentKey == Keys.Back || currentKey == Keys.Delete) && name.Length > 0)
+                name = name.Remove(name.Length - 1);
+            else if (currentKey == Keys.Enter)
                 InsertScore();
-            }
+            else
+                name += keyString;
+            //Set the timer to the current time
+            timer = gameTime.TotalGameTime.TotalMilliseconds;
         }
 
-
+        /// <summary>
+        /// Loads the content for inputspace
+        /// </summary>
         public virtual void LoadContent(ContentManager contentManager)
         {
             theBox = contentManager.Load<Texture2D>("Button");
@@ -121,23 +123,28 @@ namespace TankGame
 
             parsedText = ParseText(name);
         }
-
+        /// <summary>
+        /// Draws the inputspace and the string that goes with it
+        /// </summary>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(theBox, textBox, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            spriteBatch.DrawString(font, Score.name, new Vector2(textBox.X, textBox.Y), Color.Black);
+            spriteBatch.Draw(theBox, textBox, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);//Draws the box
+            spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X, textBox.Y), Color.Black);//Draws the text
         }
+        /// <summary>
+        /// Helps to split up text if the text lenght is bigger than the box lenght
+        /// </summary>
         private string ParseText(string text)
         {
             string line = String.Empty;
             string returnString = String.Empty;
-            string[] wordArray = text.Split(' ');
+            string[] wordArray = text.Split(' ');//Splits up the array with space.
 
             foreach (string word in wordArray)
             {
-                if (font.MeasureString(line + word).Length() > textBox.Width)
+                if (font.MeasureString(line + word).Length() > textBox.Width)//Checks if the line is longer than the box it self
                 {
-                    returnString = returnString + line + '\n';
+                    returnString = returnString + line + '\n';//Sets the new line
                     line = string.Empty;
                 }
                 line = line + word + ' ';
