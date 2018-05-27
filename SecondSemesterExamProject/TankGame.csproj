@@ -103,7 +103,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Dropbox\EADania\Databaser\sqlite-netFx451-static-binary-bundle-Win32-2013-1.0.108.0\System.Data.SQLite.dll</HintPath>
+      <HintPath>C:\Users\13579\Dropbox\EADania\Databaser\sqlite-netFx451-static-binary-bundle-Win32-2013-1.0.108.0\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
