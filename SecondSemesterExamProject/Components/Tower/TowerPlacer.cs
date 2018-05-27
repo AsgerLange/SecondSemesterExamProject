@@ -17,7 +17,7 @@ namespace TankGame
 
         private int towerBuildCost; //price of the tower
 
-        protected Vehicle vehicle; //game object that ownes the tower
+        private Vehicle vehicle; //game object that ownes the tower
 
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace TankGame
         /// <summary>
         /// Gives the vehicle the basic tower
         /// </summary>
-        protected void SwitchBackToBasicTower()
+        private void SwitchBackToBasicTower()
         {
             vehicle.TowerPlacer = new TowerPlacer(vehicle, TowerType.BasicTower, int.MaxValue);
         }
