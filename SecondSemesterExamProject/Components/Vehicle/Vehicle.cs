@@ -16,23 +16,35 @@ namespace TankGame
         private Random rnd = new Random();
         private SpriteFont font;
         public Animator animator;
+
+        protected Weapon weapon;
+        protected TowerPlacer towerPlacer;
         protected int health;
         protected int money;
         protected Controls control;
-        protected BulletType cannonAmmo;
-        protected TowerType tower;
-        protected int towerBuildCost;
+
+
         protected float movementSpeed;
         protected float fireRate;
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
-        protected float builtTimeStamp;
+
         protected bool isAlive;
 
         protected bool isPlayingAnimation = false;
 
+        public Weapon Weapon
+        {
+            get { return weapon; }
+            set { weapon = value; }
+        }
+        public TowerPlacer TowerPlacer
+        {
+            get { return towerPlacer; }
+            set { towerPlacer = value; }
+        }
         public int Health
         {
             get { return health; }
@@ -43,6 +55,23 @@ namespace TankGame
                 {
                     health = 0;
                     Die();
+                }
+            }
+        }
+
+        private float Rotation
+        {
+            get { return rotation; }
+            set
+            {
+                rotation = value;
+                if (rotation >= 360)
+                {
+                    rotation = 0;
+                }
+                if (rotation < 0)
+                {
+                    rotation = 360;
                 }
             }
         }
@@ -68,7 +97,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money, BulletType cannonAmmo, TowerType tower) : base(gameObject)
+        public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
+            TowerType towerType) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -76,11 +106,13 @@ namespace TankGame
             this.fireRate = fireRate;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
-            this.cannonAmmo = cannonAmmo;
-            this.tower = tower;
+
+            this.towerPlacer = new TowerPlacer(this, towerType, 1);
+            this.weapon = weapon;
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
+
         }
 
         /// <summary>
@@ -124,7 +156,7 @@ namespace TankGame
             //move the vehicle
             TranslateMovement(translation);
             //rotate sprite
-            spriteRenderer.Rotation = rotation;
+            spriteRenderer.Rotation = Rotation;
         }
 
         /// <summary>
@@ -134,18 +166,24 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((shotTimeStamp + fireRate) <= GameWorld.Instance.TotalGameTime)
+            //if the player is pressing the "Shoot" button
+            if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
             {
-                if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
+
+                //if enough time has passed since last shot
+                if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly,
-                        cannonAmmo, rotation);
-                    animator.PlayAnimation("Shoot");
-                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);
-                    isPlayingAnimation = true;
-                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly, Rotation); //Fires the weapon
+
+                    animator.PlayAnimation("Shoot"); //play shooting animation
+
+                    isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
+
+                    spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
+
+                    shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; //Timestamp for when shot is fired (used to determine when the next shot can be fired)
                 }
             }
         }
@@ -157,62 +195,28 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
+
+            if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Back) && control == Controls.UDLR))
             {
+                TowerPlacer.PlaceTower();
 
-                if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
-                    || (keyState.IsKeyDown(Keys.Back) && control == Controls.UDLR))
-                {
-
-                    SetTowerBuildCost();
-                    if (money >= towerBuildCost)
-                    {
-                        GameObject towerGO;
-
-                        //Gameobjectdirector builds a new tower
-                        towerGO = GameObjectDirector.Instance.Construct(new Vector2(GameObject.Transform.Position.X + 1,
-                            GameObject.Transform.Position.Y + 1), tower);
-
-                        //its content is loaded
-                        towerGO.LoadContent(GameWorld.Instance.Content);
-
-                        //it's added to gameworld next update cycle
-                        GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
-
-                        //takes the money for building away
-                        money -= towerBuildCost;
-
-                        //time stamps for when the tower is build (used for cooldown)
-                        builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
-                    }
-                }
             }
+
         }
 
-        /// <summary>
-        /// sets the price for building a tower
-        /// </summary>
-        private void SetTowerBuildCost()
-        {
-            switch (tower)
-            {
-                case TowerType.BasicTower:
-                    towerBuildCost = Constant.basicTowerPrice;
-                    break;
-                default:
-                    towerBuildCost = Constant.basicTowerPrice;
-                    break;
-            }
-        }
+
 
         /// <summary>
         /// moves the vehicle
         /// </summary>
         /// <param name="translation"></param>
         /// <returns></returns>
-        protected Vector2 Move(Vector2 translation)
+        protected virtual Vector2 Move(Vector2 translation)
         {
+
             KeyboardState keyState = Keyboard.GetState();
+
             if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
@@ -229,7 +233,6 @@ namespace TankGame
                 if (isPlayingAnimation == false)
                 {
                     animator.PlayAnimation("MoveBackward");
-
                 }
             }
             return translation;
@@ -245,12 +248,12 @@ namespace TankGame
             if ((keyState.IsKeyDown(Keys.D) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Right) && control == Controls.UDLR))
             {
-                rotation += rotateSpeed;
+                Rotation += rotateSpeed;
             }
             if ((keyState.IsKeyDown(Keys.A) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Left) && control == Controls.UDLR))
             {
-                rotation -= rotateSpeed;
+                Rotation -= rotateSpeed;
             }
         }
 
@@ -261,7 +264,7 @@ namespace TankGame
         /// <returns></returns>
         protected Vector2 RotateVector(Vector2 translation)
         {
-            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)));
+            return Vector2.Transform(translation, Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation)));
         }
 
         /// <summary>
@@ -318,13 +321,7 @@ namespace TankGame
         public virtual void CreateAnimation()
         {
             //EKSEMPEL
-            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
-            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / Constant.tankFireRate, new Vector2(0, -3)));
-            animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(7, 305, 0, 28, 40, 5, Vector2.Zero));
+
         }
 
         /// <summary>
@@ -353,12 +350,24 @@ namespace TankGame
         {
             if (control == Controls.WASD)
             {
-                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.YellowGreen);
+                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth-20), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, "HP: "+Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
+
+
+
 
             }
             else if (control == Controls.UDLR)
             {
                 spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - 50, 2), Color.YellowGreen);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - 200, Constant.higth - 20), Color.YellowGreen);
+                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - 200, Constant.higth - 40), Color.YellowGreen);
+                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - 200, Constant.higth - 60), Color.YellowGreen);
+
+
+
             }
         }
     }

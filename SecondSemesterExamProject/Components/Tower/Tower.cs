@@ -8,15 +8,16 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum TowerType { BasicTower, };
+    enum TowerType { BasicTower, ShotgunTower, };
 
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {
-        Random rnd = new Random();
+        
         protected int health;
         protected float attackRate;
         protected float attackRange;
         protected float shootTimeStamp;
+        protected int spread;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
         protected BulletType bulletType;
@@ -36,12 +37,8 @@ namespace TankGame
             }
         }
 
-        public Tower(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType) : base(gameObject)
+        public Tower(GameObject gameObject) : base(gameObject)
         {
-            this.health = health;
-            this.attackRate = attackRate;
-            this.attackRange = attackRange;
-            this.bulletType = bulletType;
             GameObject.Transform.canMove = false;
 
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -85,7 +82,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, BulletType.BasicBullet, rotation + (rnd.Next(-3, 3)));
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread,spread)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }
@@ -188,19 +185,22 @@ namespace TankGame
             float force = Constant.pushForce;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                foreach (Component go in other.GameObject.GetComponentList)
+                if (!(other.GameObject.GetComponent("Plane") is Plane))
                 {
-                    if (go is Bullet)
+                    foreach (Component go in other.GameObject.GetComponentList)
                     {
-                        push = false;
+                        if (go is Bullet)
+                        {
+                            push = false;
+                        }
                     }
-                }
-                if (push)
-                {
-                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                    dir.Normalize();
+                    if (push)
+                    {
+                        Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                        dir.Normalize();
 
-                    other.GameObject.Transform.Translate(dir * force);
+                        other.GameObject.Transform.Translate(dir * force);
+                    }
                 }
             }
         }
@@ -216,19 +216,22 @@ namespace TankGame
             float force = Constant.pushForce * 2;
             if (other.GetAlignment != Alignment.Neutral)
             {
-                foreach (Component go in other.GameObject.GetComponentList)
+                if (!(other.GameObject.GetComponent("Plane") is Plane))
                 {
-                    if (go is Bullet)
+                    foreach (Component go in other.GameObject.GetComponentList)
                     {
-                        push = false;
+                        if (go is Bullet)
+                        {
+                            push = false;
+                        }
                     }
-                }
-                if (push)
-                {
-                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                    dir.Normalize();
+                    if (push)
+                    {
+                        Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                        dir.Normalize();
 
-                    other.GameObject.Transform.Translate(dir * force);
+                        other.GameObject.Transform.Translate(dir * force);
+                    }
                 }
             }
         }
