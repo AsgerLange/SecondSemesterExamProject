@@ -147,45 +147,18 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //secure that enemyPool has been started
-            EnemyPool ep = EnemyPool.Instance;
-
             //initializes the barrier
             barrier = new Barrier(2);
+
+            //secure that enemyPool has been started
+            EnemyPool ep = EnemyPool.Instance;
 
             //adds objects to the map
             map = new Map();
 
-            //Adds test player
-            GameObject go;
-            go = new GameObject();
-            go.Transform.Position = new Vector2(650, 350);
-            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
-            go.AddComponent(new Animator(go));
-            go.AddComponent(new Plane(go, Controls.WASD, new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed,
-                Constant.planeFireRate, Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.BasicTower));
-            go.AddComponent(new Collider(go, Alignment.Friendly));
-            gameObjects.Add(go);
-
-            //adds player2
-            //go = new GameObject();
-            //go.Transform.Position = new Vector2(350, 350);
-            //go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
-            //go.AddComponent(new Animator(go));
-            //go.AddComponent(new Tank(go, Controls.UDLR, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed,
-            //    Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
-            //go.AddComponent(new Collider(go, Alignment.Friendly));
-            //gameObjects.Add(go);
-
-            //adds player2 Bike
-            go = new GameObject();
-            go.Transform.Position = new Vector2(350, 350);
-            go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet2, 0.2f));
-            go.AddComponent(new Animator(go));
-            go.AddComponent(new Bike(go, Controls.UDLR, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
-                Constant.bikeFireRate, Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.ShotgunTower));
-            go.AddComponent(new Collider(go, Alignment.Friendly));
-            gameObjects.Add(go);
+            //Adds Test player1, testplayer2
+            GameObjectDirector.Instance.Construct(VehicleType.Plane);
+            GameObjectDirector.Instance.Construct(VehicleType.Bike);
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);

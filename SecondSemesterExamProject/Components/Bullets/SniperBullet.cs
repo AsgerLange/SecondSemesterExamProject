@@ -113,7 +113,7 @@ namespace TankGame
         {
             base.DestroyBullet();
             enemiesPierced = 0;
-
+          
         }
         public override void Update()
         {

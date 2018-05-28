@@ -16,6 +16,7 @@ namespace TankGame
         private EnemyBuilder enemyBuilder;
         private TowerBuilder towerBuilder;
         private TerrainBuilder terrainBuilder;
+        private VehicleBuilder vehicleBuilder;
 
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
@@ -42,6 +43,7 @@ namespace TankGame
             this.enemyBuilder = new EnemyBuilder();
             this.towerBuilder = new TowerBuilder();
             this.terrainBuilder = new TerrainBuilder();
+            this.vehicleBuilder = new VehicleBuilder();
         }
 
         /// <summary>
@@ -65,34 +67,14 @@ namespace TankGame
         /// <returns></returns>
         public GameObject Construct(Vector2 position, EnemyType type)
         {
-            switch (type)
-            {
-                case EnemyType.BasicEnemy:
-                    enemyBuilder.Build(position, type);
-                    break;
-
-                default:
-                    break;
-            }
-
+            enemyBuilder.Build(position, type);
 
             return enemyBuilder.GetResult(); //returns the bullet that has been build
         }
         public GameObject Construct(Vector2 position, TowerType type)
         {
-            switch (type)
-            {
-                case TowerType.BasicTower:
-                    towerBuilder.Build(position, type);
-                    break;
+            towerBuilder.Build(position, type);
 
-                case TowerType.ShotgunTower:
-                    towerBuilder.Build(position, type);
-                    break;
-
-                default:
-                    break;
-            }
             return towerBuilder.GetResult();
         }
 
@@ -107,6 +89,13 @@ namespace TankGame
             terrainBuilder.Build(position, size, rotation);
 
             return terrainBuilder.GetResult(); //returns the bullet that has been build
+        }
+
+        public GameObject Construct(VehicleType type)
+        {
+            vehicleBuilder.Build(type);
+
+            return vehicleBuilder.GetResult(); //returns the bullet that has been build
         }
     }
 }

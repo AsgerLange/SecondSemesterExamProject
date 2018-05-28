@@ -25,25 +25,21 @@ namespace TankGame
         #endregion
 
         #region Vehicles
-        public static readonly float buildTowerCoolDown = 2;
+        public static readonly float buildTowerCoolDown = 1;
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
-        public static readonly string tankSpriteSheet2 = "PlayerTank2";
-
+       
         public static readonly float tankMoveSpeed = 100;
-        public static readonly float tankFireRate = 0.7f;
         public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
         public static readonly int tankStartGold = 100;
 
         #endregion
         #region Plane
-        public static readonly string planeSpriteSheet = "PlayerTank";
-        public static readonly string planeSpriteSheet2 = "PlayerTank2";
+        public static readonly string planeSpriteSheet = "PlayerPlane";
 
         public static readonly float planeMoveSpeed = 200;
-        public static readonly float planeFireRate = 0.3f;
         public static readonly int planeHealth = 100;
         public static readonly float planeRotateSpeed = 1.5F;
         public static readonly int planeStartGold = 100;
@@ -51,10 +47,8 @@ namespace TankGame
         #endregion;
         #region Bike
         public static readonly string bikeSpriteSheet = "PlayerTank";
-        public static readonly string bikeSpriteSheet2 = "PlayerTank2";
 
         public static readonly float bikeMoveSpeed = 200;
-        public static readonly float bikeFireRate = 0.3f;
         public static readonly int bikeHealth = 250;
         public static readonly float bikeRotateSpeed = 3f;
         public static readonly int bikeStartGold = 100;
@@ -119,13 +113,13 @@ namespace TankGame
         public static readonly float sniperBulletLifeSpan = 1f;
         public static readonly int sniperBulletBulletDmg = 400;
         #endregion;
+        #endregion;
 
         #region shotgunPellet
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.3f;
         public static readonly int shotgunPelletDmg = 30;
-        #endregion;
         #endregion;
 
         #region Weapons
@@ -173,6 +167,14 @@ namespace TankGame
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
 
+        #endregion
+
+        #region BasicEliteEnemy
+        public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
+        public static readonly int basicEliteEnemyHealth = 500;
+        public static readonly float basicEliteEnemyMovementSpeed = 30;
+        public static readonly float basicEliteEnemyAttackRate = 0.7f;
+        public static readonly int basicEliteEnemyDamage = 15;
         #endregion
         #endregion
 
