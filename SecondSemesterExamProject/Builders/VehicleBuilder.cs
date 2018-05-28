@@ -76,7 +76,7 @@ namespace TankGame
 
             if (playerCount>2)
             {
-                playerCount = 1;
+                playerCount = 1; //resets player count if it exeeds max amount of players supported
             }
             return go;
         }

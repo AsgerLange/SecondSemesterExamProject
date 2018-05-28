@@ -22,7 +22,7 @@ namespace TankGame
         public Bike(GameObject gameObject, Controls control, Weapon weapon, int health, float movementSpeed  , float rotateSpeed, int money,
              TowerType tower) : base(gameObject, weapon, control, health, movementSpeed, rotateSpeed, money, tower)
         {
-
+            this.vehicleType = VehicleType.Bike;
         }
 
         /// <summary>
@@ -102,5 +102,6 @@ namespace TankGame
         {
             base.Die();
         }
+        
     }
 }
