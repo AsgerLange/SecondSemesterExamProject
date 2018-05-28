@@ -295,6 +295,7 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:BasicEliteEnemy.png
+
 #begin PlayerTank1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -306,7 +307,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayerTank1.png
-
 
 #begin PlayerPlane1.png
 /importer:TextureImporter

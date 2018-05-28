@@ -36,12 +36,34 @@ namespace TankGame
         private Spawn spawner;
         private bool gameOver = false;
         private Random rnd = new Random();
+        private int playerAmount;
+
+        /// <summary>
+        /// Scaling the game based on amount of players
+        /// </summary>
+
         Score score;
 
 
         //Background
         Texture2D backGround;
         Rectangle screenSize;
+
+        #region Scaling
+        private int initialPlayerAmount;
+        private float difficultyScaleFactor =0.5f;
+
+        public float DifficultyScaleFactor
+        {
+            get { return difficultyScaleFactor; }
+            set { difficultyScaleFactor = value; }
+        }
+        public int InitialPlayerAmount
+        {
+            get { return initialPlayerAmount; }
+            set { initialPlayerAmount = value; }
+        }
+        #endregion;
 
         public List<Collider> Colliders
         {
@@ -102,6 +124,12 @@ namespace TankGame
         {
             get { return rnd; }
         }
+        public int PlayerAmount
+        {
+            get { return playerAmount; }
+            set { playerAmount = value; }
+        }
+       
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
@@ -159,6 +187,7 @@ namespace TankGame
             //Adds Test player1, testplayer2
             GameObjectDirector.Instance.Construct(VehicleType.Plane);
             GameObjectDirector.Instance.Construct(VehicleType.Bike);
+
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
@@ -256,6 +285,8 @@ namespace TankGame
                 foreach (GameObject go in gameObjectsToAdd)
                 {
                     gameObjects.Add(go);
+                    UpdatePlayerAmount();
+
                 }
                 gameObjectsToAdd.Clear();
             }
@@ -322,6 +353,21 @@ namespace TankGame
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+        public void UpdatePlayerAmount()
+        {
+            PlayerAmount = 0;
+            foreach (GameObject go in Instance.GameObjects)
+            {
+                foreach (Component comp in go.GetComponentList)
+                {
+                    if (comp is Vehicle)
+                    {
+                        PlayerAmount++;
+                        break;
+                    }
+                }
+            }
         }
     }
 }
