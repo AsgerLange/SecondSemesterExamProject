@@ -28,13 +28,13 @@ namespace TankGame
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(750, 170), 70, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(783, 154), 55, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
             terrain = GameObjectDirector.Instance.Construct(new Vector2(785, 185), 60, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(783, 154), 55, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(750, 170), 70, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
@@ -46,16 +46,16 @@ namespace TankGame
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(305, 450), 80, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(320, 470), 60, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(320, 470), 60, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(278, 437), 60, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
             terrain = GameObjectDirector.Instance.Construct(new Vector2(285, 415), 65, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(278, 437), 60, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(305, 450), 80, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
