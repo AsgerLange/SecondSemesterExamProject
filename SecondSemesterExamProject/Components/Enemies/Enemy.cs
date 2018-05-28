@@ -47,6 +47,7 @@ namespace TankGame
                 {
                     isAlive = false;
                     animator.PlayAnimation("Death");
+                    isPlayingAnimation = true;
                 }
             }
         }
@@ -87,7 +88,7 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
-
+            ScaleAttributes();
             FollowHQ();
         }
 
@@ -277,7 +278,13 @@ namespace TankGame
                     {
                         if (com is Vehicle)
                         {
-                            (com as Vehicle).Money += EnemyGold();
+                            //Balancing gold income, to limit tower building in multiplayer
+                            int moneyReward = (EnemyGold() / GameWorld.Instance.PlayerAmount);
+
+                            (com as Vehicle).Money += moneyReward;
+
+                            Stats.TotalAmountOfGold += moneyReward;
+
                             break;
                         }
                     }
@@ -291,11 +298,11 @@ namespace TankGame
             switch (enemyType)
             {
                 case EnemyType.BasicEnemy:
-                    EnemyPool.BasicEnemyKilled++;
+                    Stats.BasicEnemyKilled++;
                     break;
 
                 case EnemyType.BasicEliteEnemy:
-                    EnemyPool.BasicEliteEnemyKilled++;
+                    Stats.BasicEliteEnemyKilled++;
                     break;
 
                 default:
@@ -309,7 +316,7 @@ namespace TankGame
         /// <returns></returns>
         protected virtual int EnemyGold()
         {
-            return Constant.baseEnemyGold;
+            return Constant.basicEnemyGold;
         }
 
         /// <summary>
@@ -408,6 +415,20 @@ namespace TankGame
             attackVariation++;
 
             attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack
+        }
+
+        /// <summary>
+        /// Scales attributes depending on scalefactor
+        /// </summary>
+        public virtual void ScaleAttributes()
+        {
+            float tmp;
+
+            tmp = this.health;
+
+            tmp = tmp * GameWorld.Instance.DifficultyScaleFactor;
+
+            Health = (int)tmp;
         }
     }
 }
