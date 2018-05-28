@@ -83,7 +83,7 @@ namespace TankGame
             hq.Transform.Position = new Vector2(Constant.width / 2, Constant.higth / 2);
             hq.AddComponent(new SpriteRenderer(hq, Constant.HQSpriteSheet, 0.4f));
             hq.AddComponent(new Animator(hq));
-            hq.AddComponent(new HQ(hq, Constant.HQFireRate, Constant.HQHealth, Constant.HQAttackRange, Constant.HQbulletType));
+            hq.AddComponent(new HQ(hq));
             hq.AddComponent(new Collider(hq, Alignment.Friendly));
             GameWorld.Instance.GameObjects.Add(hq);
         }

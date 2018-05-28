@@ -78,8 +78,11 @@ namespace TankGame
                     }
 
                     ((Bullet)bullet).CanRelease = true;
+                    ((Bullet)bullet).ShouldDie = false;
+
 
                     ((Bullet)bullet).DirRotation = directionRotation;
+
 
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 
@@ -133,7 +136,11 @@ namespace TankGame
             bullet.Transform.Position = new Vector2(100, 100);
             //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
             ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
-            //GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
+
+            lock (GameWorld.colliderKey)
+            {
+                GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
+            }
 
             foreach (var component in bullet.GetComponentList)
             {
@@ -165,6 +172,14 @@ namespace TankGame
                         tmp.BulletDamage = Constant.shotgunPelletDmg;
                         tmp.MovementSpeed = Constant.shotgunPelletMovementSpeed;
                     }
+                    if (component is SniperBullet)
+                    {
+                        tmp = component as SniperBullet;
+                        tmp.LifeSpan = Constant.sniperBulletLifeSpan;
+                        tmp.BulletDamage = Constant.sniperBulletBulletDmg;
+                        tmp.MovementSpeed = Constant.sniperBulletMovementSpeed;
+
+                    }
                 }
             }
             ActiveBullets.Remove(bullet);
@@ -188,3 +203,4 @@ namespace TankGame
 
 }
     
+

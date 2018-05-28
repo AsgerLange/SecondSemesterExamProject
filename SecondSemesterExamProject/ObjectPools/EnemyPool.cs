@@ -17,7 +17,7 @@ namespace TankGame
         //Private instance of the EnemyPool
         private static EnemyPool instance;
         //The enemyPool is in its own thread
-        private Thread enemyPoolThread;
+        private static Thread enemyPoolThread;
         //List containing active Enemies
         private static List<GameObject> inActiveEnemies = new List<GameObject>();
 
@@ -44,10 +44,13 @@ namespace TankGame
         /// </summary>
         private EnemyPool()
         {
-            enemyPoolThread = new Thread(Update)
+            if (enemyPoolThread == null)
             {
-                IsBackground = true
-            };
+                enemyPoolThread = new Thread(Update)
+                {
+                    IsBackground = true
+                };
+            }
             enemyPoolThread.Start();
         }
 
@@ -230,10 +233,12 @@ namespace TankGame
 
             ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
+            lock (GameWorld.colliderKey)
+            {
+                GameWorld.Instance.Colliders.Remove((Collider)enemy.GetComponent("Collider"));
+            }
+
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
-
-
-
 
             foreach (var component in enemy.GetComponentList)
             {
@@ -248,7 +253,6 @@ namespace TankGame
                     {
                         tmp.Health = Constant.basicEnemyHealth;
                         tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
-
                     }
 
                     if (component is BasicEliteEnemy)
@@ -282,7 +286,5 @@ namespace TankGame
             }
             releaseList.Clear();
         }
-
     }
-
 }

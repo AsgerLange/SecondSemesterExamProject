@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace TankGame
-{
-    class Tank : Vehicle
+{    
+    class Bike : Vehicle
     {
         /// <summary>
         /// Creates the tank
@@ -20,12 +19,42 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Tank(GameObject gameObject, Controls control,Weapon weapon, int health, float movementSpeed, float fireRate, float rotateSpeed, int money, 
-             TowerType tower) : base(gameObject, weapon, control, health, movementSpeed, fireRate, rotateSpeed, money , tower)
+        public Bike(GameObject gameObject, Controls control, Weapon weapon, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
+             TowerType tower) : base(gameObject, weapon, control, health, movementSpeed, fireRate, rotateSpeed, money, tower)
         {
-            
+
         }
 
+        /// <summary>
+        /// moves the bike
+        /// </summary>
+        /// <param name="translation"></param>
+        /// <returns></returns>
+        protected override Vector2 Move(Vector2 translation)
+        {
+
+            KeyboardState keyState = Keyboard.GetState();
+
+            if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
+            {
+                translation += new Vector2(0, -1);
+                if (isPlayingAnimation == false)
+                {
+                    animator.PlayAnimation("MoveForward");
+                }
+            }
+            else if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
+            {
+                translation += new Vector2(0, 0.2f);
+                if (isPlayingAnimation == false)
+                {
+                    animator.PlayAnimation("MoveBackward");
+                }
+            }
+            return translation;
+        }
         /// <summary>
         /// Creates the animations
         /// </summary>

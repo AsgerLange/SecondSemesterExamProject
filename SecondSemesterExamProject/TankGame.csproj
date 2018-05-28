@@ -48,13 +48,16 @@
     <Compile Include="Builders\TowerBuilder.cs" />
     <Compile Include="Components\Bullets\BasicBullet.cs" />
     <Compile Include="Components\Bullets\BiggerBullet.cs" />
+    <Compile Include="Components\Bullets\SniperBullet.cs" />
     <Compile Include="Components\Bullets\ShotgunPellet.cs" />
-    <Compile Include="Components\Enemies\Melee\BasicEliteEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
     <Compile Include="Components\Tower\BasicTower.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
+    <Compile Include="Components\Tower\ShotgunTower.cs" />
+    <Compile Include="Components\Tower\TowerPlacer.cs" />
+    <Compile Include="Components\Vehicle\Bike.cs" />
     <Compile Include="Components\Vehicle\Plane.cs" />
     <Compile Include="Weapons\BasicWeapon.cs" />
     <Compile Include="Spawn.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Components\Transform.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Weapons\MachineGun.cs" />
+    <Compile Include="Weapons\Sniper.cs" />
     <Compile Include="Weapons\Shotgun.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
@@ -104,7 +108,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Dropbox\EADania\Databaser\sqlite-netFx451-static-binary-bundle-Win32-2013-1.0.108.0\System.Data.SQLite.dll</HintPath>
+      <HintPath>C:\Users\13579\Dropbox\EADania\Databaser\sqlite-netFx451-static-binary-bundle-Win32-2013-1.0.108.0\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
