@@ -10,7 +10,11 @@ namespace TankGame
     class TowerBuilder : ITowerBuilder
     {
         private GameObject go;
-
+        /// <summary>
+        /// Constructs a new tower
+        /// </summary>
+        /// <param name="position">postion</param>
+        /// <param name="type">type of tower</param>
         public void Build(Vector2 position, TowerType type)
         {
             go = new GameObject();

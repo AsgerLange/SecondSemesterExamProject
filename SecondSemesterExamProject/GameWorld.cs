@@ -27,9 +27,6 @@ namespace TankGame
         private Map map;
         private Spawn spawner;
         private bool gameOver = false;
-        Rectangle textBox;
-        Texture2D theBox;
-        SpriteFont font;
         private Random rnd = new Random();
         Score score;
 
@@ -167,17 +164,18 @@ namespace TankGame
             go.Transform.Position = new Vector2(350, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Bike(go, Controls.UDLR, new Sniper(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
+            go.AddComponent(new Bike(go, Controls.UDLR, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
                 Constant.bikeFireRate, Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.ShotgunTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
-            textBox = new Rectangle(10, 10, 150, 150);
+            
 
             //creates a score to keep track of scores and stats
             //score = new Score();
+            
             base.Initialize();
         }
 
@@ -243,7 +241,7 @@ namespace TankGame
             RemoveObjects();
 
             //handles score funktions
-            //score.Update();
+            //score.Update(gameTime);
 
             base.Update(gameTime);
         }

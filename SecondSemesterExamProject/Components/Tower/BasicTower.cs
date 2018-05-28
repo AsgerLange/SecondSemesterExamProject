@@ -17,6 +17,7 @@ namespace TankGame
             this.health = Constant.basicTowerHealth;
             this.attackRange = Constant.basicTowerAttackRange;
             this.bulletType = Constant.basicTowerBulletType;
+            this.spread = Constant.basicTowerSpread;
         }
         /// <summary>
         /// loads content

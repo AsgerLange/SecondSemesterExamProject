@@ -30,5 +30,17 @@ namespace TankGame
         {
             base.Shoot(vector2,alignment,rotation);
         }
+        public override string ToString()
+        {
+            if (ammo > 1000)
+            {
+                return "Machinegun: LOTS!";
+            }
+            else
+            {
+
+                return "Machinegun: " + ammo.ToString();
+            }
+        }
     }
 }

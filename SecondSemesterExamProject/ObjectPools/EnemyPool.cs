@@ -233,6 +233,11 @@ namespace TankGame
 
             ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
+            lock (GameWorld.colliderKey)
+            {
+                GameWorld.Instance.Colliders.Remove((Collider)enemy.GetComponent("Collider"));
+            }
+
             ((Animator)enemy.GetComponent("Animator")).PlayAnimation("Idle");
 
             foreach (var component in enemy.GetComponentList)
