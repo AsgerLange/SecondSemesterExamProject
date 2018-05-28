@@ -27,9 +27,6 @@ namespace TankGame
         private Map map;
         private Spawn spawner;
         private bool gameOver = false;
-        Rectangle textBox;
-        Texture2D theBox;
-        SpriteFont font;
         private Random rnd = new Random();
         Score score;
 
@@ -147,27 +144,38 @@ namespace TankGame
             go.Transform.Position = new Vector2(650, 350);
             go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Plane(go, Controls.WASD,new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed,
+            go.AddComponent(new Plane(go, Controls.WASD, new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed,
                 Constant.planeFireRate, Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.BasicTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
             //adds player2
+            //go = new GameObject();
+            //go.Transform.Position = new Vector2(350, 350);
+            //go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
+            //go.AddComponent(new Animator(go));
+            //go.AddComponent(new Tank(go, Controls.UDLR, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed,
+            //    Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+            //go.AddComponent(new Collider(go, Alignment.Friendly));
+            //gameObjects.Add(go);
+
+            //adds player2 Bike
             go = new GameObject();
             go.Transform.Position = new Vector2(350, 350);
-            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
+            go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet2, 0.2f));
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Tank(go, Controls.UDLR, new Shotgun(go), Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+            go.AddComponent(new Bike(go, Controls.UDLR, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
+                Constant.bikeFireRate, Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.ShotgunTower));
             go.AddComponent(new Collider(go, Alignment.Friendly));
             gameObjects.Add(go);
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
-            textBox = new Rectangle(10, 10, 150, 150);
+            
 
             //creates a score to keep track of scores and stats
-           // score = new Score();
+            //score = new Score();
+            
             base.Initialize();
         }
 
@@ -179,8 +187,8 @@ namespace TankGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            score.LoadContent(Content);
-            backGround = Content.Load<Texture2D>("testBackground");
+            //score.LoadContent(Content);
+            backGround = Content.Load<Texture2D>("Background1");
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // TODO: use this.Content to load your game content here
@@ -233,7 +241,7 @@ namespace TankGame
             RemoveObjects();
 
             //handles score funktions
-            score.Update();
+            //score.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -301,7 +309,7 @@ namespace TankGame
             spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
 
             //draw score
-            score.Draw(spriteBatch);
+            //score.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

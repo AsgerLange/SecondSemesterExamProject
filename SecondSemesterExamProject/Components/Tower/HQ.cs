@@ -10,9 +10,13 @@ namespace TankGame
 {
     class HQ : Tower
     {
-        public HQ(GameObject gameObject, float attackRate, int health, float attackRange, BulletType bulletType) : base(gameObject, attackRate, health, attackRange, bulletType)
+        public HQ(GameObject gameObject) : base(gameObject)
         {
-            
+            this.attackRate = Constant.HQFireRate;
+            this.health = Constant.HQHealth;
+            this.attackRange = Constant.HQAttackRange;
+            this.bulletType = Constant.HQbulletType;
+            this.spread = Constant.HQSpread;
         }
 
         public override void LoadContent(ContentManager content)
