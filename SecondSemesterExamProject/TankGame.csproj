@@ -46,6 +46,7 @@
     <Compile Include="Builders\EnemyBuilder.cs" />
     <Compile Include="Builders\TerrainBuilder.cs" />
     <Compile Include="Builders\TowerBuilder.cs" />
+    <Compile Include="Builders\VehicleBuilder.cs" />
     <Compile Include="Components\Bullets\BasicBullet.cs" />
     <Compile Include="Components\Bullets\BiggerBullet.cs" />
     <Compile Include="Components\Bullets\SniperBullet.cs" />
