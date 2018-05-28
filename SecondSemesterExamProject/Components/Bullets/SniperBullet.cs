@@ -92,11 +92,8 @@ namespace TankGame
 
                             if (shouldDie)
                             {
-
                                 DestroyBullet();
                             }
-
-
                         }
                         if ((other.GameObject.GetComponent("Terrain") is Terrain))
                         {
@@ -116,7 +113,7 @@ namespace TankGame
         {
             base.DestroyBullet();
             enemiesPierced = 0;
-
+          
         }
         public override void Update()
         {

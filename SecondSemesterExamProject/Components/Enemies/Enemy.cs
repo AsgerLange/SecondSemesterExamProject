@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, BasicEliteEnemy};
+    enum EnemyType { BasicEnemy, BasicEliteEnemy };
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
@@ -25,6 +25,7 @@ namespace TankGame
         protected int damage;
         protected float attackTimeStamp;
         private int attackVariation = 1;
+
 
 
         public EnemyType GetEnemyType
@@ -45,7 +46,7 @@ namespace TankGame
                 if (health <= 0)
                 {
                     isAlive = false;
-                    Die();
+                    animator.PlayAnimation("Death");
                 }
             }
         }
@@ -241,11 +242,7 @@ namespace TankGame
         {
             if (animationName == "Death")
             {
-                if (canRelease)
-                {
-                    EnemyPool.Instance.ReleaseList.Add(this.GameObject);
-                    canRelease = false;
-                }
+                Die();
             }
 
             if (animationName == "Walk")
@@ -269,18 +266,41 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            foreach (GameObject go in GameWorld.Instance.GameObjects)
+            if (canRelease)
             {
-                foreach (Component com in go.GetComponentList)
+                EnemyPool.Instance.ReleaseList.Add(this.GameObject);
+                canRelease = false;
+                IncrementEnemyDeaths();
+                foreach (GameObject go in GameWorld.Instance.GameObjects)
                 {
-                    if (com is Vehicle)
+                    foreach (Component com in go.GetComponentList)
                     {
-                        (com as Vehicle).Money += EnemyGold();
-                        break;
+                        if (com is Vehicle)
+                        {
+                            (com as Vehicle).Money += EnemyGold();
+                            break;
+                        }
                     }
                 }
             }
-            animator.PlayAnimation("Death");
+
+        }
+
+        private void IncrementEnemyDeaths()
+        {
+            switch (enemyType)
+            {
+                case EnemyType.BasicEnemy:
+                    EnemyPool.BasicEnemyKilled++;
+                    break;
+
+                case EnemyType.BasicEliteEnemy:
+                    EnemyPool.BasicEliteEnemyKilled++;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         /// <summary>

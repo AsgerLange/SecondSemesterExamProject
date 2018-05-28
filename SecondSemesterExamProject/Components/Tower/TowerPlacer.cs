@@ -57,7 +57,7 @@ namespace TankGame
         /// <param name="rotation"></param>
         public void PlaceTower()
         {
-            if ((builtTimeStamp + 1) <= GameWorld.Instance.TotalGameTime)
+            if ((builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
             {
                 if (vehicle.Money >= towerBuildCost)
                 {
