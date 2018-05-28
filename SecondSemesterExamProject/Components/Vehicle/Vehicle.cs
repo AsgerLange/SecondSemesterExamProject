@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    enum VehicleType { Tank, Bike, Plane}
+    enum VehicleType { Tank, Bike, Plane }
     class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
         private Random rnd = new Random();
@@ -103,7 +103,7 @@ namespace TankGame
         {
             this.control = control;
             this.health = health;
-            this.movementSpeed = movementSpeed;             
+            this.movementSpeed = movementSpeed;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
 
@@ -362,7 +362,7 @@ namespace TankGame
                 spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
                 spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
                 spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
-                spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - 200, Constant.higth - 80), Color.YellowGreen);
+                spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 80), Color.YellowGreen);
             }
         }
         public override string ToString()

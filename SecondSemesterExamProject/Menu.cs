@@ -12,6 +12,7 @@ namespace TankGame
 {
     class Menu
     {
+        private int tmp;
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
 
