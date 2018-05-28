@@ -339,14 +339,14 @@ namespace TankGame
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            DrawMoney(spriteBatch);
+            DrawInfo(spriteBatch);
         }
 
         /// <summary>
-        /// Draws the money out to screen depending on the controls used
+        /// Draws the vehicle info out to screen depending on the controls used
         /// </summary>
         /// <param name="spriteBatch"></param>
-        protected void DrawMoney(SpriteBatch spriteBatch)
+        protected void DrawInfo(SpriteBatch spriteBatch)
         {
             if (control == Controls.WASD)
             {
@@ -357,10 +357,10 @@ namespace TankGame
             }
             else if (control == Controls.UDLR)
             {
-                spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - 50, 2), Color.YellowGreen);
-                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - 200, Constant.higth - 20), Color.YellowGreen);
-                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - 200, Constant.higth - 40), Color.YellowGreen);
-                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - 200, Constant.higth - 60), Color.YellowGreen);
+                spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 2), Color.YellowGreen);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
+                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
+                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
             }
         }
     }

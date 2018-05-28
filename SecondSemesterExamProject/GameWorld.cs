@@ -139,6 +139,7 @@ namespace TankGame
             //graphics.ToggleFullScreen(); 
 
             // TODO: Add your initialization logic here
+            IsMouseVisible = true;
             //sets the game up to start in the menu
             gameState = GameState.Menu;
             menu = new Menu();
@@ -238,7 +239,7 @@ namespace TankGame
             {
                 menu.Update();
             }
-            if (gameState == GameState.Game)
+            else if (gameState == GameState.Game)
             {
                 barrier.SignalAndWait();
                 // Updates the Time
@@ -263,9 +264,11 @@ namespace TankGame
                 BulletPool.ReleaseList();
                 RemoveObjects();
             }
-
-            //handles score funktions
-            //score.Update(gameTime);
+            else if (gameState == GameState.Score)
+            {
+                //handles score funktions
+                //score.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -318,7 +321,7 @@ namespace TankGame
             {
                 menu.Draw(spriteBatch);
             }
-            if (gameState == GameState.Game)
+            else if (gameState == GameState.Game)
             {
                 //Draw Gameobjects
                 foreach (var go in gameObjects)
@@ -338,8 +341,11 @@ namespace TankGame
                 }
                 spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             }
-            //draw score
-            //score.Draw(spriteBatch);
+            else if (gameState == GameState.Score)
+            {
+                //draw score
+                //score.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);

@@ -11,6 +11,13 @@ namespace TankGame
         public readonly static int width = 1240;
         public readonly static int higth = 720;
 
+        #region Button
+        public readonly static string buttonTexture = "Button";
+        public readonly static string buttonFont = "stat";
+        public readonly static string startGameButton = "Start Game";
+
+        #endregion
+
         #region Spawning
         public readonly static float singleSpawnDelay = 3f;
         public readonly static float waveSpawnDelay = 30;
@@ -29,7 +36,7 @@ namespace TankGame
         public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
         public static readonly int tankStartGold = 100;
-       
+
         #endregion
         #region Plane
         public static readonly string planeSpriteSheet = "PlayerTank";
@@ -85,7 +92,7 @@ namespace TankGame
         public static readonly BulletType ShotgunTowerBulletType = BulletType.ShotgunPellet;
         public static readonly int shotgunTowerAttackRange = 150;
         public static readonly int ShotgunTowerSpread = 15;
-        public static readonly int shotgunTowerPelletAmount= 12;
+        public static readonly int shotgunTowerPelletAmount = 12;
 
 
         #endregion;

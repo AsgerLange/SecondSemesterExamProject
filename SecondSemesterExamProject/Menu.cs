@@ -13,9 +13,23 @@ namespace TankGame
     class Menu
     {
         private SpriteFont font;
+        private List<Button> buttons = new List<Button>();
 
         public Menu()
         {
+            PlaceButtons();
+        }
+
+        /// <summary>
+        /// places the buttons on the menu screen
+        /// </summary>
+        private void PlaceButtons()
+        {
+            string text = Constant.startGameButton;
+            Button StartGame = new Button(new Vector2(Constant.width / 2 - 50, Constant.higth / 2), Constant.buttonTexture, Constant.buttonFont);
+            StartGame.Text = text;
+            StartGame.click += StartGame_click;
+            buttons.Add(StartGame);
 
         }
 
@@ -24,10 +38,12 @@ namespace TankGame
         /// </summary>
         public void Update()
         {
-            KeyboardState keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(Keys.Enter))
+            if (buttons.Count > 0)
             {
-                GameWorld.Instance.GetGameState = GameState.Game;
+                foreach (Button but in buttons)
+                {
+                    but.Update();
+                }
             }
         }
 
@@ -37,12 +53,38 @@ namespace TankGame
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, "Press Enter to start", new Vector2(Constant.width / 2 - 50, Constant.higth / 2), Color.YellowGreen);
+            if (buttons.Count > 0)
+            {
+                foreach (Button but in buttons)
+                {
+                    but.Draw(spriteBatch);
+                }
+            }
         }
 
+        /// <summary>
+        /// loads the menu content
+        /// </summary>
+        /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
             font = content.Load<SpriteFont>("Stat");
+
+            foreach (Button but in buttons)
+            {
+                but.LoadContent(content);
+            }
+        }
+
+        /// <summary>
+        /// Handles the functionality of the startgame button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StartGame_click(object sender, EventArgs e)
+        {
+            GameWorld.Instance.GetGameState = GameState.Game;
+            GameWorld.Instance.IsMouseVisible = false;
         }
     }
 }
