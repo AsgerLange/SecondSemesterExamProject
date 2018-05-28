@@ -233,6 +233,17 @@ namespace TankGame
         {
             if (animationName == "Death")
             {
+                foreach (GameObject go in GameWorld.Instance.GameObjects)
+                {
+                    foreach (Component com in go.GetComponentList)
+                    {
+                        if (com is Vehicle)
+                        {
+                            (com as Vehicle).Money += EnemyGold();
+                            break;
+                        }
+                    }
+                }
                 if (canRelease)
                 {
                     EnemyPool.Instance.ReleaseList.Add(this.GameObject);
@@ -252,17 +263,6 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            foreach (GameObject go in GameWorld.Instance.GameObjects)
-            {
-                foreach (Component com in go.GetComponentList)
-                {
-                    if (com is Vehicle)
-                    {
-                        (com as Vehicle).Money += EnemyGold();
-                        break;
-                    }
-                }
-            }
             animator.PlayAnimation("Death");
         }
 
