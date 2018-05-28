@@ -156,10 +156,6 @@ namespace TankGame
             //adds objects to the map
             map = new Map();
 
-            //Adds Test player1, testplayer2
-            GameObjectDirector.Instance.Construct(VehicleType.Plane);
-            GameObjectDirector.Instance.Construct(VehicleType.Bike);
-
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
 

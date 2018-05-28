@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    enum VehicleType { Tank, Bike, Plane }
+    enum VehicleType { None, Tank, Bike, Plane }
     class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
         private Random rnd = new Random();
