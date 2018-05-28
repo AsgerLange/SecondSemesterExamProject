@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    enum VehicleType { Tank, Bike, Plane}
+    enum VehicleType { Tank, Bike, Plane }
     class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
         private Random rnd = new Random();
@@ -103,7 +103,7 @@ namespace TankGame
         {
             this.control = control;
             this.health = health;
-            this.movementSpeed = movementSpeed;             
+            this.movementSpeed = movementSpeed;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
 
@@ -339,38 +339,30 @@ namespace TankGame
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            DrawMoney(spriteBatch);
+            DrawInfo(spriteBatch);
         }
 
         /// <summary>
-        /// Draws the money out to screen depending on the controls used
+        /// Draws the vehicle info out to screen depending on the controls used
         /// </summary>
         /// <param name="spriteBatch"></param>
-        protected void DrawMoney(SpriteBatch spriteBatch)
+        protected void DrawInfo(SpriteBatch spriteBatch)
         {
             if (control == Controls.WASD)
             {
                 spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth-20), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
                 spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, "HP: "+Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
                 spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.higth - 80), Color.CornflowerBlue);
-
-
-
-
-
             }
             else if (control == Controls.UDLR)
             {
-                spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - 50, 2), Color.YellowGreen);
-                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - 200, Constant.higth - 20), Color.YellowGreen);
-                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - 200, Constant.higth - 40), Color.YellowGreen);
-                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - 200, Constant.higth - 60), Color.YellowGreen);
-                spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - 200, Constant.higth - 80), Color.YellowGreen);
-
-
-
+                spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 2), Color.YellowGreen);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
+                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
+                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
+                spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 80), Color.YellowGreen);
             }
         }
         public override string ToString()
