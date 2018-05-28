@@ -57,9 +57,9 @@ namespace TankGame
         //    dbConnect.Open();
         //    string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
         //    string log = "Create table Log (ID varchar, Total int)";
-        //    string tower = "Create table Tower (TotalKillTowers int, TowerBuild int, TowerDead int)";
-        //    string player = "Create table Player (TotalKills int, Gold int, Wave int)";
-        //    string enemies = "Create table Enemies (Total kill int, Total spawn int)";
+        //    string tower = "Create table Tower (ID varchar, Total Kill Towers int, Tower Build int, Tower Dead int)";
+        //    string player = "Create table Player (ID varchar, Total Kills int, Gold int, Wave int)";
+        //    string enemies = "Create table Enemies (ID varchar, Enemy name string, Total kill int,";
         //    SQLiteCommand command = new SQLiteCommand(highscore, dbConnect);
         //    SQLiteCommand command2 = new SQLiteCommand(log, dbConnect);
         //    SQLiteCommand command3 = new SQLiteCommand(tower, dbConnect);
@@ -155,10 +155,51 @@ namespace TankGame
         public void InsertScore()
         {
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
-            string insert = "insert into Higscores (name, score) values (" + name + "," + score + ")";
+            dbConnect.Open();
+            string insert = "insert into Higscores (name, score) values (" + name + ","+score+")";
             SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
             command.ExecuteNonQuery();
         }
+        public void InsertThings()
+        {
+            SQLiteConnection insertConnection = new SQLiteConnection("Data source = data.db; Version = 3; ");
+            insertConnection.Open();
+            string basicEnemy = "insert into Enemies (ID, Total kill, Total spawn) values (null,Basic enemy,0)";
+            string basicEliteEnemy = "insert into Enemies (ID, Total kill, Total spawn) values (null,Enemy2 enemy,0)";
+            string player = "insert into Player (ID, Total kills, Gold, Wave) values (null,0,100,0)";
+            string player2 = "insert into Player (ID, Total kills, Gold, Wave) values (null,0,100,0)";
+            string basicTower = "insert into Tower (ID, Total kill towers, Tower build, Tower dead) ";
+            string shotgunTower = "insert into Tower (ID, Total kill towers, Tower build, Tower dead) ";
+            SQLiteCommand Enemy = new SQLiteCommand(basicEnemy, insertConnection);
+            SQLiteCommand BasicEliteEnemy = new SQLiteCommand(basicEliteEnemy, insertConnection);
+            SQLiteCommand Player = new SQLiteCommand(player, insertConnection);
+            SQLiteCommand Player2 = new SQLiteCommand(player2, insertConnection);
+            SQLiteCommand BasicTower = new SQLiteCommand(basicTower, insertConnection);
+            SQLiteCommand ShotgunTower = new SQLiteCommand(shotgunTower, insertConnection);
+            Enemy.ExecuteNonQuery();
+            BasicEliteEnemy.ExecuteNonQuery();
+            Player.ExecuteNonQuery();
+            Player2.ExecuteNonQuery();
+            BasicTower.ExecuteNonQuery();
+            ShotgunTower.ExecuteNonQuery();
+
+            insertConnection.Close();
+        }
+
+        public void UpdateData()
+        {
+            SQLiteConnection updateTables = new SQLiteConnection("Data source = data.db; Version = 3; ");
+            updateTables.Open();
+            if ()
+            {
+                string updateDeadEnemies = "Update Enemy set Total kill="++"where Name = Basic enemy";
+                
+                string basicEliteEnemy = "Update Enemy set Total Kill "
+            }
+
+
+        }
+
         public void LoadScoreToScreen()
         {
             string highscore = "select Highscore.Placing, Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";

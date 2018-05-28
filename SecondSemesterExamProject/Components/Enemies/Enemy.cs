@@ -25,7 +25,7 @@ namespace TankGame
         protected int damage;
         protected float attackTimeStamp;
         private int attackVariation = 1;
-
+        
 
         public EnemyType GetEnemyType
         {
@@ -54,6 +54,7 @@ namespace TankGame
             get { return movementSpeed; }
             set { movementSpeed = value; }
         }
+
         #region Attributes for object pool
         private bool canRelease;
 
@@ -259,6 +260,7 @@ namespace TankGame
                     if (com is Vehicle)
                     {
                         (com as Vehicle).Money += EnemyGold();
+                        
                         break;
                     }
                 }
