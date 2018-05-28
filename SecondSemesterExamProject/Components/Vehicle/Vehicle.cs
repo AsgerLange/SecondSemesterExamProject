@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
+    enum VehicleType { Tank, Bike, Plane}
     class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
         private Random rnd = new Random();
@@ -97,13 +98,12 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float fireRate, float rotateSpeed, int money,
+        public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
             TowerType towerType) : base(gameObject)
         {
             this.control = control;
             this.health = health;
-            this.movementSpeed = movementSpeed;
-            this.fireRate = fireRate;
+            this.movementSpeed = movementSpeed;             
             this.rotateSpeed = rotateSpeed;
             this.money = money;
 
