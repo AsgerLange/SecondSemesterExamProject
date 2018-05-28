@@ -30,13 +30,13 @@ namespace TankGame
         /// </summary>
         public override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(3, 48, 0, 32, 48, 4, Vector2.Zero));
-            animator.CreateAnimation("MoveForward", new Animation(3, 96, 0, 32, 48, 4, Vector2.Zero));
-            animator.CreateAnimation("MoveBackward", new Animation(3, 144, 0, 32, 48, 4, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(3, 192, 0, 32, 48, 10 / weapon.FireRate, new Vector2(0,-4)));
+            animator.CreateAnimation("Idle", new Animation(5, 48, 0, 32, 48, 6, Vector2.Zero));
+            animator.CreateAnimation("MoveForward", new Animation(5, 96, 0, 32, 48, 8, Vector2.Zero));
+            animator.CreateAnimation("MoveBackward", new Animation(5, 144, 0, 32, 48, 4, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 192, 0, 32, 54, 10 / weapon.FireRate, new Vector2(0,-2)));
             //animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
             //animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(3, 240, 0, 32, 48, 5, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(3, 246, 0, 32, 48, 5, Vector2.Zero));
         }
 
         /// <summary>
@@ -54,6 +54,7 @@ namespace TankGame
         /// <param name="animationName"></param>
         public override void OnAnimationDone(string animationName)
         {
+            isPlayingAnimation = false;
             base.OnAnimationDone(animationName);
         }
 
@@ -82,18 +83,28 @@ namespace TankGame
 
             if (isPlayingAnimation == false)
             {
-                //animator.PlayAnimation("MoveForward");
+                animator.PlayAnimation("Idle");
             }
 
             if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Down) && control == Controls.UDLR))
             {
+                if (isPlayingAnimation == false)
+                {
+                    isPlayingAnimation = true;
+                    animator.PlayAnimation("MoveBackward");
+                }
                 translation += new Vector2(0, 0.4f);
 
             }
             else if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
+                if (isPlayingAnimation == false)
+                {
+                    isPlayingAnimation = true;
+                    animator.PlayAnimation("MoveForward");
+                }
                 translation += new Vector2(0, -0.6f);
 
             }
