@@ -278,7 +278,7 @@ namespace TankGame
                     {
                         if (com is Vehicle)
                         {
-                            (com as Vehicle).Money += EnemyGold();
+                            (com as Vehicle).Money += (EnemyGold()/GameWorld.Instance.PlayerAmount);
                             break;
                         }
                     }

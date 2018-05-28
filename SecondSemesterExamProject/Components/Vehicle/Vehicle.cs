@@ -55,7 +55,7 @@ namespace TankGame
                 if (health <= 0)
                 {
                     health = 0;
-                    Die();
+                    animator.PlayAnimation("Death");
                 }
             }
         }
@@ -120,9 +120,9 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            animator.PlayAnimation("Death");
             isAlive = false;
-            isPlayingAnimation = true;
+            GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            GameWorld.Instance.UpdatePlayerAmount();
 
         }
 
@@ -290,8 +290,8 @@ namespace TankGame
             }
             if (animationName == "Death")
             {
+                Die();
                 isPlayingAnimation = false;
-                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             }
             if (isPlayingAnimation == false)
             {
