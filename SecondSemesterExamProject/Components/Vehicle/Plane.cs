@@ -30,13 +30,13 @@ namespace TankGame
         /// </summary>
         public override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 2, Vector2.Zero));
-            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 5, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / weapon.FireRate, new Vector2(0,-4)));
-            animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(7, 305, 0, 28, 40, 5, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(3, 48, 0, 32, 48, 4, Vector2.Zero));
+            animator.CreateAnimation("MoveForward", new Animation(3, 96, 0, 32, 48, 4, Vector2.Zero));
+            animator.CreateAnimation("MoveBackward", new Animation(3, 144, 0, 32, 48, 4, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(3, 192, 0, 32, 48, 10 / weapon.FireRate, new Vector2(0,-4)));
+            //animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 5, Vector2.Zero));
+            //animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 5, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(3, 240, 0, 32, 48, 5, Vector2.Zero));
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles which animation should the tank be running
+        /// handles which animation should the plane be running
         /// </summary>
         /// <param name="animationName"></param>
         public override void OnAnimationDone(string animationName)
@@ -58,7 +58,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles what the tank does
+        /// handles what the plane does
         /// </summary>
         public override void Update()
         {
@@ -67,7 +67,7 @@ namespace TankGame
 
 
         /// <summary>
-        /// handles what happens when the tank dies
+        /// handles what happens when the plane dies
         /// </summary>
         protected override void Die()
         {
@@ -82,7 +82,7 @@ namespace TankGame
 
             if (isPlayingAnimation == false)
             {
-                animator.PlayAnimation("MoveForward");
+                //animator.PlayAnimation("MoveForward");
             }
 
             if ((keyState.IsKeyDown(Keys.S) && control == Controls.WASD)

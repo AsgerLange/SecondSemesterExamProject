@@ -254,6 +254,15 @@ namespace TankGame
                         tmp.Health = Constant.basicEnemyHealth;
                         tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
                     }
+
+                    if (component is BasicEliteEnemy)
+                    {
+                        tmp.Health = Constant.basicEliteEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
+
+                    }
+
+
                 }
             }
             lock (activeKey)

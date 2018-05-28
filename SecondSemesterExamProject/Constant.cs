@@ -32,8 +32,8 @@ namespace TankGame
        
         #endregion
         #region Plane
-        public static readonly string planeSpriteSheet = "PlayerTank";
-        public static readonly string planeSpriteSheet2 = "PlayerTank2";
+        public static readonly string planeSpriteSheet = "PlayerPlane1";
+        public static readonly string planeSpriteSheet2 = "PlayerPlane1";
 
         public static readonly float planeMoveSpeed = 200;
         public static readonly float planeFireRate = 0.3f;
@@ -43,7 +43,7 @@ namespace TankGame
 
         #endregion;
         #region Bike
-        public static readonly string bikeSpriteSheet = "PlayerTank";
+        public static readonly string bikeSpriteSheet = "PlayerTank1";
         public static readonly string bikeSpriteSheet2 = "PlayerTank2";
 
         public static readonly float bikeMoveSpeed = 200;
@@ -112,13 +112,13 @@ namespace TankGame
         public static readonly float sniperBulletLifeSpan = 1f;
         public static readonly int sniperBulletBulletDmg = 400;
         #endregion;
+        #endregion;
 
         #region shotgunPellet
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.3f;
         public static readonly int shotgunPelletDmg = 30;
-        #endregion;
         #endregion;
 
         #region Weapons
@@ -166,6 +166,14 @@ namespace TankGame
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
 
+        #endregion
+
+        #region BasicEliteEnemy
+        public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
+        public static readonly int basicEliteEnemyHealth = 500;
+        public static readonly float basicEliteEnemyMovementSpeed = 30;
+        public static readonly float basicEliteEnemyAttackRate = 0.7f;
+        public static readonly int basicEliteEnemyDamage = 15;
         #endregion
         #endregion
 

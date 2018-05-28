@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, };
+    enum EnemyType { BasicEnemy, BasicEliteEnemy};
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
@@ -62,6 +62,8 @@ namespace TankGame
             get { return canRelease; }
             set { canRelease = value; }
         }
+
+        protected bool isPlayingAnimation = false;
         #endregion;
 
         /// <summary>
@@ -214,6 +216,12 @@ namespace TankGame
         public void TranslateMovement(Vector2 translation)
         {
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
+
+            if (isPlayingAnimation == false)
+            {
+                animator.PlayAnimation("Walk");
+                isPlayingAnimation = true;
+            }
         }
 
         /// <summary>
@@ -240,9 +248,18 @@ namespace TankGame
                 }
             }
 
+            if (animationName == "Walk")
+            {
+                if (isPlayingAnimation == true)
+                {
+                    isPlayingAnimation = false;
+                }
+            }
+
             else
             {
                 animator.PlayAnimation("Idle");
+                isPlayingAnimation = false;
             }
 
         }
