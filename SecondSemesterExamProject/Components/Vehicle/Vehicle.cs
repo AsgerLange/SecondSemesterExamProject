@@ -56,6 +56,8 @@ namespace TankGame
                 {
                     health = 0;
                     animator.PlayAnimation("Death");
+                    isPlayingAnimation = true;
+                    isAlive = false;
                 }
             }
         }
@@ -120,7 +122,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            isAlive = false;
+           
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             Stats.TotalAmountOfPlayerDeaths++;

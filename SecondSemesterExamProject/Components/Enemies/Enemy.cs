@@ -47,6 +47,7 @@ namespace TankGame
                 {
                     isAlive = false;
                     animator.PlayAnimation("Death");
+                    isPlayingAnimation = true;
                 }
             }
         }
