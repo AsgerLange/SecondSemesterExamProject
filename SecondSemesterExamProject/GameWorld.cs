@@ -27,9 +27,6 @@ namespace TankGame
         private Map map;
         private Spawn spawner;
         private bool gameOver = false;
-        Rectangle textBox;
-        Texture2D theBox;
-        SpriteFont font;
         private Random rnd = new Random();
         Score score;
 
@@ -147,10 +144,11 @@ namespace TankGame
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
-            textBox = new Rectangle(10, 10, 150, 150);
+            
 
             //creates a score to keep track of scores and stats
             //score = new Score();
+            
             base.Initialize();
         }
 
@@ -216,7 +214,7 @@ namespace TankGame
             RemoveObjects();
 
             //handles score funktions
-            //score.Update();
+            //score.Update(gameTime);
 
             base.Update(gameTime);
         }

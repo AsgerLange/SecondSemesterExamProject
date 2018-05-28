@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, };
+    enum EnemyType { BasicEnemy, BasicEliteEnemy };
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
@@ -25,6 +25,7 @@ namespace TankGame
         protected int damage;
         protected float attackTimeStamp;
         private int attackVariation = 1;
+
 
 
         public EnemyType GetEnemyType
@@ -45,7 +46,7 @@ namespace TankGame
                 if (health <= 0)
                 {
                     isAlive = false;
-                    Die();
+                    animator.PlayAnimation("Death");
                 }
             }
         }
@@ -62,6 +63,8 @@ namespace TankGame
             get { return canRelease; }
             set { canRelease = value; }
         }
+
+        protected bool isPlayingAnimation = false;
         #endregion;
 
         /// <summary>
@@ -214,6 +217,12 @@ namespace TankGame
         public void TranslateMovement(Vector2 translation)
         {
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
+
+            if (isPlayingAnimation == false)
+            {
+                animator.PlayAnimation("Walk");
+                isPlayingAnimation = true;
+            }
         }
 
         /// <summary>
@@ -233,16 +242,22 @@ namespace TankGame
         {
             if (animationName == "Death")
             {
-                if (canRelease)
+                Die();
+
+            }
+
+            if (animationName == "Walk")
+            {
+                if (isPlayingAnimation == true)
                 {
-                    EnemyPool.Instance.ReleaseList.Add(this.GameObject);
-                    canRelease = false;
+                    isPlayingAnimation = false;
                 }
             }
 
             else
             {
                 animator.PlayAnimation("Idle");
+                isPlayingAnimation = false;
             }
 
         }
@@ -252,18 +267,41 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            foreach (GameObject go in GameWorld.Instance.GameObjects)
+            if (canRelease)
             {
-                foreach (Component com in go.GetComponentList)
+                EnemyPool.Instance.ReleaseList.Add(this.GameObject);
+                canRelease = false;
+                IncrementEnemyDeaths();
+                foreach (GameObject go in GameWorld.Instance.GameObjects)
                 {
-                    if (com is Vehicle)
+                    foreach (Component com in go.GetComponentList)
                     {
-                        (com as Vehicle).Money += EnemyGold();
-                        break;
+                        if (com is Vehicle)
+                        {
+                            (com as Vehicle).Money += EnemyGold();
+                            break;
+                        }
                     }
                 }
             }
-            animator.PlayAnimation("Death");
+
+        }
+
+        private void IncrementEnemyDeaths()
+        {
+            switch (enemyType)
+            {
+                case EnemyType.BasicEnemy:
+                    EnemyPool.BasicEnemyKilled++;
+                    break;
+
+                case EnemyType.BasicEliteEnemy:
+                    EnemyPool.BasicEliteEnemyKilled++;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         /// <summary>
