@@ -51,7 +51,7 @@ namespace TankGame
 
         #region Scaling
         private int initialPlayerAmount;
-        private float difficultyScaleFactor =0.5f;
+        private float difficultyScaleFactor = 0.5f;
 
         public float DifficultyScaleFactor
         {
@@ -129,7 +129,7 @@ namespace TankGame
             get { return playerAmount; }
             set { playerAmount = value; }
         }
-       
+
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
@@ -297,18 +297,22 @@ namespace TankGame
         /// </summary>
         private void RemoveObjects()
         {
-            foreach (var go in gameObjectsToRemove)
+            if (gameObjectsToRemove.Count > 0)
             {
-                if (go.GetComponent("Collider") is Collider collider)
+                foreach (var go in gameObjectsToRemove)
                 {
-                    lock (colliderKey)
+                    if (go.GetComponent("Collider") is Collider collider)
                     {
-                        Colliders.Remove(collider);
+                        lock (colliderKey)
+                        {
+                            Colliders.Remove(collider);
+                        }
                     }
+                    gameObjects.Remove(go);
                 }
-                gameObjects.Remove(go);
+                gameObjectsToRemove.Clear();
+                UpdatePlayerAmount();
             }
-            gameObjectsToRemove.Clear();
         }
 
         /// <summary>

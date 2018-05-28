@@ -28,7 +28,6 @@ namespace TankGame
         public static readonly float buildTowerCoolDown = 1;
 
         public static readonly int maxAmountOfVehicles = 2;
-        public static readonly int minAmountOfVehicles = 1;
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";

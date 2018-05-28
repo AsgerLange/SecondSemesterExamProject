@@ -14,6 +14,7 @@ namespace TankGame
         private int playerCount = 1;
 
         private Controls controls;
+
         /// <summary>
         /// The vehicleBuilder builds a vehicle
         /// </summary>
@@ -72,7 +73,7 @@ namespace TankGame
 
             if (playerCount > Constant.maxAmountOfVehicles)
             {
-                playerCount = Constant.minAmountOfVehicles; //resets player count if it exeeds max amount of players supported
+                playerCount = Constant.maxAmountOfVehicles; //just in case
             }
             return go;
         }
