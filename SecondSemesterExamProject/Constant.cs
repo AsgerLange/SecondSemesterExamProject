@@ -82,7 +82,7 @@ namespace TankGame
         #endregion;
 
         #region ShotgunTower
-        public static readonly int shotgunTowerPrice = 100;
+        public static readonly int shotgunTowerPrice = 200;
         public static readonly string ShotgunTowerSpriteSheet = "TowerBasic";
         public static readonly float ShotgunTowerFireRate = 2.5f;
         public static readonly int ShotgunTowerHealth = 100;

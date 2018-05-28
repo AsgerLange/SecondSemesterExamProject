@@ -87,7 +87,7 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
-
+            ScaleAttributes();
             FollowHQ();
         }
 
@@ -414,6 +414,20 @@ namespace TankGame
             attackVariation++;
 
             attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack
+        }
+
+        /// <summary>
+        /// Scales attributes depending on scalefactor
+        /// </summary>
+        public virtual void ScaleAttributes()
+        {
+            float tmp;
+
+            tmp = this.health;
+
+            tmp = tmp * GameWorld.Instance.DifficultyScaleFactor;
+
+            Health = (int)tmp;
         }
     }
 }

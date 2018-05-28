@@ -37,12 +37,33 @@ namespace TankGame
         private bool gameOver = false;
         private Random rnd = new Random();
         private int playerAmount;
+
+        /// <summary>
+        /// Scaling the game based on amount of players
+        /// </summary>
+
         Score score;
 
 
         //Background
         Texture2D backGround;
         Rectangle screenSize;
+
+        #region Scaling
+        private int initialPlayerAmount;
+        private float difficultyScaleFactor =0.5f;
+
+        public float DifficultyScaleFactor
+        {
+            get { return difficultyScaleFactor; }
+            set { difficultyScaleFactor = value; }
+        }
+        public int InitialPlayerAmount
+        {
+            get { return initialPlayerAmount; }
+            set { initialPlayerAmount = value; }
+        }
+        #endregion;
 
         public List<Collider> Colliders
         {
@@ -108,6 +129,7 @@ namespace TankGame
             get { return playerAmount; }
             set { playerAmount = value; }
         }
+       
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
@@ -341,7 +363,7 @@ namespace TankGame
                 {
                     if (comp is Vehicle)
                     {
-                        PlayerAmount++; 
+                        PlayerAmount++;
                         break;
                     }
                 }
