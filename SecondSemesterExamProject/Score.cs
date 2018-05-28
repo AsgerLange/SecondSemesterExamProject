@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.Data.SQLite;
 
 namespace TankGame
 {
@@ -37,7 +37,7 @@ namespace TankGame
         public Score()
         {
             textBox = new Rectangle(20, 20, 150, 50);
-            
+
 
         }
 
@@ -76,8 +76,8 @@ namespace TankGame
         {
             KeyboardState keyboardState = Keyboard.GetState();//Gets the state
             Keys[] keys = keyboardState.GetPressedKeys();//Gets a array of what keys had been pressed
-            
-            foreach(Keys currentKeys in keys)//foreach key there is do something
+
+            foreach (Keys currentKeys in keys)//foreach key there is do something
             {
                 if (currentKeys != Keys.None)//checks if the current is not none.
                 {
@@ -89,11 +89,11 @@ namespace TankGame
                     else if (!lastKey.Contains(currentKeys))//If the next key is not the same then just write it out
                         HandleKey(gameTime, currentKeys);
                 }
-                    
+
             }
             lastKeyboardState = keyboardState;//Sets the lastkeystate to be the keyboard state we get
             lastKey = keys;//Saves the last key that was pressed.
-            
+
         }
         /// <summary>
         /// Handles spesific keys such as space, backspace, delete and enter.

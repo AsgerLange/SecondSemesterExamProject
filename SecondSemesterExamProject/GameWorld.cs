@@ -7,11 +7,19 @@ using System.Threading;
 
 namespace TankGame
 {
+    enum GameState
+    {
+        Menu,
+        Game,
+        Score
+    }
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     class GameWorld : Game
     {
+        private GameState gameState = new GameState();
+        private Menu menu;
         public static readonly object colliderKey = new object();
         public static Barrier barrier;
         GraphicsDeviceManager graphics;
@@ -61,6 +69,12 @@ namespace TankGame
         {
             get { return gameObjectsToRemove; }
             set { gameObjectsToRemove = value; }
+        }
+
+        public GameState GetGameState
+        {
+            get { return gameState; }
+            set { gameState = value; }
         }
 
         public List<GameObject> GameObjects
@@ -125,57 +139,34 @@ namespace TankGame
             //graphics.ToggleFullScreen(); 
 
             // TODO: Add your initialization logic here
+            IsMouseVisible = true;
+            //sets the game up to start in the menu
+            gameState = GameState.Menu;
+            menu = new Menu();
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //secure that enemyPool has been started
-            EnemyPool ep = EnemyPool.Instance;
-
             //initializes the barrier
             barrier = new Barrier(2);
+
+            //secure that enemyPool has been started
+            EnemyPool ep = EnemyPool.Instance;
 
             //adds objects to the map
             map = new Map();
 
-            //Adds test player
-            GameObject go;
-            go = new GameObject();
-            go.Transform.Position = new Vector2(650, 350);
-            go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet, 0.2f));
-            go.AddComponent(new Animator(go));
-            go.AddComponent(new Plane(go, Controls.WASD, new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed,
-                Constant.planeFireRate, Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.BasicTower));
-            go.AddComponent(new Collider(go, Alignment.Friendly));
-            gameObjects.Add(go);
-
-            //adds player2
-            //go = new GameObject();
-            //go.Transform.Position = new Vector2(350, 350);
-            //go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet2, 0.2f));
-            //go.AddComponent(new Animator(go));
-            //go.AddComponent(new Tank(go, Controls.UDLR, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed,
-            //    Constant.tankFireRate, Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
-            //go.AddComponent(new Collider(go, Alignment.Friendly));
-            //gameObjects.Add(go);
-
-            //adds player2 Bike
-            go = new GameObject();
-            go.Transform.Position = new Vector2(350, 350);
-            go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet2, 0.2f));
-            go.AddComponent(new Animator(go));
-            go.AddComponent(new Bike(go, Controls.UDLR, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed,
-                Constant.bikeFireRate, Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.ShotgunTower));
-            go.AddComponent(new Collider(go, Alignment.Friendly));
-            gameObjects.Add(go);
+            //Adds Test player1, testplayer2
+            GameObjectDirector.Instance.Construct(VehicleType.Plane);
+            GameObjectDirector.Instance.Construct(VehicleType.Bike);
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
-            
+
 
             //creates a score to keep track of scores and stats
             //score = new Score();
-            
+
             base.Initialize();
         }
 
@@ -192,7 +183,8 @@ namespace TankGame
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // TODO: use this.Content to load your game content here
-
+            //loads menu content
+            menu.LoadContent(Content);
             //load objects
             foreach (var go in gameObjects)
             {
@@ -216,32 +208,40 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            barrier.SignalAndWait();
-            // Updates the Time
-            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //adds Gameobjects
-            AddGameObjects();
-
-            //call the Spawner
-            spawner.Update();
-
-            //Updates GameObjects
-            foreach (var go in gameObjects)
+            if (gameState == GameState.Menu)
             {
-                go.Update();
+                menu.Update();
             }
-
-            foreach (var go in BulletPool.ActiveBullets)
+            else if (gameState == GameState.Game)
             {
-                go.Update();
+                barrier.SignalAndWait();
+                // Updates the Time
+                deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                totalGameTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                //adds Gameobjects
+                AddGameObjects();
+
+                //call the Spawner
+                spawner.Update();
+
+                //Updates GameObjects
+                foreach (var go in gameObjects)
+                {
+                    go.Update();
+                }
+
+                foreach (var go in BulletPool.ActiveBullets)
+                {
+                    go.Update();
+                }
+                BulletPool.ReleaseList();
+                RemoveObjects();
             }
-            BulletPool.ReleaseList();
-
-            RemoveObjects();
-
-            //handles score funktions
-            //score.Update(gameTime);
+            else if (gameState == GameState.Score)
+            {
+                //handles score funktions
+                //score.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -287,29 +287,38 @@ namespace TankGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront);
-            //Draw Gameobjects
-            foreach (var go in gameObjects)
+
+            if (gameState == GameState.Menu)
             {
-                go.Draw(spriteBatch);
+                menu.Draw(spriteBatch);
             }
-            lock (EnemyPool.activeKey)
+            else if (gameState == GameState.Game)
             {
-                foreach (var go in EnemyPool.Instance.ActiveEnemies)
+                //Draw Gameobjects
+                foreach (var go in gameObjects)
                 {
                     go.Draw(spriteBatch);
                 }
+                lock (EnemyPool.activeKey)
+                {
+                    foreach (var go in EnemyPool.Instance.ActiveEnemies)
+                    {
+                        go.Draw(spriteBatch);
+                    }
+                }
+                foreach (var go in BulletPool.ActiveBullets)
+                {
+                    go.Draw(spriteBatch);
+                }
+                spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             }
-            foreach (var go in BulletPool.ActiveBullets)
+            else if (gameState == GameState.Score)
             {
-                go.Draw(spriteBatch);
+                //draw score
+                //score.Draw(spriteBatch);
             }
-            spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
-
-            //draw score
-            //score.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

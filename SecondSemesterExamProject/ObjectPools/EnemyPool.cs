@@ -27,6 +27,24 @@ namespace TankGame
         //List containing enemies to be released
         private static List<GameObject> releaseList = new List<GameObject>();
 
+
+        #region EnemyKillCounts
+
+        private static int basicEnemyKilled =0;
+        private static int basicEliteEnemyKilled=0;
+
+        public static int BasicEnemyKilled
+        {
+            get { return basicEnemyKilled; }
+            set { basicEnemyKilled = value; }
+        }
+
+        public static int BasicEliteEnemyKilled
+        {
+            get { return basicEliteEnemyKilled; }
+            set { basicEliteEnemyKilled = value; }
+        }
+        #endregion;
         public static EnemyPool Instance
         {
             get
@@ -254,6 +272,15 @@ namespace TankGame
                         tmp.Health = Constant.basicEnemyHealth;
                         tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
                     }
+
+                    if (component is BasicEliteEnemy)
+                    {
+                        tmp.Health = Constant.basicEliteEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
+
+                    }
+
+
                 }
             }
             lock (activeKey)
