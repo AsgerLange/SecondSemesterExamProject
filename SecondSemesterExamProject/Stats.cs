@@ -60,6 +60,7 @@ namespace TankGame
 
         private static int basicEnemyKilled = 0;
         private static int basicEliteEnemyKilled = 0;
+        private static int spitterKilled= 0;
 
         public static int BasicEnemyKilled
         {
@@ -71,6 +72,12 @@ namespace TankGame
         {
             get { return basicEliteEnemyKilled; }
             set { basicEliteEnemyKilled = value; }
+        }
+
+        public static int SpitterKilled
+        {
+            get { return spitterKilled; }
+            set { spitterKilled = value; }
         }
         #endregion;
 

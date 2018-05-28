@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, BasicEliteEnemy };
+    enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
@@ -24,7 +24,7 @@ namespace TankGame
         protected int health;
         protected int damage;
         protected float attackTimeStamp;
-        private int attackVariation = 1;
+        protected int attackVariation = 1;
 
 
 
@@ -305,6 +305,10 @@ namespace TankGame
                     Stats.BasicEliteEnemyKilled++;
                     break;
 
+                case EnemyType.Spitter:
+                    Stats.SpitterKilled++;
+                    break;
+                    
                 default:
                     break;
             }
@@ -329,15 +333,9 @@ namespace TankGame
             {
                 if (!(other.GameObject.GetComponent("Plane") is Plane))
                 {
-
-
                     if (other.GetAlignment != Alignment.Neutral)
-                    {
-                        if (other.GetAlignment == Alignment.Friendly)
-                        {
-                            CheckIfCanAttack(other);
-                        }
-                        else if (other.GetAlignment == Alignment.Enemy)
+                    {                        
+                       if (other.GetAlignment == Alignment.Enemy)
                         {
                             float force = Constant.pushForce;
 
@@ -351,71 +349,7 @@ namespace TankGame
             }
         }
 
-        /// <summary>
-        /// The standard overwritable attack method for all enemies
-        /// </summary>
-        /// <param name="other"></param>
-        protected virtual void CheckIfCanAttack(Collider other)
-        {
-            {//can enemy attack yet?
-                if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime)
-                {
-                    foreach (Component component in other.GameObject.GetComponentList)
-
-                    {//does other object contain a vehicle?
-                        if ((component is Vehicle && (component as Vehicle).Health > 0))
-                        {
-                            AttackVehicle(component as Vehicle);
-                            break;
-                        }
-
-                        if ((component is Tower && (component as Tower).Health > 0))
-                        {
-                            AttackTower(component as Tower);
-                            break;
-                        }
-
-                    }
-                }
-
-            }
-
-        }
-        /// <summary>
-        /// Handles attack interaction between enemy and vehicle
-        /// </summary>
-        /// <param name="tower">Targeted Tower component</param>
-        protected virtual void AttackTower(Tower tower)
-        {
-            tower.Health -= damage;  //damage Tower
-
-            if (attackVariation > 2)//Adds animation variation
-            {
-                attackVariation = 1;
-            }
-            animator.PlayAnimation("Attack" + attackVariation);
-            attackVariation++;
-            attackTimeStamp = GameWorld.Instance.TotalGameTime;
-
-        }
-        /// <summary>
-        /// Handles attack interaction between Enemy and Vehicle
-        /// </summary>
-        /// <param name="vehicle">Targeted vehicle component</param>
-        protected virtual void AttackVehicle(Vehicle vehicle)
-        {
-            vehicle.Health -= damage; // damage vehicle
-
-            if (attackVariation > 2)//Adds animation variation
-            {
-                attackVariation = 1;
-            }
-
-            animator.PlayAnimation("Attack" + attackVariation);
-            attackVariation++;
-
-            attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack
-        }
+       
 
         /// <summary>
         /// Scales attributes depending on scalefactor
@@ -432,5 +366,6 @@ namespace TankGame
         }
     }
 }
+
 
 

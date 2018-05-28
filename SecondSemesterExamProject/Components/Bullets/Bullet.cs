@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet };
+    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet,SpitterBullet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
         protected BulletType bulletType;
