@@ -351,13 +351,9 @@ namespace TankGame
             if (control == Controls.WASD)
             {
                 spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth-20), Color.CornflowerBlue);
+                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
                 spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, "HP: "+Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
-
-
-
-
+                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
             }
             else if (control == Controls.UDLR)
             {
@@ -365,9 +361,6 @@ namespace TankGame
                 spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - 200, Constant.higth - 20), Color.YellowGreen);
                 spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - 200, Constant.higth - 40), Color.YellowGreen);
                 spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - 200, Constant.higth - 60), Color.YellowGreen);
-
-
-
             }
         }
     }
