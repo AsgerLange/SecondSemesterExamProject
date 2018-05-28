@@ -14,10 +14,33 @@ namespace TankGame
         {
             go = new GameObject();
             go.Transform.Position = position;
-            go.AddComponent(new SpriteRenderer(go, Constant.basicEnemySpriteSheet, 0));
-            go.AddComponent(new Animator(go));
-            go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
-                    Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate, type));
+            switch (type)
+            {
+                case EnemyType.BasicEnemy:
+                    go.AddComponent(new SpriteRenderer(go, Constant.basicEnemySpriteSheet, 0));
+
+                    go.AddComponent(new Animator(go));
+
+                    go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
+                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate, type));
+
+                    break;
+
+                case EnemyType.BasicEliteEnemy:
+                    go.AddComponent(new SpriteRenderer(go, Constant.basicEliteEnemySpriteSheet, 0));
+
+                    go.AddComponent(new Animator(go));
+
+                    go.AddComponent(new BasicEliteEnemy(go, Constant.basicEliteEnemyHealth, Constant.basicEliteEnemyDamage,
+                            Constant.basicEliteEnemyMovementSpeed, Constant.basicEliteEnemyAttackRate, type));
+
+                    break;
+
+                default:
+                    go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
+                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate, type));
+                    break;
+            }
             go.AddComponent(new Collider(go, Alignment.Enemy));
         }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+//using System.Data.SQLite;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -147,17 +147,17 @@ namespace TankGame
 
         public void InsertScore()
         {
-            SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
-            string insert = "insert into Higscores (name, score) values (" + name + "," + score + ")";
-            SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
-            command.ExecuteNonQuery();
+            //SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
+            //string insert = "insert into Higscores (name, score) values (" + name + "," + score + ")";
+            //SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
+            //command.ExecuteNonQuery();
         }
         public void LoadScoreToScreen()
         {
-            string highscore = "select Highscore.Placing, Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
-            SQLiteCommand command = new SQLiteCommand(highscore);
-            SQLiteDataReader highscoreReader = command.ExecuteReader();
-            while (highscoreReader.Read())
+            //string highscore = "select Highscore.Placing, Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
+            //SQLiteCommand command = new SQLiteCommand(highscore);
+            //SQLiteDataReader highscoreReader = command.ExecuteReader();
+            //while (highscoreReader.Read())
             {
                 //Draw out a highscorelist in the middle of the screen.  
             }

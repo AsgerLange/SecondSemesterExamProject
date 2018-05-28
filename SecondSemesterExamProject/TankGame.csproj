@@ -49,6 +49,7 @@
     <Compile Include="Components\Bullets\BasicBullet.cs" />
     <Compile Include="Components\Bullets\BiggerBullet.cs" />
     <Compile Include="Components\Bullets\ShotgunPellet.cs" />
+    <Compile Include="Components\Enemies\Melee\BasicEliteEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
