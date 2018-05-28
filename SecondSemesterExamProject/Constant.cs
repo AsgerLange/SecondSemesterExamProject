@@ -32,8 +32,8 @@ namespace TankGame
        
         #endregion
         #region Plane
-        public static readonly string planeSpriteSheet = "PlayerTank";
-        public static readonly string planeSpriteSheet2 = "PlayerTank2";
+        public static readonly string planeSpriteSheet = "PlayerPlane1";
+        public static readonly string planeSpriteSheet2 = "PlayerPlane1";
 
         public static readonly float planeMoveSpeed = 200;
         public static readonly float planeFireRate = 0.3f;
@@ -43,7 +43,7 @@ namespace TankGame
 
         #endregion;
         #region Bike
-        public static readonly string bikeSpriteSheet = "PlayerTank";
+        public static readonly string bikeSpriteSheet = "PlayerTank1";
         public static readonly string bikeSpriteSheet2 = "PlayerTank2";
 
         public static readonly float bikeMoveSpeed = 200;
@@ -120,7 +120,6 @@ namespace TankGame
         public static readonly float shotgunPelletLifeSpan = 0.3f;
         public static readonly int shotgunPelletDmg = 30;
         #endregion;
-        #endregion;
 
         #region Weapons
         #region BasicWeapon
@@ -175,6 +174,7 @@ namespace TankGame
         public static readonly float basicEliteEnemyMovementSpeed = 30;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
+        #endregion
         #endregion
 
         #region Terrain
