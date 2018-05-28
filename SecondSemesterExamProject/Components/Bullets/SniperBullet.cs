@@ -92,11 +92,8 @@ namespace TankGame
 
                             if (shouldDie)
                             {
-
                                 DestroyBullet();
                             }
-
-
                         }
                         if ((other.GameObject.GetComponent("Terrain") is Terrain))
                         {

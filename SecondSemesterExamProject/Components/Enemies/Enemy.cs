@@ -243,7 +243,6 @@ namespace TankGame
             if (animationName == "Death")
             {
                 Die();
-
             }
 
             if (animationName == "Walk")

@@ -47,6 +47,7 @@
     <Compile Include="Builders\TerrainBuilder.cs" />
     <Compile Include="Builders\TowerBuilder.cs" />
     <Compile Include="Builders\VehicleBuilder.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Components\Bullets\BasicBullet.cs" />
     <Compile Include="Components\Bullets\BiggerBullet.cs" />
     <Compile Include="Components\Bullets\SniperBullet.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Components\Tower\TowerPlacer.cs" />
     <Compile Include="Components\Vehicle\Bike.cs" />
     <Compile Include="Components\Vehicle\Plane.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Weapons\BasicWeapon.cs" />
     <Compile Include="Spawn.cs" />
     <Compile Include="Components\Tower\Tower.cs" />
