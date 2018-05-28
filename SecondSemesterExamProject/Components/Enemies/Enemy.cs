@@ -277,7 +277,13 @@ namespace TankGame
                     {
                         if (com is Vehicle)
                         {
-                            (com as Vehicle).Money += (EnemyGold()/GameWorld.Instance.PlayerAmount);
+                            //Balancing gold income, to limit tower building in multiplayer
+                            int moneyReward = (EnemyGold() / GameWorld.Instance.PlayerAmount);
+
+                            (com as Vehicle).Money += moneyReward;
+
+                            Stats.TotalAmountOfGold += moneyReward;
+
                             break;
                         }
                     }
@@ -291,11 +297,11 @@ namespace TankGame
             switch (enemyType)
             {
                 case EnemyType.BasicEnemy:
-                    EnemyPool.BasicEnemyKilled++;
+                    Stats.BasicEnemyKilled++;
                     break;
 
                 case EnemyType.BasicEliteEnemy:
-                    EnemyPool.BasicEliteEnemyKilled++;
+                    Stats.BasicEliteEnemyKilled++;
                     break;
 
                 default:
@@ -309,7 +315,7 @@ namespace TankGame
         /// <returns></returns>
         protected virtual int EnemyGold()
         {
-            return Constant.baseEnemyGold;
+            return Constant.basicEnemyGold;
         }
 
         /// <summary>

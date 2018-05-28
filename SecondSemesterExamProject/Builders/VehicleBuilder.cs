@@ -19,9 +19,7 @@ namespace TankGame
         /// </summary>
         /// <param name="type">type of vehicle</param>
         public void Build(VehicleType type)
-        {
-            //if player is player1
-
+        {            
             controls = (Controls)playerCount - 1;
 
 
@@ -65,13 +63,14 @@ namespace TankGame
         public GameObject GetResult()
         {
             playerCount++;
+
             go.LoadContent(GameWorld.Instance.Content);
 
             GameWorld.Instance.GameObjectsToAdd.Add(go);
 
-            if (playerCount > 2)
+            if (playerCount > Constant.maxAmountOfVehicles)
             {
-                playerCount = 1; //resets player count if it exeeds max amount of players supported
+                playerCount = Constant.minAmountOfVehicles; //resets player count if it exeeds max amount of players supported
             }
             return go;
         }

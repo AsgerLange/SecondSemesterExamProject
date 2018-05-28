@@ -34,6 +34,7 @@ namespace TankGame
                     go.AddComponent(new SpriteRenderer(go, Constant.sniperBulletSheet, 0));
                     go.AddComponent(new SniperBullet(go, type, rotation));
                     break;
+
                 default:
                     break;
             }

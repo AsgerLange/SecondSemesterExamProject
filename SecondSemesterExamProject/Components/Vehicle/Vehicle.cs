@@ -123,7 +123,7 @@ namespace TankGame
             isAlive = false;
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
-
+            Stats.TotalAmountOfPlayerDeaths++;
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-
+           
         }
 
         /// <summary>

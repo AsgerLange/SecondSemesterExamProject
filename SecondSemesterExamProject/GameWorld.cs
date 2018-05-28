@@ -341,7 +341,7 @@ namespace TankGame
                 {
                     if (comp is Vehicle)
                     {
-                        PlayerAmount++; //fix
+                        PlayerAmount++; 
                         break;
                     }
                 }

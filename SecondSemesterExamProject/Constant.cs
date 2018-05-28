@@ -27,9 +27,12 @@ namespace TankGame
         #region Vehicles
         public static readonly float buildTowerCoolDown = 1;
 
+        public static readonly int maxAmountOfVehicles = 2;
+        public static readonly int minAmountOfVehicles = 1;
+
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
-       
+
         public static readonly float tankMoveSpeed = 100;
         public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
@@ -159,8 +162,8 @@ namespace TankGame
         #endregion;
 
         #region Enemies
-        public readonly static int baseEnemyGold = 2;
         #region BasicEnemy
+        public readonly static int basicEnemyGold = 2;
         public static readonly string basicEnemySpriteSheet = "BasicEnemy";
         public static readonly int basicEnemyHealth = 200;
         public static readonly float basicEnemyMovementSpeed = 25;
@@ -170,6 +173,7 @@ namespace TankGame
         #endregion
 
         #region BasicEliteEnemy
+        public readonly static int basicEliteEnemyGold = 4;
         public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
         public static readonly int basicEliteEnemyHealth = 500;
         public static readonly float basicEliteEnemyMovementSpeed = 30;
