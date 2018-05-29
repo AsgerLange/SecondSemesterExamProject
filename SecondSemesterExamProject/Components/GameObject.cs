@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum Alignment {Friendly, Enemy, Neutral}
+    enum Alignment { Friendly, Enemy, Neutral }
 
     class GameObject : Component
     {
