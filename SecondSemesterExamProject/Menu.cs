@@ -14,11 +14,15 @@ namespace TankGame
     {
         private VehicleType p1 = VehicleType.Tank;
         private VehicleType p2 = VehicleType.None;
+        private int p1TypeInt;
+        private int p2TypeInt;
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
 
         public Menu()
         {
+            p1TypeInt = (int)p1;
+            p2TypeInt = (int)p2;
             PlaceButtons();
         }
 
@@ -32,6 +36,26 @@ namespace TankGame
             StartGame.Text = text;
             StartGame.click += StartGame_click;
             buttons.Add(StartGame);
+
+            Button p1Up = new Button(new Vector2(50, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont);
+            p1Up.Text = " Up ";
+            p1Up.click += P1Up_click;
+            buttons.Add(p1Up);
+
+            Button p1Down = new Button(new Vector2(50, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont);
+            p1Down.Text = "Down";
+            p1Down.click += P1Down_click;
+            buttons.Add(p1Down);
+
+            Button p2Up = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont);
+            p2Up.Text = " Up ";
+            p2Up.click += P2Up_click;
+            buttons.Add(p2Up);
+
+            Button p2Down = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont);
+            p2Down.Text = "Down";
+            p2Down.click += P2Down_click;
+            buttons.Add(p2Down);
 
         }
 
@@ -94,17 +118,77 @@ namespace TankGame
         }
 
         /// <summary>
+        /// Handles what happens when the up button for the left player is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void P1Up_click(object sender, EventArgs e)
+        {
+            p1TypeInt++;
+            if (p1TypeInt >= Enum.GetNames(typeof(VehicleType)).Length)
+            {
+                p1TypeInt = 0;
+            }
+            p1 = (VehicleType)p1TypeInt;
+        }
+
+        /// <summary>
+        /// Handles what happens when the down button for the left player is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void P1Down_click(object sender, EventArgs e)
+        {
+            p1TypeInt--;
+            if (p1TypeInt < 0)
+            {
+                p1TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
+            }
+            p1 = (VehicleType)p1TypeInt;
+        }
+
+        /// <summary>
+        /// Handles what happens when the up button for the right player is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void P2Up_click(object sender, EventArgs e)
+        {
+            p2TypeInt++;
+            if (p2TypeInt >= Enum.GetNames(typeof(VehicleType)).Length)
+            {
+                p2TypeInt = 0;
+            }
+            p2 = (VehicleType)p2TypeInt;
+        }
+
+        /// <summary>
+        /// Handles what happens when the down button for the right player is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void P2Down_click(object sender, EventArgs e)
+        {
+            p2TypeInt--;
+            if (p2TypeInt < 0)
+            {
+                p2TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
+            }
+            p2 = (VehicleType)p2TypeInt;
+        }
+
+        /// <summary>
         /// spawns the player(s)
         /// </summary>
         private void SpawnPlayers()
         {
             if (!(p1 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p1);
+                GameObjectDirector.Instance.Construct(p1, Controls.WASD);
             }
             if (!(p2 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p2);
+                GameObjectDirector.Instance.Construct(p2, Controls.UDLR);
             }
         }
     }

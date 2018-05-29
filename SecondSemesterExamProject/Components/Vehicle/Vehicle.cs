@@ -170,7 +170,7 @@ namespace TankGame
 
             //if the player is pressing the "Shoot" button
             if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.Enter) && control == Controls.UDLR))
+                || (keyState.IsKeyDown(Keys.OemComma) && control == Controls.UDLR))
             {
 
                 //if enough time has passed since last shot
@@ -199,7 +199,7 @@ namespace TankGame
 
 
             if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.Back) && control == Controls.UDLR))
+                || (keyState.IsKeyDown(Keys.OemPeriod) && control == Controls.UDLR))
             {
                 TowerPlacer.PlaceTower();
 
