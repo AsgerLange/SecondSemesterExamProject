@@ -12,7 +12,8 @@ namespace TankGame
 {
     class Menu
     {
-        private int tmp;
+        private VehicleType p1 = VehicleType.Tank;
+        private VehicleType p2 = VehicleType.None;
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
 
@@ -84,8 +85,27 @@ namespace TankGame
         /// <param name="e"></param>
         private void StartGame_click(object sender, EventArgs e)
         {
-            GameWorld.Instance.GetGameState = GameState.Game;
-            GameWorld.Instance.IsMouseVisible = false;
+            if (!(p1 == VehicleType.None && p2 == VehicleType.None))
+            {
+                SpawnPlayers();
+                GameWorld.Instance.GetGameState = GameState.Game;
+                GameWorld.Instance.IsMouseVisible = false;
+            }
+        }
+
+        /// <summary>
+        /// spawns the player(s)
+        /// </summary>
+        private void SpawnPlayers()
+        {
+            if (!(p1 == VehicleType.None))
+            {
+                GameObjectDirector.Instance.Construct(p1);
+            }
+            if (!(p2 == VehicleType.None))
+            {
+                GameObjectDirector.Instance.Construct(p2);
+            }
         }
     }
 }
