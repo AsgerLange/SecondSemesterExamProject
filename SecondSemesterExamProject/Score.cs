@@ -193,17 +193,24 @@ namespace TankGame
 
                 string updateTotalEnemyDead = "Update Total data set Total enemy dead = selct sum (Enemy kills) from Enemies + Total enemy dead where ID = 1";
 
-                string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where Wave = 0";
+                string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
                 
                 string totalGold = "Update Player set Gold = " +Stats.TotalAmountOfGold + "where ID = 1";
                 if ()
                 {
                     string totalGoldPlayer2 = "update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
+                    string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
                 }
 
+                string updateBasicBulletCounter=""
+                string updateBiggerBulletCounter=""
+                string updateBasicSniperBulletCounter=""
+                string updateShotgunBulletCounter=""
+                string updateSpitterBulletCounter=""
+
                 string totalBulletsShot ="update Total stats set Total bullets fired = 
-
-
+                
+                
 
 
 
