@@ -32,7 +32,7 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         protected float shotTimeStamp;
 
-        protected bool isAlive;
+        public bool IsAlive { get; set; }
 
         protected bool isPlayingAnimation = false;
 
@@ -57,7 +57,7 @@ namespace TankGame
                     health = 0;
                     animator.PlayAnimation("Death");
                     isPlayingAnimation = true;
-                    isAlive = false;
+                    IsAlive = false;
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace TankGame
 
             this.towerPlacer = new TowerPlacer(this, towerType, 1);
             this.weapon = weapon;
-            isAlive = true;
+            IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
@@ -133,7 +133,7 @@ namespace TankGame
         /// </summary>
         public virtual void Update()
         {
-            if (isAlive)
+            if (IsAlive)
             {
                 Movement(); //Checks if vehicle is moving, and moves if so
 
@@ -197,17 +197,12 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-
             if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.OemPeriod) && control == Controls.UDLR))
             {
                 TowerPlacer.PlaceTower();
-
             }
-
         }
-
-
 
         /// <summary>
         /// moves the vehicle
@@ -216,7 +211,6 @@ namespace TankGame
         /// <returns></returns>
         protected virtual Vector2 Move(Vector2 translation)
         {
-
             KeyboardState keyState = Keyboard.GetState();
 
             if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
