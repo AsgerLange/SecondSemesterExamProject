@@ -19,15 +19,28 @@ namespace TankGame
         //List containing bullets to be released
         public static List<GameObject> releaseList = new List<GameObject>();
 
-        
+        public static readonly object activeListKey = new object();
+
 
         /// <summary>
         /// Get/set property for the activeBullets list
         /// </summary>
         public static List<GameObject> ActiveBullets
         {
-            get { return activeBullets; }
-            set { activeBullets = value; }
+            get
+            {
+                lock (activeListKey)
+                {
+                    return activeBullets;
+                }
+            }
+            set
+            {
+                lock (activeListKey)
+                {
+                    activeBullets = value;
+                }
+            }
         }
 
         /// <summary>
@@ -43,6 +56,7 @@ namespace TankGame
             if (inActiveBullets.Count > 0)
             {
                 GameObject tmp = null;
+
                 foreach (GameObject bul in inActiveBullets)
                 {
                     foreach (Component comp in bul.GetComponentList)
@@ -68,7 +82,6 @@ namespace TankGame
 
                     tmp.LoadContent(GameWorld.Instance.Content);
 
-                    ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
 
                     Component bullet = null;
                     foreach (Component comp in tmp.GetComponentList)
@@ -91,11 +104,17 @@ namespace TankGame
 
                     lock (GameWorld.colliderKey)
                     {
+                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+                        ((Collider)tmp.GetComponent("Collider")).GetAlignment = alignment;
                         GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
                     }
                     tmp.Transform.Position = position;
 
-                    activeBullets.Add(tmp);
+                    lock (activeListKey)
+                    {
+
+                        activeBullets.Add(tmp);
+                    }
 
 
                     return tmp;
@@ -103,7 +122,11 @@ namespace TankGame
                 else
                 {
                     tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
-                    activeBullets.Add(tmp);
+                    lock (activeListKey)
+                    {
+
+                        activeBullets.Add(tmp);
+                    }
 
 
                     return tmp;
@@ -114,7 +137,11 @@ namespace TankGame
                 GameObject tmp;
 
                 tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
+                lock (activeListKey)
+                {
+
                 activeBullets.Add(tmp);
+                }
 
 
                 return tmp;
@@ -141,10 +168,10 @@ namespace TankGame
             //Reset all bullet attributes
             bullet.Transform.Position = new Vector2(100, 100);
             //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
-            ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
 
             lock (GameWorld.colliderKey)
             {
+                ((Collider)bullet.GetComponent("Collider")).DoCollsionChecks = false;
                 GameWorld.Instance.Colliders.Remove((Collider)bullet.GetComponent("Collider"));
             }
 
@@ -184,12 +211,21 @@ namespace TankGame
                         tmp.LifeSpan = Constant.sniperBulletLifeSpan;
                         tmp.BulletDamage = Constant.sniperBulletBulletDmg;
                         tmp.MovementSpeed = Constant.sniperBulletMovementSpeed;
-
+                    }
+                    else if (component is SpitterBullet)
+                    {
+                        tmp = component as SpitterBullet;
+                        tmp.LifeSpan = Constant.spitterBulletLifeSpan;
+                        tmp.BulletDamage = Constant.spitterBulletDmg;
+                        tmp.MovementSpeed = Constant.spitterBulletMovementSpeed;
                     }
                     break;
                 }
             }
-            ActiveBullets.Remove(bullet);
+            lock (activeListKey)
+            {
+                ActiveBullets.Remove(bullet);
+            }
             inActiveBullets.Add(bullet);
         }
 
@@ -233,8 +269,8 @@ namespace TankGame
             }
         }
     }
-    
+
 
 }
-    
+
 

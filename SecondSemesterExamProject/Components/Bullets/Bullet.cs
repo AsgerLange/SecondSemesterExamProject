@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet };
+    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet,SpitterBullet };
     class Bullet : Component, IUpdatable, ILoadable, IAnimatable, ICollisionEnter
     {
         protected BulletType bulletType;
@@ -274,7 +274,7 @@ namespace TankGame
                                 break;
                             }
                         }
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Friendly)
+                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy)
                             || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy))
                         {
                             if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
@@ -290,7 +290,7 @@ namespace TankGame
                                 (type as Tower).Health -= bulletDmg;
                             }
                         }
-                        BulletSpecialEffect();
+                        BulletSpecialEffect(other);
                         if (shouldDie)
                         {
                             DestroyBullet();
@@ -303,7 +303,7 @@ namespace TankGame
         /// <summary>
         /// Handles a bullet's special effect that occures before it dies - Allows to be destroyed by default
         /// </summary>
-        protected virtual void BulletSpecialEffect()
+        protected virtual void BulletSpecialEffect(Collider other)
         {
             shouldDie = true;
         }

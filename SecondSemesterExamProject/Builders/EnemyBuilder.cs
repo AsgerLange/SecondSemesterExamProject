@@ -36,6 +36,15 @@ namespace TankGame
 
                     break;
 
+                case EnemyType.Spitter:
+                    go.AddComponent(new SpriteRenderer(go, Constant.spitterSpriteSheet, 0.2f));
+
+                    go.AddComponent(new Animator(go));
+
+                    go.AddComponent(new Spitter(go, Constant.spitterHealth, Constant.spitterDamage,
+                            Constant.spitterMovementSpeed, Constant.spitterAttackRate, type, Constant.spitterBulletType,Constant.spitterAttackRange,Constant.spitterSpread));
+                    break;
+
                 default:
                     go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
                             Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate, type));

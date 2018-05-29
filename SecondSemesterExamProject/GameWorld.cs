@@ -21,6 +21,7 @@ namespace TankGame
         private GameState gameState = new GameState();
         private Menu menu;
         public static readonly object colliderKey = new object();
+
         public static Barrier barrier;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -49,21 +50,6 @@ namespace TankGame
         Texture2D backGround;
         Rectangle screenSize;
 
-        #region Scaling
-        private int initialPlayerAmount;
-        private float difficultyScaleFactor =0.5f;
-
-        public float DifficultyScaleFactor
-        {
-            get { return difficultyScaleFactor; }
-            set { difficultyScaleFactor = value; }
-        }
-        public int InitialPlayerAmount
-        {
-            get { return initialPlayerAmount; }
-            set { initialPlayerAmount = value; }
-        }
-        #endregion;
 
         public List<Collider> Colliders
         {
@@ -259,9 +245,12 @@ namespace TankGame
                     go.Update();
                 }
 
-                foreach (var go in BulletPool.ActiveBullets)
+                lock (BulletPool.activeListKey)
                 {
-                    go.Update();
+                    foreach (var go in BulletPool.ActiveBullets)
+                    {
+                        go.Update();
+                    }
                 }
                 BulletPool.ReleaseList();
                 RemoveObjects();
@@ -297,18 +286,22 @@ namespace TankGame
         /// </summary>
         private void RemoveObjects()
         {
-            foreach (var go in gameObjectsToRemove)
+            if (gameObjectsToRemove.Count > 0)
             {
-                if (go.GetComponent("Collider") is Collider collider)
+                foreach (var go in gameObjectsToRemove)
                 {
-                    lock (colliderKey)
+                    if (go.GetComponent("Collider") is Collider collider)
                     {
-                        Colliders.Remove(collider);
+                        lock (colliderKey)
+                        {
+                            Colliders.Remove(collider);
+                        }
                     }
+                    gameObjects.Remove(go);
                 }
-                gameObjects.Remove(go);
+                gameObjectsToRemove.Clear();
+                UpdatePlayerAmount();
             }
-            gameObjectsToRemove.Clear();
         }
 
         /// <summary>
@@ -339,9 +332,12 @@ namespace TankGame
                         go.Draw(spriteBatch);
                     }
                 }
-                foreach (var go in BulletPool.ActiveBullets)
+                lock (BulletPool.activeListKey)
                 {
-                    go.Draw(spriteBatch);
+                    foreach (var go in BulletPool.ActiveBullets)
+                    {
+                        go.Draw(spriteBatch);
+                    }
                 }
                 spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             }

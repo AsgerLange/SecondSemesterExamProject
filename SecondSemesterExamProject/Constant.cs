@@ -28,7 +28,6 @@ namespace TankGame
         public static readonly float buildTowerCoolDown = 1;
 
         public static readonly int maxAmountOfVehicles = 2;
-        public static readonly int minAmountOfVehicles = 1;
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
@@ -116,6 +115,15 @@ namespace TankGame
         public static readonly float sniperBulletLifeSpan = 1f;
         public static readonly int sniperBulletBulletDmg = 400;
         #endregion;
+
+        #region EnemyBullets
+#region SpitterBullet
+        public static readonly string spitterBulletSheet = "BasicBullet";
+        public static readonly float spitterBulletMovementSpeed = 200;
+        public static readonly float spitterBulletLifeSpan = 1f;
+        public static readonly int spitterBulletDmg = 10;
+#endregion
+        #endregion
         #endregion;
 
         #region shotgunPellet
@@ -162,6 +170,7 @@ namespace TankGame
         #endregion;
 
         #region Enemies
+        #region Melee
         #region BasicEnemy
         public readonly static int basicEnemyGold = 2;
         public static readonly string basicEnemySpriteSheet = "BasicEnemy";
@@ -179,6 +188,24 @@ namespace TankGame
         public static readonly float basicEliteEnemyMovementSpeed = 30;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
+        #endregion
+        #endregion
+        #region Ranged
+
+        #region Spitter
+        public readonly static int spitterGold = 2;
+        public static readonly string spitterSpriteSheet = "BasicEnemy";
+        public static readonly int spitterHealth = 200;
+        public static readonly float spitterMovementSpeed = 25;
+        public static readonly float spitterAttackRate = 0.7f;
+        public static readonly float spitterAttackRange = 200f;
+
+        public static readonly int spitterDamage = 10;
+        public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
+        public static readonly int spitterSpread = 4;
+              
+        
+        #endregion
         #endregion
         #endregion
 
