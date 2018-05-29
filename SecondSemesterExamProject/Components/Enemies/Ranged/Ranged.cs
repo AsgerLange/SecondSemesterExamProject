@@ -28,11 +28,6 @@ namespace TankGame
         /// </summary>
         public override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(5, 23, 0, 23, 23, 4, Vector2.Zero));
-            animator.CreateAnimation("Walk", new Animation(4, 46, 0, 23, 25, 8, Vector2.Zero));
-            animator.CreateAnimation("Attack1", new Animation(5, 71, 0, 23, 29, 10, Vector2.Zero));
-            animator.CreateAnimation("Attack2", new Animation(5, 100, 0, 23, 29, 10, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(6, 129, 0, 23, 23, 8, Vector2.Zero));
             base.CreateAnimation();
         }
 
@@ -72,6 +67,13 @@ namespace TankGame
 
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Enemy,
                         bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+
+                    if (attackVariation > 2)//Adds animation variation
+                    {
+                        attackVariation = 1;
+                    }
+                    animator.PlayAnimation("Attack" + attackVariation);
+                    attackVariation++;
 
                     attackTimeStamp = GameWorld.Instance.TotalGameTime;
 
