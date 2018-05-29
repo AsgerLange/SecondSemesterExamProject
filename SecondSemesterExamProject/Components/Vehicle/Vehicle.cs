@@ -122,7 +122,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-           
+
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             Stats.TotalAmountOfPlayerDeaths++;
@@ -332,7 +332,7 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-           
+
         }
 
         /// <summary>
@@ -350,21 +350,24 @@ namespace TankGame
         /// <param name="spriteBatch"></param>
         protected void DrawInfo(SpriteBatch spriteBatch)
         {
-            if (control == Controls.WASD)
+            if (GameWorld.Instance.GetGameState == GameState.Game)
             {
-                spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
-                spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.higth - 80), Color.CornflowerBlue);
-            }
-            else if (control == Controls.UDLR)
-            {
-                spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 2), Color.YellowGreen);
-                spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
-                spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
-                spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
-                spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 80), Color.YellowGreen);
+                if (control == Controls.WASD)
+                {
+                    spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.higth - 80), Color.CornflowerBlue);
+                }
+                else if (control == Controls.UDLR)
+                {
+                    spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 2), Color.YellowGreen);
+                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 80), Color.YellowGreen);
+                }
             }
         }
         public override string ToString()
