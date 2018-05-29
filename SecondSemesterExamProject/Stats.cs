@@ -33,6 +33,7 @@ namespace TankGame
         private static int biggerBulletCounter;
         private static int sniperBulletCounter;
         private static int shotgunPelletsCounter;
+        private static int spitterBulletCounter;
 
         public static int BasicBulletCounter
         {
@@ -53,6 +54,11 @@ namespace TankGame
         {
             get { return shotgunPelletsCounter; }
             set { shotgunPelletsCounter = value; }
+        }
+        public static int SpitterBulletCounter
+        {
+            get { return spitterBulletCounter; }
+            set { spitterBulletCounter = value; }
         }
         #endregion;
 

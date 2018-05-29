@@ -11,7 +11,6 @@ using Microsoft.Xna.Framework.Input;
 namespace TankGame
 {
     enum Controls { WASD, UDLR }
-    enum VehicleType { None, Tank, Bike, Plane }
     class Vehicle : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, IDrawable
     {
         private Random rnd = new Random();
@@ -109,7 +108,7 @@ namespace TankGame
             this.rotateSpeed = rotateSpeed;
             this.money = money;
 
-            this.towerPlacer = new TowerPlacer(this, towerType, 1);
+            this.towerPlacer = new TowerPlacer(this, towerType, 5);
             this.weapon = weapon;
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");

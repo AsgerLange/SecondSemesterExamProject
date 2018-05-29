@@ -11,12 +11,11 @@ namespace TankGame
     class Ranged : Enemy
     {
         protected BulletType bulletType;
-        protected float attackRange;
         protected int spread;
         protected bool isAttacking = false;
 
-        public Ranged(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType, BulletType bulletType, float attackRange, int spread
-            ) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType)
+        public Ranged(GameObject gameObject, int health, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType, BulletType bulletType,  int spread
+            ) : base(gameObject, health, movementSpeed, attackRate,attackRange, enemyType)
         {
             this.bulletType = bulletType;
             this.attackRange = attackRange;
@@ -54,6 +53,7 @@ namespace TankGame
 
         protected virtual void Shoot()
         {
+
             if (attackTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
             {
                 Collider target;
@@ -61,10 +61,13 @@ namespace TankGame
                 if (target != null)
                 {
                     Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
+
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
 
+                    RotateToMatchDirection(direction);
+                                    
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Enemy,
                         bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
 
@@ -86,53 +89,8 @@ namespace TankGame
             }
         }
 
-        /// <summary>
-        /// checks and returns the nearest target
-        /// </summary>
-        protected Collider FindTargetInRange()
-        {
-            Collider closestTarget = null;
-            float distance = 0;
-
-            lock (GameWorld.colliderKey)
-            {
-                foreach (Collider other in GameWorld.Instance.Colliders)
-                {
-                    if (other.GetAlignment == Alignment.Friendly)
-                    {
-                        if (AttackRadius.Contains(other.CollisionBox.Center))
-                        {
-                            float otherDistance;
-                            otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
-                                * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
-                            if (closestTarget == null)
-                            {
-                                closestTarget = other;
-                                distance = otherDistance;
-                            }
-                            else if (distance > otherDistance)
-                            {
-                                closestTarget = other;
-                                distance = otherDistance;
-                            }
-                        }
-                    }
-                }
-            }
-            return closestTarget;
-        }
-        /// <summary>
-        /// creates a circle with the attackrange
-        /// </summary>
-        protected Circle AttackRadius
-        {
-            get
-            {
-                return new Circle(GameObject.Transform.Position, attackRange);
-            }
-        }
+        
+        
         /// <summary>
         /// handles which animation should the tank be running
         /// </summary>

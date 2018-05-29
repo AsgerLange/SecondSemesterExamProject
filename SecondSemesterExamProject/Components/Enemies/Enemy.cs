@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
@@ -25,6 +24,7 @@ namespace TankGame
         protected int damage;
         protected float attackTimeStamp;
         protected int attackVariation = 1;
+        protected float attackRange;
 
 
 
@@ -76,15 +76,38 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
             this.damage = damage;
             this.isAlive = true;
+            this.attackRange = attackRange;
             this.canRelease = true;
             this.enemyType = enemyType;
+            spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
+            spriteRenderer.UseRect = true;
+
+            FollowHQ();
+        }
+        /// <summary>
+        /// Enemy Constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="alignment">Alignment of the game object (enemy/friendly / neutral)</param>
+        /// <param name="health">The amount of health the enemy should have</param>
+        /// <param name="movementSpeed">Movement speed of the enemy</param>
+        /// <param name="attackRate">the attackrate of the enemy</param>
+        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) : base(gameObject)
+        {
+            this.health = health;
+            this.movementSpeed = movementSpeed;
+            this.attackRate = attackRate;
+            this.isAlive = true;
+            this.canRelease = true;
+            this.enemyType = enemyType;
+            this.attackRange = attackRange;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
@@ -104,6 +127,16 @@ namespace TankGame
                     break;
                 }
             }
+        }
+        /// <summary>
+        /// Rotates the Enemy to match direction
+        /// </summary>
+        /// <param name="direction"></param>
+        protected virtual void RotateToMatchDirection(Vector2 direction)
+        {
+            this.rotation = GetDegreesFromDestination(direction);
+
+            spriteRenderer.Rotation = rotation;
         }
 
         /// <summary>
@@ -127,7 +160,7 @@ namespace TankGame
         {
             MoveTo(targetGameObject); //Enemy moves towards player1
 
-            spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
+            ChangeTargetToNearestTarget();
         }
 
         /// <summary>
@@ -165,8 +198,7 @@ namespace TankGame
             Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
             direction.Normalize();
 
-
-            rotation = GetDegreesFromDestination(direction);
+            RotateToMatchDirection(direction);
 
             TranslateMovement(direction);
         }
@@ -291,7 +323,32 @@ namespace TankGame
             }
 
         }
+        /// <summary>
+        /// Changes target to the nearest target 
+        /// </summary>
+        protected virtual void ChangeTargetToNearestTarget()
+        {
+            Collider target;
 
+            target = FindTargetInRange();
+
+            if (target != null)
+            {
+
+                if (targetGameObject.GetComponent("Collider") != target)
+                {
+                    
+                    this.targetGameObject = target.GameObject;
+                    
+
+                }
+            }
+            else
+            {
+                this.targetGameObject = GameWorld.Instance.GameObjects[0];
+            }
+
+        }
         private void IncrementEnemyDeaths()
         {
             switch (enemyType)
@@ -309,6 +366,7 @@ namespace TankGame
                     break;
 
                 default:
+                    System.Diagnostics.Debug.WriteLine("error incrementenemydeath");
                     break;
             }
         }
@@ -321,7 +379,70 @@ namespace TankGame
         {
             return Constant.basicEnemyGold;
         }
+        /// <summary>
+        /// checks and returns the nearest target
+        /// </summary>
+        protected Collider FindTargetInRange()
+        {
+            Collider closestTarget = null;
 
+            float distance = 0;
+
+            bool otherIsBullet = false;
+
+            lock (GameWorld.colliderKey)
+            {
+                foreach (Collider other in GameWorld.Instance.Colliders)
+                {
+                    if (other.GetAlignment == Alignment.Friendly)
+                    {
+                        if (AttackRadius.Contains(other.CollisionBox.Center))
+                        {
+                            foreach (Component comp in other.GameObject.GetComponentList)
+                            {
+                                if (comp is Bullet)
+                                {
+                                    otherIsBullet = true;
+                                    break;
+                                }
+
+                            }
+                            if (otherIsBullet == false)
+                            {
+
+                                float otherDistance;
+                                otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                    * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                    + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                    * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                                if (closestTarget == null)
+                                {
+                                    closestTarget = other;
+                                    distance = otherDistance;
+                                }
+                                else if (distance > otherDistance)
+                                {
+                                    closestTarget = other;
+                                    distance = otherDistance;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            return closestTarget;
+        }
+        /// <summary>
+        /// creates a circle with the attackrange
+        /// </summary>
+        protected Circle AttackRadius
+        {
+            get
+            {
+                return new Circle(GameObject.Transform.Position, attackRange);
+            }
+        }
         /// <summary>
         /// when something is inside the enemy
         /// </summary>

@@ -10,7 +10,8 @@ namespace TankGame
 {
     class Melee : Enemy
     {
-        public Melee(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType)
+        public Melee(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType) 
+            : base(gameObject, health, damage, movementSpeed, attackRate,attackRange, enemyType)
         {
         }
 
@@ -22,7 +23,11 @@ namespace TankGame
         {
             base.OnCollisionStay(other);
         }
-        
+
+        /// <summary>
+        /// Interaction on collision
+        /// </summary>
+        /// <param name="other"></param>
         protected override void InteractionOnCollision(Collider other)
         {
             if (other.GetAlignment != Alignment.Neutral)
@@ -48,6 +53,7 @@ namespace TankGame
                         if ((component is Vehicle && (component as Vehicle).Health > 0))
                         {
                             AttackVehicle(component as Vehicle);
+
                             break;
                         }
 
@@ -70,7 +76,7 @@ namespace TankGame
         protected virtual void AttackTower(Tower tower)
         {
             tower.Health -= damage;  //damage Tower
-
+            
             if (attackVariation > 2)//Adds animation variation
             {
                 attackVariation = 1;

@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
+    enum VehicleType { None, Tank, Bike, Plane }
+    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
+    enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
+    enum TowerType { BasicTower, ShotgunTower, SniperTower };
+
+
     class Constant
     {
         public readonly static int width = 1240;
@@ -75,21 +81,32 @@ namespace TankGame
         public static readonly float basicTowerFireRate = 1;
         public static readonly int basicTowerHealth = 100;
         public static readonly BulletType basicTowerBulletType = BulletType.BasicBullet;
-        public static readonly int basicTowerAttackRange = 200;
+        public static readonly int basicTowerAttackRange = 150;
         public static readonly int basicTowerSpread = 4;
 
         #endregion;
 
         #region ShotgunTower
-        public static readonly int shotgunTowerPrice = 200;
+        public static readonly int shotgunTowerPrice = 100;
         public static readonly string ShotgunTowerSpriteSheet = "TowerBasic";
         public static readonly float ShotgunTowerFireRate = 2.5f;
-        public static readonly int ShotgunTowerHealth = 100;
+        public static readonly int ShotgunTowerHealth = 250;
         public static readonly BulletType ShotgunTowerBulletType = BulletType.ShotgunPellet;
-        public static readonly int shotgunTowerAttackRange = 150;
+        public static readonly int shotgunTowerAttackRange = 100;
         public static readonly int ShotgunTowerSpread = 15;
-        public static readonly int shotgunTowerPelletAmount = 12;
+        public static readonly int shotgunTowerPelletAmount = 20;
 
+
+        #endregion;
+        #region SniperTower
+        public static readonly int sniperTowerPrice = 100;
+        public static readonly string sniperTowerSpriteSheet = "TowerBasic";
+        public static readonly float sniperTowerFireRate = 4f;
+        public static readonly int sniperTowerHealth = 100;
+        public static readonly BulletType sniperTowerBulletType = BulletType.SniperBullet;
+        public static readonly int sniperTowerAttackRange = 400;
+        public static readonly int sniperTowerSpread = 1;
+        
 
         #endregion;
         #endregion
@@ -98,22 +115,29 @@ namespace TankGame
         #region BasicBullet
         public static readonly string bulletSheet = "BasicBullet";
         public static readonly float basicBulletMovementSpeed = 700;
-        public static readonly float basicBulletLifeSpan = 1f;
+        public static readonly float basicBulletLifeSpan = 0.7f;
         public static readonly int basicBulletDmg = 75;
         #endregion;
 
         #region BiggerBullet
         public static readonly string biggerBulletSheet = "BiggerBullet";
         public static readonly float biggerBulletMovementSpeed = 700;
-        public static readonly float biggerBulletLifeSpan = 1.5f;
+        public static readonly float biggerBulletLifeSpan = 0.7f;
         public static readonly int biggerBulletDmg = 150;
         #endregion;
 
         #region sniperBullet
         public static readonly string sniperBulletSheet = "SniperBullet";
         public static readonly float sniperBulletMovementSpeed = 1100;
-        public static readonly float sniperBulletLifeSpan = 1f;
+        public static readonly float sniperBulletLifeSpan = 0.7f;
         public static readonly int sniperBulletBulletDmg = 400;
+        #endregion;
+
+        #region shotgunPellet
+        public static readonly string shotgunPelletSheet = "ShotgunPellet";
+        public static readonly float shotgunPelletMovementSpeed = 750;
+        public static readonly float shotgunPelletLifeSpan = 0.3f;
+        public static readonly int shotgunPelletDmg = 30;
         #endregion;
 
         #region EnemyBullets
@@ -126,12 +150,6 @@ namespace TankGame
         #endregion
         #endregion;
 
-        #region shotgunPellet
-        public static readonly string shotgunPelletSheet = "ShotgunPellet";
-        public static readonly float shotgunPelletMovementSpeed = 750;
-        public static readonly float shotgunPelletLifeSpan = 0.3f;
-        public static readonly int shotgunPelletDmg = 30;
-        #endregion;
 
         #region Weapons
         #region BasicWeapon
@@ -178,6 +196,7 @@ namespace TankGame
         public static readonly float basicEnemyMovementSpeed = 25;
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
+        public readonly static int basicEnemyAttackRadius = 100;
 
         #endregion
 
@@ -188,6 +207,8 @@ namespace TankGame
         public static readonly float basicEliteEnemyMovementSpeed = 30;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
+        public readonly static int basicEliteEnemyAttackRadius = 150;
+
         #endregion
         #endregion
         #region Ranged
@@ -196,11 +217,10 @@ namespace TankGame
         public readonly static int spitterGold = 2;
         public static readonly string spitterSpriteSheet = "SpitterEnemy";
         public static readonly int spitterHealth = 200;
-        public static readonly float spitterMovementSpeed = 25;
+        public static readonly float spitterMovementSpeed = 20;
         public static readonly float spitterAttackRate = 0.7f;
-        public static readonly float spitterAttackRange = 200f;
-
-        public static readonly int spitterDamage = 10;
+        public static readonly float spitterAttackRange = 150;
+                
         public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
         public static readonly int spitterSpread = 4;
               
