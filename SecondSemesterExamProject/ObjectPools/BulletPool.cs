@@ -51,6 +51,7 @@ namespace TankGame
                         {
                             if (((Bullet)comp).GetBulletType == bulletType)
                             {
+
                                 tmp = bul;
                                 break;
                             }
