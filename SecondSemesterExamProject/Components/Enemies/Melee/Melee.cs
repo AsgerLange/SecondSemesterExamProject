@@ -22,7 +22,11 @@ namespace TankGame
         {
             base.OnCollisionStay(other);
         }
-        
+
+        /// <summary>
+        /// Interaction on collision
+        /// </summary>
+        /// <param name="other"></param>
         protected override void InteractionOnCollision(Collider other)
         {
             if (other.GetAlignment != Alignment.Neutral)
@@ -48,6 +52,7 @@ namespace TankGame
                         if ((component is Vehicle && (component as Vehicle).Health > 0))
                         {
                             AttackVehicle(component as Vehicle);
+
                             break;
                         }
 
@@ -70,7 +75,7 @@ namespace TankGame
         protected virtual void AttackTower(Tower tower)
         {
             tower.Health -= damage;  //damage Tower
-
+            
             if (attackVariation > 2)//Adds animation variation
             {
                 attackVariation = 1;

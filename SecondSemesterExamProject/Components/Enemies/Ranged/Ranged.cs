@@ -54,6 +54,7 @@ namespace TankGame
 
         protected virtual void Shoot()
         {
+
             if (attackTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
             {
                 Collider target;
@@ -61,9 +62,12 @@ namespace TankGame
                 if (target != null)
                 {
                     Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
+
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
+
+                    RotateToMatchDirection(direction);
 
                     BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Enemy,
                         bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
@@ -93,6 +97,7 @@ namespace TankGame
         {
             Collider closestTarget = null;
             float distance = 0;
+            bool otherIsBullet = false;
 
             lock (GameWorld.colliderKey)
             {
@@ -102,23 +107,37 @@ namespace TankGame
                     {
                         if (AttackRadius.Contains(other.CollisionBox.Center))
                         {
-                            float otherDistance;
-                            otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
-                                * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
-                            if (closestTarget == null)
+                            foreach (Component comp in other.GameObject.GetComponentList)
                             {
-                                closestTarget = other;
-                                distance = otherDistance;
+                                if (comp is Bullet)
+                                {
+                                    otherIsBullet = true;
+                                    break;
+                                }
+
                             }
-                            else if (distance > otherDistance)
+                            if (otherIsBullet == false)
                             {
-                                closestTarget = other;
-                                distance = otherDistance;
+
+                                float otherDistance;
+                                otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                    * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                    + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                    * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                                if (closestTarget == null)
+                                {
+                                    closestTarget = other;
+                                    distance = otherDistance;
+                                }
+                                else if (distance > otherDistance)
+                                {
+                                    closestTarget = other;
+                                    distance = otherDistance;
+                                }
                             }
                         }
                     }
+
                 }
             }
             return closestTarget;

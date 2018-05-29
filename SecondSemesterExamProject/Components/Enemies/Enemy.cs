@@ -105,6 +105,16 @@ namespace TankGame
                 }
             }
         }
+        /// <summary>
+        /// Rotates the Enemy to match direction
+        /// </summary>
+        /// <param name="direction"></param>
+        protected virtual void RotateToMatchDirection(Vector2 direction)
+        {
+            this.rotation = GetDegreesFromDestination(direction);
+            
+            spriteRenderer.Rotation = rotation;
+        }
 
         /// <summary>
         /// Loads sprites and animations
@@ -126,8 +136,7 @@ namespace TankGame
         public virtual void AI()
         {
             MoveTo(targetGameObject); //Enemy moves towards player1
-
-            spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
+                        
         }
 
         /// <summary>
@@ -164,9 +173,8 @@ namespace TankGame
 
             Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
             direction.Normalize();
-
-
-            rotation = GetDegreesFromDestination(direction);
+            
+            RotateToMatchDirection(direction);
 
             TranslateMovement(direction);
         }
