@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum TowerType { BasicTower, ShotgunTower, };
 
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
     {

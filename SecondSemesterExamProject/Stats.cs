@@ -33,6 +33,7 @@ namespace TankGame
         private static int biggerBulletCounter;
         private static int sniperBulletCounter;
         private static int shotgunPelletsCounter;
+        private static int spitterBulletCounter;
 
         public static int BasicBulletCounter
         {
@@ -54,12 +55,18 @@ namespace TankGame
             get { return shotgunPelletsCounter; }
             set { shotgunPelletsCounter = value; }
         }
+        public static int SpitterBulletCounter
+        {
+            get { return spitterBulletCounter; }
+            set { spitterBulletCounter = value; }
+        }
         #endregion;
 
         #region EnemyKillCounts
 
         private static int basicEnemyKilled = 0;
         private static int basicEliteEnemyKilled = 0;
+        private static int spitterKilled= 0;
 
         public static int BasicEnemyKilled
         {
@@ -71,6 +78,12 @@ namespace TankGame
         {
             get { return basicEliteEnemyKilled; }
             set { basicEliteEnemyKilled = value; }
+        }
+
+        public static int SpitterKilled
+        {
+            get { return spitterKilled; }
+            set { spitterKilled = value; }
         }
         #endregion;
 

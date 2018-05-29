@@ -254,17 +254,20 @@ namespace TankGame
                     if (component is BasicEnemy)
                     {
                         tmp.Health = Constant.basicEnemyHealth;
-                        tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
                     }
 
                     if (component is BasicEliteEnemy)
                     {
                         tmp.Health = Constant.basicEliteEnemyHealth;
-                        tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
+
+                    }
+                    if (component is Spitter)
+                    {
+                        tmp.Health = Constant.spitterHealth;
 
                     }
 
-                    tmp.ScaleAttributes();
+
                 }
             }
             lock (activeKey)

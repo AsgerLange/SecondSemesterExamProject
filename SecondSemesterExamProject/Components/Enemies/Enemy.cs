@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    enum EnemyType { BasicEnemy, BasicEliteEnemy };
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
@@ -24,7 +23,8 @@ namespace TankGame
         protected int health;
         protected int damage;
         protected float attackTimeStamp;
-        private int attackVariation = 1;
+        protected int attackVariation = 1;
+        protected float attackRange;
 
 
 
@@ -76,19 +76,41 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
             this.attackRate = attackRate;
             this.damage = damage;
             this.isAlive = true;
+            this.attackRange = attackRange;
             this.canRelease = true;
             this.enemyType = enemyType;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
-            ScaleAttributes();
+            FollowHQ();
+        }
+        /// <summary>
+        /// Enemy Constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="alignment">Alignment of the game object (enemy/friendly / neutral)</param>
+        /// <param name="health">The amount of health the enemy should have</param>
+        /// <param name="movementSpeed">Movement speed of the enemy</param>
+        /// <param name="attackRate">the attackrate of the enemy</param>
+        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) : base(gameObject)
+        {
+            this.health = health;
+            this.movementSpeed = movementSpeed;
+            this.attackRate = attackRate;
+            this.isAlive = true;
+            this.canRelease = true;
+            this.enemyType = enemyType;
+            this.attackRange = attackRange;
+            spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
+            spriteRenderer.UseRect = true;
+
             FollowHQ();
         }
 
@@ -105,6 +127,16 @@ namespace TankGame
                     break;
                 }
             }
+        }
+        /// <summary>
+        /// Rotates the Enemy to match direction
+        /// </summary>
+        /// <param name="direction"></param>
+        protected virtual void RotateToMatchDirection(Vector2 direction)
+        {
+            this.rotation = GetDegreesFromDestination(direction);
+
+            spriteRenderer.Rotation = rotation;
         }
 
         /// <summary>
@@ -128,7 +160,7 @@ namespace TankGame
         {
             MoveTo(targetGameObject); //Enemy moves towards player1
 
-            spriteRenderer.Rotation = rotation;//Rotates the sprite so it fits with the gameobject
+            ChangeTargetToNearestTarget();
         }
 
         /// <summary>
@@ -166,8 +198,7 @@ namespace TankGame
             Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
             direction.Normalize();
 
-
-            rotation = GetDegreesFromDestination(direction);
+            RotateToMatchDirection(direction);
 
             TranslateMovement(direction);
         }
@@ -292,7 +323,32 @@ namespace TankGame
             }
 
         }
+        /// <summary>
+        /// Changes target to the nearest target 
+        /// </summary>
+        protected virtual void ChangeTargetToNearestTarget()
+        {
+            Collider target;
 
+            target = FindTargetInRange();
+
+            if (target != null)
+            {
+
+                if (targetGameObject.GetComponent("Collider") != target)
+                {
+                    
+                    this.targetGameObject = target.GameObject;
+                    
+
+                }
+            }
+            else
+            {
+                this.targetGameObject = GameWorld.Instance.GameObjects[0];
+            }
+
+        }
         private void IncrementEnemyDeaths()
         {
             switch (enemyType)
@@ -305,7 +361,12 @@ namespace TankGame
                     Stats.BasicEliteEnemyKilled++;
                     break;
 
+                case EnemyType.Spitter:
+                    Stats.SpitterKilled++;
+                    break;
+
                 default:
+                    System.Diagnostics.Debug.WriteLine("error incrementenemydeath");
                     break;
             }
         }
@@ -318,26 +379,95 @@ namespace TankGame
         {
             return Constant.basicEnemyGold;
         }
+        /// <summary>
+        /// checks and returns the nearest target
+        /// </summary>
+        protected Collider FindTargetInRange()
+        {
+            Collider closestTarget = null;
 
+            float distance = 0;
+
+            bool otherIsBullet = false;
+
+            lock (GameWorld.colliderKey)
+            {
+                foreach (Collider other in GameWorld.Instance.Colliders)
+                {
+                    if (other.GetAlignment == Alignment.Friendly)
+                    {
+                        if (AttackRadius.Contains(other.CollisionBox.Center))
+                        {
+                            foreach (Component comp in other.GameObject.GetComponentList)
+                            {
+                                if (comp is Bullet)
+                                {
+                                    otherIsBullet = true;
+                                    break;
+                                }
+
+                            }
+                            if (otherIsBullet == false)
+                            {
+
+                                float otherDistance;
+                                otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                    * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                    + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                    * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                                if (closestTarget == null)
+                                {
+                                    closestTarget = other;
+                                    distance = otherDistance;
+                                }
+                                else if (distance > otherDistance)
+                                {
+                                    closestTarget = other;
+                                    distance = otherDistance;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            return closestTarget;
+        }
+        /// <summary>
+        /// creates a circle with the attackrange
+        /// </summary>
+        protected Circle AttackRadius
+        {
+            get
+            {
+                return new Circle(GameObject.Transform.Position, attackRange);
+            }
+        }
         /// <summary>
         /// when something is inside the enemy
         /// </summary>
         /// <param name="other"></param>
         public virtual void OnCollisionStay(Collider other)
         {
-            if (IsAlive)
+            bool push = true;
+
+            if (other.GetAlignment != Alignment.Neutral)
             {
-                if (!(other.GameObject.GetComponent("Plane") is Plane))
+                if (IsAlive)
                 {
-
-
-                    if (other.GetAlignment != Alignment.Neutral)
+                    if (!(other.GameObject.GetComponent("Plane") is Plane))
                     {
-                        if (other.GetAlignment == Alignment.Friendly)
+                        InteractionOnCollision(other);
+
+                        foreach (Component go in other.GameObject.GetComponentList)
                         {
-                            CheckIfCanAttack(other);
+                            if (go is Bullet)
+                            {
+                                push = false; //makes sure enemies don't push allied bullets away
+                                break;
+                            }
                         }
-                        else if (other.GetAlignment == Alignment.Enemy)
+                        if (other.GetAlignment == Alignment.Enemy && push)
                         {
                             float force = Constant.pushForce;
 
@@ -350,87 +480,16 @@ namespace TankGame
                 }
             }
         }
-
         /// <summary>
-        /// The standard overwritable attack method for all enemies
+        ///  an enemy's interaction when colliding with "Friendly" gameobjects
         /// </summary>
         /// <param name="other"></param>
-        protected virtual void CheckIfCanAttack(Collider other)
+        protected virtual void InteractionOnCollision(Collider other)
         {
-            {//can enemy attack yet?
-                if ((attackTimeStamp + attackRate) <= GameWorld.Instance.TotalGameTime)
-                {
-                    foreach (Component component in other.GameObject.GetComponentList)
-
-                    {//does other object contain a vehicle?
-                        if ((component is Vehicle && (component as Vehicle).Health > 0))
-                        {
-                            AttackVehicle(component as Vehicle);
-                            break;
-                        }
-
-                        if ((component is Tower && (component as Tower).Health > 0))
-                        {
-                            AttackTower(component as Tower);
-                            break;
-                        }
-
-                    }
-                }
-
-            }
-
-        }
-        /// <summary>
-        /// Handles attack interaction between enemy and vehicle
-        /// </summary>
-        /// <param name="tower">Targeted Tower component</param>
-        protected virtual void AttackTower(Tower tower)
-        {
-            tower.Health -= damage;  //damage Tower
-
-            if (attackVariation > 2)//Adds animation variation
-            {
-                attackVariation = 1;
-            }
-            animator.PlayAnimation("Attack" + attackVariation);
-            attackVariation++;
-            attackTimeStamp = GameWorld.Instance.TotalGameTime;
-
-        }
-        /// <summary>
-        /// Handles attack interaction between Enemy and Vehicle
-        /// </summary>
-        /// <param name="vehicle">Targeted vehicle component</param>
-        protected virtual void AttackVehicle(Vehicle vehicle)
-        {
-            vehicle.Health -= damage; // damage vehicle
-
-            if (attackVariation > 2)//Adds animation variation
-            {
-                attackVariation = 1;
-            }
-
-            animator.PlayAnimation("Attack" + attackVariation);
-            attackVariation++;
-
-            attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack
-        }
-
-        /// <summary>
-        /// Scales attributes depending on scalefactor
-        /// </summary>
-        public virtual void ScaleAttributes()
-        {
-            float tmp;
-
-            tmp = this.health;
-
-            tmp = tmp * GameWorld.Instance.DifficultyScaleFactor;
-
-            Health = (int)tmp;
+            //Overwrited by melee enemies
         }
     }
 }
+
 
 

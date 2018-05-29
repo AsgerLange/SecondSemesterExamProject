@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,16 @@ namespace TankGame
 {
     class Ranged : Enemy
     {
-        public Ranged(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType)
+        protected BulletType bulletType;
+        protected int spread;
+        protected bool isAttacking = false;
+
+        public Ranged(GameObject gameObject, int health, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType, BulletType bulletType,  int spread
+            ) : base(gameObject, health, movementSpeed, attackRate,attackRange, enemyType)
         {
+            this.bulletType = bulletType;
+            this.attackRange = attackRange;
+            this.spread = spread;
         }
 
         /// <summary>
@@ -35,8 +44,53 @@ namespace TankGame
         /// </summary>
         public override void AI()
         {
-            base.AI();
+            if (isAttacking == false)
+            {
+                base.AI();
+            }
+            Shoot();
         }
+
+        protected virtual void Shoot()
+        {
+
+            if (attackTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
+            {
+                Collider target;
+                target = FindTargetInRange();
+                if (target != null)
+                {
+                    Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
+
+                    direction.Normalize();
+
+                    float rotation = GetDegreesFromDestination(direction);
+
+                    RotateToMatchDirection(direction);
+                                    
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Enemy,
+                        bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+
+                    if (attackVariation > 2)//Adds animation variation
+                    {
+                        attackVariation = 1;
+                    }
+                    animator.PlayAnimation("Attack" + attackVariation);
+                    attackVariation++;
+
+                    attackTimeStamp = GameWorld.Instance.TotalGameTime;
+
+                    isAttacking = true;
+                }
+                else
+                {
+                    isAttacking = false;
+                }
+            }
+        }
+
+        
+        
         /// <summary>
         /// handles which animation should the tank be running
         /// </summary>

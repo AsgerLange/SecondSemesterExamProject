@@ -52,13 +52,17 @@
     <Compile Include="Components\Bullets\BiggerBullet.cs" />
     <Compile Include="Components\Bullets\SniperBullet.cs" />
     <Compile Include="Components\Bullets\ShotgunPellet.cs" />
+    <Compile Include="Components\Bullets\SpitterBullet.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEliteEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
+    <Compile Include="Components\Enemies\Ranged\Spitter.cs" />
     <Compile Include="Components\Tower\BasicTower.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
+    <Compile Include="Components\Tower\MachineGunTower.cs" />
     <Compile Include="Components\Tower\ShotgunTower.cs" />
+    <Compile Include="Components\Tower\SniperTower.cs" />
     <Compile Include="Components\Tower\TowerPlacer.cs" />
     <Compile Include="Components\Vehicle\Bike.cs" />
     <Compile Include="Components\Vehicle\Plane.cs" />
