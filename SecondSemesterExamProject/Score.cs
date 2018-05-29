@@ -50,8 +50,8 @@ namespace TankGame
         //    string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
         //    string totalStats = "Create table Total stats (ID varchar,Total bullets fired int, Total tower build int, Total tower dead int, Total tower kills int,Total player kills int, Total enemy dead int )";
         //    string tower = "Create table Tower (ID varchar, Tower kills int, Tower Build int, Tower Dead int)";
-        //    string player = "Create table Player (ID varchar,Bullets shot int, Gold int, Wave int)";
-        //    string enemies = "Create table Enemies (ID varchar, Enemy name string, Enemy kills int,";
+        //    string player = "Create table Player (ID varchar,Basic bullets shot int,Bigger bullets shot int,Sniper bullets shot int,Shotgun bullets shot int, Gold int, Wave int)";
+        //    string enemies = "Create table Enemies (ID varchar, Enemy name string, Enemy kills int, Spitter bullets shot";
         //    SQLiteCommand command = new SQLiteCommand(highscore, dbConnect);
         //    SQLiteCommand command2 = new SQLiteCommand(totalStats, dbConnect);
         //    SQLiteCommand command3 = new SQLiteCommand(tower, dbConnect);
@@ -158,8 +158,8 @@ namespace TankGame
             insertConnection.Open();
             string basicEnemy = "insert into Enemies (ID, Enemy kills, Total spawn) values (null,Basic enemy,0)";
             string basicEliteEnemy = "insert into Enemies (ID, Enemy kills, Total spawn) values (null,Basic elite enemyy,0)";
-            string player = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,100,0)";
-            string player2 = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,100,0)";
+            string player = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,0,0,0,100,0)";
+            string player2 = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,0,0,0,100,0)";
             string basicTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) ";
             string shotgunTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) ";
             string totalData = "insert into Total stats (ID, Total tower build, Total tower dead, Total tower kills, Total player kills, Total enemy dead) values(null,0,0,0,0,0)";
@@ -191,30 +191,43 @@ namespace TankGame
 
                 string updateBasicEliteEnemy = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEliteEnemyKilled + "where Name =Basic elite enemy";
 
-                string updateTotalEnemyDead = "Update Total data set Total enemy dead = selct sum (Enemy kills) from Enemies + Total enemy dead where ID = 1";
+                string updateSpitterBulletCounter = "Update Enemies set Spitter bullets shot = Spitter bullets shot + " + Stats.BasicBulletCounter + "where ID = 3";
 
                 string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
                 
                 string totalGold = "Update Player set Gold = " +Stats.TotalAmountOfGold + "where ID = 1";
+
+                string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot + "+Stats.BasicBulletCounter+"where ID = 1";
+
+                string updateBiggerBulletCounter = "Update Player set Bigger bullets shot = Basic bullets shot + " + Stats.BiggerBulletCounter + "where ID = 1";
+
+                string updateSniperBulletCounter = "Update Player set Sniper bullets shot = Basic bullets shot + " + Stats.SniperBulletCounter + "where ID = 1";
+
+                string updateShotgunBulletCounter = "Update Player set Shotgun bullets shot = Basic bullets shot + " + Stats.ShotgunPelletsCounter + "where ID = 1";
+
                 if ()
                 {
-                    string totalGoldPlayer2 = "update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
+                    string totalGoldPlayer2 = "Update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
                     string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
+                    string updateBasicBulletCounter2 = "Update Player set Basic bullets shot = Basic bullets shot + " + Stats.BasicBulletCounter + "where ID = 2";
+                    string updateBiggerBulletCounter2 = "Update Player set Bigger bullets shot = Basic bullets shot + " + Stats.BiggerBulletCounter + "where ID = 2";
+                    string updateSniperBulletCounter2 = "Update Player set Sniper bullets shot = Basic bullets shot + " + Stats.SniperBulletCounter + "where ID = 2";
+                    string updateShotgunBulletCounter2 = "Update Player set Shotgun bullets shot = Basic bullets shot + " + Stats.ShotgunPelletsCounter + "where ID = 2";
                 }
 
-                string updateBasicBulletCounter=""
-                string updateBiggerBulletCounter=""
-                string updateBasicSniperBulletCounter=""
-                string updateShotgunBulletCounter=""
-                string updateSpitterBulletCounter=""
+                string totalPlayerKills = "Update Total stats set Total player kills = ";
 
-                string totalBulletsShot ="update Total stats set Total bullets fired = 
+                string TotalEnemyDead = "Update Total stats set Total enemy dead = select sum (Enemy kills) from Enemies + Total enemy dead where ID = 1";
+
+                string totalBulletsFired = "Update Total stats set Total bullets fired = select sum(Basic bullets shot, Bigger bullets shot, Sniper bullets shot, Shotgun bullets shot) from Total stats where ID = 1";
+
+                string totalTowerKills = "Update Total stats set Total tower kills = select sum(Tower kills) from Tower + Total tower kills where ID = 1";
+
+                string totalTowerDead = "Update Total stats set Total tower dead = select sum(Tower dead) from Tower + Total tower dead";
+
+                string totalTowerBuild = "Update Total stats set Total tower build = select sum (Tower build) from Tower + Total tower build";
+
                 
-                
-
-
-
-
 
             }
 
