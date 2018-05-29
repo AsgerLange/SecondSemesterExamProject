@@ -10,40 +10,17 @@ namespace TankGame
 {
     class Melee : Enemy
     {
-        public Melee(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate,EnemyType enemyType) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType)
+        public Melee(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType)
         {
         }
 
-         /// <summary>
+        /// <summary>
         /// when something is inside the enemy
         /// </summary>
         /// <param name="other"></param>
         public override void OnCollisionStay(Collider other)
         {
-            if (IsAlive)
-            {
-                if (!(other.GameObject.GetComponent("Plane") is Plane))
-                {
-
-
-                    if (other.GetAlignment != Alignment.Neutral)
-                    {
-                        if (other.GetAlignment == Alignment.Friendly)
-                        {
-                            CheckIfCanAttack(other);
-                        }
-                        else if (other.GetAlignment == Alignment.Enemy)
-                        {
-                            float force = Constant.pushForce;
-
-                            Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                            dir.Normalize();
-
-                            other.GameObject.Transform.Translate(dir * force);
-                        }
-                    }
-                }
-            }
+            base.OnCollisionStay(other);
         }
 
         /// <summary>

@@ -64,8 +64,7 @@ namespace TankGame
         public GameObject GetResult()
         {
             playerCount++;
-            GameWorld.Instance.InitialPlayerAmount++;
-            GameWorld.Instance.DifficultyScaleFactor += 0.5f;
+           
 
             go.LoadContent(GameWorld.Instance.Content);
 

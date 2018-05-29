@@ -88,7 +88,6 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
-            ScaleAttributes();
             FollowHQ();
         }
 
@@ -308,7 +307,7 @@ namespace TankGame
                 case EnemyType.Spitter:
                     Stats.SpitterKilled++;
                     break;
-                    
+
                 default:
                     break;
             }
@@ -329,13 +328,22 @@ namespace TankGame
         /// <param name="other"></param>
         public virtual void OnCollisionStay(Collider other)
         {
-            if (IsAlive)
+            bool push = true;
+
+            if (other.GetAlignment != Alignment.Neutral)
             {
-                if (!(other.GameObject.GetComponent("Plane") is Plane))
+                if (IsAlive)
                 {
-                    if (other.GetAlignment != Alignment.Neutral)
-                    {                        
-                       if (other.GetAlignment == Alignment.Enemy)
+                    if (!(other.GameObject.GetComponent("Plane") is Plane))
+                    {
+                        foreach (Component go in other.GameObject.GetComponentList)
+                        {
+                            if (go is Bullet)
+                            {
+                                push = false;
+                            }
+                        }
+                        if (other.GetAlignment == Alignment.Enemy && push)
                         {
                             float force = Constant.pushForce;
 
@@ -347,22 +355,6 @@ namespace TankGame
                     }
                 }
             }
-        }
-
-       
-
-        /// <summary>
-        /// Scales attributes depending on scalefactor
-        /// </summary>
-        public virtual void ScaleAttributes()
-        {
-            float tmp;
-
-            tmp = this.health;
-
-            tmp = tmp * GameWorld.Instance.DifficultyScaleFactor;
-
-            Health = (int)tmp;
         }
     }
 }

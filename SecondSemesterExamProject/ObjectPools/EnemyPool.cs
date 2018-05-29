@@ -264,7 +264,7 @@ namespace TankGame
 
                     }
 
-                    tmp.ScaleAttributes();
+            
                 }
             }
             lock (activeKey)

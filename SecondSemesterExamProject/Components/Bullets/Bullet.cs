@@ -274,7 +274,7 @@ namespace TankGame
                                 break;
                             }
                         }
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Friendly)
+                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy)
                             || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy))
                         {
                             if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)

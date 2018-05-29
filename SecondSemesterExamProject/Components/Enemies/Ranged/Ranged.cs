@@ -62,15 +62,19 @@ namespace TankGame
             if (attackTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
             {
                 Collider target;
-                target = FindEnemiesInRange();
+                target = FindTargetInRange();
                 if (target != null)
                 {
                     Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Enemy,
+                        bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+
                     attackTimeStamp = GameWorld.Instance.TotalGameTime;
+
                     isAttacking = true;
                 }
                 else
@@ -83,7 +87,7 @@ namespace TankGame
         /// <summary>
         /// checks and returns the nearest target
         /// </summary>
-        protected Collider FindEnemiesInRange()
+        protected Collider FindTargetInRange()
         {
             Collider closestTarget = null;
             float distance = 0;

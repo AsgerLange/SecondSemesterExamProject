@@ -119,8 +119,8 @@ namespace TankGame
         #region EnemyBullets
 #region SpitterBullet
         public static readonly string spitterBulletSheet = "BasicBullet";
-        public static readonly float spitterBulletMovementSpeed = 300;
-        public static readonly float spitterBulletLifeSpan = 2f;
+        public static readonly float spitterBulletMovementSpeed = 200;
+        public static readonly float spitterBulletLifeSpan = 1f;
         public static readonly int spitterBulletDmg = 10;
 #endregion
         #endregion
