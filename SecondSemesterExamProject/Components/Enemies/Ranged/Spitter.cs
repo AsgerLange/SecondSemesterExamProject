@@ -9,7 +9,8 @@ namespace TankGame
 {
     class Spitter : Ranged
     {
-        public Spitter(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, EnemyType enemyType, BulletType bulletType, float attackRange, int spread) : base(gameObject, health, damage, movementSpeed, attackRate, enemyType, bulletType, attackRange, spread)
+        public Spitter(GameObject gameObject, int health , float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, BulletType bulletType, int spread)
+            : base(gameObject, health , movementSpeed, attackRate,attackRange, enemyType, bulletType, spread)
         {
         }
 
@@ -22,8 +23,8 @@ namespace TankGame
         {
             animator.CreateAnimation("Idle", new Animation(3, 29, 0, 25, 29, 16, Vector2.Zero));
             animator.CreateAnimation("Walk", new Animation(4, 58, 0, 25, 29, 16, Vector2.Zero));
-            animator.CreateAnimation("Attack1", new Animation(4, 87, 0, 25, 29, 10, Vector2.Zero));
-            animator.CreateAnimation("Attack2", new Animation(4, 116, 0, 25, 29, 10, Vector2.Zero));
+            animator.CreateAnimation("Attack1", new Animation(4, 87, 0, 25, 29, (6* 2 /Constant.spitterAttackRate), Vector2.Zero));
+            animator.CreateAnimation("Attack2", new Animation(4, 116, 0, 25, 29, (6 * 2 / Constant.spitterAttackRate), Vector2.Zero));
             animator.CreateAnimation("Death", new Animation(5, 145, 0, 25, 29, 6, Vector2.Zero));
             base.CreateAnimation();
         }

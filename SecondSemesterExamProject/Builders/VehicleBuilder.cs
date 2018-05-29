@@ -29,8 +29,8 @@ namespace TankGame
                     go.AddComponent(new Animator(go));//allows go to be animated
 
                     //Standard tank setup
-                    go.AddComponent(new Tank(go, controls, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed
-                       , Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                    go.AddComponent(new Tank(go, controls, new MachineGun(go), Constant.tankHealth, Constant.tankMoveSpeed
+                       , Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.ShotgunTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));//adds collider
                     break;
                 case VehicleType.Bike:
@@ -39,7 +39,7 @@ namespace TankGame
                     go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet + playerCount, 0.1f));
                     go.AddComponent(new Animator(go));
                     go.AddComponent(new Bike(go, controls, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed
-                       , Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.ShotgunTower));
+                       , Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.MachineGunTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));
                     break;
                 case VehicleType.Plane:
@@ -48,7 +48,7 @@ namespace TankGame
                     go.AddComponent(new SpriteRenderer(go, Constant.planeSpriteSheet + playerCount, 0.1f));
                     go.AddComponent(new Animator(go));
                     go.AddComponent(new Plane(go, controls, new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed
-                       , Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.BasicTower));
+                       , Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.ShotgunTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));
 
                     break;
