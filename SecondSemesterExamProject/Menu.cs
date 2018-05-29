@@ -26,8 +26,8 @@ namespace TankGame
             p1TypeInt = (int)p1;
             p2TypeInt = (int)p2;
 
-
-            AddVehiclesToBeDrawn();
+            p1Choice = ChangeVehicle(p1, 1);
+            p2Choice = ChangeVehicle(p2, 2);
 
             PlaceButtons();
         }
@@ -38,20 +38,67 @@ namespace TankGame
         private void AddVehiclesToBeDrawn()
         {
             p1Choice = new GameObject();
-            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
+            p1Choice.Transform.Position = new Vector2(20, Constant.higth / 2);
             p1Choice.AddComponent(new SpriteRenderer(p1Choice, Constant.tankSpriteSheet + "1", 0.05f));
             p1Choice.AddComponent(new Animator(p1Choice));
             p1Choice.AddComponent(new Tank(p1Choice, Controls.WASD, new Sniper(p1Choice), Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
-            p1Choice.AddComponent(new Collider(p1Choice, Alignment.Friendly));
+            ((Tank)p1Choice.GetComponent("Tank")).IsAlive = false;
 
             p2Choice = new GameObject();
             p2Choice.Transform.Position = new Vector2(Constant.width - 250, Constant.higth / 2);
             p2Choice.AddComponent(new SpriteRenderer(p2Choice, Constant.tankSpriteSheet + "2", 0.05f));
             p2Choice.AddComponent(new Animator(p2Choice));
-            p2Choice.AddComponent(new Tank(p2Choice, Controls.UDLR, new Sniper(p2Choice), Constant.tankHealth, Constant.tankMoveSpeed,
+            p2Choice.AddComponent(new Tank(p2Choice, Controls.WASD, new Sniper(p2Choice), Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
-            p2Choice.AddComponent(new Collider(p2Choice, Alignment.Friendly));
+            ((Tank)p2Choice.GetComponent("Tank")).IsAlive = false;
+
+            p1Choice = ChangeVehicle(p1, 1);
+            p2Choice = ChangeVehicle(p2, 2);
+        }
+
+        /// <summary>
+        /// changes the modal that is drawn
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="player"></param>
+        /// <param name="playerDraw"></param>
+        private GameObject ChangeVehicle(VehicleType type, int player)
+        {
+            GameObject playerDraw = new GameObject();
+            switch (type)
+            {
+                case VehicleType.None:
+                    break;
+                case VehicleType.Tank:
+                    playerDraw.Transform.Position = new Vector2(0, 0);
+                    playerDraw.AddComponent(new SpriteRenderer(playerDraw, Constant.tankSpriteSheet + player, 0.05f));
+                    playerDraw.AddComponent(new Animator(playerDraw));
+                    playerDraw.AddComponent(new Tank(playerDraw, Controls.WASD, new Sniper(playerDraw), Constant.tankHealth, Constant.tankMoveSpeed,
+                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                    ((Tank)playerDraw.GetComponent("Tank")).IsAlive = false;
+                    break;
+                case VehicleType.Bike:
+                    playerDraw.Transform.Position = new Vector2(0, 0);
+                    playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.bikeSpriteSheet + player, 0.05f));
+                    playerDraw.AddComponent(new Animator(playerDraw));
+                    playerDraw.AddComponent(new Bike(playerDraw, Controls.WASD, new Sniper(playerDraw), Constant.tankHealth, Constant.tankMoveSpeed,
+                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                    ((Bike)playerDraw.GetComponent("Bike")).IsAlive = false;
+                    break;
+                case VehicleType.Plane:
+                    playerDraw.Transform.Position = new Vector2(0, 0);
+                    playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.planeSpriteSheet + player, 0.05f));
+                    playerDraw.AddComponent(new Animator(playerDraw));
+                    playerDraw.AddComponent(new Plane(playerDraw, Controls.WASD, new Sniper(playerDraw), Constant.tankHealth, Constant.tankMoveSpeed,
+                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                    ((Plane)playerDraw.GetComponent("Plane")).IsAlive = false;
+                    break;
+                default:
+                    break;
+            }
+            playerDraw.LoadContent(GameWorld.Instance.Content);
+            return playerDraw;
         }
 
         /// <summary>
@@ -60,31 +107,40 @@ namespace TankGame
         private void PlaceButtons()
         {
             string text = Constant.startGameButton;
-            Button StartGame = new Button(new Vector2(Constant.width / 2 - 50, Constant.higth / 2), Constant.buttonTexture, Constant.buttonFont);
-            StartGame.Text = text;
+            Button StartGame = new Button(new Vector2(Constant.width / 2 - 50, Constant.higth / 2), Constant.buttonTexture, Constant.buttonFont)
+            {
+                Text = text
+            };
             StartGame.click += StartGame_click;
             buttons.Add(StartGame);
 
-            Button p1Up = new Button(new Vector2(50, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont);
-            p1Up.Text = " Up ";
+            Button p1Up = new Button(new Vector2(50, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont)
+            {
+                Text = " Up "
+            };
             p1Up.click += P1Up_click;
             buttons.Add(p1Up);
 
-            Button p1Down = new Button(new Vector2(50, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont);
-            p1Down.Text = "Down";
+            Button p1Down = new Button(new Vector2(50, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont)
+            {
+                Text = "Down"
+            };
             p1Down.click += P1Down_click;
             buttons.Add(p1Down);
 
-            Button p2Up = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont);
-            p2Up.Text = " Up ";
+            Button p2Up = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont)
+            {
+                Text = " Up "
+            };
             p2Up.click += P2Up_click;
             buttons.Add(p2Up);
 
-            Button p2Down = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont);
-            p2Down.Text = "Down";
+            Button p2Down = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont)
+            {
+                Text = "Down"
+            };
             p2Down.click += P2Down_click;
             buttons.Add(p2Down);
-
         }
 
         /// <summary>
@@ -98,6 +154,16 @@ namespace TankGame
                 {
                     but.Update();
                 }
+            }
+            if (p1 != VehicleType.None)
+            {
+                p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
+                p1Choice.Update();
+            }
+            if (p2 != VehicleType.None)
+            {
+                p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
+                p2Choice.Update();
             }
         }
 
@@ -114,8 +180,14 @@ namespace TankGame
                     but.Draw(spriteBatch);
                 }
             }
-            p1Choice.Draw(spriteBatch);
-            p2Choice.Draw(spriteBatch);
+            if (p1 != VehicleType.None)
+            {
+                p1Choice.Draw(spriteBatch);
+            }
+            if (p2 != VehicleType.None)
+            {
+                p2Choice.Draw(spriteBatch);
+            }
         }
 
         /// <summary>
@@ -125,8 +197,6 @@ namespace TankGame
         public virtual void LoadContent(ContentManager content)
         {
             font = content.Load<SpriteFont>("Stat");
-            p1Choice.LoadContent(content);
-            p2Choice.LoadContent(content);
 
             foreach (Button but in buttons)
             {
@@ -162,6 +232,7 @@ namespace TankGame
                 p1TypeInt = 0;
             }
             p1 = (VehicleType)p1TypeInt;
+            p1Choice = ChangeVehicle(p1, 1);
         }
 
         /// <summary>
@@ -177,6 +248,7 @@ namespace TankGame
                 p1TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
             }
             p1 = (VehicleType)p1TypeInt;
+            p1Choice = ChangeVehicle(p1, 1);
         }
 
         /// <summary>
@@ -192,6 +264,7 @@ namespace TankGame
                 p2TypeInt = 0;
             }
             p2 = (VehicleType)p2TypeInt;
+            p2Choice = ChangeVehicle(p2, 2);
         }
 
         /// <summary>
@@ -207,6 +280,7 @@ namespace TankGame
                 p2TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
             }
             p2 = (VehicleType)p2TypeInt;
+            p2Choice = ChangeVehicle(p2, 2);
         }
 
         /// <summary>
