@@ -13,15 +13,12 @@ namespace TankGame
 
         private int playerCount = 1;
 
-        private Controls controls;
         /// <summary>
         /// The vehicleBuilder builds a vehicle
         /// </summary>
         /// <param name="type">type of vehicle</param>
-        public void Build(VehicleType type)
-        {            
-            controls = (Controls)playerCount - 1;
-
+        public void Build(VehicleType type, Controls controls)
+        {
 
             switch (type)
             {
@@ -76,7 +73,5 @@ namespace TankGame
             }
             return go;
         }
-
-
     }
 }

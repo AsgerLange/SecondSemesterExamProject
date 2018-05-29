@@ -29,7 +29,7 @@ namespace TankGame
         /// <summary>
         /// Allows the sniper bullet to pierce multiple enemies, but lowers for each piercing 
         /// </summary>
-        protected override void BulletSpecialEffect()
+        protected override void BulletSpecialEffect(Collider other)
         {
             enemiesPierced++;
 
@@ -37,7 +37,11 @@ namespace TankGame
 
             if (enemiesPierced > 5)
             {
-                base.BulletSpecialEffect();
+                base.BulletSpecialEffect(other);
+            }
+            if ((other.GameObject.GetComponent("Terrain") is Terrain))
+            {
+                base.BulletSpecialEffect(other);
             }
         }
         public override void CreateAnimation()
@@ -61,49 +65,7 @@ namespace TankGame
         /// <param name="other"></param>
         public override void OnCollisionEnter(Collider other)
         {
-            Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
-
-            if (thisCollider != null)
-            {
-                if (thisCollider.GetAlignment != other.GetAlignment)
-                {
-                    if (canRelease)
-                    {
-                        if (!(other.GameObject.GetComponent("HQ") is HQ) && thisCollider.GetAlignment == Alignment.Friendly
-                            || thisCollider.GetAlignment == Alignment.Enemy)
-                        {
-
-                            foreach (Component go in other.GameObject.GetComponentList)
-                            {
-                                if (go is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
-                                {
-                                    (go as Enemy).Health -= bulletDmg;
-                                }
-                                if (go is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
-                                {
-                                    (go as Vehicle).Health -= bulletDmg;
-                                }
-                                if (go is Tower && thisCollider.GetAlignment == Alignment.Enemy)
-                                {
-                                    (go as Tower).Health -= bulletDmg;
-                                }
-                            }
-                            BulletSpecialEffect();
-
-                            if (shouldDie)
-                            {
-                                DestroyBullet();
-                            }
-                        }
-                        if ((other.GameObject.GetComponent("Terrain") is Terrain))
-                        {
-                            base.BulletSpecialEffect();
-                            DestroyBullet();
-
-                        }
-                    }
-                }
-            }
+            base.OnCollisionEnter(other);
         }
 
         /// <summary>
@@ -113,7 +75,7 @@ namespace TankGame
         {
             base.DestroyBullet();
             enemiesPierced = 0;
-          
+
         }
         public override void Update()
         {

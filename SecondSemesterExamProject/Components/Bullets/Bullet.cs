@@ -290,7 +290,7 @@ namespace TankGame
                                 (type as Tower).Health -= bulletDmg;
                             }
                         }
-                        BulletSpecialEffect();
+                        BulletSpecialEffect(other);
                         if (shouldDie)
                         {
                             DestroyBullet();
@@ -303,7 +303,7 @@ namespace TankGame
         /// <summary>
         /// Handles a bullet's special effect that occures before it dies - Allows to be destroyed by default
         /// </summary>
-        protected virtual void BulletSpecialEffect()
+        protected virtual void BulletSpecialEffect(Collider other)
         {
             shouldDie = true;
         }

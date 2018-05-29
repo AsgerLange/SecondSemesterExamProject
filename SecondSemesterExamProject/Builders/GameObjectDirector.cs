@@ -91,9 +91,9 @@ namespace TankGame
             return terrainBuilder.GetResult(); //returns the bullet that has been build
         }
 
-        public GameObject Construct(VehicleType type)
+        public GameObject Construct(VehicleType type, Controls controls)
         {
-            vehicleBuilder.Build(type);
+            vehicleBuilder.Build(type, controls);
 
             return vehicleBuilder.GetResult(); //returns the bullet that has been build
         }
