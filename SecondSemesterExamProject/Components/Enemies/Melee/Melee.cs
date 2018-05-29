@@ -22,7 +22,17 @@ namespace TankGame
         {
             base.OnCollisionStay(other);
         }
-
+        
+        protected override void InteractionOnCollision(Collider other)
+        {
+            if (other.GetAlignment != Alignment.Neutral)
+            {
+                if (other.GetAlignment == Alignment.Friendly)
+                {
+                    CheckIfCanAttack(other);
+                }
+            }
+        }
         /// <summary>
         /// The standard overwritable attack method for all enemies
         /// </summary>

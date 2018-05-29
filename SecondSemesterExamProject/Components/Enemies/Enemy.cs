@@ -336,11 +336,14 @@ namespace TankGame
                 {
                     if (!(other.GameObject.GetComponent("Plane") is Plane))
                     {
+                        InteractionOnCollision(other);
+
                         foreach (Component go in other.GameObject.GetComponentList)
                         {
                             if (go is Bullet)
                             {
-                                push = false;
+                                push = false; //makes sure enemies don't push allied bullets away
+                                break;
                             }
                         }
                         if (other.GetAlignment == Alignment.Enemy && push)
@@ -355,6 +358,14 @@ namespace TankGame
                     }
                 }
             }
+        }
+        /// <summary>
+        ///  an enemy's interaction when colliding with "Friendly" gameobjects
+        /// </summary>
+        /// <param name="other"></param>
+        protected virtual void InteractionOnCollision(Collider other)
+        {
+            //Overwrited by melee enemies
         }
     }
 }
