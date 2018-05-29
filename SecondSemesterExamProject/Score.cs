@@ -103,9 +103,9 @@ namespace TankGame
             string keyString = currentKey.ToString();//Turns the currentkeys into a string
             if (currentKey == Keys.Space)
                 name += " ";
-            else if ((currentKey == Keys.Back || currentKey == Keys.Delete) && name.Length > 0)
+            else if ((currentKey == Keys.OemPeriod || currentKey == Keys.Delete) && name.Length > 0)
                 name = name.Remove(name.Length - 1);
-            else if (currentKey == Keys.Enter)
+            else if (currentKey == Keys.OemComma)
                 InsertScore();
             else
                 name += keyString;

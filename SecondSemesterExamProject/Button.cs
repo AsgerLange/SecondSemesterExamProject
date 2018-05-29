@@ -78,7 +78,7 @@ namespace TankGame
                 color = Color.Gray;
             }
 
-            spriteBatch.Draw(Texture, Rectangle, null, color, 0, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, Rectangle, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.10f);
 
             if (!string.IsNullOrEmpty(Text))
             {
