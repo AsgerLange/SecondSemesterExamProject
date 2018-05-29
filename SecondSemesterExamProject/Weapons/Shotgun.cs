@@ -34,6 +34,7 @@ namespace TankGame
                 BulletPool.CreateBullet(vector2, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             }
             Ammo--;
+            Stats.ShotgunFired++;
         }
         public override string ToString()
         {

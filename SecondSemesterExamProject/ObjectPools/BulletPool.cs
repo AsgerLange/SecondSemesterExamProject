@@ -19,7 +19,7 @@ namespace TankGame
         //List containing bullets to be released
         public static List<GameObject> releaseList = new List<GameObject>();
 
-
+        
 
         /// <summary>
         /// Get/set property for the activeBullets list
@@ -38,6 +38,8 @@ namespace TankGame
         /// <returns></returns>
         public static GameObject CreateBullet(Vector2 position, Alignment alignment, BulletType bulletType, float directionRotation)
         {
+            IncrementBulletCounts(bulletType);
+
             if (inActiveBullets.Count > 0)
             {
                 GameObject tmp = null;
@@ -95,12 +97,14 @@ namespace TankGame
 
                     activeBullets.Add(tmp);
 
+
                     return tmp;
                 }
                 else
                 {
                     tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
                     activeBullets.Add(tmp);
+
 
                     return tmp;
                 }
@@ -111,6 +115,7 @@ namespace TankGame
 
                 tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
                 activeBullets.Add(tmp);
+
 
                 return tmp;
             }
@@ -201,7 +206,34 @@ namespace TankGame
             releaseList.Clear();
         }
 
+        /// <summary>
+        /// Increments the appopriate bullet counter when shot is fired.
+        /// </summary>
+        /// <param name="type">Type of bullet that was fired</param>
+        private static void IncrementBulletCounts(BulletType type)
+        {
+            switch (type)
+            {
+                case BulletType.BasicBullet:
+                    Stats.BasicBulletCounter++;
+                    break;
+                case BulletType.BiggerBullet:
+                    Stats.BiggerBulletCounter++;
+                    break;
+                case BulletType.ShotgunPellet:
+                    Stats.ShotgunPelletsCounter++;
+                    break;
+                case BulletType.SniperBullet:
+                    Stats.SniperBulletCounter++;
+                    break;
+
+                default:
+                    System.Diagnostics.Debug.WriteLine("Error in bullet pool IncrementBulletCounts()");
+                    break;
+            }
+        }
     }
+    
 
 }
     
