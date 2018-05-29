@@ -27,7 +27,9 @@ namespace TankGame
             p2TypeInt = (int)p2;
 
             p1Choice = ChangeVehicle(p1, 1);
+            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
             p2Choice = ChangeVehicle(p2, 2);
+            p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
 
             PlaceButtons();
         }
@@ -157,12 +159,10 @@ namespace TankGame
             }
             if (p1 != VehicleType.None)
             {
-                p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
                 p1Choice.Update();
             }
             if (p2 != VehicleType.None)
             {
-                p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
                 p2Choice.Update();
             }
         }
@@ -233,6 +233,7 @@ namespace TankGame
             }
             p1 = (VehicleType)p1TypeInt;
             p1Choice = ChangeVehicle(p1, 1);
+            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
         }
 
         /// <summary>
@@ -249,6 +250,7 @@ namespace TankGame
             }
             p1 = (VehicleType)p1TypeInt;
             p1Choice = ChangeVehicle(p1, 1);
+            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
         }
 
         /// <summary>
@@ -265,6 +267,7 @@ namespace TankGame
             }
             p2 = (VehicleType)p2TypeInt;
             p2Choice = ChangeVehicle(p2, 2);
+            p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
         }
 
         /// <summary>
@@ -281,6 +284,7 @@ namespace TankGame
             }
             p2 = (VehicleType)p2TypeInt;
             p2Choice = ChangeVehicle(p2, 2);
+            p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
         }
 
         /// <summary>

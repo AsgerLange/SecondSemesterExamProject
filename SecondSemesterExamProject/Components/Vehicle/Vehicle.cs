@@ -197,17 +197,12 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-
             if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.OemPeriod) && control == Controls.UDLR))
             {
                 TowerPlacer.PlaceTower();
-
             }
-
         }
-
-
 
         /// <summary>
         /// moves the vehicle
@@ -216,7 +211,6 @@ namespace TankGame
         /// <returns></returns>
         protected virtual Vector2 Move(Vector2 translation)
         {
-
             KeyboardState keyState = Keyboard.GetState();
 
             if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
