@@ -46,6 +46,14 @@ namespace TankGame
                     go.AddComponent(new SniperTower(go));
                     go.AddComponent(new Collider(go, Alignment.Friendly));
                     break;
+                case TowerType.MachineGunTower:
+
+                    go.Transform.Position = position;
+                    go.AddComponent(new SpriteRenderer(go, Constant.machineGunTowerSpriteSheet, 0.9f));
+                    go.AddComponent(new Animator(go));
+                    go.AddComponent(new MachineGunTower(go));
+                    go.AddComponent(new Collider(go, Alignment.Friendly));
+                    break;
                 default:
                     break;
             }
