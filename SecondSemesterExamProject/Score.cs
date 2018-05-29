@@ -14,7 +14,6 @@ namespace TankGame
     class Score
     {
         //Fields
-        private int score;
         public static string name = string.Empty;//Contains the string we need to use for player input
         private bool databseState = true;
         Rectangle textBox;
@@ -26,13 +25,6 @@ namespace TankGame
         private double timer;
 
 
-
-        //Properties
-        public int GetScore
-        {
-            get { return score; }
-            set { score = value; }
-        }
 
         public Score()
         {
@@ -56,12 +48,12 @@ namespace TankGame
         //    SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
         //    dbConnect.Open();
         //    string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
-        //    string log = "Create table Log (ID varchar, Total int)";
-        //    string tower = "Create table Tower (ID varchar, Total Kill Towers int, Tower Build int, Tower Dead int)";
-        //    string player = "Create table Player (ID varchar, Total Kills int, Gold int, Wave int)";
-        //    string enemies = "Create table Enemies (ID varchar, Enemy name string, Total kill int,";
+        //    string totalStats = "Create table Total stats (ID varchar,Total bullets fired int, Total tower build int, Total tower dead int, Total tower kills int,Total player kills int, Total enemy dead int )";
+        //    string tower = "Create table Tower (ID varchar, Tower kills int, Tower Build int, Tower Dead int)";
+        //    string player = "Create table Player (ID varchar,Bullets shot int, Gold int, Wave int)";
+        //    string enemies = "Create table Enemies (ID varchar, Enemy name string, Enemy kills int,";
         //    SQLiteCommand command = new SQLiteCommand(highscore, dbConnect);
-        //    SQLiteCommand command2 = new SQLiteCommand(log, dbConnect);
+        //    SQLiteCommand command2 = new SQLiteCommand(totalStats, dbConnect);
         //    SQLiteCommand command3 = new SQLiteCommand(tower, dbConnect);
         //    SQLiteCommand command4 = new SQLiteCommand(player, dbConnect);
         //    SQLiteCommand command5 = new SQLiteCommand(enemies, dbConnect);
@@ -156,7 +148,7 @@ namespace TankGame
         {
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
             dbConnect.Open();
-            string insert = "insert into Higscores (name, score) values (" + name + ","+score+")";
+            string insert = "insert into Higscores (name, score) values (" + name + ","+Stats.TotalAmountOfGold+")";
             SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
             command.ExecuteNonQuery();
         }
@@ -164,24 +156,27 @@ namespace TankGame
         {
             SQLiteConnection insertConnection = new SQLiteConnection("Data source = data.db; Version = 3; ");
             insertConnection.Open();
-            string basicEnemy = "insert into Enemies (ID, Total kill, Total spawn) values (null,Basic enemy,0)";
-            string basicEliteEnemy = "insert into Enemies (ID, Total kill, Total spawn) values (null,Enemy2 enemy,0)";
-            string player = "insert into Player (ID, Total kills, Gold, Wave) values (null,0,100,0)";
-            string player2 = "insert into Player (ID, Total kills, Gold, Wave) values (null,0,100,0)";
-            string basicTower = "insert into Tower (ID, Total kill towers, Tower build, Tower dead) ";
-            string shotgunTower = "insert into Tower (ID, Total kill towers, Tower build, Tower dead) ";
+            string basicEnemy = "insert into Enemies (ID, Enemy kills, Total spawn) values (null,Basic enemy,0)";
+            string basicEliteEnemy = "insert into Enemies (ID, Enemy kills, Total spawn) values (null,Basic elite enemyy,0)";
+            string player = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,100,0)";
+            string player2 = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,100,0)";
+            string basicTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) ";
+            string shotgunTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) ";
+            string totalData = "insert into Total stats (ID, Total tower build, Total tower dead, Total tower kills, Total player kills, Total enemy dead) values(null,0,0,0,0,0)";
             SQLiteCommand Enemy = new SQLiteCommand(basicEnemy, insertConnection);
             SQLiteCommand BasicEliteEnemy = new SQLiteCommand(basicEliteEnemy, insertConnection);
             SQLiteCommand Player = new SQLiteCommand(player, insertConnection);
             SQLiteCommand Player2 = new SQLiteCommand(player2, insertConnection);
             SQLiteCommand BasicTower = new SQLiteCommand(basicTower, insertConnection);
             SQLiteCommand ShotgunTower = new SQLiteCommand(shotgunTower, insertConnection);
+            SQLiteCommand TotalData = new SQLiteCommand(totalData, insertConnection);
             Enemy.ExecuteNonQuery();
             BasicEliteEnemy.ExecuteNonQuery();
             Player.ExecuteNonQuery();
             Player2.ExecuteNonQuery();
             BasicTower.ExecuteNonQuery();
             ShotgunTower.ExecuteNonQuery();
+            TotalData.ExecuteNonQuery();
 
             insertConnection.Close();
         }
@@ -192,9 +187,28 @@ namespace TankGame
             updateTables.Open();
             if ()
             {
-                string updateDeadEnemies = "Update Enemy set Total kill="++"where Name = Basic enemy";
+                string updateDeadEnemies = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEnemyKilled + "where Name = Basic enemy";
+
+                string updateBasicEliteEnemy = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEliteEnemyKilled + "where Name =Basic elite enemy";
+
+                string updateTotalEnemyDead = "Update Total data set Total enemy dead = selct sum (Enemy kills) from Enemies + Total enemy dead where ID = 1";
+
+                string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where Wave = 0";
                 
-                string basicEliteEnemy = "Update Enemy set Total Kill "
+                string totalGold = "Update Player set Gold = " +Stats.TotalAmountOfGold + "where ID = 1";
+                if ()
+                {
+                    string totalGoldPlayer2 = "update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
+                }
+
+                string totalBulletsShot ="update Total stats set Total bullets fired = 
+
+
+
+
+
+
+
             }
 
 
