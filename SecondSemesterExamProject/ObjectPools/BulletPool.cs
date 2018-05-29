@@ -20,6 +20,8 @@ namespace TankGame
         public static List<GameObject> releaseList = new List<GameObject>();
 
         public static readonly object activeListKey = new object();
+        public static readonly object inActiveListKey = new object();
+
 
 
         /// <summary>
@@ -78,7 +80,11 @@ namespace TankGame
                 }
                 if (tmp != null)
                 {
-                    inActiveBullets.Remove(tmp);
+                    lock (inActiveListKey)
+                    {
+
+                        inActiveBullets.Remove(tmp);
+                    }
 
                     tmp.LoadContent(GameWorld.Instance.Content);
 
@@ -140,7 +146,7 @@ namespace TankGame
                 lock (activeListKey)
                 {
 
-                activeBullets.Add(tmp);
+                    activeBullets.Add(tmp);
                 }
 
 
@@ -226,7 +232,11 @@ namespace TankGame
             {
                 ActiveBullets.Remove(bullet);
             }
-            inActiveBullets.Add(bullet);
+
+            lock (inActiveListKey)
+            {
+                inActiveBullets.Add(bullet);
+            }
         }
 
         /// <summary>
