@@ -22,7 +22,7 @@ namespace TankGame
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
-                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate, type));
+                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate,Constant.basicEnemyAttackRadius, type));
 
                     break;
 
@@ -32,7 +32,7 @@ namespace TankGame
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new BasicEliteEnemy(go, Constant.basicEliteEnemyHealth, Constant.basicEliteEnemyDamage,
-                            Constant.basicEliteEnemyMovementSpeed, Constant.basicEliteEnemyAttackRate, type));
+                            Constant.basicEliteEnemyMovementSpeed, Constant.basicEliteEnemyAttackRate,Constant.basicEliteEnemyAttackRadius ,type));
 
                     break;
 
@@ -41,13 +41,13 @@ namespace TankGame
 
                     go.AddComponent(new Animator(go));
 
-                    go.AddComponent(new Spitter(go, Constant.spitterHealth, Constant.spitterDamage,
-                            Constant.spitterMovementSpeed, Constant.spitterAttackRate, type, Constant.spitterBulletType,Constant.spitterAttackRange,Constant.spitterSpread));
+                    go.AddComponent(new Spitter(go, Constant.spitterHealth,
+                            Constant.spitterMovementSpeed, Constant.spitterAttackRate, Constant.spitterAttackRange, type, Constant.spitterBulletType,Constant.spitterSpread));
                     break;
 
                 default:
                     go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
-                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate, type));
+                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate,Constant.basicEnemyAttackRadius, type));
                     break;
             }
             go.AddComponent(new Collider(go, Alignment.Enemy));
