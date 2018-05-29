@@ -21,10 +21,10 @@ namespace TankGame
 
         public override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(3, 29, 0, 25, 29, 16, Vector2.Zero));
-            animator.CreateAnimation("Walk", new Animation(4, 58, 0, 25, 29, 16, Vector2.Zero));
-            animator.CreateAnimation("Attack1", new Animation(4, 87, 0, 25, 29, (4* 2 /Constant.spitterAttackRate), Vector2.Zero));
-            animator.CreateAnimation("Attack2", new Animation(4, 116, 0, 25, 29, (4 * 2 / Constant.spitterAttackRate), Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(3, 29, 0, 25, 29, 6, Vector2.Zero));
+            animator.CreateAnimation("Walk", new Animation(4, 58, 0, 25, 29, 48, Vector2.Zero));
+            animator.CreateAnimation("Attack1", new Animation(4, 87, 0, 25, 29, ((8* 2) /Constant.spitterAttackRate), Vector2.Zero));
+            animator.CreateAnimation("Attack2", new Animation(4, 116, 0, 25, 29, ((8 * 2) / Constant.spitterAttackRate), Vector2.Zero));
             animator.CreateAnimation("Death", new Animation(5, 145, 0, 25, 29, 6, Vector2.Zero));
             base.CreateAnimation();
         }
