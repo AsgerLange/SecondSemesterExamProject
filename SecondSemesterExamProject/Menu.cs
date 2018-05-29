@@ -16,6 +16,8 @@ namespace TankGame
         private VehicleType p2 = VehicleType.None;
         private int p1TypeInt;
         private int p2TypeInt;
+        private GameObject p1Choice;
+        private GameObject p2Choice;
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
 
@@ -23,7 +25,33 @@ namespace TankGame
         {
             p1TypeInt = (int)p1;
             p2TypeInt = (int)p2;
+
+
+            AddVehiclesToBeDrawn();
+
             PlaceButtons();
+        }
+
+        /// <summary>
+        /// initializes the vehicles to be drawn
+        /// </summary>
+        private void AddVehiclesToBeDrawn()
+        {
+            p1Choice = new GameObject();
+            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
+            p1Choice.AddComponent(new SpriteRenderer(p1Choice, Constant.tankSpriteSheet + "1", 0.05f));
+            p1Choice.AddComponent(new Animator(p1Choice));
+            p1Choice.AddComponent(new Tank(p1Choice, Controls.WASD, new Sniper(p1Choice), Constant.tankHealth, Constant.tankMoveSpeed,
+                Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+            p1Choice.AddComponent(new Collider(p1Choice, Alignment.Friendly));
+
+            p2Choice = new GameObject();
+            p2Choice.Transform.Position = new Vector2(Constant.width - 250, Constant.higth / 2);
+            p2Choice.AddComponent(new SpriteRenderer(p2Choice, Constant.tankSpriteSheet + "2", 0.05f));
+            p2Choice.AddComponent(new Animator(p2Choice));
+            p2Choice.AddComponent(new Tank(p2Choice, Controls.UDLR, new Sniper(p2Choice), Constant.tankHealth, Constant.tankMoveSpeed,
+                Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+            p2Choice.AddComponent(new Collider(p2Choice, Alignment.Friendly));
         }
 
         /// <summary>
@@ -86,6 +114,8 @@ namespace TankGame
                     but.Draw(spriteBatch);
                 }
             }
+            p1Choice.Draw(spriteBatch);
+            p2Choice.Draw(spriteBatch);
         }
 
         /// <summary>
@@ -95,6 +125,8 @@ namespace TankGame
         public virtual void LoadContent(ContentManager content)
         {
             font = content.Load<SpriteFont>("Stat");
+            p1Choice.LoadContent(content);
+            p2Choice.LoadContent(content);
 
             foreach (Button but in buttons)
             {
