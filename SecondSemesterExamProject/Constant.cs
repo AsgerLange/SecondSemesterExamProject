@@ -194,7 +194,7 @@ namespace TankGame
 
         #region Spitter
         public readonly static int spitterGold = 2;
-        public static readonly string spitterSpriteSheet = "BasicEnemy";
+        public static readonly string spitterSpriteSheet = "SpitterEnemy";
         public static readonly int spitterHealth = 200;
         public static readonly float spitterMovementSpeed = 25;
         public static readonly float spitterAttackRate = 0.7f;
