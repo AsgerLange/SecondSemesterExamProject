@@ -100,7 +100,10 @@ namespace TankGame
             this.movementSpeed = -10; //Slows enemy down when attacking ( Resets after attackanimation is done)
             base.AttackVehicle(vehicle);
         }
-
+        protected override int EnemyGold()
+        {
+            return Constant.basicEliteEnemyGold;
+        }
         /// <summary>
         /// Basic Enemy's custon attack method for attacking vehicles
         /// </summary>

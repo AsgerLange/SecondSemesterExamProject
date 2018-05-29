@@ -21,6 +21,7 @@ namespace TankGame
         private GameState gameState = new GameState();
         private Menu menu;
         public static readonly object colliderKey = new object();
+
         public static Barrier barrier;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -36,12 +37,19 @@ namespace TankGame
         private Spawn spawner;
         private bool gameOver = false;
         private Random rnd = new Random();
+        private int playerAmount;
+
+        /// <summary>
+        /// Scaling the game based on amount of players
+        /// </summary>
+
         Score score;
 
 
         //Background
         Texture2D backGround;
         Rectangle screenSize;
+
 
         public List<Collider> Colliders
         {
@@ -102,6 +110,12 @@ namespace TankGame
         {
             get { return rnd; }
         }
+        public int PlayerAmount
+        {
+            get { return playerAmount; }
+            set { playerAmount = value; }
+        }
+
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
@@ -155,10 +169,6 @@ namespace TankGame
 
             //adds objects to the map
             map = new Map();
-
-            //Adds Test player1, testplayer2
-            GameObjectDirector.Instance.Construct(VehicleType.Plane);
-            GameObjectDirector.Instance.Construct(VehicleType.Bike);
 
             //Creates the new spawner that spawns the waves
             spawner = new Spawn(Constant.width, Constant.higth);
@@ -230,9 +240,12 @@ namespace TankGame
                     go.Update();
                 }
 
-                foreach (var go in BulletPool.ActiveBullets)
+                lock (BulletPool.activeListKey)
                 {
-                    go.Update();
+                    foreach (var go in BulletPool.ActiveBullets)
+                    {
+                        go.Update();
+                    }
                 }
                 BulletPool.ReleaseList();
                 RemoveObjects();
@@ -256,6 +269,8 @@ namespace TankGame
                 foreach (GameObject go in gameObjectsToAdd)
                 {
                     gameObjects.Add(go);
+                    UpdatePlayerAmount();
+
                 }
                 gameObjectsToAdd.Clear();
             }
@@ -266,18 +281,22 @@ namespace TankGame
         /// </summary>
         private void RemoveObjects()
         {
-            foreach (var go in gameObjectsToRemove)
+            if (gameObjectsToRemove.Count > 0)
             {
-                if (go.GetComponent("Collider") is Collider collider)
+                foreach (var go in gameObjectsToRemove)
                 {
-                    lock (colliderKey)
+                    if (go.GetComponent("Collider") is Collider collider)
                     {
-                        Colliders.Remove(collider);
+                        lock (colliderKey)
+                        {
+                            Colliders.Remove(collider);
+                        }
                     }
+                    gameObjects.Remove(go);
                 }
-                gameObjects.Remove(go);
+                gameObjectsToRemove.Clear();
+                UpdatePlayerAmount();
             }
-            gameObjectsToRemove.Clear();
         }
 
         /// <summary>
@@ -308,9 +327,12 @@ namespace TankGame
                         go.Draw(spriteBatch);
                     }
                 }
-                foreach (var go in BulletPool.ActiveBullets)
+                lock (BulletPool.activeListKey)
                 {
-                    go.Draw(spriteBatch);
+                    foreach (var go in BulletPool.ActiveBullets)
+                    {
+                        go.Draw(spriteBatch);
+                    }
                 }
                 spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             }
@@ -322,6 +344,21 @@ namespace TankGame
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+        public void UpdatePlayerAmount()
+        {
+            PlayerAmount = 0;
+            foreach (GameObject go in Instance.GameObjects)
+            {
+                foreach (Component comp in go.GetComponentList)
+                {
+                    if (comp is Vehicle)
+                    {
+                        PlayerAmount++;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

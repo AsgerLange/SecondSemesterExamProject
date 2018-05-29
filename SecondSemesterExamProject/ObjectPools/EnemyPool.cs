@@ -28,23 +28,7 @@ namespace TankGame
         private static List<GameObject> releaseList = new List<GameObject>();
 
 
-        #region EnemyKillCounts
-
-        private static int basicEnemyKilled =0;
-        private static int basicEliteEnemyKilled=0;
-
-        public static int BasicEnemyKilled
-        {
-            get { return basicEnemyKilled; }
-            set { basicEnemyKilled = value; }
-        }
-
-        public static int BasicEliteEnemyKilled
-        {
-            get { return basicEliteEnemyKilled; }
-            set { basicEliteEnemyKilled = value; }
-        }
-        #endregion;
+        
         public static EnemyPool Instance
         {
             get
@@ -280,7 +264,7 @@ namespace TankGame
 
                     }
 
-
+            
                 }
             }
             lock (activeKey)

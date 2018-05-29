@@ -17,7 +17,7 @@ namespace TankGame
             switch (type)
             {
                 case EnemyType.BasicEnemy:
-                    go.AddComponent(new SpriteRenderer(go, Constant.basicEnemySpriteSheet, 0));
+                    go.AddComponent(new SpriteRenderer(go, Constant.basicEnemySpriteSheet, 0.2f));
 
                     go.AddComponent(new Animator(go));
 
@@ -27,13 +27,22 @@ namespace TankGame
                     break;
 
                 case EnemyType.BasicEliteEnemy:
-                    go.AddComponent(new SpriteRenderer(go, Constant.basicEliteEnemySpriteSheet, 0));
+                    go.AddComponent(new SpriteRenderer(go, Constant.basicEliteEnemySpriteSheet, 0.2f));
 
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new BasicEliteEnemy(go, Constant.basicEliteEnemyHealth, Constant.basicEliteEnemyDamage,
                             Constant.basicEliteEnemyMovementSpeed, Constant.basicEliteEnemyAttackRate, type));
 
+                    break;
+
+                case EnemyType.Spitter:
+                    go.AddComponent(new SpriteRenderer(go, Constant.spitterSpriteSheet, 0.2f));
+
+                    go.AddComponent(new Animator(go));
+
+                    go.AddComponent(new Spitter(go, Constant.spitterHealth, Constant.spitterDamage,
+                            Constant.spitterMovementSpeed, Constant.spitterAttackRate, type, Constant.spitterBulletType,Constant.spitterAttackRange,Constant.spitterSpread));
                     break;
 
                 default:

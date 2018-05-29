@@ -27,9 +27,11 @@ namespace TankGame
         #region Vehicles
         public static readonly float buildTowerCoolDown = 1;
 
+        public static readonly int maxAmountOfVehicles = 2;
+
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
-       
+
         public static readonly float tankMoveSpeed = 100;
         public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.0F;
@@ -79,7 +81,7 @@ namespace TankGame
         #endregion;
 
         #region ShotgunTower
-        public static readonly int shotgunTowerPrice = 100;
+        public static readonly int shotgunTowerPrice = 200;
         public static readonly string ShotgunTowerSpriteSheet = "TowerBasic";
         public static readonly float ShotgunTowerFireRate = 2.5f;
         public static readonly int ShotgunTowerHealth = 100;
@@ -113,6 +115,15 @@ namespace TankGame
         public static readonly float sniperBulletLifeSpan = 1f;
         public static readonly int sniperBulletBulletDmg = 400;
         #endregion;
+
+        #region EnemyBullets
+#region SpitterBullet
+        public static readonly string spitterBulletSheet = "SpitterBullet";
+        public static readonly float spitterBulletMovementSpeed = 200;
+        public static readonly float spitterBulletLifeSpan = 1f;
+        public static readonly int spitterBulletDmg = 10;
+#endregion
+        #endregion
         #endregion;
 
         #region shotgunPellet
@@ -159,8 +170,9 @@ namespace TankGame
         #endregion;
 
         #region Enemies
-        public readonly static int baseEnemyGold = 2;
+        #region Melee
         #region BasicEnemy
+        public readonly static int basicEnemyGold = 2;
         public static readonly string basicEnemySpriteSheet = "BasicEnemy";
         public static readonly int basicEnemyHealth = 200;
         public static readonly float basicEnemyMovementSpeed = 25;
@@ -170,11 +182,30 @@ namespace TankGame
         #endregion
 
         #region BasicEliteEnemy
+        public readonly static int basicEliteEnemyGold = 4;
         public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
         public static readonly int basicEliteEnemyHealth = 500;
         public static readonly float basicEliteEnemyMovementSpeed = 30;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
+        #endregion
+        #endregion
+        #region Ranged
+
+        #region Spitter
+        public readonly static int spitterGold = 2;
+        public static readonly string spitterSpriteSheet = "BasicEnemy";
+        public static readonly int spitterHealth = 200;
+        public static readonly float spitterMovementSpeed = 25;
+        public static readonly float spitterAttackRate = 0.7f;
+        public static readonly float spitterAttackRange = 200f;
+
+        public static readonly int spitterDamage = 10;
+        public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
+        public static readonly int spitterSpread = 4;
+              
+        
+        #endregion
         #endregion
         #endregion
 
