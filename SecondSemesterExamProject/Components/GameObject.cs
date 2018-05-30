@@ -108,6 +108,13 @@ namespace TankGame
             {
                 if (component is IDrawable)
                 {
+                    if (component is SpriteRenderer)
+                    {
+                        if (component.GameObject != this)
+                        {
+                            component.GameObject = this;
+                        }
+                    }
                     (component as IDrawable).Draw(spriteBatch);
                 }
             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class TowerBuilder : ITowerBuilder
+    class TowerBuilder
     {
         private GameObject go;
         /// <summary>

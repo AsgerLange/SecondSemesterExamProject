@@ -16,6 +16,7 @@ namespace TankGame
         public GameObject GameObject
         {
             get { return gameObject; }
+            set { gameObject = value; }
         }
 
         /// <summary>
