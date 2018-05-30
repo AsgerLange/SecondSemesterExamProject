@@ -25,11 +25,15 @@ namespace TankGame
         protected VehicleType vehicleType;
 
         protected float movementSpeed;
-        protected float fireRate;
+       
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
-        protected float shotTimeStamp;
+
+        protected float shotTimeStamp; //when a vehicle last fired its weapon
+
+        protected float lootTimeStamp; // when a vehicle received loot
+        private LootCrate latestLootCrate; //For displaying reward
 
         public bool IsAlive { get; set; }
 
@@ -61,6 +65,11 @@ namespace TankGame
             }
         }
 
+        public float LootTimeStamp
+        {
+            get { return LootTimeStamp; }
+            set { lootTimeStamp = value; }
+        }
         private float Rotation
         {
             get { return rotation; }
@@ -91,6 +100,11 @@ namespace TankGame
             }
         }
 
+        public LootCrate LatestLootCrate
+        {
+            get { return latestLootCrate; }
+            set { latestLootCrate = value; }
+        }
         /// <summary>
         /// creates a vehicle
         /// </summary>
@@ -185,7 +199,7 @@ namespace TankGame
                     spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
 
                     shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; //Timestamp for when shot is fired (used to determine when the next shot can be fired)
-                    
+
                 }
             }
         }
@@ -361,6 +375,33 @@ namespace TankGame
                     spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
                     spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
                     spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 80), Color.YellowGreen);
+                }
+                DrawLootToString(spriteBatch);
+            }
+        }
+
+        public void DrawLootToString(SpriteBatch spriteBatch)
+        {
+
+            if (latestLootCrate != null)
+            {
+
+                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime)
+                {
+                    if (control == Controls.WASD)
+                    {
+                        spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.CornflowerBlue);
+
+                    }
+                    else if (control == Controls.UDLR)
+                    {
+
+                        spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.YellowGreen);
+                    }
+                }
+                else
+                {
+                    latestLootCrate = null;
                 }
             }
         }

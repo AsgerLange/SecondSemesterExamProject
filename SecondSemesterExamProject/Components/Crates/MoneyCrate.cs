@@ -27,7 +27,7 @@ namespace TankGame
 
         public override string ToString()
         {
-            return base.ToString();
+            return "+$"+amount;
         }
 
         protected override void CreateAnimation()
@@ -43,6 +43,8 @@ namespace TankGame
         protected override void GiveLoot(Vehicle vehicle)
         {
             vehicle.Money += amount;
+
+            vehicle.LatestLootCrate = this;
         }
     }
 }
