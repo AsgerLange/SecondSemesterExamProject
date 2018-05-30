@@ -16,6 +16,13 @@ namespace TankGame
         private VehicleType p2 = VehicleType.None;
         private int p1TypeInt;
         private int p2TypeInt;
+        private Vector2 p1Pos = new Vector2(400, Constant.higth / 2);
+        private Vector2 p1UpPos = new Vector2(335, Constant.higth / 2 - 90);
+        private Vector2 startGamePos = new Vector2(Constant.width / 2 - 65, Constant.higth / 2 - 25);
+        private Vector2 p1DownPos = new Vector2(335, Constant.higth / 2 + 40);
+        private Vector2 p2Pos = new Vector2(Constant.width - 400, Constant.higth / 2);
+        private Vector2 p2UpPos = new Vector2(Constant.width - 465, Constant.higth / 2 - 90);
+        private Vector2 p2DownPos = new Vector2(Constant.width - 465, Constant.higth / 2 + 40);
         private GameObject p1Choice;
         private GameObject p2Choice;
         private SpriteFont font;
@@ -27,9 +34,9 @@ namespace TankGame
             p2TypeInt = (int)p2;
 
             p1Choice = ChangeVehicle(p1, 1);
-            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
+            p1Choice.Transform.Position = p1Pos;
             p2Choice = ChangeVehicle(p2, 2);
-            p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
+            p2Choice.Transform.Position = p2Pos;
 
             PlaceButtons();
         }
@@ -109,35 +116,36 @@ namespace TankGame
         private void PlaceButtons()
         {
             string text = Constant.startGameButton;
-            Button StartGame = new Button(new Vector2(Constant.width / 2 - 50, Constant.higth / 2), Constant.buttonTexture, Constant.buttonFont)
+            Button StartGame = new Button(startGamePos, Constant.RedButtonTexture, Constant.buttonFont)
             {
                 Text = text
             };
+            StartGame.PenColour = Color.Gold;
             StartGame.click += StartGame_click;
             buttons.Add(StartGame);
 
-            Button p1Up = new Button(new Vector2(50, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont)
+            Button p1Up = new Button(p1UpPos, Constant.blueButtonTexture, Constant.buttonFont)
             {
                 Text = " Up "
             };
             p1Up.click += P1Up_click;
             buttons.Add(p1Up);
 
-            Button p1Down = new Button(new Vector2(50, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont)
+            Button p1Down = new Button(p1DownPos, Constant.blueButtonTexture, Constant.buttonFont)
             {
                 Text = "Down"
             };
             p1Down.click += P1Down_click;
             buttons.Add(p1Down);
 
-            Button p2Up = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 - 50), Constant.buttonTexture, Constant.buttonFont)
+            Button p2Up = new Button(p2UpPos, Constant.GreenButtonTexture, Constant.buttonFont)
             {
                 Text = " Up "
             };
             p2Up.click += P2Up_click;
             buttons.Add(p2Up);
 
-            Button p2Down = new Button(new Vector2(Constant.width - 250, Constant.higth / 2 + 50), Constant.buttonTexture, Constant.buttonFont)
+            Button p2Down = new Button(p2DownPos, Constant.GreenButtonTexture, Constant.buttonFont)
             {
                 Text = "Down"
             };
@@ -233,7 +241,7 @@ namespace TankGame
             }
             p1 = (VehicleType)p1TypeInt;
             p1Choice = ChangeVehicle(p1, 1);
-            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
+            p1Choice.Transform.Position = p1Pos;
         }
 
         /// <summary>
@@ -250,7 +258,7 @@ namespace TankGame
             }
             p1 = (VehicleType)p1TypeInt;
             p1Choice = ChangeVehicle(p1, 1);
-            p1Choice.Transform.Position = new Vector2(50, Constant.higth / 2);
+            p1Choice.Transform.Position = p1Pos;
         }
 
         /// <summary>
@@ -267,7 +275,7 @@ namespace TankGame
             }
             p2 = (VehicleType)p2TypeInt;
             p2Choice = ChangeVehicle(p2, 2);
-            p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
+            p2Choice.Transform.Position = p2Pos;
         }
 
         /// <summary>
@@ -284,7 +292,7 @@ namespace TankGame
             }
             p2 = (VehicleType)p2TypeInt;
             p2Choice = ChangeVehicle(p2, 2);
-            p2Choice.Transform.Position = new Vector2(Constant.width - 60, Constant.higth / 2);
+            p2Choice.Transform.Position = p2Pos;
         }
 
         /// <summary>

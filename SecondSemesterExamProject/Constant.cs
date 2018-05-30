@@ -18,7 +18,9 @@ namespace TankGame
         public readonly static int higth = 720;
 
         #region Button
-        public readonly static string buttonTexture = "Button";
+        public readonly static string blueButtonTexture = "Button";
+        public readonly static string GreenButtonTexture = "Rutton";
+        public readonly static string RedButtonTexture = "Rutton";
         public readonly static string buttonFont = "stat";
         public readonly static string startGameButton = "Start Game";
 
@@ -158,8 +160,7 @@ namespace TankGame
 #endregion
         #endregion
         #endregion;
-
-
+        
         #region Weapons
         #region BasicWeapon
         public readonly static float basicWeaponFireRate = 0.7f;
