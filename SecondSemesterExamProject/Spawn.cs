@@ -20,8 +20,8 @@ namespace TankGame
         private float spawnStamp;
         private float waveStamp;
         private float crateStamp;
-        private float eliteBasicEnemyChance = 20;//spawn chance out of 1000
-        private float spitterChance = 10;
+        private float eliteBasicEnemyChance = Constant.basicEliteSpawnModifier;//spawn chance out of 1000
+        private float spitterChance = Constant.spitterSpawnModifier;
 
 
         /// <summary>
@@ -93,8 +93,8 @@ namespace TankGame
             if (Constant.waveSpawnDelay + waveStamp <= GameWorld.Instance.TotalGameTime)
             {
                 wave++;
-                eliteBasicEnemyChance = ((wave * wave) - ((wave) * Constant.basicEliteSpawnModifier));//add to the chance of harder enemies
-                spitterChance = ((wave * wave) - ((wave) * Constant.spitterSpawnModifier));
+                eliteBasicEnemyChance += (eliteBasicEnemyChance * 0.03f);//add to the chance of harder enemies
+                spitterChance += (spitterChance * 0.03f);
 
                 int side = rnd.Next(0, 5);
                 Rectangle spawnRectangle;
