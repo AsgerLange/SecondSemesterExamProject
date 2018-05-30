@@ -9,13 +9,15 @@ namespace TankGame
     enum VehicleType { None, Tank, Bike, Plane }
     enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
     enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
-    enum TowerType { BasicTower, ShotgunTower, SniperTower,MachineGunTower };
+    enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
 
 
     class Constant
     {
         public readonly static int width = 1240;
         public readonly static int higth = 720;
+        public readonly static string menuBackGround = "Background1";
+        public readonly static string gameBackGround = "Background1";
 
         #region Button
         public readonly static string blueButtonTexture = "Button";
@@ -23,7 +25,6 @@ namespace TankGame
         public readonly static string RedButtonTexture = "Rutton";
         public readonly static string buttonFont = "stat";
         public readonly static string startGameButton = "Start Game";
-
         #endregion
 
         #region Spawning
@@ -152,15 +153,15 @@ namespace TankGame
         #endregion;
 
         #region EnemyBullets
-#region SpitterBullet
+        #region SpitterBullet
         public static readonly string spitterBulletSheet = "SpitterBullet";
         public static readonly float spitterBulletMovementSpeed = 200;
         public static readonly float spitterBulletLifeSpan = 1f;
         public static readonly int spitterBulletDmg = 10;
-#endregion
+        #endregion
         #endregion
         #endregion;
-        
+
         #region Weapons
         #region BasicWeapon
         public readonly static float basicWeaponFireRate = 0.7f;
@@ -230,11 +231,11 @@ namespace TankGame
         public static readonly float spitterMovementSpeed = 20;
         public static readonly float spitterAttackRate = 0.7f;
         public static readonly float spitterAttackRange = 150;
-                
+
         public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
         public static readonly int spitterSpread = 4;
-              
-        
+
+
         #endregion
         #endregion
         #endregion

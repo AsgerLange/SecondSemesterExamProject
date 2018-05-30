@@ -267,14 +267,14 @@ namespace TankGame
                         Component type = null;
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {
-                            if (comp is Tower || comp is Enemy || comp is Vehicle)
+                            if (comp is Tower || comp is Enemy || comp is Vehicle || comp is Terrain)
                             {
                                 type = comp;
                                 break;
                             }
                         }
                         if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy)
-                            || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy))
+                            || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy) || type is Terrain)
                         {
                             if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
                             {
@@ -288,8 +288,8 @@ namespace TankGame
                             {
                                 (type as Tower).Health -= bulletDmg;
                             }
+                            BulletSpecialEffect(other);
                         }
-                        BulletSpecialEffect(other);
                         if (shouldDie)
                         {
                             DestroyBullet();

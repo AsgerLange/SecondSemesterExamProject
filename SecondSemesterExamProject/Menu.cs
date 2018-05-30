@@ -27,6 +27,7 @@ namespace TankGame
         private GameObject p2Choice;
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
+        private Texture2D menuBackGround;
 
         public Menu()
         {
@@ -67,7 +68,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// changes the modal that is drawn
+        /// changes the model that is drawn for the chocen vehicle
         /// </summary>
         /// <param name="type"></param>
         /// <param name="player"></param>
@@ -196,6 +197,7 @@ namespace TankGame
             {
                 p2Choice.Draw(spriteBatch);
             }
+            spriteBatch.Draw(menuBackGround, new Rectangle(0, 0, Constant.width, Constant.higth), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
         }
 
         /// <summary>
@@ -205,6 +207,7 @@ namespace TankGame
         public virtual void LoadContent(ContentManager content)
         {
             font = content.Load<SpriteFont>("Stat");
+            menuBackGround = content.Load<Texture2D>(Constant.menuBackGround);
 
             foreach (Button but in buttons)
             {
@@ -213,7 +216,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// Handles the functionality of the startgame button
+        /// Starts the game
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
