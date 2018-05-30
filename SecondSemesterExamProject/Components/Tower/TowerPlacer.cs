@@ -118,12 +118,12 @@ namespace TankGame
         {
             if (towerAmount > 1000)
             {
-                return towerType.ToString()+": LOTS!";
+                return towerType.ToString() + ": LOTS!";
             }
             else
             {
 
-                return towerType.ToString()+": "+ towerAmount.ToString();
+                return towerType.ToString() + ": " + towerAmount.ToString();
             }
         }
     }

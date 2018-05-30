@@ -10,6 +10,8 @@ namespace TankGame
     enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
     enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
     enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
+    enum CrateType { WeaponCrate, TowerCrate, MoneyCrate};
+    enum WeaponType { BasicWeapon, MachineGun, Shotgun, Sniper}
 
 
     class Constant
@@ -237,7 +239,7 @@ namespace TankGame
         public static readonly string spitterSpriteSheet = "SpitterEnemy";
         public static readonly int spitterHealth = 200;
         public static readonly float spitterMovementSpeed = 20;
-        public static readonly float spitterAttackRate = 0.7f;
+        public static readonly float spitterAttackRate = 1.5f;
         public static readonly float spitterAttackRange = 150;
 
         public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
@@ -252,6 +254,14 @@ namespace TankGame
         public static readonly int spawnZoneSize = 100;
         public static readonly string rockImage = "Rock1";
         public static readonly int pushForce = 2;
+        #endregion
+
+        #region LootCrate
+        public static readonly float crateLifeSpan = 10;
+        public static readonly string crateSpriteSheet = "TestCrate";
+        public static readonly int moneyCrateMoney = 100;
+        public static readonly float crateSpawnDelay = 27;
+
         #endregion
     }
 }

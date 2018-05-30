@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class Terrain : Component, ICollisionStay, ICollisionEnter
+    class Terrain : Component, ICollisionEnter, ICollisionStay
     {
         private SpriteRenderer spriteRenderer;
 
