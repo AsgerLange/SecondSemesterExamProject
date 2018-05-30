@@ -26,8 +26,6 @@ namespace TankGame
         protected int attackVariation = 1;
         protected float attackRange;
 
-
-
         public EnemyType GetEnemyType
         {
             get { return enemyType; }
@@ -56,6 +54,7 @@ namespace TankGame
             get { return movementSpeed; }
             set { movementSpeed = value; }
         }
+
         #region Attributes for object pool
         private bool canRelease;
 
