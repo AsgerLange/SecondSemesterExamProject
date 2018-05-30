@@ -392,3 +392,10 @@
 /processorParam:TextureFormat=Color
 /build:PlayerPlane2.png
 
+#begin MenuTitel.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:MenuTitel.spritefont
+
