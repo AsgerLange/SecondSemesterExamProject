@@ -115,7 +115,12 @@ namespace TankGame
             get { return playerAmount; }
             set { playerAmount = value; }
         }
-
+        public Spawn GetSpawn
+        {
+            get { return spawner;}
+            set { spawner = value; }
+        }
+       
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
