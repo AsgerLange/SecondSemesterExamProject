@@ -11,7 +11,7 @@ namespace TankGame
     enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
     enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
     enum CrateType { WeaponCrate, TowerCrate, MoneyCrate};
-
+    enum WeaponType { BasicWeapon, MachineGun, Shotgun, Sniper}
 
 
     class Constant
@@ -260,7 +260,7 @@ namespace TankGame
         public static readonly float crateLifeSpan = 10;
         public static readonly string crateSpriteSheet = "TestCrate";
         public static readonly int moneyCrateMoney = 100;
-        public static readonly float crateSpawnDelay = 10;
+        public static readonly float crateSpawnDelay = 27;
 
         #endregion
     }
