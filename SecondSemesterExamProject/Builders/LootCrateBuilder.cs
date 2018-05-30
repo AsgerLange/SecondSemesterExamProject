@@ -43,7 +43,7 @@ namespace TankGame
                     break;
 
                 default:
-                    type = CrateType.MoneyCrate;
+                    type = CrateType.HealthCrate;
 
                     break;
             }
@@ -65,8 +65,13 @@ namespace TankGame
 
                 case CrateType.MoneyCrate:
                     go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
-                    go.AddComponent(new MoneyCrate(go, Constant.moneyCrateMoney));
+                    go.AddComponent(new MoneyCrate(go));
 
+                    break;
+                case CrateType.HealthCrate:
+
+                    go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
+                    go.AddComponent(new HealthCrate(go));
                     break;
                 default:
                     break;

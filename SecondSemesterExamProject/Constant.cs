@@ -10,7 +10,7 @@ namespace TankGame
     enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
     enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
     enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
-    enum CrateType { WeaponCrate, TowerCrate, MoneyCrate};
+    enum CrateType { WeaponCrate, TowerCrate, MoneyCrate, HealthCrate};
     enum WeaponType { BasicWeapon, MachineGun, Shotgun, Sniper}
 
 
@@ -266,6 +266,7 @@ namespace TankGame
         public static readonly string crateSpriteSheet = "TestCrate";
         public static readonly int moneyCrateMoney = 100;
         public static readonly float crateSpawnDelay = 3;
+        public static readonly int moneyCrateHealth = 100;
 
         #endregion
     }
