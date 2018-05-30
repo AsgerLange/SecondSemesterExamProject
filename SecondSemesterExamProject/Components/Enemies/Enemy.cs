@@ -259,7 +259,7 @@ namespace TankGame
         /// <summary>
         /// creates an animation
         /// </summary>
-        public virtual void CreateAnimation()
+        protected virtual void CreateAnimation()
         {
             //Enemy Animation Set
             animator.CreateAnimation("TPose", new Animation(1, 0, 0, 23, 23, 3, Vector2.Zero));
