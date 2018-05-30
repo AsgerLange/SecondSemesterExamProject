@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 namespace TankGame
 {
 
-    class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay, ICollisionEnter
+    class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, ICollisionStay
     {
         
         protected int health;

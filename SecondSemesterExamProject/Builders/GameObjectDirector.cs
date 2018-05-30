@@ -17,7 +17,7 @@ namespace TankGame
         private TowerBuilder towerBuilder;
         private TerrainBuilder terrainBuilder;
         private VehicleBuilder vehicleBuilder;
-
+        private LootCrateBuilder lootCrateBuilder;
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
         /// </summary>
@@ -44,6 +44,7 @@ namespace TankGame
             this.towerBuilder = new TowerBuilder();
             this.terrainBuilder = new TerrainBuilder();
             this.vehicleBuilder = new VehicleBuilder();
+            this.lootCrateBuilder = new LootCrateBuilder();
         }
 
         /// <summary>
@@ -102,6 +103,16 @@ namespace TankGame
             vehicleBuilder.Build(type, controls);
 
             return vehicleBuilder.GetResult(); //returns the vehicle that has been build
+        }
+        /// <summary>
+        /// Creates a random functional crate
+        /// </summary>
+        /// <returns></returns>
+        public GameObject ConstructCrate()
+        {
+            lootCrateBuilder.Build();
+
+            return lootCrateBuilder.GetResult(); //returns the vehicle that has been build
         }
     }
 }
