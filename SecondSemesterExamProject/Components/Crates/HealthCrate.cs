@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class MoneyCrate : LootCrate
+    class HealthCrate : LootCrate
     {
-        private int amount;
+        private int healthToGive;
 
-        public MoneyCrate(GameObject gameObject ) : base(gameObject)
+        public HealthCrate(GameObject gameObject) : base(gameObject)
         {
-            int half = Constant.moneyCrateMoney / 2;
-            int oneAndAHalf = (half*3)+1;
+            int half = Constant.moneyCrateHealth / 2;
+            int oneAndAHalf = (half*3) + 1;
 
-            this.amount = GameWorld.Instance.Rnd.Next(half, oneAndAHalf);
-                       
+            this.healthToGive = GameWorld.Instance.Rnd.Next(half, oneAndAHalf);
         }
 
         public override void OnAnimationDone(string animationName)
@@ -27,7 +25,7 @@ namespace TankGame
 
         public override string ToString()
         {
-            return "+$"+amount;
+            return "+" + healthToGive + " HP";
         }
 
         protected override void CreateAnimation()
@@ -42,7 +40,7 @@ namespace TankGame
 
         protected override void GiveLoot(Vehicle vehicle)
         {
-            vehicle.Money += amount;
+            vehicle.Health += healthToGive;
 
             vehicle.LatestLootCrate = this;
         }

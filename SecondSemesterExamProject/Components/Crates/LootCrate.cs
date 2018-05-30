@@ -116,6 +116,9 @@ namespace TankGame
                         {
                             GiveLoot(comp as Vehicle);
 
+                            (comp as Vehicle).LootTimeStamp = GameWorld.Instance.TotalGameTime;
+
+                           
                             Die();
                             break;
                         }
@@ -152,5 +155,6 @@ namespace TankGame
                 other.GameObject.Transform.Translate(dir * force);
             }
         }
+      
     }
 }

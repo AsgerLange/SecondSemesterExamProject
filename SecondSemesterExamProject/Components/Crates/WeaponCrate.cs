@@ -29,7 +29,7 @@ namespace TankGame
 
         public override string ToString()
         {
-            return base.ToString();
+            return "New " + weaponType.ToString();
         }
 
         protected override void CreateAnimation()
@@ -67,6 +67,8 @@ namespace TankGame
                     System.Diagnostics.Debug.WriteLine("error in weapon crate GiveLoot");
                     break;
             }
+            vehicle.LatestLootCrate = this;
         }
+        
     }
 }
