@@ -148,14 +148,12 @@ namespace TankGame
         {
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
             dbConnect.Open();
-            string insert = "insert into Higscores (name, score) values (" + name + ","+Stats.TotalAmountOfGold+")";
+            string insert = "insert into Higscores (name, score) values (" + name + "," + Stats.TotalAmountOfGold + ")";
             SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
             command.ExecuteNonQuery();
         }
         public void InsertThings()
         {
-            SQLiteConnection insertConnection = new SQLiteConnection("Data source = data.db; Version = 3; ");
-            insertConnection.Open();
             string basicEnemy = "insert into Enemies (ID, Enemy kills, Total spawn) values (null,Basic enemy,0)";
             string basicEliteEnemy = "insert into Enemies (ID, Enemy kills, Total spawn) values (null,Basic elite enemyy,0)";
             string player = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,0,0,0,100,0)";
@@ -163,6 +161,9 @@ namespace TankGame
             string basicTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) ";
             string shotgunTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) ";
             string totalData = "insert into Total stats (ID, Total tower build, Total tower dead, Total tower kills, Total player kills, Total enemy dead) values(null,0,0,0,0,0)";
+
+            SQLiteConnection insertConnection = new SQLiteConnection("Data source = data.db; Version = 3; ");
+            insertConnection.Open();
             SQLiteCommand Enemy = new SQLiteCommand(basicEnemy, insertConnection);
             SQLiteCommand BasicEliteEnemy = new SQLiteCommand(basicEliteEnemy, insertConnection);
             SQLiteCommand Player = new SQLiteCommand(player, insertConnection);
@@ -185,7 +186,7 @@ namespace TankGame
         {
             SQLiteConnection updateTables = new SQLiteConnection("Data source = data.db; Version = 3; ");
             updateTables.Open();
-            if ()
+            if (true)
             {
                 string updateDeadEnemies = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEnemyKilled + "where Name = Basic enemy";
 
@@ -194,10 +195,10 @@ namespace TankGame
                 string updateSpitterBulletCounter = "Update Enemies set Spitter bullets shot = Spitter bullets shot + " + Stats.BasicBulletCounter + "where ID = 3";
 
                 string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
-                
-                string totalGold = "Update Player set Gold = " +Stats.TotalAmountOfGold + "where ID = 1";
 
-                string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot + "+Stats.BasicBulletCounter+"where ID = 1";
+                string totalGold = "Update Player set Gold = " + Stats.TotalAmountOfGold + "where ID = 1";
+
+                string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot + " + Stats.BasicBulletCounter + "where ID = 1";
 
                 string updateBiggerBulletCounter = "Update Player set Bigger bullets shot = Basic bullets shot + " + Stats.BiggerBulletCounter + "where ID = 1";
 
@@ -205,7 +206,7 @@ namespace TankGame
 
                 string updateShotgunBulletCounter = "Update Player set Shotgun bullets shot = Basic bullets shot + " + Stats.ShotgunPelletsCounter + "where ID = 1";
 
-                if ()
+                if (true)
                 {
                     string totalGoldPlayer2 = "Update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
                     string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
@@ -226,12 +227,7 @@ namespace TankGame
                 string totalTowerDead = "Update Total stats set Total tower dead = select sum(Tower dead) from Tower + Total tower dead";
 
                 string totalTowerBuild = "Update Total stats set Total tower build = select sum (Tower build) from Tower + Total tower build";
-
-                
-
             }
-
-
         }
 
         public void LoadScoreToScreen()

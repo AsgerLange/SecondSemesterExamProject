@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class EnemyBuilder : IEnemyBuilder
+    class EnemyBuilder
     {
         private GameObject go;
         public void Build(Vector2 position, EnemyType type)

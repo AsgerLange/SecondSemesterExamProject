@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace TankGame
 {
-    class BulletBuilder : IBulletBuilder
+    class BulletBuilder
     {
         private GameObject go;
 

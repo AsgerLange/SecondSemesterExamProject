@@ -404,3 +404,10 @@
 /processorParam:TextureFormat=Color
 /build:SpitterEnemy.png
 
+#begin MenuTitel.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:MenuTitel.spritefont
+
