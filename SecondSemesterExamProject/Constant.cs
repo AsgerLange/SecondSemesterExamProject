@@ -265,7 +265,7 @@ namespace TankGame
         public static readonly float crateLifeSpan = 10;
         public static readonly string crateSpriteSheet = "TestCrate";
         public static readonly int moneyCrateMoney = 100;
-        public static readonly float crateSpawnDelay = 3;
+        public static readonly float crateSpawnDelay = 27;
         public static readonly int moneyCrateHealth = 100;
 
         #endregion

@@ -27,12 +27,13 @@ namespace TankGame
         protected VehicleType vehicleType;
 
         protected float movementSpeed;
-       
+
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
 
         protected float shotTimeStamp; //when a vehicle last fired its weapon
+        protected float builtTimeStamp; //when a vehicle last built a tower
 
         protected float lootTimeStamp; // when a vehicle received loot
         private LootCrate latestLootCrate; //For displaying reward
@@ -64,7 +65,7 @@ namespace TankGame
                     isPlayingAnimation = true;
                     IsAlive = false;
                 }
-                else if (health>maxHealth)
+                else if (health > maxHealth)
                 {
                     health = maxHealth;
                 }
@@ -104,6 +105,11 @@ namespace TankGame
                     money = 0;
                 }
             }
+        }
+        public float BuiltTimeStamp
+        {
+            get { return builtTimeStamp; }
+            set { builtTimeStamp = value; }
         }
 
         public LootCrate LatestLootCrate
@@ -221,7 +227,12 @@ namespace TankGame
             if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.OemPeriod) && control == Controls.UDLR))
             {
-                TowerPlacer.PlaceTower();
+                if (builtTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
+                {
+                    TowerPlacer.PlaceTower();
+
+                    builtTimeStamp = GameWorld.Instance.TotalGameTime;
+                }
             }
         }
 
@@ -369,19 +380,19 @@ namespace TankGame
             {
                 if (control == Controls.WASD)
                 {
-                    spriteBatch.DrawString(font, money + " $", new Vector2(2, 2), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.higth - 80), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, "$" + money, new Vector2(2, 20), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
                 }
                 else if (control == Controls.UDLR)
                 {
-                    spriteBatch.DrawString(font, money + " $", new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 2), Color.YellowGreen);
-                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
-                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
-                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
-                    spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 80), Color.YellowGreen);
+                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, 2), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "$"+money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
                 }
                 DrawLootToString(spriteBatch);
             }
