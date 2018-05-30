@@ -19,11 +19,22 @@ namespace TankGame
         public readonly static int width = 1240;
         public readonly static int higth = 720;
 
+        #region Menu
+        public readonly static string menuBackGround = "Background1";
+        public readonly static string gameBackGround = "Background1";
+        public readonly static string titleFont = "MenuTitel";
+        public readonly static string title = "Invasion of Bugs";
+        #endregion
+
         #region Button
-        public readonly static string buttonTexture = "Button";
+        public readonly static string BlueButtonUpTexture = "ArrowBlueUp";
+        public readonly static string BlueButtonDownTexture = "ArrowBlueDown";
+        public readonly static string GreenButtonUpTexture = "ArrowGreenUp";
+        public readonly static string GreenButtonDownTexture = "ArrowGreenDown";
+        public readonly static string blueButtonTexture = "Button";
+        public readonly static string RedButtonTexture = "Rutton";
         public readonly static string buttonFont = "stat";
         public readonly static string startGameButton = "Start Game";
-
         #endregion
 
         #region Spawning
@@ -160,7 +171,6 @@ namespace TankGame
         #endregion
         #endregion
         #endregion;
-
 
         #region Weapons
         #region BasicWeapon

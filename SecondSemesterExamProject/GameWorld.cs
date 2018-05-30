@@ -115,7 +115,12 @@ namespace TankGame
             get { return playerAmount; }
             set { playerAmount = value; }
         }
-
+        public Spawn GetSpawn
+        {
+            get { return spawner;}
+            set { spawner = value; }
+        }
+       
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
@@ -189,7 +194,7 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //score.LoadContent(Content);
-            backGround = Content.Load<Texture2D>("Background1");
+            backGround = Content.Load<Texture2D>(Constant.gameBackGround);
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // TODO: use this.Content to load your game content here
