@@ -59,7 +59,7 @@ namespace TankGame
         /// </summary>
         protected override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(5, 32, 0, 32, 32, 4, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(5, 32, 0, 32, 32, 8, Vector2.Zero));
             animator.CreateAnimation("Death", new Animation(6, 64, 0, 32, 32, 6, Vector2.Zero));
 
 
