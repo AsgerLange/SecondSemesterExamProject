@@ -44,6 +44,10 @@ namespace TankGame
                 base.BulletSpecialEffect(other);
             }
         }
+
+        /// <summary>
+        /// sniperbullet animation
+        /// </summary>
         public override void CreateAnimation()
         {
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 4, 29, 3, Vector2.Zero));

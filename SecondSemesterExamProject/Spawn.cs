@@ -20,6 +20,8 @@ namespace TankGame
         private Rectangle bottomZone;
         private float spawnStamp;
         private float waveStamp;
+        private float crateStamp;
+
 
         /// <summary>
         /// returns the current wave number
@@ -71,8 +73,22 @@ namespace TankGame
         {
             SpawnSingle();
             CreateWave();
+            SpawnCrate();
         }
 
+        /// <summary>
+        /// Spawns a crate with an interval
+        /// </summary>
+        private void SpawnCrate()
+        {
+            if (Constant.crateSpawnDelay + crateStamp <= GameWorld.Instance.TotalGameTime)
+            {
+                GameWorld.Instance.GameObjectsToAdd.Add(GameObjectDirector.Instance.ConstructCrate());
+
+                crateStamp = GameWorld.Instance.TotalGameTime;
+            }
+
+        }
         /// <summary>
         /// creates a new wave
         /// </summary>

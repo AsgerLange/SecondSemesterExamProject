@@ -25,7 +25,7 @@ namespace TankGame
         /// <summary>
         /// Creates the animations
         /// </summary>
-        public override void CreateAnimation()
+        protected override void CreateAnimation()
         {
             base.CreateAnimation();
         }
