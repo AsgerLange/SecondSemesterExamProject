@@ -23,7 +23,7 @@ namespace TankGame
             switch (random)
             {
                 case 1:
-                    type = CrateType.MoneyCrate;
+                    type = CrateType.TowerCrate;
                     break;
                 case 2:
                     type = CrateType.WeaponCrate;
@@ -59,6 +59,8 @@ namespace TankGame
                     go.AddComponent(new WeaponCrate(go));
                     break;
                 case CrateType.TowerCrate:
+                    go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
+                    go.AddComponent(new TowerCrate(go));
                     break;
 
                 case CrateType.MoneyCrate:

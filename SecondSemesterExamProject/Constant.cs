@@ -108,6 +108,8 @@ namespace TankGame
         public static readonly int shotgunTowerAttackRange = 150;
         public static readonly int ShotgunTowerSpread = 15;
         public static readonly int shotgunTowerPelletAmount = 20;
+        public static readonly int shotgunTowerAmount = 2;
+
 
 
         #endregion;
@@ -119,6 +121,8 @@ namespace TankGame
         public static readonly BulletType sniperTowerBulletType = BulletType.SniperBullet;
         public static readonly int sniperTowerAttackRange = 400;
         public static readonly int sniperTowerSpread = 1;
+        public static readonly int sniperTowerAmount = 2;
+
 
         #region MachineGunTower
         public static readonly int machineGunTowerPrice = 100;
@@ -128,6 +132,7 @@ namespace TankGame
         public static readonly BulletType machineGunTowerBulletType = BulletType.BasicBullet;
         public static readonly int machineGunTowerAttackRange = 200;
         public static readonly int machineGunTowerSpread = 10;
+        public static readonly int machineGunTowerAmount = 2;
 
         #endregion;
         #endregion;

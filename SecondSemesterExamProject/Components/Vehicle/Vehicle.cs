@@ -20,6 +20,8 @@ namespace TankGame
         protected Weapon weapon;
         protected TowerPlacer towerPlacer;
         protected int health;
+        protected int maxHealth;
+
         protected int money;
         protected Controls control;
         protected VehicleType vehicleType;
@@ -61,6 +63,10 @@ namespace TankGame
                     animator.PlayAnimation("Death");
                     isPlayingAnimation = true;
                     IsAlive = false;
+                }
+                else if (health>maxHealth)
+                {
+                    health = maxHealth;
                 }
             }
         }
@@ -118,6 +124,7 @@ namespace TankGame
         {
             this.control = control;
             this.health = health;
+            this.maxHealth = health;
             this.movementSpeed = movementSpeed;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
