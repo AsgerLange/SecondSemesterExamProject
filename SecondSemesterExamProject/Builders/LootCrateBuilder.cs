@@ -26,15 +26,15 @@ namespace TankGame
                     type = CrateType.MoneyCrate;
                     break;
                 case 2:
-                    type = CrateType.MoneyCrate;
+                    type = CrateType.WeaponCrate;
 
                     break;
                 case 3:
-                    type = CrateType.MoneyCrate;
+                    type = CrateType.WeaponCrate;
 
                     break;
                 case 4:
-                    type = CrateType.MoneyCrate;
+                    type = CrateType.WeaponCrate;
 
                     break;
                 case 5:
@@ -49,17 +49,19 @@ namespace TankGame
             }
             go = new GameObject();
 
-            go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(Constant.width), 
+            go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(Constant.width),
                 GameWorld.Instance.Rnd.Next(Constant.higth));
 
             switch (type)
             {
                 case CrateType.WeaponCrate:
+                    go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
+                    go.AddComponent(new WeaponCrate(go));
                     break;
                 case CrateType.TowerCrate:
                     break;
-                case CrateType.MoneyCrate:
 
+                case CrateType.MoneyCrate:
                     go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
                     go.AddComponent(new MoneyCrate(go, Constant.moneyCrateMoney));
 
