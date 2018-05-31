@@ -12,9 +12,7 @@ namespace TankGame
         private int towerAmount; //amount of towers
 
         private TowerType towerType; //the type of tower
-
-        private float builtTimeStamp; //timestamp of building
-
+                
         private int towerBuildCost; //price of the tower
 
         private Vehicle vehicle; //game object that ownes the tower
@@ -57,8 +55,7 @@ namespace TankGame
         /// <param name="rotation"></param>
         public void PlaceTower()
         {
-            if ((builtTimeStamp + Constant.buildTowerCoolDown) <= GameWorld.Instance.TotalGameTime)
-            {
+           
                 if (vehicle.Money >= towerBuildCost)
                 {
                     GameObject towerGO;
@@ -75,16 +72,14 @@ namespace TankGame
 
                     //pays for the tower
                     vehicle.Money -= towerBuildCost;
-
-                    //time stamps for when the tower is build (used for cooldown)
-                    builtTimeStamp = (float)GameWorld.Instance.TotalGameTime;
+                                 
 
                     TowerAmount--;
 
                 }
 
 
-            }
+            
         }
 
         /// <summary>
@@ -99,6 +94,12 @@ namespace TankGame
                     break;
                 case TowerType.ShotgunTower:
                     towerBuildCost = Constant.shotgunTowerPrice;
+                    break;
+                case TowerType.MachineGunTower:
+                    towerBuildCost = Constant.machineGunTowerPrice;
+                    break;
+                case TowerType.SniperTower:
+                    towerBuildCost = Constant.sniperTowerPrice;
                     break;
                 default:
                     towerBuildCost = Constant.basicTowerPrice;
@@ -123,7 +124,7 @@ namespace TankGame
             else
             {
 
-                return towerType.ToString() + ": " + towerAmount.ToString();
+                return towerType.ToString() + ": " + towerAmount.ToString()+" ($"+towerBuildCost+")";
             }
         }
     }
