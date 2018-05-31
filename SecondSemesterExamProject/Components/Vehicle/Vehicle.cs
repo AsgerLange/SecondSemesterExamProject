@@ -16,6 +16,7 @@ namespace TankGame
         private Random rnd = new Random();
         private SpriteFont font;
         public Animator animator;
+        private Stats stats;
 
         protected Weapon weapon;
         protected TowerPlacer towerPlacer;
@@ -51,6 +52,16 @@ namespace TankGame
         {
             get { return towerPlacer; }
             set { towerPlacer = value; }
+        }
+        public Controls Control
+        {
+            get { return control; }
+            
+        }
+        public Stats Stats
+        {
+            get { return stats; }
+            set { stats = value; }
         }
         public int Health
         {
@@ -125,7 +136,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
+        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
             TowerType towerType) : base(gameObject)
         {
             this.control = control;
@@ -134,9 +145,10 @@ namespace TankGame
             this.movementSpeed = movementSpeed;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
+            this.stats = new Stats(this);
 
             this.towerPlacer = new TowerPlacer(this, towerType, 1);
-            this.weapon = weapon;
+            this.weapon = new BasicWeapon(this.GameObject);
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -151,7 +163,7 @@ namespace TankGame
 
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
-            Stats.TotalAmountOfPlayerDeaths++;
+            this.stats.TotalAmountOfPlayerDeaths++;
         }
 
         /// <summary>

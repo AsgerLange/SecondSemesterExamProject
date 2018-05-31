@@ -313,7 +313,7 @@ namespace TankGame
 
                             (com as Vehicle).Money += moneyReward;
 
-                            Stats.TotalAmountOfGold += moneyReward;
+                            (com as Vehicle).Stats.TotalAmountOfGold += moneyReward;
 
                             break;
                         }

@@ -29,7 +29,7 @@ namespace TankGame
                     go.AddComponent(new Animator(go));//allows go to be animated
 
                     //Standard tank setup
-                    go.AddComponent(new Tank(go, controls, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed
+                    go.AddComponent(new Tank(go, controls, Constant.tankHealth, Constant.tankMoveSpeed
                        , Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.ShotgunTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));//adds collider
                     break;
@@ -38,7 +38,7 @@ namespace TankGame
                     go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.higth / 2);
                     go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet + playerCount, 0.1f));
                     go.AddComponent(new Animator(go));
-                    go.AddComponent(new Bike(go, controls, new Shotgun(go), Constant.bikeHealth, Constant.bikeMoveSpeed
+                    go.AddComponent(new Bike(go, controls, Constant.bikeHealth, Constant.bikeMoveSpeed
                        , Constant.bikeRotateSpeed, Constant.bikeStartGold, TowerType.ShotgunTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));
                     break;
@@ -47,7 +47,7 @@ namespace TankGame
                     go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.higth / 2);
                     go.AddComponent(new SpriteRenderer(go, Constant.planeSpriteSheet + playerCount, 0.1f));
                     go.AddComponent(new Animator(go));
-                    go.AddComponent(new Plane(go, controls, new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed
+                    go.AddComponent(new Plane(go, controls, Constant.planeHealth, Constant.planeMoveSpeed
                        , Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.SniperTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));
 
@@ -65,6 +65,19 @@ namespace TankGame
             go.LoadContent(GameWorld.Instance.Content);
 
             GameWorld.Instance.GameObjectsToAdd.Add(go);
+
+            foreach (Component comp in go.GetComponentList)
+            {
+                if (comp is Vehicle)
+                {
+                    GameWorld.Instance.Vehicles.Add(comp as Vehicle);
+
+                    (comp as Vehicle).Stats = new Stats((comp as Vehicle));
+
+                    break;
+                }
+
+            }
 
             if (playerCount > Constant.maxAmountOfVehicles)
             {

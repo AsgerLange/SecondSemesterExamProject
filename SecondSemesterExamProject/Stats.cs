@@ -6,22 +6,30 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
+
     /// <summary>
     /// Class for keeping track of statistics in the game
     /// </summary>
-    static class Stats
+    class Stats
     {
+        private Vehicle vehicle;
+
+        public Vehicle Vehicle
+        {
+            get { return vehicle; }
+            set { vehicle = value; }
+        }
         #region VehicleStats
-        private static int totalAmountOfGold;
-        private static int totalAmountOfPlayerDeaths;
+        private int totalAmountOfGold;
+        private int totalAmountOfPlayerDeaths;
 
 
-        public static int TotalAmountOfGold
+        public int TotalAmountOfGold
         {
             get { return totalAmountOfGold; }
             set { totalAmountOfGold = value; }
         }
-        public static int TotalAmountOfPlayerDeaths
+        public int TotalAmountOfPlayerDeaths
         {
             get { return totalAmountOfPlayerDeaths; }
             set { totalAmountOfPlayerDeaths = value; }
@@ -66,7 +74,7 @@ namespace TankGame
 
         private static int basicEnemyKilled = 0;
         private static int basicEliteEnemyKilled = 0;
-        private static int spitterKilled= 0;
+        private static int spitterKilled = 0;
 
         public static int BasicEnemyKilled
         {
@@ -88,27 +96,27 @@ namespace TankGame
         #endregion;
 
         #region WeaponsFired
-        private static int basicWeaponFired;
-        private static int sniperFired;
-        private static int machinegunFired;
-        private static int shotgunFired;
+        private int basicWeaponFired;
+        private int sniperFired;
+        private int machinegunFired;
+        private int shotgunFired;
 
-        public static int BasicWeaponFired
+        public int BasicWeaponFired
         {
             get { return basicWeaponFired; }
             set { basicWeaponFired = value; }
         }
-        public static int SniperFired
+        public int SniperFired
         {
             get { return sniperFired; }
             set { sniperFired = value; }
         }
-        public static int MachinegunFired
+        public int MachinegunFired
         {
             get { return machinegunFired; }
             set { machinegunFired = value; }
         }
-        public static int ShotgunFired
+        public int ShotgunFired
         {
             get { return shotgunFired; }
             set { shotgunFired = value; }
@@ -117,31 +125,36 @@ namespace TankGame
         #endregion;
 
         #region TowersCreated
-        private static int basicTowerBuilt;
-        private static int shotgunTowerbuilt;
-        private static int machinegunTowerbuilt;
-        private static int sniperTowerBuilt;
+        private int basicTowerBuilt;
+        private int shotgunTowerbuilt;
+        private int machinegunTowerbuilt;
+        private int sniperTowerBuilt;
 
-        public static int BasicTowerBuilt
+        public int BasicTowerBuilt
         {
             get { return basicTowerBuilt; }
             set { basicTowerBuilt = value; }
         }
-        public static int ShotgunTowerbuilt
+        public int ShotgunTowerbuilt
         {
             get { return shotgunTowerbuilt; }
             set { shotgunTowerbuilt = value; }
         }
-        public static int MachinegunTowerbuilt
+        public int MachinegunTowerbuilt
         {
             get { return machinegunTowerbuilt; }
             set { machinegunTowerbuilt = value; }
         }
-        public static int SniperTowerBuilt
+        public int SniperTowerBuilt
         {
             get { return sniperTowerBuilt; }
             set { sniperTowerBuilt = value; }
         }
         #endregion
+
+        public Stats(Vehicle vehicle)
+        {
+            this.vehicle = vehicle;
+        }
     }
 }

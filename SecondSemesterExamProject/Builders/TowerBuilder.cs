@@ -15,11 +15,11 @@ namespace TankGame
         /// </summary>
         /// <param name="position">postion</param>
         /// <param name="type">type of tower</param>
-        public void Build(Vector2 position, TowerType type)
+        public void Build(Vector2 position, TowerType type, Vehicle vehicle)
         {
             go = new GameObject();
             go.Transform.Position = position;
-           
+
 
             switch (type)
             {
@@ -27,22 +27,22 @@ namespace TankGame
 
                     go.AddComponent(new SpriteRenderer(go, Constant.basicTowerSpriteSheet, 0.9f));
                     go.AddComponent(new BasicTower(go));
-                    Stats.BasicTowerBuilt++;
+                    vehicle.Stats.BasicTowerBuilt++;
                     break;
 
                 case TowerType.ShotgunTower:
-                    Stats.ShotgunTowerbuilt++;
+                    vehicle.Stats.ShotgunTowerbuilt++;
                     go.AddComponent(new SpriteRenderer(go, Constant.ShotgunTowerSpriteSheet, 0.9f));
                     go.AddComponent(new ShotgunTower(go));
                     break;
 
                 case TowerType.SniperTower:
-                    Stats.SniperTowerBuilt++;
+                    vehicle.Stats.SniperTowerBuilt++;
                     go.AddComponent(new SpriteRenderer(go, Constant.sniperTowerSpriteSheet, 0.9f));
                     go.AddComponent(new SniperTower(go));
                     break;
                 case TowerType.MachineGunTower:
-                    Stats.MachinegunTowerbuilt++;
+                    vehicle.Stats.MachinegunTowerbuilt++;
                     go.AddComponent(new SpriteRenderer(go, Constant.machineGunTowerSpriteSheet, 0.9f));
                     go.AddComponent(new MachineGunTower(go));
                     break;
