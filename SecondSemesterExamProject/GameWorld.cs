@@ -11,7 +11,9 @@ namespace TankGame
     {
         Menu,
         Game,
+        GameOver,
         Score
+
     }
     /// <summary>
     /// This is the main type for your game.
@@ -35,10 +37,9 @@ namespace TankGame
         private float totalGameTime;
         private Map map;
         private Spawn spawner;
-        private bool gameOver = false;
         private Random rnd = new Random();
         private int playerAmount;
-
+        private GameOver gameOver;
         /// <summary>
         /// Scaling the game based on amount of players
         /// </summary>
@@ -47,8 +48,8 @@ namespace TankGame
 
 
         //Background
-        Texture2D backGround;
-        Rectangle screenSize;
+        public Texture2D backGround;
+        public Rectangle screenSize;
 
 
         public List<Collider> Colliders
@@ -101,11 +102,6 @@ namespace TankGame
             get { return deltaTime; }
         }
 
-        public bool GameOver
-        {
-            get { return gameOver; }
-            set { gameOver = value; }
-        }
         public Random Rnd
         {
             get { return rnd; }
@@ -117,10 +113,10 @@ namespace TankGame
         }
         public Spawn GetSpawn
         {
-            get { return spawner;}
+            get { return spawner; }
             set { spawner = value; }
         }
-       
+
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>
@@ -163,6 +159,8 @@ namespace TankGame
             gameState = GameState.Menu;
             menu = new Menu();
 
+            gameOver = new GameOver();
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -200,6 +198,8 @@ namespace TankGame
             // TODO: use this.Content to load your game content here
             //loads menu content
             menu.LoadContent(Content);
+
+            gameOver.LoadContent(Content);
             //load objects
             foreach (var go in gameObjects)
             {
@@ -254,6 +254,10 @@ namespace TankGame
                 }
                 BulletPool.ReleaseList();
                 RemoveObjects();
+            }
+            else if (gameState == GameState.GameOver)
+            {
+                gameOver.Update();
             }
             else if (gameState == GameState.Score)
             {
@@ -341,6 +345,10 @@ namespace TankGame
                 }
                 spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             }
+            else if (gameState == GameState.GameOver)
+            {
+                gameOver.Draw(spriteBatch);
+            }
             else if (gameState == GameState.Score)
             {
                 //draw score
@@ -364,6 +372,10 @@ namespace TankGame
                     }
                 }
             }
+        }
+        public void GameOver()
+        {
+            this.gameState = GameState.GameOver;
         }
     }
 }

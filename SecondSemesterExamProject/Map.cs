@@ -28,7 +28,7 @@ namespace TankGame
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(783, 154), 55, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(777, 164), 65, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
             terrain = GameObjectDirector.Instance.Construct(new Vector2(785, 185), 60, rnd.Next(0, 361));
@@ -38,7 +38,7 @@ namespace TankGame
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
-            terrain = GameObjectDirector.Instance.Construct(new Vector2(1000, 230), 70, rnd.Next(0, 361));
+            terrain = GameObjectDirector.Instance.Construct(new Vector2(975, 227), 60, rnd.Next(0, 361));
             terrain.LoadContent(GameWorld.Instance.Content);
             GameWorld.Instance.GameObjects.Add(terrain);
 
