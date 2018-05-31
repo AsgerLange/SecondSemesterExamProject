@@ -205,7 +205,7 @@ namespace TankGame
         #endregion;
         #region MachineGun
         public readonly static float MachineGunFireRate = 0.1f;
-        public readonly static int MachineGunGunAmmo = 200;
+        public readonly static int MachineGunGunAmmo = 20;
         public readonly static int MachineGunSpread = 7;
 
         public readonly static BulletType MachineGunBulletType = BulletType.BasicBullet;
@@ -229,7 +229,7 @@ namespace TankGame
         public readonly static int basicEliteEnemyGold = 4;
         public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
         public static readonly int basicEliteEnemyHealth = 500;
-        public static readonly float basicEliteEnemyMovementSpeed = 30;
+        public static readonly float basicEliteEnemyMovementSpeed = 20;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
         public readonly static int basicEliteEnemyAttackRadius = 150;

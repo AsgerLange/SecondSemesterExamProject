@@ -409,6 +409,11 @@ namespace TankGame
                 DrawLootToString(spriteBatch);
             }
         }
+        public void GetBasicGun()
+        {
+            this.weapon = new BasicWeapon(this.GameObject);
+
+        }
 
         public void DrawLootToString(SpriteBatch spriteBatch)
         {
