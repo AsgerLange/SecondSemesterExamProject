@@ -176,6 +176,7 @@ namespace TankGame
             }
             result = bulletsMissed / sum * 100;
 
+            result = 100 - result;
             return (int)result;
         }
         public Stats(Vehicle vehicle)

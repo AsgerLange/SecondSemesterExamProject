@@ -272,6 +272,7 @@ namespace TankGame
                                     (comp as Vehicle).Respawn();
 
                                     VehiclesToRemove.Clear();
+
                                     break;
                                 }
                             }
@@ -379,6 +380,7 @@ namespace TankGame
                 {
                     go.Draw(spriteBatch);
                 }
+               
                 lock (EnemyPool.activeKey)
                 {
                     foreach (var go in EnemyPool.Instance.ActiveEnemies)
@@ -393,6 +395,8 @@ namespace TankGame
                         go.Draw(spriteBatch);
                     }
                 }
+                DrawVehiclesRespawnTimeRemaining(spriteBatch);
+
                 spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             }
             else if (gameState == GameState.GameOver)
@@ -407,6 +411,27 @@ namespace TankGame
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+        /// <summary>
+        /// Draws the remaining time before respawn for the player who is dead.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        private void DrawVehiclesRespawnTimeRemaining(SpriteBatch spriteBatch)
+        {
+            if (VehiclesToRemove.Count > 0)
+            {
+
+                foreach (GameObject go in vehiclesToRemove)
+                {
+                    foreach (Component comp in go.GetComponentList)
+                    {
+                        if (comp is Vehicle)
+                        {
+                            (comp as Vehicle).DrawRespawnTime(spriteBatch);
+                        }
+                    }
+                }
+            }
         }
         public int UpdatePlayerAmount()
         {
