@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class MoneyCrate : LootCrate
+    class MoneyCrate : Crate
     {
         private int amount;
 

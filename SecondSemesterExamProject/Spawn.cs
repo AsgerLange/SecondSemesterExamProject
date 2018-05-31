@@ -20,8 +20,8 @@ namespace TankGame
         private float spawnStamp;
         private float waveStamp;
         private float crateStamp;
-        private float eliteBasicEnemyChance = 20;//spawn chance out of 1000
-        private float spitterChance = 10;
+        private float eliteBasicEnemyChance = Constant.basicEliteSpawnModifier;//spawn chance out of 1000
+        private float spitterChance = Constant.spitterSpawnModifier;
 
 
         /// <summary>
@@ -85,6 +85,7 @@ namespace TankGame
             }
 
         }
+
         /// <summary>
         /// creates a new wave
         /// </summary>
@@ -93,8 +94,8 @@ namespace TankGame
             if (Constant.waveSpawnDelay + waveStamp <= GameWorld.Instance.TotalGameTime)
             {
                 wave++;
-                eliteBasicEnemyChance = ((wave * wave) - ((wave) * Constant.basicEliteSpawnModifier));//add to the chance of harder enemies
-                spitterChance = ((wave * wave) - ((wave) * Constant.spitterSpawnModifier));
+                eliteBasicEnemyChance += (eliteBasicEnemyChance * 0.03f);//add to the chance of harder enemies
+                spitterChance += (spitterChance * 0.03f);
 
                 int side = rnd.Next(0, 5);
                 Rectangle spawnRectangle;
@@ -180,17 +181,20 @@ namespace TankGame
                 spawnPos = new Vector2(rnd.Next(spawnRectangle.X, spawnRectangle.X + spawnRectangle.Width),
                        rnd.Next(spawnRectangle.Y, spawnRectangle.Y + spawnRectangle.Height));
 
+                bool chosen = false;
                 int roll = rnd.Next(1001);
                 if (roll <= eliteBasicEnemyChance)
                 {
                     enemyType = EnemyType.BasicEliteEnemy;
+                    chosen = true;
                 }
                 else
                 {
                     roll = rnd.Next(1001);
-                    if (roll <= spitterChance)
+                    if (roll <= spitterChance && !chosen)
                     {
                         enemyType = EnemyType.Spitter;
+                        chosen = true;
                     }
                     else
                     {
