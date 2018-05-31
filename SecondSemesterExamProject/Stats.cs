@@ -159,6 +159,10 @@ namespace TankGame
         }
         #endregion
 
+        /// <summary>
+        /// Calculates Accuracy, based on total amounts of bullets fired and missed
+        /// </summary>
+        /// <returns></returns>
         public static int CalculateAccuracy()
         {
             float result;

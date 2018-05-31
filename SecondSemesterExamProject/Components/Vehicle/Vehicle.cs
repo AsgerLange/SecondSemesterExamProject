@@ -409,26 +409,34 @@ namespace TankGame
                 DrawLootToString(spriteBatch);
             }
         }
+
+        /// <summary>
+        /// gives the vehicle the basic weapon (for when weapon runs out of ammo)
+        /// </summary>
         public void GetBasicGun()
         {
             this.weapon = new BasicWeapon(this.GameObject);
 
         }
 
+        /// <summary>
+        /// Displays the loot from crates on screen with the color of the player and the position of the looting
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawLootToString(SpriteBatch spriteBatch)
         {
 
             if (latestLootCrate != null)
             {
 
-                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime)
+                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
                 {
-                    if (control == Controls.WASD)
+                    if (control == Controls.WASD)//p1
                     {
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.CornflowerBlue);
 
                     }
-                    else if (control == Controls.UDLR)
+                    else if (control == Controls.UDLR)//p2
                     {
 
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.YellowGreen);
@@ -436,6 +444,7 @@ namespace TankGame
                 }
                 else
                 {
+                    //expires
                     latestLootCrate = null;
                 }
             }
