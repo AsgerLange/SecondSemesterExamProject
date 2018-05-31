@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
+
     class Weapon
     {
         protected float fireRate; //rate of fire
@@ -17,6 +18,7 @@ namespace TankGame
 
         protected int weaponSpread; //the bullet spread of the weapon
 
+        protected Vehicle vehicle;
 
         protected GameObject go; //game object that owne the weapon
 
@@ -44,6 +46,15 @@ namespace TankGame
         public Weapon(GameObject go)
         {
             this.go = go;
+
+            foreach (Component comp in go.GetComponentList)
+            {
+                if (comp is Vehicle)
+                {
+                    this.vehicle = (comp as Vehicle);
+                    break;
+                }
+            }
         }
         /// <summary>
         /// handles shooting

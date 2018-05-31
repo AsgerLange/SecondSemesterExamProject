@@ -153,10 +153,9 @@ namespace TankGame
         {
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=TankGameDatabase.db;Version=3;");
             dbConnect.Open();
-            string insert = "insert into Higscores (name, score) values (null, " + name + "," + Stats.TotalAmountOfGold + ")";
-            SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
-            command.ExecuteNonQuery();
-            dbConnect.Close();
+         //   string insert = "insert into Higscores (name, score) values (" + name + "," + Stats.TotalAmountOfGold + ")";
+     //       SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
+            //command.ExecuteNonQuery();
         }
         public void InsertThings()
         {

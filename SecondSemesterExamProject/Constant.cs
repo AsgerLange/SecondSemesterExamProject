@@ -219,7 +219,7 @@ namespace TankGame
         public readonly static int basicEnemyGold = 2;
         public static readonly string basicEnemySpriteSheet = "BasicEnemy";
         public static readonly int basicEnemyHealth = 200;
-        public static readonly float basicEnemyMovementSpeed = 300;
+        public static readonly float basicEnemyMovementSpeed = 20;
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
         public readonly static int basicEnemyAttackRadius = 100;
@@ -264,12 +264,12 @@ namespace TankGame
         #region Crates
         public static readonly float crateLifeSpan = 10;
         public static readonly string crateSpriteSheet = "TestCrate";
-        public static readonly string HealthCrateSpriteSheet = "HealthCrate";
-        public static readonly string TowerCrateSpriteSheet = "TowerCrate";
-        public static readonly string GunCrateSpriteSheet = "GunCrate";
-        public static readonly string MoneyCrateSpriteSheet = "MoneyCrate";
+        public static readonly string HealthCrateSpriteSheet = "CrateHealth";
+        public static readonly string TowerCrateSpriteSheet = "CrateTower";
+        public static readonly string GunCrateSpriteSheet = "CrateWeapon";
+        public static readonly string MoneyCrateSpriteSheet = "CrateMoney";
         public static readonly int moneyCrateMoney = 100;
-        public static readonly float crateSpawnDelay = 27;
+        public static readonly float crateSpawnDelay = 23;
         public static readonly int moneyCrateHealth = 100;
 
         #endregion

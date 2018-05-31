@@ -31,6 +31,7 @@ namespace TankGame
         private List<GameObject> gameObjectsToAdd = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
+        private List<Vehicle> vehicles = new List<Vehicle>();
         private List<Collider> colliders = new List<Collider>();
         public bool gameRunning = true;
         private float deltaTime;
@@ -96,6 +97,11 @@ namespace TankGame
         {
             get { return gameObjectsToAdd; }
             set { gameObjectsToAdd = value; }
+        }
+        public List<Vehicle> Vehicles
+        {
+            get { return vehicles; }
+            set { vehicles = value; }
         }
         public float DeltaTime
         {
