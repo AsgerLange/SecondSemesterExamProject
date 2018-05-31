@@ -23,13 +23,9 @@ namespace TankGame
 
         private Color statsColor = Color.Gold;
         private float statsPosX = 225;
-        private int playerAmount;
+    
 
-        public GameOver()
-        {
-
-
-        }
+      
         public void Draw(SpriteBatch spriteBatch)
         {
             DrawGameOver(spriteBatch);
@@ -117,7 +113,7 @@ namespace TankGame
 
             spriteBatch.DrawString(font, "Total bullets missed: " + Stats.BulletsMissed,
                new Vector2(statsPosX, 360), statsColor);
-            spriteBatch.DrawString(font, "% of Bullets missed: " + Stats.CalculateAccuracy()+"%",
+            spriteBatch.DrawString(font, "Total bullet accuracy: " + Stats.CalculateAccuracy()+"%",
               new Vector2(statsPosX, 380), statsColor);
 
 

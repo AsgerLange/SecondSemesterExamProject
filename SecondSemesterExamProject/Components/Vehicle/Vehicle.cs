@@ -80,7 +80,6 @@ namespace TankGame
                     health = 0;
                     animator.PlayAnimation("Death");
                     isPlayingAnimation = true;
-                    deathTimeStamp = GameWorld.Instance.TotalGameTime;
                     IsAlive = false;
                 }
                 else if (health > maxHealth)
@@ -167,7 +166,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-
+            deathTimeStamp = GameWorld.Instance.TotalGameTime;
             GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             this.stats.TotalAmountOfPlayerDeaths++;
@@ -414,9 +413,35 @@ namespace TankGame
                     spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
                 }
                 DrawLootToString(spriteBatch);
+
+               
             }
         }
 
+        /// <summary>
+        /// Draws the amount of seconds untill respawn
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void DrawRespawnTime(SpriteBatch spriteBatch)
+        {
+            if (IsAlive == false)
+            {
+                float timeLeft = deathTimeStamp + Constant.respawntime - GameWorld.Instance.TotalGameTime;
+
+                string timeLeftString = Convert.ToInt32(timeLeft).ToString();
+                if (control == Controls.WASD)
+                {
+
+                    spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(2, 2), Color.CornflowerBlue);
+                }
+                else if (control == Controls.UDLR)
+                {
+
+                spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
+                }
+
+            }
+        }
         /// <summary>
         /// gives the vehicle the basic weapon (for when weapon runs out of ammo)
         /// </summary>
@@ -462,12 +487,14 @@ namespace TankGame
         public void Respawn()
         {
 
-            var tmp= GameObjectDirector.Instance.Construct(vehicleType, control);
+            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control);
 
             foreach (Component comp in tmp.GetComponentList)
             {
                 if (comp is Vehicle)
                 {
+                    
+                    (comp as Vehicle).spriteRenderer.Sprite = this.spriteRenderer.Sprite;
                     (comp as Vehicle).Stats = this.stats;
                     (comp as Vehicle).weapon = this.weapon;
                     (comp as Vehicle).towerPlacer = this.towerPlacer;
@@ -478,7 +505,7 @@ namespace TankGame
             }
             GameWorld.Instance.Vehicles.Remove(this);
             GameWorld.Instance.VehiclesToRemove.Clear();
-            
+
         }
         public override string ToString()
         {
