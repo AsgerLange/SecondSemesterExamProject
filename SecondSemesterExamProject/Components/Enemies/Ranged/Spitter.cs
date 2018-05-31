@@ -33,7 +33,7 @@ namespace TankGame
         {
             base.OnAnimationDone(animationName);
         }
-
+        
         protected override void Die()
         {
             base.Die();

@@ -38,6 +38,7 @@ namespace TankGame
 
         protected float lootTimeStamp; // when a vehicle received loot
         private Crate latestLootCrate; //For displaying reward
+        private float deathTimeStamp;
 
         public bool IsAlive { get; set; }
 
@@ -56,7 +57,12 @@ namespace TankGame
         public Controls Control
         {
             get { return control; }
-            
+
+        }
+        public float DeathTimeStamp
+        {
+            get { return deathTimeStamp; }
+            set { deathTimeStamp = value; }
         }
         public Stats Stats
         {
@@ -74,6 +80,7 @@ namespace TankGame
                     health = 0;
                     animator.PlayAnimation("Death");
                     isPlayingAnimation = true;
+                    deathTimeStamp = GameWorld.Instance.TotalGameTime;
                     IsAlive = false;
                 }
                 else if (health > maxHealth)
@@ -161,7 +168,7 @@ namespace TankGame
         protected virtual void Die()
         {
 
-            GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             this.stats.TotalAmountOfPlayerDeaths++;
         }
@@ -401,7 +408,7 @@ namespace TankGame
                 else if (control == Controls.UDLR)
                 {
                     spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, 2), Color.YellowGreen);
-                    spriteBatch.DrawString(font, "$"+money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "$" + money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
                     spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
                     spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
                     spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
@@ -448,6 +455,30 @@ namespace TankGame
                     latestLootCrate = null;
                 }
             }
+        }
+        /// <summary>
+        /// Respawns the vehicle
+        /// </summary>
+        public void Respawn()
+        {
+
+            var tmp= GameObjectDirector.Instance.Construct(vehicleType, control);
+
+            foreach (Component comp in tmp.GetComponentList)
+            {
+                if (comp is Vehicle)
+                {
+                    (comp as Vehicle).Stats = this.stats;
+                    (comp as Vehicle).weapon = this.weapon;
+                    (comp as Vehicle).towerPlacer = this.towerPlacer;
+
+
+                }
+
+            }
+            GameWorld.Instance.Vehicles.Remove(this);
+            GameWorld.Instance.VehiclesToRemove.Clear();
+            
         }
         public override string ToString()
         {
