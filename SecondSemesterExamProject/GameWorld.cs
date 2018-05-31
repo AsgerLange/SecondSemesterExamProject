@@ -117,6 +117,11 @@ namespace TankGame
             set { spawner = value; }
         }
 
+        public Menu GetMenu
+        {
+            get { return menu; }
+        }
+
         /// <summary>
         /// Creates a Singleton Gameworld instance
         /// </summary>

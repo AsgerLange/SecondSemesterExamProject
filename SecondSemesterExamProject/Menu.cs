@@ -31,6 +31,12 @@ namespace TankGame
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
         private Texture2D menuBackGround;
+        private int playerAmount;
+
+        public int PlayerAmount
+        {
+            get { return playerAmount; }
+        }
 
         public Menu()
         {
@@ -300,10 +306,12 @@ namespace TankGame
             if (!(p1 == VehicleType.None))
             {
                 GameObjectDirector.Instance.Construct(p1, Controls.WASD);
+                playerAmount++;
             }
             if (!(p2 == VehicleType.None))
             {
                 GameObjectDirector.Instance.Construct(p2, Controls.UDLR);
+                playerAmount++;
             }
         }
     }
