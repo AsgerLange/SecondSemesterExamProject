@@ -16,6 +16,7 @@ namespace TankGame
         private Random rnd = new Random();
         private SpriteFont font;
         public Animator animator;
+        private Stats stats;
 
         protected Weapon weapon;
         protected TowerPlacer towerPlacer;
@@ -37,6 +38,7 @@ namespace TankGame
 
         protected float lootTimeStamp; // when a vehicle received loot
         private Crate latestLootCrate; //For displaying reward
+        private float deathTimeStamp;
 
         public bool IsAlive { get; set; }
 
@@ -52,6 +54,21 @@ namespace TankGame
             get { return towerPlacer; }
             set { towerPlacer = value; }
         }
+        public Controls Control
+        {
+            get { return control; }
+
+        }
+        public float DeathTimeStamp
+        {
+            get { return deathTimeStamp; }
+            set { deathTimeStamp = value; }
+        }
+        public Stats Stats
+        {
+            get { return stats; }
+            set { stats = value; }
+        }
         public int Health
         {
             get { return health; }
@@ -63,6 +80,7 @@ namespace TankGame
                     health = 0;
                     animator.PlayAnimation("Death");
                     isPlayingAnimation = true;
+                    deathTimeStamp = GameWorld.Instance.TotalGameTime;
                     IsAlive = false;
                 }
                 else if (health > maxHealth)
@@ -125,7 +143,7 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Vehicle(GameObject gameObject, Weapon weapon, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
+        public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
             TowerType towerType) : base(gameObject)
         {
             this.control = control;
@@ -134,9 +152,10 @@ namespace TankGame
             this.movementSpeed = movementSpeed;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
+            this.stats = new Stats(this);
 
             this.towerPlacer = new TowerPlacer(this, towerType, 1);
-            this.weapon = weapon;
+            this.weapon = new BasicWeapon(this.GameObject);
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -149,9 +168,9 @@ namespace TankGame
         protected virtual void Die()
         {
 
-            GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
-            Stats.TotalAmountOfPlayerDeaths++;
+            this.stats.TotalAmountOfPlayerDeaths++;
         }
 
         /// <summary>
@@ -389,7 +408,7 @@ namespace TankGame
                 else if (control == Controls.UDLR)
                 {
                     spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, 2), Color.YellowGreen);
-                    spriteBatch.DrawString(font, "$"+money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "$" + money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
                     spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
                     spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
                     spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
@@ -398,20 +417,33 @@ namespace TankGame
             }
         }
 
+        /// <summary>
+        /// gives the vehicle the basic weapon (for when weapon runs out of ammo)
+        /// </summary>
+        public void GetBasicGun()
+        {
+            this.weapon = new BasicWeapon(this.GameObject);
+
+        }
+
+        /// <summary>
+        /// Displays the loot from crates on screen with the color of the player and the position of the looting
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawLootToString(SpriteBatch spriteBatch)
         {
 
             if (latestLootCrate != null)
             {
 
-                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime)
+                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
                 {
-                    if (control == Controls.WASD)
+                    if (control == Controls.WASD)//p1
                     {
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.CornflowerBlue);
 
                     }
-                    else if (control == Controls.UDLR)
+                    else if (control == Controls.UDLR)//p2
                     {
 
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.YellowGreen);
@@ -419,9 +451,34 @@ namespace TankGame
                 }
                 else
                 {
+                    //expires
                     latestLootCrate = null;
                 }
             }
+        }
+        /// <summary>
+        /// Respawns the vehicle
+        /// </summary>
+        public void Respawn()
+        {
+
+            var tmp= GameObjectDirector.Instance.Construct(vehicleType, control);
+
+            foreach (Component comp in tmp.GetComponentList)
+            {
+                if (comp is Vehicle)
+                {
+                    (comp as Vehicle).Stats = this.stats;
+                    (comp as Vehicle).weapon = this.weapon;
+                    (comp as Vehicle).towerPlacer = this.towerPlacer;
+
+
+                }
+
+            }
+            GameWorld.Instance.Vehicles.Remove(this);
+            GameWorld.Instance.VehiclesToRemove.Clear();
+            
         }
         public override string ToString()
         {

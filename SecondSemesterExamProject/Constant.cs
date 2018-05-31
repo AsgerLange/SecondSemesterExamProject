@@ -45,6 +45,7 @@ namespace TankGame
 
         #region Vehicles
         public static readonly float buildTowerCoolDown = 1;
+        public static readonly int respawntime = 10;
 
         public static readonly int maxAmountOfVehicles = 2;
 
@@ -81,7 +82,7 @@ namespace TankGame
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
         public static readonly float HQFireRate = 2;
-        public static readonly int HQHealth = 1;
+        public static readonly int HQHealth = 600;
         public static readonly int HQAttackRange = 300;
         public static readonly BulletType HQbulletType = BulletType.BasicBullet;
         public static readonly int HQSpread = 4;
@@ -219,17 +220,17 @@ namespace TankGame
         public readonly static int basicEnemyGold = 2;
         public static readonly string basicEnemySpriteSheet = "BasicEnemy";
         public static readonly int basicEnemyHealth = 200;
-        public static readonly float basicEnemyMovementSpeed = 300;
+        public static readonly float basicEnemyMovementSpeed = 25;
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
         public readonly static int basicEnemyAttackRadius = 100;
 
         #endregion
         #region BasicEliteEnemy
-        public readonly static int basicEliteEnemyGold = 4;
+        public readonly static int basicEliteEnemyGold = 6;
         public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
         public static readonly int basicEliteEnemyHealth = 500;
-        public static readonly float basicEliteEnemyMovementSpeed = 30;
+        public static readonly float basicEliteEnemyMovementSpeed = 25;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
         public readonly static int basicEliteEnemyAttackRadius = 150;
@@ -239,7 +240,7 @@ namespace TankGame
         #endregion
         #region Ranged
         #region Spitter
-        public readonly static int spitterGold = 2;
+        public readonly static int spitterGold = 4;
         public static readonly string spitterSpriteSheet = "SpitterEnemy";
         public static readonly int spitterHealth = 200;
         public static readonly float spitterMovementSpeed = 20;
