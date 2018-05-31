@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class HealthCrate : LootCrate
+    class HealthCrate : Crate
     {
         private int healthToGive;
 

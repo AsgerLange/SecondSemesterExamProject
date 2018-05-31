@@ -10,8 +10,8 @@ namespace TankGame
     enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
     enum EnemyType { BasicEnemy, BasicEliteEnemy, Spitter };
     enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
-    enum CrateType { WeaponCrate, TowerCrate, MoneyCrate, HealthCrate};
-    enum WeaponType { BasicWeapon, MachineGun, Shotgun, Sniper}
+    enum CrateType { WeaponCrate, TowerCrate, MoneyCrate, HealthCrate };
+    enum WeaponType { BasicWeapon, MachineGun, Shotgun, Sniper }
 
 
     class Constant
@@ -225,7 +225,6 @@ namespace TankGame
         public readonly static int basicEnemyAttackRadius = 100;
 
         #endregion
-
         #region BasicEliteEnemy
         public readonly static int basicEliteEnemyGold = 4;
         public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
@@ -234,11 +233,11 @@ namespace TankGame
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
         public readonly static int basicEliteEnemyAttackRadius = 150;
+        public static readonly float basicEliteSpawnModifier = 100;
 
         #endregion
         #endregion
         #region Ranged
-
         #region Spitter
         public readonly static int spitterGold = 2;
         public static readonly string spitterSpriteSheet = "SpitterEnemy";
@@ -246,6 +245,7 @@ namespace TankGame
         public static readonly float spitterMovementSpeed = 20;
         public static readonly float spitterAttackRate = 1.5f;
         public static readonly float spitterAttackRange = 150;
+        public static readonly float spitterSpawnModifier = 200;
 
         public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
         public static readonly int spitterSpread = 4;
@@ -261,9 +261,13 @@ namespace TankGame
         public static readonly int pushForce = 2;
         #endregion
 
-        #region LootCrate
+        #region Crates
         public static readonly float crateLifeSpan = 10;
         public static readonly string crateSpriteSheet = "TestCrate";
+        public static readonly string HealthCrateSpriteSheet = "HealthCrate";
+        public static readonly string TowerCrateSpriteSheet = "TowerCrate";
+        public static readonly string GunCrateSpriteSheet = "GunCrate";
+        public static readonly string MoneyCrateSpriteSheet = "MoneyCrate";
         public static readonly int moneyCrateMoney = 100;
         public static readonly float crateSpawnDelay = 27;
         public static readonly int moneyCrateHealth = 100;

@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Builders\BulletBuilder.cs" />
     <Compile Include="Builders\EnemyBuilder.cs" />
-    <Compile Include="Builders\LootCrateBuilder.cs" />
+    <Compile Include="Builders\CrateBuilder.cs" />
     <Compile Include="Builders\TerrainBuilder.cs" />
     <Compile Include="Builders\TowerBuilder.cs" />
     <Compile Include="Builders\VehicleBuilder.cs" />
@@ -63,7 +63,7 @@
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
     <Compile Include="Components\Enemies\Ranged\Spitter.cs" />
-    <Compile Include="Components\Crates\LootCrate.cs" />
+    <Compile Include="Components\Crates\Crate.cs" />
     <Compile Include="Components\Tower\BasicTower.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
     <Compile Include="Components\Tower\MachineGunTower.cs" />

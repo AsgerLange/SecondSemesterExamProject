@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
-    class LootCrate : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, ICollisionStay
+    class Crate : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, ICollisionStay
     {
         private float spawnTimeStamp;
 
@@ -20,10 +20,8 @@ namespace TankGame
         /// <summary>
         /// Constructor for LootCrate
         /// </summary>
-        public LootCrate(GameObject gameObject) : base(gameObject)
+        public Crate(GameObject gameObject) : base(gameObject)
         {
-            GameObject.Transform.canMove = false;
-
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
 
             this.spawnTimeStamp = GameWorld.Instance.TotalGameTime;
@@ -48,9 +46,9 @@ namespace TankGame
         /// </summary>
         protected virtual void CreateAnimation()
         {
-            animator.CreateAnimation("Spawn", new Animation(1, 0, 0, 40, 40, 1, Vector2.Zero));
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 40, 40, 1, Vector2.Zero));
-            animator.CreateAnimation("PickUp", new Animation(1, 0, 0, 40, 40, 1, Vector2.Zero));
+            animator.CreateAnimation("Spawn", new Animation(1, 0, 0, 20, 20, 1, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 20, 20, 1, Vector2.Zero));
+            animator.CreateAnimation("PickUp", new Animation(1, 0, 0, 20, 20, 1, Vector2.Zero));
 
         }
 
@@ -118,20 +116,12 @@ namespace TankGame
 
                             (comp as Vehicle).LootTimeStamp = GameWorld.Instance.TotalGameTime;
 
-                           
+
                             Die();
                             break;
                         }
                     }
                 }
-                else if (other.GetAlignment == Alignment.Enemy && isBullet == false)
-                {
-                    Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
-                    dir.Normalize();
-
-                    other.GameObject.Transform.Translate(dir * force);
-                }
-
             }
         }
 
@@ -144,17 +134,20 @@ namespace TankGame
 
         }
 
+        /// <summary>
+        /// crates pushes itself to the side
+        /// </summary>
+        /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
         {
-            if (other.GetAlignment != Alignment.Neutral)
+            if (other.GetAlignment != Alignment.Enemy)
             {
                 float force = Constant.pushForce;
-                Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                Vector2 dir = GameObject.Transform.Position - other.GameObject.Transform.Position;
                 dir.Normalize();
 
-                other.GameObject.Transform.Translate(dir * force);
+                GameObject.Transform.Translate(dir * force);
             }
         }
-      
     }
 }
