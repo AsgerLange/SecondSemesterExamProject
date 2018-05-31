@@ -49,7 +49,7 @@ namespace TankGame
             dbConnect.Open();
             string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
             string totalStats = "Create table Total stats (ID varchar,Total bullets fired int, Total tower build int, Total tower dead int, Total tower kills int,Total player kills int, Total enemy dead int )";
-            string tower = "Create table Tower (ID varchar, Tower kills int, Tower Build int, Tower Dead int)";
+            string tower = "Create table Tower (ID varchar, Tower name string, Tower kills int, Tower Build int, Tower Dead int)";
             string player = "Create table Player (ID varchar,Basic bullets shot int,Bigger bullets shot int,Sniper bullets shot int,Shotgun bullets shot int, Gold int, Wave int)";
             string enemies = "Create table Enemies (ID varchar, Enemy name string, Enemy kills int, Spitter bullets shot";
             SQLiteCommand command = new SQLiteCommand(highscore, dbConnect);
@@ -164,11 +164,11 @@ namespace TankGame
             string spitterEnemy = "insert into Enemies (ID, Enemy name, Enemy kills, Spitter bullets shot) values (null,Spitter enemy, 0, 0)";
             string player = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,0,0,0,100,0)";
             string player2 = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,0,0,0,100,0)";
-            string basicTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) values (null,0,0,0)";
-            string shotgunTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) values (null,0,0,0)";
-            string sniperTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) values (null,0,0,0)";
-            string machinegunTower = "insert into Tower (ID, Tower kills, Tower build, Tower dead) values1 values (null,0,0,0)";
-            string totalData = "insert into Total stats (ID, Total tower build, Total tower dead, Total tower kills, Total player kills, Total enemy dead) values(null,0,0,0,0,0)";
+            string basicTower = "insert into Tower (ID, Tower name, Tower kills, Tower build, Tower dead) values (null,Basic tower,0,0,0)";
+            string shotgunTower = "insert into Tower (ID, Tower name, Tower kills, Tower build, Tower dead) values (null,Shotgun tower,0,0,0)";
+            string sniperTower = "insert into Tower (ID, Tower name, Tower kills, Tower build, Tower dead) values (null,Sniper tower,0,0,0)";
+            string machinegunTower = "insert into Tower (ID, Tower name, Tower kills, Tower build, Tower dead) values1 values (null,Machinegun tower,0,0,0)";
+            string totalData = "insert into Total stats (ID, Tower name, Total tower build, Total tower dead, Total tower kills, Total player kills, Total enemy dead) values(null,0,0,0,0,0)";
 
             SQLiteConnection insertConnection = new SQLiteConnection("Data source = data.db; Version = 3; ");
             insertConnection.Open();
