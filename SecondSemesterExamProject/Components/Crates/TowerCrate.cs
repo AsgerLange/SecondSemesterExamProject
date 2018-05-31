@@ -27,7 +27,7 @@ namespace TankGame
 
         public override string ToString()
         {
-            return "+" + amount+" "+ towerType.ToString();
+            return "+" + amount + " " + towerType.ToString();
         }
 
         protected override void CreateAnimation()
@@ -46,26 +46,42 @@ namespace TankGame
             {
 
                 case TowerType.ShotgunTower:
-                    amount = Constant.shotgunTowerAmount;
-                    vehicle.TowerPlacer = new TowerPlacer(vehicle, towerType,amount );
-
+                    if (vehicle.TowerPlacer.GetTowerType == TowerType.ShotgunTower)
+                    {
+                        vehicle.TowerPlacer.TowerAmount += Constant.shotgunTowerAmount;
+                    }
+                    else
+                    {
+                        amount = Constant.shotgunTowerAmount;
+                        vehicle.TowerPlacer = new TowerPlacer(vehicle, towerType, amount);
+                    }
                     break;
                 case TowerType.SniperTower:
-                    amount = Constant.sniperTowerAmount;
-                    vehicle.TowerPlacer = new TowerPlacer(vehicle, towerType, amount);
+                    if (vehicle.TowerPlacer.GetTowerType == TowerType.SniperTower)
+                    {
+                        vehicle.TowerPlacer.TowerAmount += Constant.shotgunTowerAmount;
+                    }
+                    else
+                    {
+                        amount = Constant.sniperTowerAmount;
+                        vehicle.TowerPlacer = new TowerPlacer(vehicle, towerType, amount);
+                    }
                     break;
                 case TowerType.MachineGunTower:
-                    amount = Constant.machineGunTowerAmount;
-                    vehicle.TowerPlacer = new TowerPlacer(vehicle, towerType, amount);
-
+                    if (vehicle.TowerPlacer.GetTowerType == TowerType.MachineGunTower)
+                    {
+                        vehicle.TowerPlacer.TowerAmount += Constant.machineGunTowerAmount;
+                    }
+                    else
+                    {
+                        amount = Constant.machineGunTowerAmount;
+                        vehicle.TowerPlacer = new TowerPlacer(vehicle, towerType, amount);
+                    }
                     break;
                 default:
                     break;
-
             }
             vehicle.LatestLootCrate = this;
         }
-
-
     }
 }
