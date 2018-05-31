@@ -414,7 +414,7 @@ namespace TankGame
                 }
                 DrawLootToString(spriteBatch);
 
-               
+
             }
         }
 
@@ -437,7 +437,7 @@ namespace TankGame
                 else if (control == Controls.UDLR)
                 {
 
-                spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
+                    spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
                 }
 
             }
@@ -493,15 +493,13 @@ namespace TankGame
             {
                 if (comp is Vehicle)
                 {
-                    
                     (comp as Vehicle).spriteRenderer.Sprite = this.spriteRenderer.Sprite;
                     (comp as Vehicle).Stats = this.stats;
                     (comp as Vehicle).weapon = this.weapon;
                     (comp as Vehicle).towerPlacer = this.towerPlacer;
-
+                    (comp as Vehicle).Money = this.money;
 
                 }
-
             }
             GameWorld.Instance.Vehicles.Remove(this);
             GameWorld.Instance.VehiclesToRemove.Clear();
