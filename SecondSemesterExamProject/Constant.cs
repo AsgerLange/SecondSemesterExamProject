@@ -264,12 +264,12 @@ namespace TankGame
         #region Crates
         public static readonly float crateLifeSpan = 10;
         public static readonly string crateSpriteSheet = "TestCrate";
-        public static readonly string HealthCrateSpriteSheet = "HealthCrate";
-        public static readonly string TowerCrateSpriteSheet = "TowerCrate";
-        public static readonly string GunCrateSpriteSheet = "GunCrate";
-        public static readonly string MoneyCrateSpriteSheet = "MoneyCrate";
+        public static readonly string HealthCrateSpriteSheet = "CrateHealth";
+        public static readonly string TowerCrateSpriteSheet = "CrateTower";
+        public static readonly string GunCrateSpriteSheet = "CrateWeapon";
+        public static readonly string MoneyCrateSpriteSheet = "CrateMoney";
         public static readonly int moneyCrateMoney = 100;
-        public static readonly float crateSpawnDelay = 27;
+        public static readonly float crateSpawnDelay = 23;
         public static readonly int moneyCrateHealth = 100;
 
         #endregion

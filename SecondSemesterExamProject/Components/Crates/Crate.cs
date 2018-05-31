@@ -46,10 +46,9 @@ namespace TankGame
         /// </summary>
         protected virtual void CreateAnimation()
         {
-            animator.CreateAnimation("Spawn", new Animation(1, 0, 0, 20, 20, 1, Vector2.Zero));
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 20, 20, 1, Vector2.Zero));
-            animator.CreateAnimation("PickUp", new Animation(1, 0, 0, 20, 20, 1, Vector2.Zero));
-
+            animator.CreateAnimation("Idle", new Animation(4, 25, 0, 25, 25, 8, Vector2.Zero));
+            animator.CreateAnimation("Spawn", new Animation(4, 25, 0, 25, 25, 8, Vector2.Zero));
+            animator.CreateAnimation("PickUp", new Animation(4, 25, 0, 25, 25, 8, Vector2.Zero));
         }
 
         /// <summary>
