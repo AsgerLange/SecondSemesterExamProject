@@ -31,7 +31,9 @@ namespace TankGame
         private List<GameObject> gameObjectsToAdd = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjects = new List<GameObject>(); //list of all gameobjects
         private List<GameObject> gameObjectsToRemove = new List<GameObject>(); //list of all gameobjects to be removed
+        private List<GameObject> vehiclesToRemove = new List<GameObject>();
         private List<Vehicle> vehicles = new List<Vehicle>();
+
         private List<Collider> colliders = new List<Collider>();
         public bool gameRunning = true;
         private float deltaTime;
@@ -97,6 +99,11 @@ namespace TankGame
         {
             get { return gameObjectsToAdd; }
             set { gameObjectsToAdd = value; }
+        }
+        public List<GameObject> VehiclesToRemove
+        {
+            get { return vehiclesToRemove; }
+            set { vehiclesToRemove = value; }
         }
         public List<Vehicle> Vehicles
         {
@@ -251,6 +258,30 @@ namespace TankGame
                     go.Update();
                 }
 
+                //Checks if any vehicle needs to respawn
+                if (vehiclesToRemove.Count > 0)
+                {
+                    foreach (GameObject go in vehiclesToRemove)
+                    {
+                        foreach (Component comp in go.GetComponentList)
+                        {
+                            if (comp is Vehicle)
+                            {
+                                if ((comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
+                                {
+                                    (comp as Vehicle).Respawn();
+
+                                    VehiclesToRemove.Clear();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+
+                    }
+
+                }
+
                 lock (BulletPool.activeListKey)
                 {
                     foreach (var go in BulletPool.ActiveBullets)
@@ -289,6 +320,10 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
+            if (UpdatePlayerAmount() <= 0)
+            {
+                GameOver();
+            }
         }
 
         /// <summary>
@@ -296,6 +331,14 @@ namespace TankGame
         /// </summary>
         private void RemoveObjects()
         {
+            if (vehiclesToRemove.Count > 0)
+            {
+                foreach (GameObject go in vehiclesToRemove)
+                {
+                    gameObjectsToRemove.Add(go);
+                }
+                UpdatePlayerAmount();
+            }
             if (gameObjectsToRemove.Count > 0)
             {
                 foreach (var go in gameObjectsToRemove)
@@ -310,8 +353,9 @@ namespace TankGame
                     gameObjects.Remove(go);
                 }
                 gameObjectsToRemove.Clear();
-                UpdatePlayerAmount();
             }
+
+
         }
 
         /// <summary>
@@ -364,7 +408,7 @@ namespace TankGame
             spriteBatch.End();
             base.Draw(gameTime);
         }
-        public void UpdatePlayerAmount()
+        public int UpdatePlayerAmount()
         {
             PlayerAmount = 0;
             foreach (GameObject go in Instance.GameObjects)
@@ -377,7 +421,9 @@ namespace TankGame
                         break;
                     }
                 }
+
             }
+            return playerAmount;
         }
         public void GameOver()
         {

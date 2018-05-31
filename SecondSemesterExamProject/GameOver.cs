@@ -117,7 +117,7 @@ namespace TankGame
 
             spriteBatch.DrawString(font, "Total bullets missed: " + Stats.BulletsMissed,
                new Vector2(statsPosX, 360), statsColor);
-            spriteBatch.DrawString(font, "Total Bullet Accuracy: " + Stats.CalculateAccuracy()+"%",
+            spriteBatch.DrawString(font, "% of Bullets missed: " + Stats.CalculateAccuracy()+"%",
               new Vector2(statsPosX, 380), statsColor);
 
 
