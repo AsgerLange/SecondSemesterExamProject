@@ -18,45 +18,39 @@ namespace TankGame
         public void Build(Vector2 position, TowerType type)
         {
             go = new GameObject();
+            go.Transform.Position = position;
+           
+
             switch (type)
             {
                 case TowerType.BasicTower:
 
-                    go.Transform.Position = position;
                     go.AddComponent(new SpriteRenderer(go, Constant.basicTowerSpriteSheet, 0.9f));
-                    go.AddComponent(new Animator(go));
                     go.AddComponent(new BasicTower(go));
-                    go.AddComponent(new Collider(go, Alignment.Friendly));
+                    Stats.BasicTowerBuilt++;
                     break;
 
                 case TowerType.ShotgunTower:
-
-                    go.Transform.Position = position;
+                    Stats.ShotgunTowerbuilt++;
                     go.AddComponent(new SpriteRenderer(go, Constant.ShotgunTowerSpriteSheet, 0.9f));
-                    go.AddComponent(new Animator(go));
                     go.AddComponent(new ShotgunTower(go));
-                    go.AddComponent(new Collider(go, Alignment.Friendly));
                     break;
 
                 case TowerType.SniperTower:
-
-                    go.Transform.Position = position;
+                    Stats.SniperTowerBuilt++;
                     go.AddComponent(new SpriteRenderer(go, Constant.sniperTowerSpriteSheet, 0.9f));
-                    go.AddComponent(new Animator(go));
                     go.AddComponent(new SniperTower(go));
-                    go.AddComponent(new Collider(go, Alignment.Friendly));
                     break;
                 case TowerType.MachineGunTower:
-
-                    go.Transform.Position = position;
+                    Stats.MachinegunTowerbuilt++;
                     go.AddComponent(new SpriteRenderer(go, Constant.machineGunTowerSpriteSheet, 0.9f));
-                    go.AddComponent(new Animator(go));
                     go.AddComponent(new MachineGunTower(go));
-                    go.AddComponent(new Collider(go, Alignment.Friendly));
                     break;
                 default:
                     break;
             }
+            go.AddComponent(new Animator(go));
+            go.AddComponent(new Collider(go, Alignment.Friendly));
         }
 
 
