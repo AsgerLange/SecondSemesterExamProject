@@ -115,5 +115,33 @@ namespace TankGame
         }
 
         #endregion;
+
+        #region TowersCreated
+        private static int basicTowerBuilt;
+        private static int shotgunTowerbuilt;
+        private static int machinegunTowerbuilt;
+        private static int sniperTowerBuilt;
+
+        public static int BasicTowerBuilt
+        {
+            get { return basicTowerBuilt; }
+            set { basicTowerBuilt = value; }
+        }
+        public static int ShotgunTowerbuilt
+        {
+            get { return shotgunTowerbuilt; }
+            set { shotgunTowerbuilt = value; }
+        }
+        public static int MachinegunTowerbuilt
+        {
+            get { return machinegunTowerbuilt; }
+            set { machinegunTowerbuilt = value; }
+        }
+        public static int SniperTowerBuilt
+        {
+            get { return sniperTowerBuilt; }
+            set { sniperTowerBuilt = value; }
+        }
+        #endregion
     }
 }

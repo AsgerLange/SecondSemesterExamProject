@@ -135,7 +135,7 @@ namespace TankGame
             this.rotateSpeed = rotateSpeed;
             this.money = money;
 
-            this.towerPlacer = new TowerPlacer(this, towerType, 5);
+            this.towerPlacer = new TowerPlacer(this, towerType, 1);
             this.weapon = weapon;
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");

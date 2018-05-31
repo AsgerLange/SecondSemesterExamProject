@@ -59,6 +59,7 @@ namespace TankGame
         protected override void Die()
         {
             base.Die();
+            GameWorld.Instance.GameOver();
         }
     }
 }
