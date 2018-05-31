@@ -66,7 +66,7 @@ namespace TankGame
 
                 //Gameobjectdirector builds a new tower
                 towerGO = GameObjectDirector.Instance.Construct(new Vector2(vehicle.GameObject.Transform.Position.X + 1,
-                    vehicle.GameObject.Transform.Position.Y + 1), towerType);
+                    vehicle.GameObject.Transform.Position.Y + 1),towerType,vehicle);
 
                 //its content is loaded
                 towerGO.LoadContent(GameWorld.Instance.Content);
@@ -107,6 +107,7 @@ namespace TankGame
                     break;
                 default:
                     towerBuildCost = Constant.basicTowerPrice;
+                    System.Diagnostics.Debug.WriteLine("SetUpTowerBuildCost error");
                     break;
             }
         }
@@ -119,6 +120,10 @@ namespace TankGame
             vehicle.TowerPlacer = new TowerPlacer(vehicle, TowerType.BasicTower, int.MaxValue);
         }
 
+        /// <summary>
+        /// Overwites Tostring for TowerPlacers
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             if (towerAmount > 1000)

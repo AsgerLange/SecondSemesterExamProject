@@ -43,6 +43,13 @@ namespace TankGame
         private static int shotgunPelletsCounter;
         private static int spitterBulletCounter;
 
+        private static int bulletsMissed;
+
+        public static int BulletsMissed
+        {
+            get { return bulletsMissed; }
+            set { bulletsMissed = value; }
+        }
         public static int BasicBulletCounter
         {
             get { return basicBulletCounter; }
@@ -152,6 +159,25 @@ namespace TankGame
         }
         #endregion
 
+        /// <summary>
+        /// Calculates Accuracy, based on total amounts of bullets fired and missed
+        /// </summary>
+        /// <returns></returns>
+        public static int CalculateAccuracy()
+        {
+            float result;
+
+            float sum;
+
+                sum = BasicBulletCounter + biggerBulletCounter + sniperBulletCounter + shotgunPelletsCounter;
+            if (sum ==0)
+            {
+                sum = 1;
+            }
+            result = bulletsMissed / sum * 100;
+
+            return (int)result;
+        }
         public Stats(Vehicle vehicle)
         {
             this.vehicle = vehicle;

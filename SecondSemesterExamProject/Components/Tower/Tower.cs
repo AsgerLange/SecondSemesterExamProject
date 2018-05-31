@@ -21,6 +21,9 @@ namespace TankGame
         public Animator animator;
         protected BulletType bulletType;
 
+        /// <summary>
+        /// Property for health, kills tower, if HP < zero
+        /// </summary>
         public int Health
         {
             get { return health; }
@@ -35,7 +38,10 @@ namespace TankGame
                 }
             }
         }
-
+        /// <summary>
+        /// tower construcor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public Tower(GameObject gameObject) : base(gameObject)
         {
             GameObject.Transform.canMove = false;
