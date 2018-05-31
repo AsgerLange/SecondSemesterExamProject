@@ -31,7 +31,7 @@ namespace TankGame
                 if (health <= 0)
                 {
                     health = 0;
-                    Die();
+                    animator.PlayAnimation("Death");
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace TankGame
 
             if (animationName == "Death")
             {
-                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+                Die();
             }
         }
 
@@ -244,7 +244,7 @@ namespace TankGame
             this.animator = (Animator)GameObject.GetComponent("Animator");
 
             CreateAnimation();
-
+        
             animator.PlayAnimation("Idle");
         }
 
@@ -261,7 +261,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            animator.PlayAnimation("Death");
+            GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
 
         }
     }

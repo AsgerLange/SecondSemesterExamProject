@@ -72,6 +72,7 @@
     <Compile Include="Components\Tower\TowerPlacer.cs" />
     <Compile Include="Components\Vehicle\Bike.cs" />
     <Compile Include="Components\Vehicle\Plane.cs" />
+    <Compile Include="GameOver.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Stats.cs" />
     <Compile Include="Weapons\BasicWeapon.cs" />
