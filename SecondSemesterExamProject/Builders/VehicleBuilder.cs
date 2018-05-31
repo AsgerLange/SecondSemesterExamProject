@@ -30,7 +30,7 @@ namespace TankGame
 
                     //Standard tank setup
                     go.AddComponent(new Tank(go, controls, new Sniper(go), Constant.tankHealth, Constant.tankMoveSpeed
-                       , Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.SniperTower));
+                       , Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.ShotgunTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));//adds collider
                     break;
                 case VehicleType.Bike:
@@ -48,7 +48,7 @@ namespace TankGame
                     go.AddComponent(new SpriteRenderer(go, Constant.planeSpriteSheet + playerCount, 0.1f));
                     go.AddComponent(new Animator(go));
                     go.AddComponent(new Plane(go, controls, new MachineGun(go), Constant.planeHealth, Constant.planeMoveSpeed
-                       , Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.MachineGunTower));
+                       , Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.SniperTower));
                     go.AddComponent(new Collider(go, Alignment.Friendly));
 
                     break;

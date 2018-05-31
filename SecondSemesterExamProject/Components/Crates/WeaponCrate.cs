@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class WeaponCrate : LootCrate
+    class WeaponCrate : Crate
     {
         private WeaponType weaponType;
         

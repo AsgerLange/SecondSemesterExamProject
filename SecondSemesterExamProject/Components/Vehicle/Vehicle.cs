@@ -36,7 +36,7 @@ namespace TankGame
         protected float builtTimeStamp; //when a vehicle last built a tower
 
         protected float lootTimeStamp; // when a vehicle received loot
-        private LootCrate latestLootCrate; //For displaying reward
+        private Crate latestLootCrate; //For displaying reward
 
         public bool IsAlive { get; set; }
 
@@ -112,7 +112,7 @@ namespace TankGame
             set { builtTimeStamp = value; }
         }
 
-        public LootCrate LatestLootCrate
+        public Crate LatestLootCrate
         {
             get { return latestLootCrate; }
             set { latestLootCrate = value; }

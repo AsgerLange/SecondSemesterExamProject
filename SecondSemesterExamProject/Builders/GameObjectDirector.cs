@@ -17,7 +17,7 @@ namespace TankGame
         private TowerBuilder towerBuilder;
         private TerrainBuilder terrainBuilder;
         private VehicleBuilder vehicleBuilder;
-        private LootCrateBuilder lootCrateBuilder;
+        private CrateBuilder lootCrateBuilder;
         /// <summary>
         /// Get Property to the GameObjectDirector's Singleton instance
         /// </summary>
@@ -44,7 +44,7 @@ namespace TankGame
             this.towerBuilder = new TowerBuilder();
             this.terrainBuilder = new TerrainBuilder();
             this.vehicleBuilder = new VehicleBuilder();
-            this.lootCrateBuilder = new LootCrateBuilder();
+            this.lootCrateBuilder = new CrateBuilder();
         }
 
         /// <summary>
