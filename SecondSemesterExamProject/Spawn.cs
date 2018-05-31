@@ -11,7 +11,6 @@ namespace TankGame
     {
         private int wave = 0;
         private int waveSize = 0;
-        private int waveTech = 0;
         private int spawned = 0;
         private Random rnd = new Random();
         private Rectangle topZone;
@@ -21,6 +20,8 @@ namespace TankGame
         private float spawnStamp;
         private float waveStamp;
         private float crateStamp;
+        private float eliteBasicEnemyChance = Constant.basicEliteSpawnModifier;//spawn chance out of 1000
+        private float spitterChance = Constant.spitterSpawnModifier;
 
 
         /// <summary>
@@ -37,11 +38,6 @@ namespace TankGame
         public int WaveSize
         {
             get { return waveSize; }
-        }
-
-        public int WaveTech
-        {
-            get { return waveTech; }
         }
 
         /// <summary>
@@ -89,6 +85,7 @@ namespace TankGame
             }
 
         }
+
         /// <summary>
         /// creates a new wave
         /// </summary>
@@ -96,6 +93,10 @@ namespace TankGame
         {
             if (Constant.waveSpawnDelay + waveStamp <= GameWorld.Instance.TotalGameTime)
             {
+                wave++;
+                eliteBasicEnemyChance += (eliteBasicEnemyChance * 0.03f);//add to the chance of harder enemies
+                spitterChance += (spitterChance * 0.03f);
+
                 int side = rnd.Next(0, 5);
                 Rectangle spawnRectangle;
                 switch (side)
@@ -127,7 +128,6 @@ namespace TankGame
 
                 SpawnEnemy(WaveSize, spawnRectangle);
                 waveStamp = GameWorld.Instance.TotalGameTime;
-                wave++;
                 Console.WriteLine("WaveNumber: " + wave);
                 Console.WriteLine("Total Enemies: " + spawned + " Spawned");
             }
@@ -175,16 +175,32 @@ namespace TankGame
         private void SpawnEnemy(int amount, Rectangle spawnRectangle)
         {
             Vector2 spawnPos;
-            int enemyTypeInt;
             EnemyType enemyType;
             for (int i = 0; i < amount; i++)
             {
                 spawnPos = new Vector2(rnd.Next(spawnRectangle.X, spawnRectangle.X + spawnRectangle.Width),
                        rnd.Next(spawnRectangle.Y, spawnRectangle.Y + spawnRectangle.Height));
 
-                enemyTypeInt = rnd.Next((Enum.GetNames(typeof(EnemyType)).Length));
-                enemyType = (EnemyType)enemyTypeInt;
-
+                bool chosen = false;
+                int roll = rnd.Next(1001);
+                if (roll <= eliteBasicEnemyChance)
+                {
+                    enemyType = EnemyType.BasicEliteEnemy;
+                    chosen = true;
+                }
+                else
+                {
+                    roll = rnd.Next(1001);
+                    if (roll <= spitterChance && !chosen)
+                    {
+                        enemyType = EnemyType.Spitter;
+                        chosen = true;
+                    }
+                    else
+                    {
+                        enemyType = EnemyType.BasicEnemy;
+                    }
+                }
                 EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
 
                 spawned++;

@@ -58,24 +58,25 @@ namespace TankGame
             if (inActiveBullets.Count > 0)
             {
                 GameObject tmp = null;
-
-                foreach (GameObject bul in inActiveBullets)
+                lock (inActiveListKey)
                 {
-                    foreach (Component comp in bul.GetComponentList)
+                    foreach (GameObject bul in inActiveBullets)
                     {
-                        if (comp is Bullet)
+                        foreach (Component comp in bul.GetComponentList)
                         {
-                            if (((Bullet)comp).GetBulletType == bulletType)
+                            if (comp is Bullet)
                             {
-
-                                tmp = bul;
-                                break;
+                                if (((Bullet)comp).GetBulletType == bulletType)
+                                {
+                                    tmp = bul;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if (tmp != null)
-                    {
-                        break;
+                        if (tmp != null)
+                        {
+                            break;
+                        }
                     }
                 }
                 if (tmp != null)
@@ -102,9 +103,7 @@ namespace TankGame
                     ((Bullet)bullet).CanRelease = true;
                     ((Bullet)bullet).ShouldDie = false;
 
-
                     ((Bullet)bullet).DirRotation = directionRotation;
-
 
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    class LootCrateBuilder
+    class CrateBuilder
     {
         private GameObject go;
 
@@ -34,12 +34,11 @@ namespace TankGame
 
                     break;
                 case 4:
-                    type = CrateType.WeaponCrate;
+                    type = CrateType.MoneyCrate;
 
                     break;
                 case 5:
                     type = CrateType.MoneyCrate;
-
                     break;
 
                 default:
@@ -55,22 +54,21 @@ namespace TankGame
             switch (type)
             {
                 case CrateType.WeaponCrate:
-                    go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
+                    go.AddComponent(new SpriteRenderer(go, Constant.GunCrateSpriteSheet, 0.2f));
                     go.AddComponent(new WeaponCrate(go));
                     break;
                 case CrateType.TowerCrate:
-                    go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
+                    go.AddComponent(new SpriteRenderer(go, Constant.TowerCrateSpriteSheet, 0.2f));
                     go.AddComponent(new TowerCrate(go));
                     break;
 
                 case CrateType.MoneyCrate:
-                    go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
+                    go.AddComponent(new SpriteRenderer(go, Constant.MoneyCrateSpriteSheet, 0.2f));
                     go.AddComponent(new MoneyCrate(go));
 
                     break;
                 case CrateType.HealthCrate:
-
-                    go.AddComponent(new SpriteRenderer(go, Constant.crateSpriteSheet, 0.2f));
+                    go.AddComponent(new SpriteRenderer(go, Constant.HealthCrateSpriteSheet, 0.2f));
                     go.AddComponent(new HealthCrate(go));
                     break;
                 default:
