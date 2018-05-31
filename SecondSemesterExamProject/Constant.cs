@@ -115,7 +115,7 @@ namespace TankGame
 
         #region SniperTower
         public static readonly int sniperTowerPrice = 100;
-        public static readonly string sniperTowerSpriteSheet = "TowerBasic";
+        public static readonly string sniperTowerSpriteSheet = "TowerSniper";
         public static readonly float sniperTowerFireRate = 4f;
         public static readonly int sniperTowerHealth = 100;
         public static readonly BulletType sniperTowerBulletType = BulletType.SniperBullet;
