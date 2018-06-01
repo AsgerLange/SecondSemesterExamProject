@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
+
     class Weapon
     {
         protected float fireRate; //rate of fire
@@ -17,6 +18,7 @@ namespace TankGame
 
         protected int weaponSpread; //the bullet spread of the weapon
 
+        protected Vehicle vehicle;
 
         protected GameObject go; //game object that owne the weapon
 
@@ -37,13 +39,25 @@ namespace TankGame
                 ammo = value;
                 if (ammo <= 0)
                 {
-                    SwitchBackToBasicWeapon();
+                    vehicle.GetBasicGun();
                 }
             }
         }
         public Weapon(GameObject go)
         {
             this.go = go;
+            if (go != null)
+            {
+
+                foreach (Component comp in go.GetComponentList)
+                {
+                    if (comp is Vehicle)
+                    {
+                        this.vehicle = (comp as Vehicle);
+                        break;
+                    }
+                }
+            }
         }
         /// <summary>
         /// handles shooting
@@ -65,14 +79,11 @@ namespace TankGame
         /// </summary>
         protected void SwitchBackToBasicWeapon()
         {
-            foreach (Component comp in go.GetComponentList)
-            {
-                if (comp is Vehicle)
-                {
-                    (comp as Vehicle).Weapon = new BasicWeapon(go.GameObject);
-                }
-            }
-        }
 
+            vehicle.Weapon = new BasicWeapon(go.GameObject);
+
+        }
     }
+
 }
+

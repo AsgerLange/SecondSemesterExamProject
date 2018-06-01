@@ -148,9 +148,9 @@ namespace TankGame
         {
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=data.db;Version=3;");
             dbConnect.Open();
-            string insert = "insert into Higscores (name, score) values (" + name + "," + Stats.TotalAmountOfGold + ")";
-            SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
-            command.ExecuteNonQuery();
+         //   string insert = "insert into Higscores (name, score) values (" + name + "," + Stats.TotalAmountOfGold + ")";
+     //       SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
+            //command.ExecuteNonQuery();
         }
         public void InsertThings()
         {
@@ -188,43 +188,43 @@ namespace TankGame
             updateTables.Open();
             if (true)
             {
-                string updateDeadEnemies = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEnemyKilled + "where Name = Basic enemy";
+                //      string updateDeadEnemies = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEnemyKilled + "where Name = Basic enemy";
 
-        //        string updateBasicEliteEnemy = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEliteEnemyKilled + "where Name =Basic elite enemy";
+                //        string updateBasicEliteEnemy = "Update Enemy set Enemy kills =Enemy kills + " + Stats.BasicEliteEnemyKilled + "where Name =Basic elite enemy";
 
-        //        string updateSpitterBulletCounter = "Update Enemies set Spitter bullets shot = Spitter bullets shot + " + Stats.BasicBulletCounter + "where ID = 3";
+                //        string updateSpitterBulletCounter = "Update Enemies set Spitter bullets shot = Spitter bullets shot + " + Stats.BasicBulletCounter + "where ID = 3";
 
-                string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
+                //        string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
 
-                string totalGold = "Update Player set Gold = " + Stats.TotalAmountOfGold + "where ID = 1";
+                //       string totalGold = "Update Player set Gold = " + Stats.TotalAmountOfGold + "where ID = 1";
 
-                string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot + " + Stats.BasicBulletCounter + "where ID = 1";
+                //      string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot + " + Stats.BasicBulletCounter + "where ID = 1";
 
-                string updateBiggerBulletCounter = "Update Player set Bigger bullets shot = Basic bullets shot + " + Stats.BiggerBulletCounter + "where ID = 1";
+                //        string updateBiggerBulletCounter = "Update Player set Bigger bullets shot = Basic bullets shot + " + Stats.BiggerBulletCounter + "where ID = 1";
 
-        //        string updateSniperBulletCounter = "Update Player set Sniper bullets shot = Basic bullets shot + " + Stats.SniperBulletCounter + "where ID = 1";
+                //        string updateSniperBulletCounter = "Update Player set Sniper bullets shot = Basic bullets shot + " + Stats.SniperBulletCounter + "where ID = 1";
 
-        //        string updateShotgunBulletCounter = "Update Player set Shotgun bullets shot = Basic bullets shot + " + Stats.ShotgunPelletsCounter + "where ID = 1";
+                //        string updateShotgunBulletCounter = "Update Player set Shotgun bullets shot = Basic bullets shot + " + Stats.ShotgunPelletsCounter + "where ID = 1";
 
-                if (true)
-                {
-                    string totalGoldPlayer2 = "Update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
-                    string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
-                    string updateBasicBulletCounter2 = "Update Player set Basic bullets shot = Basic bullets shot + " + Stats.BasicBulletCounter + "where ID = 2";
-                    string updateBiggerBulletCounter2 = "Update Player set Bigger bullets shot = Basic bullets shot + " + Stats.BiggerBulletCounter + "where ID = 2";
-                    string updateSniperBulletCounter2 = "Update Player set Sniper bullets shot = Basic bullets shot + " + Stats.SniperBulletCounter + "where ID = 2";
-                    string updateShotgunBulletCounter2 = "Update Player set Shotgun bullets shot = Basic bullets shot + " + Stats.ShotgunPelletsCounter + "where ID = 2";
-                }
+                //if (true)
+                //{
+                //    string totalGoldPlayer2 = "Update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
+                //    string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
+                //    string updateBasicBulletCounter2 = "Update Player set Basic bullets shot = Basic bullets shot + " + Stats.BasicBulletCounter + "where ID = 2";
+                //    string updateBiggerBulletCounter2 = "Update Player set Bigger bullets shot = Basic bullets shot + " + Stats.BiggerBulletCounter + "where ID = 2";
+                //    string updateSniperBulletCounter2 = "Update Player set Sniper bullets shot = Basic bullets shot + " + Stats.SniperBulletCounter + "where ID = 2";
+                //    string updateShotgunBulletCounter2 = "Update Player set Shotgun bullets shot = Basic bullets shot + " + Stats.ShotgunPelletsCounter + "where ID = 2";
+                //}
 
-        //        string totalPlayerKills = "Update Total stats set Total player kills = ";
+                //        string totalPlayerKills = "Update Total stats set Total player kills = ";
 
-        //        string TotalEnemyDead = "Update Total stats set Total enemy dead = select sum (Enemy kills) from Enemies + Total enemy dead where ID = 1";
+                //        string TotalEnemyDead = "Update Total stats set Total enemy dead = select sum (Enemy kills) from Enemies + Total enemy dead where ID = 1";
 
-        //        string totalBulletsFired = "Update Total stats set Total bullets fired = select sum(Basic bullets shot, Bigger bullets shot, Sniper bullets shot, Shotgun bullets shot) from Total stats where ID = 1";
+                //        string totalBulletsFired = "Update Total stats set Total bullets fired = select sum(Basic bullets shot, Bigger bullets shot, Sniper bullets shot, Shotgun bullets shot) from Total stats where ID = 1";
 
-        //        string totalTowerKills = "Update Total stats set Total tower kills = select sum(Tower kills) from Tower + Total tower kills where ID = 1";
+                //        string totalTowerKills = "Update Total stats set Total tower kills = select sum(Tower kills) from Tower + Total tower kills where ID = 1";
 
-        //        string totalTowerDead = "Update Total stats set Total tower dead = select sum(Tower dead) from Tower + Total tower dead";
+                //        string totalTowerDead = "Update Total stats set Total tower dead = select sum(Tower dead) from Tower + Total tower dead";
 
                 string totalTowerBuild = "Update Total stats set Total tower build = select sum (Tower build) from Tower + Total tower build";
             }

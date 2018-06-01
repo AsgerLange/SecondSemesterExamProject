@@ -12,11 +12,15 @@ namespace TankGame
         private int towerAmount; //amount of towers
 
         private TowerType towerType; //the type of tower
-                
+
         private int towerBuildCost; //price of the tower
 
         private Vehicle vehicle; //game object that ownes the tower
 
+        public TowerType GetTowerType
+        {
+            get { return towerType; }
+        }
 
         /// <summary>
         /// property for amount of towers, if reaches zero, the vehicle get the basic tower
@@ -55,31 +59,31 @@ namespace TankGame
         /// <param name="rotation"></param>
         public void PlaceTower()
         {
-           
-                if (vehicle.Money >= towerBuildCost)
-                {
-                    GameObject towerGO;
 
-                    //Gameobjectdirector builds a new tower
-                    towerGO = GameObjectDirector.Instance.Construct(new Vector2(vehicle.GameObject.Transform.Position.X + 1,
-                        vehicle.GameObject.Transform.Position.Y + 1), towerType);
+            if (vehicle.Money >= towerBuildCost)
+            {
+                GameObject towerGO;
 
-                    //its content is loaded
-                    towerGO.LoadContent(GameWorld.Instance.Content);
+                //Gameobjectdirector builds a new tower
+                towerGO = GameObjectDirector.Instance.Construct(new Vector2(vehicle.GameObject.Transform.Position.X + 1,
+                    vehicle.GameObject.Transform.Position.Y + 1),towerType,vehicle);
 
-                    //it's added to gameworld next update cycle
-                    GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
+                //its content is loaded
+                towerGO.LoadContent(GameWorld.Instance.Content);
 
-                    //pays for the tower
-                    vehicle.Money -= towerBuildCost;
-                                 
+                //it's added to gameworld next update cycle
+                GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
 
-                    TowerAmount--;
-
-                }
+                //pays for the tower
+                vehicle.Money -= towerBuildCost;
 
 
-            
+                TowerAmount--;
+
+            }
+
+
+
         }
 
         /// <summary>
@@ -103,6 +107,7 @@ namespace TankGame
                     break;
                 default:
                     towerBuildCost = Constant.basicTowerPrice;
+                    System.Diagnostics.Debug.WriteLine("SetUpTowerBuildCost error");
                     break;
             }
         }
@@ -115,6 +120,10 @@ namespace TankGame
             vehicle.TowerPlacer = new TowerPlacer(vehicle, TowerType.BasicTower, int.MaxValue);
         }
 
+        /// <summary>
+        /// Overwites Tostring for TowerPlacers
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             if (towerAmount > 1000)
@@ -124,7 +133,7 @@ namespace TankGame
             else
             {
 
-                return towerType.ToString() + ": " + towerAmount.ToString()+" ($"+towerBuildCost+")";
+                return towerType.ToString() + ": " + towerAmount.ToString() + " ($" + towerBuildCost + ")";
             }
         }
     }
