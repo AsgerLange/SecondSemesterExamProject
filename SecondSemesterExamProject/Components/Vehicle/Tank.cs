@@ -20,8 +20,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Tank(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money, 
-             TowerType tower) : base(gameObject, control, health, movementSpeed, rotateSpeed, money , tower)
+        public Tank(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
+             TowerType tower, int playerNumber) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
         {
             this.vehicleType = VehicleType.Tank;
         }
