@@ -39,7 +39,7 @@ namespace TankGame
         protected float lootTimeStamp; // when a vehicle received loot
         private Crate latestLootCrate; //For displaying reward
         private float deathTimeStamp;
-
+        public int PlayerNumber { get; set; }
         public bool IsAlive { get; set; }
 
         protected bool isPlayingAnimation = false;
@@ -143,7 +143,7 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
         public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
-            TowerType towerType) : base(gameObject)
+            TowerType towerType, int playerNumber) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -152,7 +152,7 @@ namespace TankGame
             this.rotateSpeed = rotateSpeed;
             this.money = money;
             this.stats = new Stats(this);
-
+            this.PlayerNumber = playerNumber;
             this.towerPlacer = new TowerPlacer(this, towerType, 1);
             this.weapon = new BasicWeapon(this.GameObject);
             IsAlive = true;
@@ -460,17 +460,14 @@ namespace TankGame
 
             if (latestLootCrate != null)
             {
-
                 if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
                 {
                     if (control == Controls.WASD)//p1
                     {
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.CornflowerBlue);
-
                     }
                     else if (control == Controls.UDLR)//p2
                     {
-
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.YellowGreen);
                     }
                 }
@@ -484,10 +481,9 @@ namespace TankGame
         /// <summary>
         /// Respawns the vehicle
         /// </summary>
-        public void Respawn()
+        public void Respawn(int playerNumber)
         {
-
-            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control);
+            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control, playerNumber);
 
             foreach (Component comp in tmp.GetComponentList)
             {

@@ -170,7 +170,6 @@ namespace TankGame
             if (isAlive)
             {
                 AI();
-
             }
             else
             {
@@ -283,13 +282,11 @@ namespace TankGame
                     isPlayingAnimation = false;
                 }
             }
-
             else
             {
                 animator.PlayAnimation("Idle");
                 isPlayingAnimation = false;
             }
-
         }
 
         /// <summary>
