@@ -28,7 +28,7 @@ namespace TankGame
         /// <param name="rotation"></param>
         public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)
         {
-            Stats.MachinegunFired++;
+            vehicle.Stats.MachinegunFired++;
             base.Shoot(vector2,alignment,rotation);
         }
         public override string ToString()

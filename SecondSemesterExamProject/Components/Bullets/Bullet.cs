@@ -138,6 +138,11 @@ namespace TankGame
             if (GameWorld.Instance.TotalGameTime >= (timeStamp + lifeSpan))
             {
                 shouldDie = true;
+                if (!(this is SniperBullet))
+                {
+
+                    Stats.BulletsMissed++;
+                }
                 DestroyBullet();
             }
         }
@@ -280,13 +285,17 @@ namespace TankGame
                             {
                                 (type as Enemy).Health -= bulletDmg;
                             }
-                            if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
+                            else if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
                             {
                                 (type as Vehicle).Health -= bulletDmg;
                             }
-                            if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy)
+                            else if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy)
                             {
                                 (type as Tower).Health -= bulletDmg;
+                            }
+                            else if (type is Terrain && (!(this is SniperBullet)))
+                            {
+                                Stats.BulletsMissed++;
                             }
                             BulletSpecialEffect(other);
                         }

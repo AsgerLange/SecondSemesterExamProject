@@ -60,7 +60,7 @@ namespace TankGame
             p1Choice.Transform.Position = new Vector2(20, Constant.higth / 2);
             p1Choice.AddComponent(new SpriteRenderer(p1Choice, Constant.tankSpriteSheet + "1", 0.05f));
             p1Choice.AddComponent(new Animator(p1Choice));
-            p1Choice.AddComponent(new Tank(p1Choice, Controls.WASD, new Sniper(p1Choice), Constant.tankHealth, Constant.tankMoveSpeed,
+            p1Choice.AddComponent(new Tank(p1Choice, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
             ((Tank)p1Choice.GetComponent("Tank")).IsAlive = false;
 
@@ -68,7 +68,7 @@ namespace TankGame
             p2Choice.Transform.Position = new Vector2(Constant.width - 250, Constant.higth / 2);
             p2Choice.AddComponent(new SpriteRenderer(p2Choice, Constant.tankSpriteSheet + "2", 0.05f));
             p2Choice.AddComponent(new Animator(p2Choice));
-            p2Choice.AddComponent(new Tank(p2Choice, Controls.WASD, new Sniper(p2Choice), Constant.tankHealth, Constant.tankMoveSpeed,
+            p2Choice.AddComponent(new Tank(p2Choice, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                 Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
             ((Tank)p2Choice.GetComponent("Tank")).IsAlive = false;
 
@@ -93,7 +93,7 @@ namespace TankGame
                     playerDraw.Transform.Position = new Vector2(0, 0);
                     playerDraw.AddComponent(new SpriteRenderer(playerDraw, Constant.tankSpriteSheet + player, 0.05f));
                     playerDraw.AddComponent(new Animator(playerDraw));
-                    playerDraw.AddComponent(new Tank(playerDraw, Controls.WASD, new Sniper(playerDraw), Constant.tankHealth, Constant.tankMoveSpeed,
+                    playerDraw.AddComponent(new Tank(playerDraw, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                         Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
                     ((Tank)playerDraw.GetComponent("Tank")).IsAlive = false;
                     break;
@@ -101,7 +101,7 @@ namespace TankGame
                     playerDraw.Transform.Position = new Vector2(0, 0);
                     playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.bikeSpriteSheet + player, 0.05f));
                     playerDraw.AddComponent(new Animator(playerDraw));
-                    playerDraw.AddComponent(new Bike(playerDraw, Controls.WASD, new Sniper(playerDraw), Constant.tankHealth, Constant.tankMoveSpeed,
+                    playerDraw.AddComponent(new Bike(playerDraw, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                         Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
                     ((Bike)playerDraw.GetComponent("Bike")).IsAlive = false;
                     break;
@@ -109,7 +109,7 @@ namespace TankGame
                     playerDraw.Transform.Position = new Vector2(0, 0);
                     playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.planeSpriteSheet + player, 0.05f));
                     playerDraw.AddComponent(new Animator(playerDraw));
-                    playerDraw.AddComponent(new Plane(playerDraw, Controls.WASD, new Sniper(playerDraw), Constant.tankHealth, Constant.tankMoveSpeed,
+                    playerDraw.AddComponent(new Plane(playerDraw, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
                         Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
                     ((Plane)playerDraw.GetComponent("Plane")).IsAlive = false;
                     break;
