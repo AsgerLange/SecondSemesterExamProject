@@ -170,10 +170,13 @@ namespace TankGame
         /// </summary>
         protected override void Initialize()
         {
-            graphics.ToggleFullScreen(); 
+
+            //graphics.ToggleFullScreen();
+
+            IsMouseVisible = true;
+
 
             // TODO: Add your initialization logic here
-            IsMouseVisible = true;
             //sets the game up to start in the menu
             gameState = GameState.Menu;
             menu = new Menu();
@@ -327,7 +330,7 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0)
+            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1)
             {
                 GameOver();
             }

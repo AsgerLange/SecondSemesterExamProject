@@ -493,6 +493,8 @@ namespace TankGame
                     (comp as Vehicle).Stats = this.stats;
                     (comp as Vehicle).weapon = this.weapon;
                     (comp as Vehicle).towerPlacer = this.towerPlacer;
+                    (comp as Vehicle).Money = this.money;
+
                 }
             }
             GameWorld.Instance.Vehicles.Remove(this);
