@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{83ACD278-6021-460D-AA5F-7CACBFADCD2D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TankGame</RootNamespace>
+    <AssemblyName>SecondSemesterExamProject</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Builders\BulletBuilder.cs" />
+    <Compile Include="Builders\EnemyBuilder.cs" />
+    <Compile Include="Builders\CrateBuilder.cs" />
+    <Compile Include="Builders\TerrainBuilder.cs" />
+    <Compile Include="Builders\TowerBuilder.cs" />
+    <Compile Include="Builders\VehicleBuilder.cs" />
+    <Compile Include="Button.cs" />
+    <Compile Include="Components\Bullets\BasicBullet.cs" />
+    <Compile Include="Components\Bullets\BiggerBullet.cs" />
+    <Compile Include="Components\Bullets\SniperBullet.cs" />
+    <Compile Include="Components\Bullets\ShotgunPellet.cs" />
+    <Compile Include="Components\Bullets\SpitterBullet.cs" />
+    <Compile Include="Components\Crates\HealthCrate.cs" />
+    <Compile Include="Components\Crates\MoneyCrate.cs" />
+    <Compile Include="Components\Crates\TowerCrate.cs" />
+    <Compile Include="Components\Crates\WeaponCrate.cs" />
+    <Compile Include="Components\Enemies\Melee\BasicEliteEnemy.cs" />
+    <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
+    <Compile Include="Components\Enemies\Melee\Melee.cs" />
+    <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
+    <Compile Include="Components\Enemies\Ranged\Spitter.cs" />
+    <Compile Include="Components\Crates\Crate.cs" />
+    <Compile Include="Components\Tower\BasicTower.cs" />
+    <Compile Include="Components\Tower\HQ.cs" />
+    <Compile Include="Components\Tower\MachineGunTower.cs" />
+    <Compile Include="Components\Tower\ShotgunTower.cs" />
+    <Compile Include="Components\Tower\SniperTower.cs" />
+    <Compile Include="Components\Tower\TowerPlacer.cs" />
+    <Compile Include="Components\Vehicle\Bike.cs" />
+    <Compile Include="Components\Vehicle\Plane.cs" />
+    <Compile Include="GameOver.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Stats.cs" />
+    <Compile Include="Weapons\BasicWeapon.cs" />
+    <Compile Include="Spawn.cs" />
+    <Compile Include="Components\Tower\Tower.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="Components\Terrain.cs" />
+    <Compile Include="Components\Bullets\Bullet.cs" />
+    <Compile Include="Components\Enemies\Enemy.cs" />
+    <Compile Include="Builders\GameObjectDirector.cs" />
+    <Compile Include="ObjectPools\BulletPool.cs" />
+    <Compile Include="Circle.cs" />
+    <Compile Include="Components\Animator.cs" />
+    <Compile Include="Components\Collider.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\GameObject.cs" />
+    <Compile Include="Components\Vehicle\Tank.cs" />
+    <Compile Include="Constant.cs" />
+    <Compile Include="Interfaces\ICollisionExit.cs" />
+    <Compile Include="Interfaces\ICollisionEnter.cs" />
+    <Compile Include="Interfaces\ICollisionStay.cs" />
+    <Compile Include="Components\SpriteRenderer.cs" />
+    <Compile Include="Animation.cs" />
+    <Compile Include="Components\Vehicle\Vehicle.cs" />
+    <Compile Include="Interfaces\IDrawable.cs" />
+    <Compile Include="Interfaces\IAnimatable.cs" />
+    <Compile Include="Interfaces\ILoadable.cs" />
+    <Compile Include="GameWorld.cs" />
+    <Compile Include="Interfaces\IUpdatable.cs" />
+    <Compile Include="ObjectPools\EnemyPool.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Components\Transform.cs" />
+    <Compile Include="Score.cs" />
+    <Compile Include="Weapons\MachineGun.cs" />
+    <Compile Include="Weapons\Sniper.cs" />
+    <Compile Include="Weapons\Shotgun.cs" />
+    <Compile Include="Weapons\Weapon.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\source\repos\Databases\bin\Debug\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
