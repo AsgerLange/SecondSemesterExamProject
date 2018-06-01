@@ -153,7 +153,7 @@ namespace TankGame
             this.money = money;
             this.stats = new Stats(this);
             this.PlayerNumber = playerNumber;
-            this.towerPlacer = new TowerPlacer(this, towerType, 1);
+            this.towerPlacer = new TowerPlacer(this, TowerType.BasicTower, 10000);
             this.weapon = new BasicWeapon(this.GameObject);
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -492,7 +492,8 @@ namespace TankGame
                     (comp as Vehicle).spriteRenderer.Sprite = this.spriteRenderer.Sprite;
                     (comp as Vehicle).Stats = this.stats;
                     (comp as Vehicle).weapon = this.weapon;
-                    (comp as Vehicle).towerPlacer = this.towerPlacer;
+                   
+
                     (comp as Vehicle).Money = this.money;
 
                 }

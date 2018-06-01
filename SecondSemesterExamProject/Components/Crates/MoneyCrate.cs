@@ -44,6 +44,8 @@ namespace TankGame
         {
             vehicle.Money += amount;
 
+            vehicle.Stats.TotalAmountOfGold += amount;
+
             vehicle.LatestLootCrate = this;
         }
     }
