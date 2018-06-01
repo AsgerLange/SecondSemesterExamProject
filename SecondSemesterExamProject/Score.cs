@@ -153,7 +153,7 @@ namespace TankGame
         {
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=TankGameDatabase.db;Version=3;");
             dbConnect.Open();
-            string insert = "insert into Higscores (name, score) values (null, " + name + "," + Stats.TotalAmountOfGold + ")";
+            string insert = "insert into Higscores (name, score) values (null, " + name + "," + GameWorld.Instance.Vehicles + ")";
             SQLiteCommand command = new SQLiteCommand(insert, dbConnect);
             command.ExecuteNonQuery();
             dbConnect.Close();
@@ -199,7 +199,7 @@ namespace TankGame
                 WriteToDB(updateSpitterBulletCounter);
                 string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
                 WriteToDB(totalWaves);
-                string totalGold = "Update Player set Gold = " + Stats.TotalAmountOfGold + "where ID = 1";
+                string totalGold = "Update Player set Gold = " + GameWorld.Instance.Vehicles + "where ID = 1";
                 WriteToDB(totalGold);
                 string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot "+" " + Stats.BasicBulletCounter + "where ID = 1";
                 WriteToDB(updateBasicBulletCounter);
@@ -211,7 +211,7 @@ namespace TankGame
                 WriteToDB(updateShotgunBulletCounter);
                 if (GameWorld.Instance.GetMenu.PlayerAmount > 1)
                 {
-                    string totalGoldPlayer2 = "Update Player set Gold " + Stats.TotalAmountOfGold + " where ID = 2";
+                    string totalGoldPlayer2 = "Update Player set Gold " + GameWorld.Instance.Vehicles + " where ID = 2";
                     WriteToDB(totalGoldPlayer2);
                     string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
                     WriteToDB(totalWaves2);
