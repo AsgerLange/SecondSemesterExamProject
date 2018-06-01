@@ -39,7 +39,7 @@ namespace TankGame
         protected float lootTimeStamp; // when a vehicle received loot
         private Crate latestLootCrate; //For displaying reward
         private float deathTimeStamp;
-
+        public int PlayerNumber { get; set; }
         public bool IsAlive { get; set; }
 
         protected bool isPlayingAnimation = false;
@@ -143,7 +143,7 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
         public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
-            TowerType towerType) : base(gameObject)
+            TowerType towerType, int playerNumber) : base(gameObject)
         {
             this.control = control;
             this.health = health;
@@ -152,8 +152,8 @@ namespace TankGame
             this.rotateSpeed = rotateSpeed;
             this.money = money;
             this.stats = new Stats(this);
-
-            this.towerPlacer = new TowerPlacer(this, towerType, 1);
+            this.PlayerNumber = playerNumber;
+            this.towerPlacer = new TowerPlacer(this, TowerType.BasicTower, 10000);
             this.weapon = new BasicWeapon(this.GameObject);
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -414,7 +414,7 @@ namespace TankGame
                 }
                 DrawLootToString(spriteBatch);
 
-               
+
             }
         }
 
@@ -431,15 +431,12 @@ namespace TankGame
                 string timeLeftString = Convert.ToInt32(timeLeft).ToString();
                 if (control == Controls.WASD)
                 {
-
                     spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(2, 2), Color.CornflowerBlue);
                 }
                 else if (control == Controls.UDLR)
                 {
-
-                spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
+                    spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
                 }
-
             }
         }
         /// <summary>
@@ -460,17 +457,14 @@ namespace TankGame
 
             if (latestLootCrate != null)
             {
-
                 if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
                 {
                     if (control == Controls.WASD)//p1
                     {
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.CornflowerBlue);
-
                     }
                     else if (control == Controls.UDLR)//p2
                     {
-
                         spriteBatch.DrawString(font, latestLootCrate.ToString(), latestLootCrate.GameObject.Transform.Position, Color.YellowGreen);
                     }
                 }
@@ -484,24 +478,22 @@ namespace TankGame
         /// <summary>
         /// Respawns the vehicle
         /// </summary>
-        public void Respawn()
+        public void Respawn(int playerNumber)
         {
-
-            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control);
+            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control, playerNumber);
 
             foreach (Component comp in tmp.GetComponentList)
             {
                 if (comp is Vehicle)
                 {
-                    
                     (comp as Vehicle).spriteRenderer.Sprite = this.spriteRenderer.Sprite;
                     (comp as Vehicle).Stats = this.stats;
                     (comp as Vehicle).weapon = this.weapon;
-                    (comp as Vehicle).towerPlacer = this.towerPlacer;
+                   
 
+                    (comp as Vehicle).Money = this.money;
 
                 }
-
             }
             GameWorld.Instance.Vehicles.Remove(this);
             GameWorld.Instance.VehiclesToRemove.Clear();

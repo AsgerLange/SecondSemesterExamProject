@@ -13,7 +13,7 @@ namespace TankGame
 
         public HealthCrate(GameObject gameObject) : base(gameObject)
         {
-            int half = Constant.moneyCrateHealth / 2;
+            int half = Constant.healthCrate / 2;
             int oneAndAHalf = (half*3) + 1;
 
             this.healthToGive = GameWorld.Instance.Rnd.Next(half, oneAndAHalf);

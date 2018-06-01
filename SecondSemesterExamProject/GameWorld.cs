@@ -151,7 +151,8 @@ namespace TankGame
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferHeight = Constant.higth;//Changes Window Size
             graphics.PreferredBackBufferWidth = Constant.width;//Changes Window Size
-            //this.Window.Position = new Point(0, 0);
+            this.Window.Position = new Point(0, 0);
+            this.Window.Title = Constant.title;
             graphics.ApplyChanges();
 
         }
@@ -164,10 +165,13 @@ namespace TankGame
         /// </summary>
         protected override void Initialize()
         {
-            //graphics.ToggleFullScreen(); 
+
+            //graphics.ToggleFullScreen();
+
+            IsMouseVisible = true;
+
 
             // TODO: Add your initialization logic here
-            IsMouseVisible = true;
             //sets the game up to start in the menu
             gameState = GameState.Menu;
             menu = new Menu();
@@ -269,7 +273,7 @@ namespace TankGame
                             {
                                 if ((comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
                                 {
-                                    (comp as Vehicle).Respawn();
+                                    (comp as Vehicle).Respawn((comp as Vehicle).PlayerNumber);
 
                                     VehiclesToRemove.Clear();
 
@@ -321,7 +325,7 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0)
+            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1)
             {
                 GameOver();
             }
@@ -380,7 +384,7 @@ namespace TankGame
                 {
                     go.Draw(spriteBatch);
                 }
-               
+
                 lock (EnemyPool.activeKey)
                 {
                     foreach (var go in EnemyPool.Instance.ActiveEnemies)

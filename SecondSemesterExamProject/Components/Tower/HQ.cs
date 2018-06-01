@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TankGame
 {
-    class HQ : Tower
+    class HQ : Tower, IDrawable
     {
+        private SpriteFont font;
         public HQ(GameObject gameObject) : base(gameObject)
         {
             this.attackRate = Constant.HQFireRate;
@@ -21,12 +23,13 @@ namespace TankGame
 
         public override void LoadContent(ContentManager content)
         {
+            font = content.Load<SpriteFont>("Stat");
             base.LoadContent(content);
         }
 
         public override void OnAnimationDone(string animationName)
         {
-            
+
             base.OnAnimationDone(animationName);
         }
 
@@ -60,6 +63,15 @@ namespace TankGame
         {
             base.Die();
             GameWorld.Instance.GameOver();
+        }
+
+        /// <summary>
+        /// draws HQ Health
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawString(font, "HQ Health: " + Health, new Vector2((Constant.width / 2) - (font.MeasureString(("HQ Health: " + Health)).X / 2), 2), Color.Gold);
         }
     }
 }
