@@ -105,9 +105,9 @@ namespace TankGame
         /// <param name="type"></param>
         /// <param name="controls"></param>
         /// <returns></returns>
-        public GameObject Construct(VehicleType type, Controls controls)
+        public GameObject Construct(VehicleType type, Controls controls,int playerNumber)
         {
-            vehicleBuilder.Build(type, controls);
+            vehicleBuilder.Build(type, controls, playerNumber);
 
             return vehicleBuilder.GetResult(); //returns the vehicle that has been build
         }
