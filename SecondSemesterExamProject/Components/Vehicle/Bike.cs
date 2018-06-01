@@ -20,7 +20,7 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
         public Bike(GameObject gameObject, Controls control , int health, float movementSpeed  , float rotateSpeed, int money,
-             TowerType tower) : base(gameObject , control, health, movementSpeed, rotateSpeed, money, tower)
+             TowerType tower, int playerNumber) : base(gameObject , control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
         {
             this.vehicleType = VehicleType.Bike;
             this.weapon = new Shotgun(this.GameObject);

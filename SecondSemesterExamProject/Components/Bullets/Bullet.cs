@@ -270,6 +270,7 @@ namespace TankGame
                     if (canRelease)
                     {
                         Component type = null;
+                        bool otherIsBullet = false;
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {
                             if (comp is Tower || comp is Enemy || comp is Vehicle || comp is Terrain)
@@ -277,8 +278,13 @@ namespace TankGame
                                 type = comp;
                                 break;
                             }
+                            else if (comp is Bullet)
+                            {
+                                otherIsBullet = true;
+                                break;
+                            }
                         }
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy)
+                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy && otherIsBullet == false)
                             || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy) || type is Terrain)
                         {
                             if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
@@ -320,10 +326,8 @@ namespace TankGame
         /// </summary>
         public virtual void DestroyBullet()
         {
-
             canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);
-
         }
     }
 }
