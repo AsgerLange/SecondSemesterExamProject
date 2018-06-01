@@ -23,9 +23,9 @@ namespace TankGame
 
         private Color statsColor = Color.Gold;
         private float statsPosX = 225;
-    
 
-      
+
+
         public void Draw(SpriteBatch spriteBatch)
         {
             DrawGameOver(spriteBatch);
@@ -42,7 +42,7 @@ namespace TankGame
             spriteBatch.Draw(GameWorld.Instance.backGround, GameWorld.Instance.screenSize
             , null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
 
-            spriteBatch.DrawString(titleFont, "GameOver", new Vector2(Constant.width/4, 2), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None,
+            spriteBatch.DrawString(titleFont, "GameOver", new Vector2(Constant.width / 4, 2), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None,
                 0.1f);
         }
         private void DrawGameRecap(SpriteBatch spriteBatch)
@@ -53,7 +53,7 @@ namespace TankGame
             {
                 DrawWeaponsFired(spriteBatch, vehicle);
                 DrawTowersCreated(spriteBatch, vehicle);
-
+                DrawGoldEarned(spriteBatch, vehicle);
             }
             DrawBulletsCreated(spriteBatch);
         }
@@ -95,7 +95,22 @@ namespace TankGame
 
             }
         }
+        private void DrawGoldEarned(SpriteBatch spriteBatch, Vehicle vehicle)
+        {
 
+            if (vehicle.Control == Controls.WASD)
+            {
+                spriteBatch.DrawString(font, "Player 1 gold earned: " 
+                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p1StatsPosX, 360), p1StatsColor);
+
+            }
+            else if (vehicle.Control == Controls.UDLR)
+            {
+                spriteBatch.DrawString(font, "Player 2 gold earned: "
+                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p2StatsPosX, 360), p2StatsColor);
+
+            }
+        }
         private void DrawBulletsCreated(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, "Bullets Created: ", new Vector2(statsPosX, 240), statsColor);
@@ -113,7 +128,7 @@ namespace TankGame
 
             spriteBatch.DrawString(font, "Total bullets missed: " + Stats.BulletsMissed,
                new Vector2(statsPosX, 360), statsColor);
-            spriteBatch.DrawString(font, "Total bullet accuracy: " + Stats.CalculateAccuracy()+"%",
+            spriteBatch.DrawString(font, "Total bullet accuracy: " + Stats.CalculateAccuracy() + "%",
               new Vector2(statsPosX, 380), statsColor);
 
 
