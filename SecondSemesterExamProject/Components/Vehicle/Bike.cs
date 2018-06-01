@@ -19,10 +19,12 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Bike(GameObject gameObject, Controls control, Weapon weapon, int health, float movementSpeed  , float rotateSpeed, int money,
-             TowerType tower) : base(gameObject, weapon, control, health, movementSpeed, rotateSpeed, money, tower)
+        public Bike(GameObject gameObject, Controls control , int health, float movementSpeed  , float rotateSpeed, int money,
+             TowerType tower) : base(gameObject , control, health, movementSpeed, rotateSpeed, money, tower)
         {
             this.vehicleType = VehicleType.Bike;
+            this.weapon = new Shotgun(this.GameObject);
+
         }
 
         /// <summary>
@@ -75,6 +77,7 @@ namespace TankGame
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
+            this.weapon = new Shotgun(this.GameObject);
             base.LoadContent(content);
         }
 

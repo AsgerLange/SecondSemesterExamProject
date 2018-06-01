@@ -72,9 +72,16 @@ namespace TankGame
 
             return enemyBuilder.GetResult(); //returns the bullet that has been build
         }
-        public GameObject Construct(Vector2 position, TowerType type)
+
+        /// <summary>
+        /// Constructs the tower
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public GameObject Construct(Vector2 position, TowerType type, Vehicle vehicle)
         {
-            towerBuilder.Build(position, type);
+            towerBuilder.Build(position, type, vehicle);
 
             return towerBuilder.GetResult();
         }

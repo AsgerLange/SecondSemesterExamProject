@@ -19,7 +19,7 @@ namespace TankGame
 
         public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)
         {
-            Stats.SniperFired++;
+            vehicle.Stats.SniperFired++;
             base.Shoot(vector2, alignment, rotation);
         }
 

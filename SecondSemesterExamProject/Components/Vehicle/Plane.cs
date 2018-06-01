@@ -19,10 +19,11 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Plane(GameObject gameObject, Controls control, Weapon weapon, int health, float movementSpeed, float rotateSpeed, int money,
-              TowerType tower) : base(gameObject, weapon, control, health, movementSpeed, rotateSpeed, money, tower)
+        public Plane(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
+              TowerType tower) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower)
         {
             this.vehicleType = VehicleType.Plane;
+
         }
 
         /// <summary>
@@ -45,6 +46,8 @@ namespace TankGame
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
+            this.weapon = new MachineGun(this.GameObject);
+
             base.LoadContent(content);
         }
 
@@ -61,8 +64,10 @@ namespace TankGame
             }
             if (animationName == "Death")
             {
+            
+                Die();
                 isPlayingAnimation = false;
-                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+           
             }
             if (isPlayingAnimation == false)
             {
@@ -88,6 +93,11 @@ namespace TankGame
             base.Die();
         }
 
+        /// <summary>
+        /// Handles movement for planes
+        /// </summary>
+        /// <param name="translation"></param>
+        /// <returns></returns>
         protected override Vector2 Move(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
