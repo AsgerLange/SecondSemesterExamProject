@@ -23,7 +23,7 @@ namespace TankGame
         public readonly static string menuBackGround = "Background1";
         public readonly static string gameBackGround = "Background1";
         public readonly static string titleFont = "MenuTitel";
-        public readonly static string title = "Invasion of Bugs";
+        public readonly static string title = "The Last Stand";
         #endregion
 
         #region Button
