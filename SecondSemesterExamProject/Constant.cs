@@ -75,7 +75,7 @@ namespace TankGame
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
         public static readonly float HQFireRate = 2;
-        public static readonly int HQHealth = 600;
+        public static readonly int HQHealth = 1000;
         public static readonly int HQAttackRange = 400;
         public static readonly BulletType HQbulletType = BulletType.BiggerBullet;
         public static readonly int HQSpread = 4;
@@ -139,7 +139,7 @@ namespace TankGame
         public static readonly string biggerBulletSheet = "BiggerBullet";
         public static readonly float biggerBulletMovementSpeed = 700;
         public static readonly float biggerBulletLifeSpan = 0.8f;
-        public static readonly int biggerBulletDmg = 200;
+        public static readonly int biggerBulletDmg = 190;
         #endregion;
 
         #region sniperBullet
@@ -226,7 +226,7 @@ namespace TankGame
         #region Spitter
         public readonly static int spitterGold = 4;
         public static readonly string spitterSpriteSheet = "SpitterEnemy";
-        public static readonly int spitterHealth = 200;
+        public static readonly int spitterHealth = 190;
         public static readonly float spitterMovementSpeed = 20;
         public static readonly float spitterAttackRate = 1.5f;
         public static readonly float spitterAttackRange = 150;

@@ -71,7 +71,7 @@ namespace TankGame
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, "Health left: " + Health, new Vector2((Constant.width / 2) - (font.MeasureString(("Health left: " + Health)).X / 2), 2), Color.CornflowerBlue);
+            spriteBatch.DrawString(font, "HQ Health: " + Health, new Vector2((Constant.width / 2) - (font.MeasureString(("HQ Health: " + Health)).X / 2), 2), Color.Gold);
         }
     }
 }

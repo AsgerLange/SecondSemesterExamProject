@@ -435,10 +435,8 @@ namespace TankGame
                 }
                 else if (control == Controls.UDLR)
                 {
-
                     spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
                 }
-
             }
         }
         /// <summary>
