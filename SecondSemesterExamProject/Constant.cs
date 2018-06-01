@@ -76,8 +76,8 @@ namespace TankGame
         public static readonly string HQSpriteSheet = "HQ";
         public static readonly float HQFireRate = 2;
         public static readonly int HQHealth = 600;
-        public static readonly int HQAttackRange = 300;
-        public static readonly BulletType HQbulletType = BulletType.BasicBullet;
+        public static readonly int HQAttackRange = 400;
+        public static readonly BulletType HQbulletType = BulletType.BiggerBullet;
         public static readonly int HQSpread = 4;
 
         #endregion
@@ -86,7 +86,7 @@ namespace TankGame
         public static readonly int basicTowerPrice = 150;
         public static readonly string basicTowerSpriteSheet = "TowerBasic";
         public static readonly float basicTowerFireRate = 3;
-        public static readonly int basicTowerHealth = 120;
+        public static readonly int basicTowerHealth = 160;
         public static readonly BulletType basicTowerBulletType = BulletType.BasicBullet;
         public static readonly int basicTowerAttackRange = 200;
         public static readonly int basicTowerSpread = 4;
