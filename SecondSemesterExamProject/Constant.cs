@@ -45,7 +45,7 @@ namespace TankGame
 
         #region Vehicles
         public static readonly float buildTowerCoolDown = 1;
-        public static readonly int respawntime = 10;
+        public static readonly int respawntime = 15;
 
         public static readonly int maxAmountOfVehicles = 2;
 
@@ -62,7 +62,7 @@ namespace TankGame
         public static readonly string planeSpriteSheet = "PlayerPlane";
 
         public static readonly float planeMoveSpeed = 200;
-        public static readonly int planeHealth = 100;
+        public static readonly int planeHealth = 1;
         public static readonly float planeRotateSpeed = 1.5F;
         public static readonly int planeStartGold = 100;
 
@@ -71,7 +71,7 @@ namespace TankGame
         public static readonly string bikeSpriteSheet = "PlayerTank";
 
         public static readonly float bikeMoveSpeed = 200;
-        public static readonly int bikeHealth = 250;
+        public static readonly int bikeHealth = 1;
         public static readonly float bikeRotateSpeed = 3f;
         public static readonly int bikeStartGold = 100;
 

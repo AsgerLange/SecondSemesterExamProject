@@ -64,8 +64,10 @@ namespace TankGame
             }
             if (animationName == "Death")
             {
+            
+                Die();
                 isPlayingAnimation = false;
-                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+           
             }
             if (isPlayingAnimation == false)
             {
@@ -91,6 +93,11 @@ namespace TankGame
             base.Die();
         }
 
+        /// <summary>
+        /// Handles movement for planes
+        /// </summary>
+        /// <param name="translation"></param>
+        /// <returns></returns>
         protected override Vector2 Move(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
