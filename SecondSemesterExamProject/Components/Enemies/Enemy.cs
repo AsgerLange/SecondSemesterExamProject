@@ -308,8 +308,17 @@ namespace TankGame
                     {
                         if (com is Vehicle)
                         {
+                            int moneyReward;
                             //Balancing gold income, to limit tower building in multiplayer
-                            int moneyReward = (EnemyGold() / GameWorld.Instance.PlayerAmount);
+                            try
+                            {
+                                moneyReward = (EnemyGold() / GameWorld.Instance.PlayerAmount);
+                            }
+                            catch (Exception)
+                            {
+                                moneyReward = 1;
+
+                            }
 
                             (com as Vehicle).Money += moneyReward;
 
@@ -336,9 +345,9 @@ namespace TankGame
 
                 if (targetGameObject.GetComponent("Collider") != target)
                 {
-                    
+
                     this.targetGameObject = target.GameObject;
-                    
+
 
                 }
             }
@@ -376,6 +385,7 @@ namespace TankGame
         /// <returns></returns>
         protected virtual int EnemyGold()
         {
+
             return Constant.basicEnemyGold;
         }
         /// <summary>
