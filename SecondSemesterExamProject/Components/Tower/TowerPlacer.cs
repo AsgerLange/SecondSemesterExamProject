@@ -124,7 +124,7 @@ namespace TankGame
         {
             if (towerAmount > 1000)
             {
-                return towerType.ToString() + ": " + " ($" + towerBuildCost + ")";
+                return towerType.ToString() + " ($" + towerBuildCost + ")";
             }
             else
             {
