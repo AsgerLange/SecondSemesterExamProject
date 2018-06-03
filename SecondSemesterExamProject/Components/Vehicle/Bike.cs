@@ -12,7 +12,7 @@ namespace TankGame
     class Bike : Vehicle
     {
         /// <summary>
-        /// Creates the tank
+        /// Creates the bike
         /// </summary>
         /// <param name="gameObject"></param>
         /// <param name="control"></param>
@@ -62,17 +62,17 @@ namespace TankGame
         /// </summary>
         public override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 6, Vector2.Zero));
-            animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 8, Vector2.Zero));
-            animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 8, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / weapon.FireRate, new Vector2(-1, -1)));
-            animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 8, Vector2.Zero));
-            animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 8, Vector2.Zero));
-            animator.CreateAnimation("Death", new Animation(7, 305, 0, 28, 40, 6, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(5, 34, 0, 21, 34, 6, Vector2.Zero));
+            animator.CreateAnimation("MoveForward", new Animation(5, 68, 0, 21, 34, 8, Vector2.Zero));
+            animator.CreateAnimation("MoveBackward", new Animation(5, 102, 0, 21, 34, 8, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(5, 136, 0, 21, 36, 14 / weapon.FireRate, new Vector2(-1, -1)));
+            //animator.CreateAnimation("MoveShootForward", new Animation(5, 170, 0, 21, 49, 8, Vector2.Zero));
+            //animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 21, 49, 8, Vector2.Zero));
+            animator.CreateAnimation("Death", new Animation(6, 170, 0, 21, 34, 6, Vector2.Zero));
         }
 
         /// <summary>
-        /// loads the tank
+        /// loads the bike
         /// </summary>
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
@@ -82,7 +82,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles which animation should the tank be running
+        /// handles which animation should the bike be running
         /// </summary>
         /// <param name="animationName"></param>
         public override void OnAnimationDone(string animationName)
@@ -91,7 +91,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles what the tank does
+        /// handles what the bike does
         /// </summary>
         public override void Update()
         {
@@ -99,7 +99,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// handles what happens when the tank dies
+        /// handles what happens when the bike dies
         /// </summary>
         protected override void Die()
         {
