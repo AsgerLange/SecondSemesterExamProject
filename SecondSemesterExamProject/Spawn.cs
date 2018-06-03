@@ -214,7 +214,7 @@ namespace TankGame
                 }
                 if (enemyType == EnemyType.Swarmer)
                 {
-                    roll = rnd.Next(0, Constant.swarmerSpawnMax + 1);
+                    roll = rnd.Next(1, Constant.swarmerSpawnMax + 1);
                     for (int s = 0; s < roll; s++)
                     {
                         EnemyPool.Instance.CreateEnemy(new Vector2(spawnPos.X + s, spawnPos.Y), enemyType);
