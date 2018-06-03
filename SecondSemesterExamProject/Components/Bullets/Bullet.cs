@@ -138,6 +138,11 @@ namespace TankGame
             if (GameWorld.Instance.TotalGameTime >= (timeStamp + lifeSpan))
             {
                 shouldDie = true;
+                if (!(this is SniperBullet))
+                {
+
+                    Stats.BulletsMissed++;
+                }
                 DestroyBullet();
             }
         }
@@ -265,6 +270,7 @@ namespace TankGame
                     if (canRelease)
                     {
                         Component type = null;
+                        bool otherIsBullet = false;
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {
                             if (comp is Tower || comp is Enemy || comp is Vehicle || comp is Terrain)
@@ -272,21 +278,30 @@ namespace TankGame
                                 type = comp;
                                 break;
                             }
+                            else if (comp is Bullet)
+                            {
+                                otherIsBullet = true;
+                                break;
+                            }
                         }
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy)
+                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy && otherIsBullet == false)
                             || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy) || type is Terrain)
                         {
                             if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
                             {
                                 (type as Enemy).Health -= bulletDmg;
                             }
-                            if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
+                            else if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
                             {
                                 (type as Vehicle).Health -= bulletDmg;
                             }
-                            if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy)
+                            else if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy)
                             {
                                 (type as Tower).Health -= bulletDmg;
+                            }
+                            else if (type is Terrain && (!(this is SniperBullet)))
+                            {
+                                Stats.BulletsMissed++;
                             }
                             BulletSpecialEffect(other);
                         }
@@ -311,10 +326,8 @@ namespace TankGame
         /// </summary>
         public virtual void DestroyBullet()
         {
-
             canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);
-
         }
     }
 }

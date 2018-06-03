@@ -61,7 +61,7 @@ namespace TankGame
             p1Choice.AddComponent(new SpriteRenderer(p1Choice, Constant.tankSpriteSheet + "1", 0.05f));
             p1Choice.AddComponent(new Animator(p1Choice));
             p1Choice.AddComponent(new Tank(p1Choice, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower, 1));
             ((Tank)p1Choice.GetComponent("Tank")).IsAlive = false;
 
             p2Choice = new GameObject();
@@ -69,7 +69,7 @@ namespace TankGame
             p2Choice.AddComponent(new SpriteRenderer(p2Choice, Constant.tankSpriteSheet + "2", 0.05f));
             p2Choice.AddComponent(new Animator(p2Choice));
             p2Choice.AddComponent(new Tank(p2Choice, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower, 2));
             ((Tank)p2Choice.GetComponent("Tank")).IsAlive = false;
 
             p1Choice = ChangeVehicle(p1, 1);
@@ -94,25 +94,28 @@ namespace TankGame
                     playerDraw.AddComponent(new SpriteRenderer(playerDraw, Constant.tankSpriteSheet + player, 0.05f));
                     playerDraw.AddComponent(new Animator(playerDraw));
                     playerDraw.AddComponent(new Tank(playerDraw, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower, player));
                     ((Tank)playerDraw.GetComponent("Tank")).IsAlive = false;
                     break;
+
                 case VehicleType.Bike:
                     playerDraw.Transform.Position = new Vector2(0, 0);
                     playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.bikeSpriteSheet + player, 0.05f));
                     playerDraw.AddComponent(new Animator(playerDraw));
                     playerDraw.AddComponent(new Bike(playerDraw, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower, player));
                     ((Bike)playerDraw.GetComponent("Bike")).IsAlive = false;
                     break;
+
                 case VehicleType.Plane:
                     playerDraw.Transform.Position = new Vector2(0, 0);
                     playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.planeSpriteSheet + player, 0.05f));
                     playerDraw.AddComponent(new Animator(playerDraw));
                     playerDraw.AddComponent(new Plane(playerDraw, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
-                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower));
+                        Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower, player));
                     ((Plane)playerDraw.GetComponent("Plane")).IsAlive = false;
                     break;
+
                 default:
                     break;
             }
@@ -305,13 +308,11 @@ namespace TankGame
         {
             if (!(p1 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p1, Controls.WASD);
-                playerAmount++;
+                GameObjectDirector.Instance.Construct(p1, Controls.WASD, 1);
             }
             if (!(p2 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p2, Controls.UDLR);
-                playerAmount++;
+                GameObjectDirector.Instance.Construct(p2, Controls.UDLR, 2);
             }
         }
     }

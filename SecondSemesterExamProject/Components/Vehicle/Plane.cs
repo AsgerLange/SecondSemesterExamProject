@@ -20,7 +20,7 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
         public Plane(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
-              TowerType tower) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower)
+              TowerType tower, int playerNumber) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
         {
             this.vehicleType = VehicleType.Plane;
 
@@ -64,8 +64,10 @@ namespace TankGame
             }
             if (animationName == "Death")
             {
+
+                Die();
                 isPlayingAnimation = false;
-                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+
             }
             if (isPlayingAnimation == false)
             {
@@ -91,6 +93,11 @@ namespace TankGame
             base.Die();
         }
 
+        /// <summary>
+        /// Handles movement for planes
+        /// </summary>
+        /// <param name="translation"></param>
+        /// <returns></returns>
         protected override Vector2 Move(Vector2 translation)
         {
             KeyboardState keyState = Keyboard.GetState();
@@ -109,13 +116,11 @@ namespace TankGame
             else if ((keyState.IsKeyDown(Keys.W) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.Up) && control == Controls.UDLR))
             {
-
                 translation += new Vector2(0, -0.6f);
                 if (isPlayingAnimation == false)
                 {
                     animator.PlayAnimation("MoveForward");
                 }
-
             }
             return translation;
         }
@@ -124,6 +129,6 @@ namespace TankGame
         {
             base.Shoot();
         }
-       
+
     }
 }

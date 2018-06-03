@@ -39,20 +39,23 @@ namespace TankGame
                 ammo = value;
                 if (ammo <= 0)
                 {
-                    SwitchBackToBasicWeapon();
+                    vehicle.GetBasicGun();
                 }
             }
         }
         public Weapon(GameObject go)
         {
             this.go = go;
-
-            foreach (Component comp in go.GetComponentList)
+            if (go != null)
             {
-                if (comp is Vehicle)
+
+                foreach (Component comp in go.GetComponentList)
                 {
-                    this.vehicle = (comp as Vehicle);
-                    break;
+                    if (comp is Vehicle)
+                    {
+                        this.vehicle = (comp as Vehicle);
+                        break;
+                    }
                 }
             }
         }
@@ -76,14 +79,11 @@ namespace TankGame
         /// </summary>
         protected void SwitchBackToBasicWeapon()
         {
-            foreach (Component comp in go.GetComponentList)
-            {
-                if (comp is Vehicle)
-                {
-                    (comp as Vehicle).Weapon = new BasicWeapon(go.GameObject);
-                }
-            }
-        }
 
+            vehicle.Weapon = new BasicWeapon(go.GameObject);
+
+        }
     }
+
 }
+

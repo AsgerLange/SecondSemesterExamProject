@@ -80,7 +80,6 @@
     <Compile Include="Components\Tower\Tower.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Components\Terrain.cs" />
-    <Compile Include="Interfaces\IEnemyAI.cs" />
     <Compile Include="Components\Bullets\Bullet.cs" />
     <Compile Include="Components\Enemies\Enemy.cs" />
     <Compile Include="Builders\GameObjectDirector.cs" />

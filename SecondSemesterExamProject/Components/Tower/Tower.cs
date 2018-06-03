@@ -11,7 +11,7 @@ namespace TankGame
 
     class Tower : Component, IAnimatable, IUpdatable, ILoadable, ICollisionEnter, ICollisionStay
     {
-        
+
         protected int health;
         protected float attackRate;
         protected float attackRange;
@@ -21,6 +21,9 @@ namespace TankGame
         public Animator animator;
         protected BulletType bulletType;
 
+        /// <summary>
+        /// Property for health, kills tower, if HP < zero
+        /// </summary>
         public int Health
         {
             get { return health; }
@@ -35,7 +38,10 @@ namespace TankGame
                 }
             }
         }
-
+        /// <summary>
+        /// tower construcor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public Tower(GameObject gameObject) : base(gameObject)
         {
             GameObject.Transform.canMove = false;
@@ -81,7 +87,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread,spread)));
+                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                 }
             }
@@ -132,13 +138,22 @@ namespace TankGame
         {
             Collider closestEnemy = null;
             float distance = 0;
+            bool otherIsBullet = false;
             lock (GameWorld.colliderKey)
             {
                 foreach (Collider other in GameWorld.Instance.Colliders)
                 {
                     if (other.GetAlignment == Alignment.Enemy)
                     {
-                        if (AttackRadius.Contains(other.CollisionBox.Center))
+                        foreach (Component comp in other.GameObject.GetComponentList)
+                        {
+                            if (comp is Bullet)
+                            {
+                                otherIsBullet = true;
+                                break;
+                            }
+                        }
+                        if (AttackRadius.Contains(other.CollisionBox.Center) && otherIsBullet == false)
                         {
                             float otherDistance;
                             otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
@@ -244,7 +259,7 @@ namespace TankGame
             this.animator = (Animator)GameObject.GetComponent("Animator");
 
             CreateAnimation();
-        
+
             animator.PlayAnimation("Idle");
         }
 
