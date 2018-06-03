@@ -185,9 +185,9 @@ namespace TankGame
 
                 bool chosen = false;
                 int roll = rnd.Next(1001);
-                if (roll <= eliteBasicEnemyChance)
+                if (roll <= swarmerChance)
                 {
-                    enemyType = EnemyType.BasicEliteEnemy;
+                    enemyType = EnemyType.Swarmer;
                     chosen = true;
                 }
                 else
@@ -201,9 +201,9 @@ namespace TankGame
                     else
                     {
                         roll = rnd.Next(1001);
-                        if (roll <= swarmerChance && !chosen)
+                        if (roll <= eliteBasicEnemyChance && !chosen)
                         {
-                            enemyType = EnemyType.Swarmer;
+                            enemyType = EnemyType.BasicEliteEnemy;
                             chosen = true;
                         }
                         else
@@ -212,7 +212,18 @@ namespace TankGame
                         }
                     }
                 }
-                EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
+                if (enemyType == EnemyType.Swarmer)
+                {
+                    roll = rnd.Next(0, Constant.swarmerSpawnMax + 1);
+                    for (int s = 0; s < roll; s++)
+                    {
+                        EnemyPool.Instance.CreateEnemy(new Vector2(spawnPos.X + s, spawnPos.Y), enemyType);
+                    }
+                }
+                else
+                {
+                    EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
+                }
 
                 spawned++;
             }
