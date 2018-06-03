@@ -66,7 +66,7 @@ namespace TankGame
 
                 //Gameobjectdirector builds a new tower
                 towerGO = GameObjectDirector.Instance.Construct(new Vector2(vehicle.GameObject.Transform.Position.X + 1,
-                    vehicle.GameObject.Transform.Position.Y + 1),towerType,vehicle);
+                    vehicle.GameObject.Transform.Position.Y + 1), towerType, vehicle);
 
                 //its content is loaded
                 towerGO.LoadContent(GameWorld.Instance.Content);
@@ -79,11 +79,7 @@ namespace TankGame
 
 
                 TowerAmount--;
-
             }
-
-
-
         }
 
         /// <summary>
@@ -128,11 +124,10 @@ namespace TankGame
         {
             if (towerAmount > 1000)
             {
-                return towerType.ToString() + ": LOTS!";
+                return towerType.ToString() + " ($" + towerBuildCost + ")";
             }
             else
             {
-
                 return towerType.ToString() + ": " + towerAmount.ToString() + " ($" + towerBuildCost + ")";
             }
         }
