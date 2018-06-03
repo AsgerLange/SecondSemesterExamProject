@@ -261,7 +261,7 @@ namespace TankGame
         protected virtual void CreateAnimation()
         {
             //Enemy Animation Set
-            animator.CreateAnimation("TPose", new Animation(1, 0, 0, 23, 23, 3, Vector2.Zero));
+            animator.CreateAnimation("TPose", new Animation(1, 0, 0, 23, 23, 3, Vector2.Zero)); //Please note that this only displays correctly for Basic Enemy and is only a failure detection measure
         }
 
         /// <summary>

@@ -50,7 +50,7 @@ namespace TankGame
         /// </summary>
         public override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 4, 29, 3, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 4, 50, 3, Vector2.Zero));
             base.CreateAnimation();
         }
 

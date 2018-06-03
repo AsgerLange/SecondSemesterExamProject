@@ -59,6 +59,7 @@
     <Compile Include="Components\Crates\TowerCrate.cs" />
     <Compile Include="Components\Crates\WeaponCrate.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEliteEnemy.cs" />
+    <Compile Include="Components\Enemies\Melee\SwarmerEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\BasicEnemy.cs" />
     <Compile Include="Components\Enemies\Melee\Melee.cs" />
     <Compile Include="Components\Enemies\Ranged\Ranged.cs" />
