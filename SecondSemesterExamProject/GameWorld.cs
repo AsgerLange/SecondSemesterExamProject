@@ -154,7 +154,7 @@ namespace TankGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = Constant.higth;//Changes Window Size
+            graphics.PreferredBackBufferHeight = Constant.hight;//Changes Window Size
             graphics.PreferredBackBufferWidth = Constant.width;//Changes Window Size
             this.Window.Position = new Point(0, 0);
             this.Window.Title = Constant.title;
@@ -171,7 +171,7 @@ namespace TankGame
         protected override void Initialize()
         {
 
-            //graphics.ToggleFullScreen();
+           // graphics.ToggleFullScreen();
 
             IsMouseVisible = true;
 
@@ -196,7 +196,7 @@ namespace TankGame
             map = new Map();
 
             //Creates the new spawner that spawns the waves
-            spawner = new Spawn(Constant.width, Constant.higth);
+            spawner = new Spawn(Constant.width, Constant.hight);
 
 
             //creates a score to keep track of scores and stats

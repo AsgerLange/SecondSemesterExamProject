@@ -400,17 +400,17 @@ namespace TankGame
                 {
                     spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
                     spriteBatch.DrawString(font, "$" + money, new Vector2(2, 20), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.hight - 20), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.hight - 40), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.hight - 60), Color.CornflowerBlue);
                 }
                 else if (control == Controls.UDLR)
                 {
                     spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, 2), Color.YellowGreen);
                     spriteBatch.DrawString(font, "$" + money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
-                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
-                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
-                    spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.hight - 20), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.hight - 40), Color.YellowGreen);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.hight - 60), Color.YellowGreen);
                 }
                 DrawLootToString(spriteBatch);
 
@@ -457,7 +457,7 @@ namespace TankGame
 
             if (latestLootCrate != null)
             {
-                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
+                if (lootTimeStamp + 3 /* Seconds*/>= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
                 {
                     if (control == Controls.WASD)//p1
                     {
