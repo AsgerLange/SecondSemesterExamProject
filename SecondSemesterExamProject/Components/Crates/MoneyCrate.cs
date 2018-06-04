@@ -42,6 +42,7 @@ namespace TankGame
 
         protected override void GiveLoot(Vehicle vehicle)
         {
+            base.GiveLoot(vehicle);
             vehicle.Money += amount;
 
             vehicle.Stats.TotalAmountOfGold += amount;

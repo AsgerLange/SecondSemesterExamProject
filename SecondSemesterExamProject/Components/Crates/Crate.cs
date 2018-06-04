@@ -16,6 +16,8 @@ namespace TankGame
 
         protected SpriteRenderer spriteRenderer;
 
+        protected bool isAlive = true;
+
 
         /// <summary>
         /// Constructor for LootCrate
@@ -47,8 +49,8 @@ namespace TankGame
         protected virtual void CreateAnimation()
         {
             animator.CreateAnimation("Idle", new Animation(4, 25, 0, 25, 25, 8, Vector2.Zero));
-            animator.CreateAnimation("Spawn", new Animation(4, 25, 0, 25, 25, 8, Vector2.Zero));
-            animator.CreateAnimation("PickUp", new Animation(4, 25, 0, 25, 25, 8, Vector2.Zero));
+            animator.CreateAnimation("Spawn", new Animation(4, 50, 0, 25, 25, 6, Vector2.Zero));
+            animator.CreateAnimation("PickUp", new Animation(6, 75, 0, 25, 25, 10, Vector2.Zero));
         }
 
         /// <summary>
@@ -57,9 +59,13 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            if (animationName == "SPawn")
+            if (animationName == "Spawn")
             {
                 animator.PlayAnimation("Idle");
+            }
+            if (animationName == "PickUp")
+            {
+                GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             }
             else
             {
@@ -82,7 +88,9 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            isAlive = false;
+            animator.PlayAnimation("PickUp");
+
         }
 
         /// <summary>
@@ -91,33 +99,35 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
-            bool isBullet = false;
-            //push them a bit away
-
-            float force = Constant.pushForce * 2;
-            if (other.GetAlignment != Alignment.Neutral)
+            if (isAlive == true)
             {
+                bool isBullet = false;
+                //push them a bit away
+                float force = Constant.pushForce * 2;
+                if (other.GetAlignment != Alignment.Neutral)
+                {
 
-                foreach (Component go in other.GameObject.GetComponentList)
-                {
-                    if (go is Bullet)
+                    foreach (Component go in other.GameObject.GetComponentList)
                     {
-                        isBullet = true;
-                    }
-                }
-                if (other.GetAlignment == Alignment.Friendly && isBullet == false)
-                {
-                    foreach (Component comp in other.GameObject.GetComponentList)
-                    {
-                        if (comp is Vehicle)
+                        if (go is Bullet)
                         {
-                            GiveLoot(comp as Vehicle);
+                            isBullet = true;
+                        }
+                    }
+                    if (other.GetAlignment == Alignment.Friendly && isBullet == false)
+                    {
+                        foreach (Component comp in other.GameObject.GetComponentList)
+                        {
+                            if (comp is Vehicle)
+                            {
+                                GiveLoot(comp as Vehicle);
 
-                            (comp as Vehicle).LootTimeStamp = GameWorld.Instance.TotalGameTime;
+                                (comp as Vehicle).LootTimeStamp = GameWorld.Instance.TotalGameTime;
 
 
-                            Die();
-                            break;
+                                Die();
+                                break;
+                            }
                         }
                     }
                 }
@@ -139,13 +149,17 @@ namespace TankGame
         /// <param name="other"></param>
         public void OnCollisionStay(Collider other)
         {
-            if (other.GetAlignment != Alignment.Enemy)
+            if (isAlive == true)
             {
-                float force = Constant.pushForce;
-                Vector2 dir = GameObject.Transform.Position - other.GameObject.Transform.Position;
-                dir.Normalize();
 
-                GameObject.Transform.Translate(dir * force);
+                if (other.GetAlignment != Alignment.Enemy)
+                {
+                    float force = Constant.pushForce;
+                    Vector2 dir = GameObject.Transform.Position - other.GameObject.Transform.Position;
+                    dir.Normalize();
+
+                    GameObject.Transform.Translate(dir * force);
+                }
             }
         }
     }
