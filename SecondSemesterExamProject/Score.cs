@@ -23,6 +23,7 @@ namespace TankGame
         private Keys[] lastKey;//Contains a array of the keys that has been pressed.
         private string parsedText;
         private double timer;
+        private List<Highscore> highscores = new List<Highscore>();
 
 
 
@@ -149,6 +150,10 @@ namespace TankGame
             return returnString + line;
         }
 
+        /// <summary>
+        /// Inserts the highscore and the name of the person into the list
+        /// </summary>
+
         public void InsertScore()
         {
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=TankGameDatabase.db;Version=3;");
@@ -158,6 +163,9 @@ namespace TankGame
             command.ExecuteNonQuery();
             dbConnect.Close();
         }
+        /// <summary>
+        /// Inserts the rest of the things into the rest of the tables. 
+        /// </summary>
         public void InsertThings()
         {
             string basicEnemy = "insert into Enemies (ID, Enemy name, Enemy kills,) values (null,Basic enemy,0)";
@@ -191,23 +199,23 @@ namespace TankGame
 
             if (GameWorld.Instance.GetGameState == GameState.GameOver)
             {
-                string updateDeadEnemies = "Update Enemies set Enemy kills =Enemy kills "+" " + Stats.BasicEnemyKilled + "where Name = Basic enemy";
+                string updateDeadEnemies = "Update Enemies set Enemy kills =Enemy kills " + " " + Stats.BasicEnemyKilled + "where Name = Basic enemy";
                 WriteToDB(updateDeadEnemies);
-                string updateBasicEliteEnemy = "Update Enemies set Enemy kills =Enemy kills "+" " + Stats.BasicEliteEnemyKilled + "where Name =Basic elite enemy";
+                string updateBasicEliteEnemy = "Update Enemies set Enemy kills =Enemy kills " + " " + Stats.BasicEliteEnemyKilled + "where Name =Basic elite enemy";
                 WriteToDB(updateBasicEliteEnemy);
-                string updateSpitterBulletCounter = "Update Enemies set Spitter bullets shot = Spitter bullets shot "+" " + Stats.BasicBulletCounter + "where ID = 3";
+                string updateSpitterBulletCounter = "Update Enemies set Spitter bullets shot = Spitter bullets shot " + " " + Stats.BasicBulletCounter + "where ID = 3";
                 WriteToDB(updateSpitterBulletCounter);
                 string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
                 WriteToDB(totalWaves);
                 string totalGold = "Update Player set Gold = " + GameWorld.Instance.Vehicles + "where ID = 1";
                 WriteToDB(totalGold);
-                string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot "+" " + Stats.BasicBulletCounter + "where ID = 1";
+                string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot " + " " + Stats.BasicBulletCounter + "where ID = 1";
                 WriteToDB(updateBasicBulletCounter);
-                string updateBiggerBulletCounter = "Update Player set Bigger bullets shot = Basic bullets shot "+" " + Stats.BiggerBulletCounter + "where ID = 1";
+                string updateBiggerBulletCounter = "Update Player set Bigger bullets shot = Basic bullets shot " + " " + Stats.BiggerBulletCounter + "where ID = 1";
                 WriteToDB(updateBasicBulletCounter);
-                string updateSniperBulletCounter = "Update Player set Sniper bullets shot = Basic bullets shot "+" " + Stats.SniperBulletCounter + "where ID = 1";
+                string updateSniperBulletCounter = "Update Player set Sniper bullets shot = Basic bullets shot " + " " + Stats.SniperBulletCounter + "where ID = 1";
                 WriteToDB(updateSniperBulletCounter);
-                string updateShotgunBulletCounter = "Update Player set Shotgun bullets shot = Basic bullets shot "+" " + Stats.ShotgunPelletsCounter + "where ID = 1";
+                string updateShotgunBulletCounter = "Update Player set Shotgun bullets shot = Basic bullets shot " + " " + Stats.ShotgunPelletsCounter + "where ID = 1";
                 WriteToDB(updateShotgunBulletCounter);
                 if (GameWorld.Instance.GetMenu.PlayerAmount > 1)
                 {
@@ -215,37 +223,49 @@ namespace TankGame
                     WriteToDB(totalGoldPlayer2);
                     string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
                     WriteToDB(totalWaves2);
-                    string updateBasicBulletCounter2 = "Update Player set Basic bullets shot = Basic bullets shot "+" " + Stats.BasicBulletCounter + "where ID = 2";
+                    string updateBasicBulletCounter2 = "Update Player set Basic bullets shot = Basic bullets shot " + " " + Stats.BasicBulletCounter + "where ID = 2";
                     WriteToDB(updateBasicBulletCounter2);
-                    string updateBiggerBulletCounter2 = "Update Player set Bigger bullets shot = Basic bullets shot "+" " + Stats.BiggerBulletCounter + "where ID = 2";
+                    string updateBiggerBulletCounter2 = "Update Player set Bigger bullets shot = Basic bullets shot " + " " + Stats.BiggerBulletCounter + "where ID = 2";
                     WriteToDB(updateBiggerBulletCounter2);
-                    string updateSniperBulletCounter2 = "Update Player set Sniper bullets shot = Basic bullets shot "+" " + Stats.SniperBulletCounter + "where ID = 2";
+                    string updateSniperBulletCounter2 = "Update Player set Sniper bullets shot = Basic bullets shot " + " " + Stats.SniperBulletCounter + "where ID = 2";
                     WriteToDB(updateSniperBulletCounter2);
-                    string updateShotgunBulletCounter2 = "Update Player set Shotgun bullets shot = Basic bullets shot "+" " + Stats.ShotgunPelletsCounter + "where ID = 2";
+                    string updateShotgunBulletCounter2 = "Update Player set Shotgun bullets shot = Basic bullets shot " + " " + Stats.ShotgunPelletsCounter + "where ID = 2";
                     WriteToDB(updateShotgunBulletCounter2);
                 }
 
-                string totalEnemyDead = "Update Total stats set Total enemy dead = select sum (Enemy kills) from Enemies "+" Total enemy dead where ID = 1";
+                string totalEnemyDead = "Update Total stats set Total enemy dead = select sum (Enemy kills) from Enemies " + " Total enemy dead where ID = 1";
                 WriteToDB(totalEnemyDead);
-                string totalBulletsFired = "Update Total stats set Total bullets fired = select sum(Basic bullets shot, Bigger bullets shot, Sniper bullets shot, Shotgun bullets shot) from Player "+" Total bullets fired where ID = 1";
+                string totalBulletsFired = "Update Total stats set Total bullets fired = select sum(Basic bullets shot, Bigger bullets shot, Sniper bullets shot, Shotgun bullets shot) from Player " + " Total bullets fired where ID = 1";
                 WriteToDB(totalBulletsFired);
-                string totalTowerKills = "Update Total stats set Total tower kills = select sum(Tower kills) from Tower "+" Total tower kills where ID = 1";
+                string totalTowerKills = "Update Total stats set Total tower kills = select sum(Tower kills) from Tower " + " Total tower kills where ID = 1";
                 WriteToDB(totalTowerKills);
-                string totalTowerDead = "Update Total stats set Total tower dead = select sum(Tower dead) from Tower "+" Total tower dead where ID = 1";
+                string totalTowerDead = "Update Total stats set Total tower dead = select sum(Tower dead) from Tower " + " Total tower dead where ID = 1";
                 WriteToDB(totalTowerDead);
-                string totalTowerBuild = "Update Total stats set Total tower build = select sum (Tower build) from Tower "+" Total tower build where ID = 1";
+                string totalTowerBuild = "Update Total stats set Total tower build = select sum (Tower build) from Tower " + " Total tower build where ID = 1";
                 WriteToDB(totalTowerBuild);
             }
         }
 
         public void LoadScoreToScreen()
         {
+            int scoresCount = 0;
+            List<string> names = new List<string>();
+            List<int> scores = new List<int>();
+
+
             string highscore = "select Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
             SQLiteCommand command = new SQLiteCommand(highscore);
             SQLiteDataReader highscoreReader = command.ExecuteReader();
             while (highscoreReader.Read())
             {
-                
+                names.Add((string)highscoreReader["name"]);
+                scores.Add((int)highscoreReader["Score"]);
+            }
+
+
+            for (int i = 0; i < scoresCount; i++)
+            {
+                highscores.Add(new Highscore(names[i], scores[i], "", 1, 1, 1, 1, 1, 1, 1, 1, "", 1, 1, 1, 1, 1, 1, 1, 1, 1));
             }
         }
     }
