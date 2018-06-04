@@ -285,11 +285,13 @@ namespace TankGame
             }
             else
             {
-                if (isPlayingAnimation == false)
-                {
-                    animator.PlayAnimation("Idle");
-                    isPlayingAnimation = false;
-                }
+                animator.PlayAnimation("Idle");
+                isPlayingAnimation = false;
+                //if (isPlayingAnimation == false)
+                //{
+                //    animator.PlayAnimation("Idle");
+                //    isPlayingAnimation = false;
+                //}
             }
         }
 
