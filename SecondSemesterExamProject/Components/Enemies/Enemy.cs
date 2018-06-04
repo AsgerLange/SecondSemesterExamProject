@@ -43,9 +43,10 @@ namespace TankGame
                 health = value;
                 if (health <= 0)
                 {
+                    isPlayingAnimation = true;
                     isAlive = false;
                     animator.PlayAnimation("Death");
-                    isPlayingAnimation = true;
+                    health = 0;
                 }
             }
         }
@@ -284,8 +285,11 @@ namespace TankGame
             }
             else
             {
-                animator.PlayAnimation("Idle");
-                isPlayingAnimation = false;
+                if (isPlayingAnimation == false)
+                {
+                    animator.PlayAnimation("Idle");
+                    isPlayingAnimation = false;
+                }
             }
         }
 
@@ -370,6 +374,9 @@ namespace TankGame
                     Stats.SpitterKilled++;
                     break;
 
+                case EnemyType.Swarmer:
+                    Stats.SwarmerKilled++;
+                    break;
                 default:
                     System.Diagnostics.Debug.WriteLine("error incrementenemydeath");
                     break;

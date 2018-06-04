@@ -166,7 +166,7 @@ namespace TankGame
         protected override void Initialize()
         {
 
-            //graphics.ToggleFullScreen();
+           // graphics.ToggleFullScreen();
 
             IsMouseVisible = true;
 
