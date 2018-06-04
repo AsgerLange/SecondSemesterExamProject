@@ -18,13 +18,13 @@ namespace TankGame
         private int p2TypeInt;
         private string title = Constant.title;
         private Vector2 titlePos;
-        private Vector2 p1Pos = new Vector2(450, Constant.higth / 2);
-        private Vector2 p1UpPos = new Vector2(435, Constant.higth / 2 - 45);
-        private Vector2 startGamePos = new Vector2(Constant.width / 2 - 65, Constant.higth / 2 - 25);
-        private Vector2 p1DownPos = new Vector2(435, Constant.higth / 2 + 30);
-        private Vector2 p2Pos = new Vector2(Constant.width - 450, Constant.higth / 2);
-        private Vector2 p2UpPos = new Vector2(Constant.width - 465, Constant.higth / 2 - 45);
-        private Vector2 p2DownPos = new Vector2(Constant.width - 465, Constant.higth / 2 + 30);
+        private Vector2 p1Pos = new Vector2(450, Constant.hight / 2);
+        private Vector2 p1UpPos = new Vector2(435, Constant.hight / 2 - 45);
+        private Vector2 startGamePos = new Vector2(Constant.width / 2 - 65, Constant.hight / 2 - 25);
+        private Vector2 p1DownPos = new Vector2(435, Constant.hight / 2 + 30);
+        private Vector2 p2Pos = new Vector2(Constant.width - 450, Constant.hight / 2);
+        private Vector2 p2UpPos = new Vector2(Constant.width - 465, Constant.hight / 2 - 45);
+        private Vector2 p2DownPos = new Vector2(Constant.width - 465, Constant.hight / 2 + 30);
         private GameObject p1Choice;
         private GameObject p2Choice;
         private SpriteFont titleFont;
@@ -51,7 +51,7 @@ namespace TankGame
         private void AddVehiclesToBeDrawn()
         {
             p1Choice = new GameObject();
-            p1Choice.Transform.Position = new Vector2(20, Constant.higth / 2);
+            p1Choice.Transform.Position = new Vector2(20, Constant.hight / 2);
             p1Choice.AddComponent(new SpriteRenderer(p1Choice, Constant.tankSpriteSheet + "1", 0.05f));
             p1Choice.AddComponent(new Animator(p1Choice));
             p1Choice.AddComponent(new Tank(p1Choice, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
@@ -59,7 +59,7 @@ namespace TankGame
             ((Tank)p1Choice.GetComponent("Tank")).IsAlive = false;
 
             p2Choice = new GameObject();
-            p2Choice.Transform.Position = new Vector2(Constant.width - 250, Constant.higth / 2);
+            p2Choice.Transform.Position = new Vector2(Constant.width - 250, Constant.hight / 2);
             p2Choice.AddComponent(new SpriteRenderer(p2Choice, Constant.tankSpriteSheet + "2", 0.05f));
             p2Choice.AddComponent(new Animator(p2Choice));
             p2Choice.AddComponent(new Tank(p2Choice, Controls.WASD, Constant.tankHealth, Constant.tankMoveSpeed,
@@ -192,7 +192,7 @@ namespace TankGame
             {
                 p2Choice.Draw(spriteBatch);
             }
-            spriteBatch.Draw(menuBackGround, new Rectangle(0, 0, Constant.width, Constant.higth), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            spriteBatch.Draw(menuBackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
         }
 
         /// <summary>

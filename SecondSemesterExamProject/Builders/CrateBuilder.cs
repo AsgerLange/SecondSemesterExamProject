@@ -49,7 +49,7 @@ namespace TankGame
             go = new GameObject();
 
             go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(Constant.width),
-                GameWorld.Instance.Rnd.Next(Constant.higth));
+                GameWorld.Instance.Rnd.Next(Constant.hight));
 
             switch (type)
             {
