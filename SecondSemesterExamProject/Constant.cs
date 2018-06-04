@@ -223,7 +223,7 @@ namespace TankGame
         #region SwarmerEnemy
         public readonly static int swarmerEnemyGold = 2;
         public static readonly string swarmerEnemySpriteSheet = "SwarmerEnemy";
-        public static readonly int swarmerEnemyHealth = 100;
+        public static readonly int swarmerEnemyHealth = 30;
         public static readonly float swarmerEnemyMovementSpeed = 60;
         public static readonly float swarmerEnemyAttackRate = 0.6f;
         public static readonly int swarmerEnemyDamage = 5;

@@ -185,9 +185,9 @@ namespace TankGame
 
                 bool chosen = false;
                 int roll = rnd.Next(1001);
-                if (roll <= swarmerChance)
+                if (roll <= eliteBasicEnemyChance && !chosen)
                 {
-                    enemyType = EnemyType.Swarmer;
+                    enemyType = EnemyType.BasicEliteEnemy;
                     chosen = true;
                 }
                 else
@@ -201,9 +201,9 @@ namespace TankGame
                     else
                     {
                         roll = rnd.Next(1001);
-                        if (roll <= eliteBasicEnemyChance && !chosen)
+                        if (roll <= swarmerChance)
                         {
-                            enemyType = EnemyType.BasicEliteEnemy;
+                            enemyType = EnemyType.Swarmer;
                             chosen = true;
                         }
                         else
