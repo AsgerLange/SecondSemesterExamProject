@@ -219,9 +219,7 @@ namespace TankGame
         public static readonly int basicEliteEnemyDamage = 15;
         public readonly static int basicEliteEnemyAttackRadius = 150;
         public static readonly float basicEliteSpawnModifier = 100;
-
         #endregion
-
         #region SwarmerEnemy
         public readonly static int swarmerEnemyGold = 2;
         public static readonly string swarmerEnemySpriteSheet = "SwarmerEnemy";
@@ -230,7 +228,8 @@ namespace TankGame
         public static readonly float swarmerEnemyAttackRate = 0.6f;
         public static readonly int swarmerEnemyDamage = 5;
         public readonly static int swarmerEnemyAttackRadius = 150;
-        public static readonly float swarmerSpawnModifier = 300;
+        public static readonly int swarmerSpawnMax = 3;
+        public static readonly float swarmerSpawnModifier = 200;
         #endregion
         #endregion
         #region Ranged
@@ -241,12 +240,9 @@ namespace TankGame
         public static readonly float spitterMovementSpeed = 20;
         public static readonly float spitterAttackRate = 1.5f;
         public static readonly float spitterAttackRange = 150;
-        public static readonly float spitterSpawnModifier = 200;
-
+        public static readonly float spitterSpawnModifier = 150;
         public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
         public static readonly int spitterSpread = 4;
-
-
         #endregion
         #endregion
         #endregion
