@@ -22,7 +22,7 @@ namespace TankGame
             {
                 case VehicleType.Tank:
                     go = new GameObject();
-                    go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.higth / 2); //spawns in the middle
+                    go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.hight / 2); //spawns in the middle
                     go.AddComponent(new SpriteRenderer(go, Constant.tankSpriteSheet + playerNumber, 0.1f));//Sprite that fits player
                     go.AddComponent(new Animator(go));//allows go to be animated
 
@@ -34,7 +34,7 @@ namespace TankGame
 
                 case VehicleType.Bike:
                     go = new GameObject();
-                    go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.higth / 2);
+                    go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.hight / 2);
                     go.AddComponent(new SpriteRenderer(go, Constant.bikeSpriteSheet + playerNumber, 0.1f));
                     go.AddComponent(new Animator(go));
                     go.AddComponent(new Bike(go, controls, Constant.bikeHealth, Constant.bikeMoveSpeed
@@ -44,7 +44,7 @@ namespace TankGame
 
                 case VehicleType.Plane:
                     go = new GameObject();
-                    go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.higth / 2);
+                    go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.hight / 2);
                     go.AddComponent(new SpriteRenderer(go, Constant.planeSpriteSheet + playerNumber, 0.1f));
                     go.AddComponent(new Animator(go));
                     go.AddComponent(new Plane(go, controls, Constant.planeHealth, Constant.planeMoveSpeed
