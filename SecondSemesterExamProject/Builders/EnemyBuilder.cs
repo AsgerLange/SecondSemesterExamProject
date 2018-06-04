@@ -36,6 +36,16 @@ namespace TankGame
 
                     break;
 
+                case EnemyType.Swarmer:
+                    go.AddComponent(new SpriteRenderer(go, Constant.swarmerEnemySpriteSheet, 0.2f));
+
+                    go.AddComponent(new Animator(go));
+
+                    go.AddComponent(new SwarmerEnemy(go, Constant.swarmerEnemyHealth, Constant.swarmerEnemyDamage,
+                            Constant.swarmerEnemyMovementSpeed, Constant.swarmerEnemyAttackRate, Constant.swarmerEnemyAttackRadius, type));
+
+                    break;
+
                 case EnemyType.Spitter:
                     go.AddComponent(new SpriteRenderer(go, Constant.spitterSpriteSheet, 0.2f));
 

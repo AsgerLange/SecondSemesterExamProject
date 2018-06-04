@@ -22,6 +22,7 @@ namespace TankGame
         private float crateStamp;
         private float eliteBasicEnemyChance = Constant.basicEliteSpawnModifier;//spawn chance out of 1000
         private float spitterChance = Constant.spitterSpawnModifier;
+        private float swarmerChance = Constant.swarmerSpawnModifier;
 
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace TankGame
                 wave++;
                 eliteBasicEnemyChance += (eliteBasicEnemyChance * 0.03f);//add to the chance of harder enemies
                 spitterChance += (spitterChance * 0.03f);
+                swarmerChance += (swarmerChance * 0.03f);
 
                 int side = rnd.Next(0, 5);
                 Rectangle spawnRectangle;
@@ -183,9 +185,9 @@ namespace TankGame
 
                 bool chosen = false;
                 int roll = rnd.Next(1001);
-                if (roll <= eliteBasicEnemyChance)
+                if (roll <= swarmerChance)
                 {
-                    enemyType = EnemyType.BasicEliteEnemy;
+                    enemyType = EnemyType.Swarmer;
                     chosen = true;
                 }
                 else
@@ -198,10 +200,30 @@ namespace TankGame
                     }
                     else
                     {
-                        enemyType = EnemyType.BasicEnemy;
+                        roll = rnd.Next(1001);
+                        if (roll <= eliteBasicEnemyChance && !chosen)
+                        {
+                            enemyType = EnemyType.BasicEliteEnemy;
+                            chosen = true;
+                        }
+                        else
+                        {
+                            enemyType = EnemyType.BasicEnemy;
+                        }
                     }
                 }
-                EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
+                if (enemyType == EnemyType.Swarmer)
+                {
+                    roll = rnd.Next(1, Constant.swarmerSpawnMax + 1);
+                    for (int s = 0; s < roll; s++)
+                    {
+                        EnemyPool.Instance.CreateEnemy(new Vector2(spawnPos.X + s, spawnPos.Y), enemyType);
+                    }
+                }
+                else
+                {
+                    EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
+                }
 
                 spawned++;
             }
