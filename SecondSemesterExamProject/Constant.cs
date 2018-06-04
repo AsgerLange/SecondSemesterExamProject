@@ -221,7 +221,7 @@ namespace TankGame
         public static readonly float basicEliteSpawnModifier = 100;
         #endregion
         #region SwarmerEnemy
-        public readonly static int swarmerEnemyGold = 2;
+        public readonly static int swarmerEnemyGold = 1;
         public static readonly string swarmerEnemySpriteSheet = "SwarmerEnemy";
         public static readonly int swarmerEnemyHealth = 30;
         public static readonly float swarmerEnemyMovementSpeed = 60;
