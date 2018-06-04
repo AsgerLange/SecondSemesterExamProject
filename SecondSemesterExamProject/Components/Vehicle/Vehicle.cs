@@ -457,7 +457,7 @@ namespace TankGame
 
             if (latestLootCrate != null)
             {
-                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
+                if (lootTimeStamp + 3 /* Seconds*/>= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
                 {
                     if (control == Controls.WASD)//p1
                     {
