@@ -37,40 +37,40 @@ namespace TankGame
         #endregion;
 
         #region BulletCounters
-        private static int basicBulletCounter;
-        private static int biggerBulletCounter;
-        private static int sniperBulletCounter;
-        private static int shotgunPelletsCounter;
-        private static int spitterBulletCounter;
+        private  int basicBulletCounter;
+        private  int biggerBulletCounter;
+        private  int sniperBulletCounter;
+        private  int shotgunPelletsCounter;
+        private  int spitterBulletCounter;
 
-        private static int bulletsMissed;
+        private  int bulletsMissed;
 
-        public static int BulletsMissed
+        public  int BulletsMissed
         {
             get { return bulletsMissed; }
             set { bulletsMissed = value; }
         }
-        public static int BasicBulletCounter
+        public  int BasicBulletCounter
         {
             get { return basicBulletCounter; }
             set { basicBulletCounter = value; }
         }
-        public static int BiggerBulletCounter
+        public  int BiggerBulletCounter
         {
             get { return biggerBulletCounter; }
             set { biggerBulletCounter = value; }
         }
-        public static int SniperBulletCounter
+        public  int SniperBulletCounter
         {
             get { return sniperBulletCounter; }
             set { sniperBulletCounter = value; }
         }
-        public static int ShotgunPelletsCounter
+        public  int ShotgunPelletsCounter
         {
             get { return shotgunPelletsCounter; }
             set { shotgunPelletsCounter = value; }
         }
-        public static int SpitterBulletCounter
+        public  int SpitterBulletCounter
         {
             get { return spitterBulletCounter; }
             set { spitterBulletCounter = value; }
@@ -166,29 +166,30 @@ namespace TankGame
         }
         #endregion
 
+        public Stats(Vehicle vehicle)
+        {
+            this.vehicle = vehicle;
+        }
         /// <summary>
         /// Calculates Accuracy, based on total amounts of bullets fired and missed
         /// </summary>
         /// <returns></returns>
-        public static int CalculateAccuracy()
+        public  int CalculateAccuracy()
         {
             float result;
 
             float sum;
 
-                sum = BasicBulletCounter + biggerBulletCounter + sniperBulletCounter + shotgunPelletsCounter;
+                sum = vehicle.Stats.BasicBulletCounter + vehicle.Stats.biggerBulletCounter +
+                vehicle.Stats.sniperBulletCounter + vehicle.Stats.shotgunPelletsCounter;
             if (sum ==0)
             {
                 sum = 1;
             }
-            result = bulletsMissed / sum * 100;
+            result = vehicle.Stats.bulletsMissed / sum * 100;
 
             result = 100 - result;
             return (int)result;
-        }
-        public Stats(Vehicle vehicle)
-        {
-            this.vehicle = vehicle;
         }
     }
 }

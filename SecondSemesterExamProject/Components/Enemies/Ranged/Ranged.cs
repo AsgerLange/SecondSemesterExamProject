@@ -68,7 +68,7 @@ namespace TankGame
 
                     RotateToMatchDirection(direction);
                                     
-                    BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Enemy,
+                    BulletPool.CreateBullet(GameObject, Alignment.Enemy,
                         bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
 
                     if (attackVariation > 2)//Adds animation variation
