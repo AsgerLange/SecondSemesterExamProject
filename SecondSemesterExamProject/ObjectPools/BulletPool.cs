@@ -321,7 +321,7 @@ namespace TankGame
                     vehicle.Stats.SniperBulletCounter++;
                     break;
                 case BulletType.SpitterBullet:
-                    vehicle.Stats.SpitterBulletCounter++;
+                    Stats.SpitterBulletCounter++;
                     break;
                 default:
                     System.Diagnostics.Debug.WriteLine("Error in bullet pool IncrementBulletCounts()");
