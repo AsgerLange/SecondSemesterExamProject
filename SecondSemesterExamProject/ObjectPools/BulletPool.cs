@@ -51,9 +51,15 @@ namespace TankGame
         /// <param name="position">The position where the bullet should spawn</param>
         /// <param name="alignment">The allignment of the bullet (Enemy/Friendly/neutral)</param>
         /// <returns></returns>
-        public static GameObject CreateBullet(Vector2 position, Alignment alignment, BulletType bulletType, float directionRotation)
+        public static GameObject CreateBullet(GameObject gameObject, Alignment alignment, BulletType bulletType, float directionRotation)
         {
-            IncrementBulletCounts(bulletType);
+            Vehicle shooter = FindShooter(gameObject);
+
+            if (shooter != null)
+            {
+
+                IncrementBulletCounts(bulletType, shooter);
+            }
 
             if (inActiveBullets.Count > 0)
             {
@@ -68,6 +74,7 @@ namespace TankGame
                             {
                                 if (((Bullet)comp).GetBulletType == bulletType)
                                 {
+
                                     tmp = bul;
                                     break;
                                 }
@@ -102,6 +109,7 @@ namespace TankGame
 
                     ((Bullet)bullet).CanRelease = true;
                     ((Bullet)bullet).ShouldDie = false;
+                    ((Bullet)bullet).Shooter = shooter;
 
                     ((Bullet)bullet).DirRotation = directionRotation;
 
@@ -113,7 +121,7 @@ namespace TankGame
                         ((Collider)tmp.GetComponent("Collider")).GetAlignment = alignment;
                         GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
                     }
-                    tmp.Transform.Position = position;
+                    tmp.Transform.Position = gameObject.Transform.Position;
 
                     lock (activeListKey)
                     {
@@ -126,7 +134,10 @@ namespace TankGame
                 }
                 else
                 {
-                    tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
+                    tmp = GameObjectDirector.Instance.Construct(gameObject.Transform.Position, bulletType, directionRotation, alignment);
+
+                    FindBullet(tmp).Shooter = shooter;
+
                     lock (activeListKey)
                     {
 
@@ -141,7 +152,9 @@ namespace TankGame
             {
                 GameObject tmp;
 
-                tmp = GameObjectDirector.Instance.Construct(position, bulletType, directionRotation, alignment);
+                tmp = GameObjectDirector.Instance.Construct(gameObject.Transform.Position, bulletType, directionRotation, alignment);
+                FindBullet(tmp).Shooter = shooter;
+
                 lock (activeListKey)
                 {
 
@@ -252,24 +265,60 @@ namespace TankGame
         }
 
         /// <summary>
+        /// Returns the shooter (vehicle)of the bullet
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <returns></returns>
+        private static Vehicle FindShooter(GameObject gameObject)
+        {
+            Vehicle shooter = null;
+
+            foreach (Component comp in gameObject.GetComponentList)
+            {
+                if (comp is Vehicle)
+                {
+                    shooter = (comp as Vehicle);
+                    break;
+                }
+            }
+
+            return shooter;
+        }
+
+        private static Bullet FindBullet(GameObject gameObject)
+        {
+            Bullet bullet = null;
+            foreach (Component comp in gameObject.GetComponentList)
+            {
+                if (comp is Bullet)
+                {
+                    bullet = (comp as Bullet);
+                    break;
+                }
+
+            }
+            return bullet;
+        }
+        /// <summary>
         /// Increments the appopriate bullet counter when shot is fired.
         /// </summary>
         /// <param name="type">Type of bullet that was fired</param>
-        private static void IncrementBulletCounts(BulletType type)
+        private static void IncrementBulletCounts(BulletType type, Vehicle vehicle)
         {
+
             switch (type)
             {
                 case BulletType.BasicBullet:
-                    Stats.BasicBulletCounter++;
+                    vehicle.Stats.BasicBulletCounter++;
                     break;
                 case BulletType.BiggerBullet:
-                    Stats.BiggerBulletCounter++;
+                    vehicle.Stats.BiggerBulletCounter++;
                     break;
                 case BulletType.ShotgunPellet:
-                    Stats.ShotgunPelletsCounter++;
+                    vehicle.Stats.ShotgunPelletsCounter++;
                     break;
                 case BulletType.SniperBullet:
-                    Stats.SniperBulletCounter++;
+                    vehicle.Stats.SniperBulletCounter++;
                     break;
                 case BulletType.SpitterBullet:
                     Stats.SpitterBulletCounter++;
@@ -277,7 +326,10 @@ namespace TankGame
                 default:
                     System.Diagnostics.Debug.WriteLine("Error in bullet pool IncrementBulletCounts()");
                     break;
+
             }
+
+
         }
     }
 

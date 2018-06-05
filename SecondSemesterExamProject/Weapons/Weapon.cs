@@ -65,10 +65,10 @@ namespace TankGame
         /// <param name="vector2"></param>
         /// <param name="alignment"></param>
         /// <param name="rotation"></param>
-        public virtual void Shoot(Vector2 vector2, Alignment alignment, float rotation)
+        public virtual void Shoot(Alignment alignment, float rotation)
         {
 
-            BulletPool.CreateBullet(vector2, alignment,
+            BulletPool.CreateBullet(go, alignment,
                        bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             Ammo--;
 
