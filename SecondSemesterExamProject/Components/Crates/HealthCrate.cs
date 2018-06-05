@@ -41,6 +41,7 @@ namespace TankGame
 
         protected override void GiveLoot(Vehicle vehicle)
         {
+            base.GiveLoot(vehicle);
             vehicle.Health += healthToGive;
 
             vehicle.LatestLootCrate = this;
