@@ -32,7 +32,7 @@ namespace TankGame
 
         public Score()
         {
-            textBox = new Rectangle(20, 20, 150, 50);//the textbox pos
+            textBox = new Rectangle(Constant.width / 2 - 150, Constant.hight / 2, 300, 50);//the textbox pos
 
             if (!(File.Exists(@"TankGameDatabase.db")))
             {
@@ -107,7 +107,7 @@ namespace TankGame
             string tower = "Create table Tower (ID integer, Tower_name varchar primary key, Tower_kills int, Tower_Build int, Tower_Dead int,foreign key(ID) REFERENCES higscores(ID))";
             string player = "Create table Player (ID integer, Gold int, Accuracy int, PlayerID integer, Wave int, foreign key(ID) REFERENCES higscores(ID))";
             string enemies = "Create table Enemies (ID integer, Enemy_name varchar primary key, Enemy_kills int, Spitter_bullets_shot,foreign key(ID) REFERENCES higscores(ID))";
-            string bullets = "Create table bullets (PlayerID integer, bullets_shot int, bullet_Name, foreign key(PlayerID) REFERENCES player(PlayerID))";
+            string bullets = "Create table bullets (ID integer, PlayerID integer, bullets_shot int, bullet_Name, foreign key(PlayerID) REFERENCES player(PlayerID),foreign key(ID) REFERENCES higscores(ID))";
 
             WriteToDB(highscore);
             WriteToDB(totalStats);
@@ -168,7 +168,7 @@ namespace TankGame
                 nameEntered = true;
                 CreateHighScore();
             }
-            else
+            else if (keyString.Length < 21)
             {
                 name += keyString;
             }
@@ -199,8 +199,8 @@ namespace TankGame
             spriteBatch.Draw(BackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             if (scoreSaved == false && nameEntered == false)
             {
-                spriteBatch.Draw(theBox, textBox, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);//Draws the box
-                spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X, textBox.Y), Color.Black);//Draws the text
+                spriteBatch.Draw(theBox, new Vector2(textBox.X, textBox.Y - 10), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
+                spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Black);//Draws the text
             }
             if (scoreSaved && nameEntered)
             {
@@ -237,12 +237,20 @@ namespace TankGame
         /// </summary>
         public void CreateHighScore()
         {
+            int id = 0;
             SQLiteConnection dbConnect = new SQLiteConnection("Data source=TankGameDatabase.db;Version=3;");
             string insert = "insert into highscores (ID,name, score) values (null, '" + name + "', " + GameWorld.Instance.GetGameOver.Score + ")";
-            WriteToDB(insert);
+            SQLiteConnection DBConnect = new SQLiteConnection("Data source = TankGameDatabase.db; Version = 3; ");
+            DBConnect.Open();
+            SQLiteCommand Command = new SQLiteCommand(insert, DBConnect);
+            Command.ExecuteNonQuery();
 
-            string getID = "SELECT last_insert_rowid()";
-            int id = ReadFromDB(getID, "ID", 1)[0];
+            //get ID of the new Row
+            string getID = @"SELECT last_insert_rowid()";
+            SQLiteCommand cmd = new SQLiteCommand(getID, DBConnect);
+            Int64 LastRowID64 = (Int64)cmd.ExecuteScalar();
+            id = (int)LastRowID64;
+            DBConnect.Close();
 
             InsertThings(id);
         }
@@ -260,72 +268,60 @@ namespace TankGame
                     if (VH.Control == Controls.WASD)
                     {
                         gold = VH.Stats.TotalAmountOfGold;
-                        accuracy = VH.Stats.TotalAmountOfGold;
+                        accuracy = VH.Stats.CalculateAccuracy();
                     }
                 }
-                int wave = 0;
-                string player1 = "insert into player (ID,gold, Accuracy,PlayerID,wave) values (1," + gold + "," + accuracy + ",1," + wave + ");";
+                int wave = GameWorld.Instance.GetSpawn.Wave;
+                string player1 = "insert into player (ID,gold, Accuracy,PlayerID,wave) values (" + ID + "," + gold + "," + accuracy + ",1," + wave + ");";
                 WriteToDB(player1);
+                WriteBullets(ID, 1);
             }
             if (GameWorld.Instance.GetMenu.P2 != VehicleType.None)
             {
-                string player2 = "";
+                int gold = 0;
+                int accuracy = 0;
+                foreach (Vehicle VH in GameWorld.Instance.Vehicles)
+                {
+                    if (VH.Control == Controls.UDLR)
+                    {
+                        gold = VH.Stats.TotalAmountOfGold;
+                        accuracy = VH.Stats.CalculateAccuracy();
+                    }
+                }
+                int wave = GameWorld.Instance.GetSpawn.Wave;
+                string player2 = "insert into player (ID,gold, Accuracy,PlayerID,wave) values (" + ID + "," + gold + "," + accuracy + ",2," + wave + ");";
                 WriteToDB(player2);
+                WriteBullets(ID, 2);
             }
+
+            scoreSaved = true;
         }
 
         /// <summary>
-        /// Update everything here please  
+        /// writes in the number bullets a player has shot
         /// </summary>
-        public void UpdateData()
+        /// <param name="ID"></param>
+        /// <param name="playerID"></param>
+        private void WriteBullets(int ID, int playerID)
         {
-            if (GameWorld.Instance.GetGameState == GameState.GameOver)
+            int basicBulletShot = 0;
+            int biggerBulletShot = 0;
+            int sniperBulletShot = 0;
+            int shotgunBulletShot = 0;
+            foreach (Vehicle VH in GameWorld.Instance.Vehicles)
             {
-                string updateDeadEnemies = "Update Enemies set Enemy kills =Enemy kills " + " " + Stats.BasicEnemyKilled + "where Name = Basic enemy";
-                WriteToDB(updateDeadEnemies);
-                string updateBasicEliteEnemy = "Update Enemies set Enemy kills =Enemy kills " + " " + Stats.BasicEliteEnemyKilled + "where Name =Basic elite enemy";
-                WriteToDB(updateBasicEliteEnemy);
-                string updateSpitterBulletCounter = "Update Enemies set Spitter bullets shot = Spitter bullets shot " + " " + Stats.BasicBulletCounter + "where ID = 3";
-                WriteToDB(updateSpitterBulletCounter);
-                string totalWaves = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 1";
-                WriteToDB(totalWaves);
-                string totalGold = "Update Player set Gold = " + GameWorld.Instance.Vehicles + "where ID = 1";
-                WriteToDB(totalGold);
-                string updateBasicBulletCounter = "Update Player set Basic bullets shot = Basic bullets shot " + " " + Stats.BasicBulletCounter + "where ID = 1";
-                WriteToDB(updateBasicBulletCounter);
-                string updateBiggerBulletCounter = "Update Player set Bigger bullets shot = Basic bullets shot " + " " + Stats.BiggerBulletCounter + "where ID = 1";
-                WriteToDB(updateBasicBulletCounter);
-                string updateSniperBulletCounter = "Update Player set Sniper bullets shot = Basic bullets shot " + " " + Stats.SniperBulletCounter + "where ID = 1";
-                WriteToDB(updateSniperBulletCounter);
-                string updateShotgunBulletCounter = "Update Player set Shotgun bullets shot = Basic bullets shot " + " " + Stats.ShotgunPelletsCounter + "where ID = 1";
-                WriteToDB(updateShotgunBulletCounter);
-                if (GameWorld.Instance.GetMenu.PlayerAmount > 1)
+                if ((playerID == 1 && VH.Control == Controls.WASD) || (playerID == 2 && VH.Control == Controls.UDLR))
                 {
-                    string totalGoldPlayer2 = "Update Player set Gold " + GameWorld.Instance.Vehicles + " where ID = 2";
-                    WriteToDB(totalGoldPlayer2);
-                    string totalWaves2 = "Update Player set Wave = " + GameWorld.Instance.GetSpawn.Wave + "where ID = 2";
-                    WriteToDB(totalWaves2);
-                    string updateBasicBulletCounter2 = "Update Player set Basic bullets shot = Basic bullets shot " + " " + Stats.BasicBulletCounter + "where ID = 2";
-                    WriteToDB(updateBasicBulletCounter2);
-                    string updateBiggerBulletCounter2 = "Update Player set Bigger bullets shot = Basic bullets shot " + " " + Stats.BiggerBulletCounter + "where ID = 2";
-                    WriteToDB(updateBiggerBulletCounter2);
-                    string updateSniperBulletCounter2 = "Update Player set Sniper bullets shot = Basic bullets shot " + " " + Stats.SniperBulletCounter + "where ID = 2";
-                    WriteToDB(updateSniperBulletCounter2);
-                    string updateShotgunBulletCounter2 = "Update Player set Shotgun bullets shot = Basic bullets shot " + " " + Stats.ShotgunPelletsCounter + "where ID = 2";
-                    WriteToDB(updateShotgunBulletCounter2);
+                    basicBulletShot = VH.Stats.BasicBulletCounter;
+                    biggerBulletShot = VH.Stats.BiggerBulletCounter;
+                    sniperBulletShot = VH.Stats.SniperBulletCounter;
+                    shotgunBulletShot = VH.Stats.ShotgunPelletsCounter;
                 }
-
-                string totalEnemyDead = "Update Total stats set Total enemy dead = select sum (Enemy kills) from Enemies " + " Total enemy dead where ID = 1";
-                WriteToDB(totalEnemyDead);
-                string totalBulletsFired = "Update Total stats set Total bullets fired = select sum(Basic bullets shot, Bigger bullets shot, Sniper bullets shot, Shotgun bullets shot) from Player " + " Total bullets fired where ID = 1";
-                WriteToDB(totalBulletsFired);
-                string totalTowerKills = "Update Total stats set Total tower kills = select sum(Tower kills) from Tower " + " Total tower kills where ID = 1";
-                WriteToDB(totalTowerKills);
-                string totalTowerDead = "Update Total stats set Total tower dead = select sum(Tower dead) from Tower " + " Total tower dead where ID = 1";
-                WriteToDB(totalTowerDead);
-                string totalTowerBuild = "Update Total stats set Total tower build = select sum (Tower build) from Tower " + " Total tower build where ID = 1";
-                WriteToDB(totalTowerBuild);
             }
+            string basicBullet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + basicBulletShot + "," + "BasicBullet" + "); ";
+            string biggerBullet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + biggerBulletShot + "," + "biggerBullet" + "); ";
+            string sniperBullet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + sniperBulletShot + "," + "sniperBullet" + "); ";
+            string shotgunPellet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + shotgunBulletShot + "," + "shotgunPellet" + "); ";
         }
 
         public void LoadScoreToScreen()

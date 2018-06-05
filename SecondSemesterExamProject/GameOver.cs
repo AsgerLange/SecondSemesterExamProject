@@ -30,7 +30,7 @@ namespace TankGame
         public GameOver()
         {
             string text = "Continue";
-            Button Continue = new Button(new Vector2(Constant.width / 2, Constant.hight - 200), Constant.RedButtonTexture, Constant.buttonFont)
+            Button Continue = new Button(new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
             {
                 Text = text
             };
