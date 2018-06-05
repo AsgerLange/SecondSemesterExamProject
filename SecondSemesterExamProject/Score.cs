@@ -51,14 +51,54 @@ namespace TankGame
             DBConnect.Close();
         }
 
+        /// <summary>
+        /// returns a list of strings from DB
+        /// </summary>
+        /// <param name="command"></param>
+        public List<string> ReadFromDB(string command, string returnValue)
+        {
+            List<string> returnList = new List<string>();
+            SQLiteConnection DBConnect = new SQLiteConnection("Data source = TankGameDatabase.db; Version = 3; ");
+            DBConnect.Open();
+            SQLiteCommand Command = new SQLiteCommand(command, DBConnect);
+            SQLiteDataReader highscoreReader = Command.ExecuteReader();
+            while (highscoreReader.Read())
+            {
+                returnList.Add((string)highscoreReader[returnValue]);
+            }
+            DBConnect.Close();
+
+            return returnList;
+        }
+
+        /// <summary>
+        /// returns a list of ints from DB
+        /// </summary>
+        /// <param name="command"></param>
+        public List<int> ReadFromDB(string command, string returnValue, int overload)
+        {
+            List<int> returnList = new List<int>();
+            SQLiteConnection DBConnect = new SQLiteConnection("Data source = TankGameDatabase.db; Version = 3; ");
+            DBConnect.Open();
+            SQLiteCommand Command = new SQLiteCommand(command, DBConnect);
+            SQLiteDataReader highscoreReader = Command.ExecuteReader();
+            while (highscoreReader.Read())
+            {
+                returnList.Add((int)highscoreReader[returnValue]);
+            }
+            DBConnect.Close();
+
+            return returnList;
+        }
+
         public void CreateTables()
         {
 
-            string highscore = "Create table Highscores (ID varchar, Placing int, Name string, Score int)";
-            string totalStats = "Create table Total stats (ID varchar,Total bullets fired int, Total tower build int, Total tower dead int, Total tower kills int,Total player kills int, Total enemy dead int )";
-            string tower = "Create table Tower (ID varchar, Tower name string, Tower kills int, Tower Build int, Tower Dead int)";
-            string player = "Create table Player (ID varchar,Basic bullets shot int,Bigger bullets shot int,Sniper bullets shot int,Shotgun bullets shot int, Gold int, Wave int)";
-            string enemies = "Create table Enemies (ID varchar, Enemy name string, Enemy kills int, Spitter bullets shot";
+            string highscore = "Create table Highscores (ID integer primary key, Placing int, Name varchar, Score int)";
+            string totalStats = "Create table Total_stats (ID integer ,Total_bullets_fired int, Total_tower_build int, Total_tower_dead int, Total_tower_kills int,Total_player_kills int, Total_enemy_dead int, foreign key(ID) REFERENCES higscores(ID) )";
+            string tower = "Create table Tower (ID integer primary key, Tower_name varchar, Tower_kills int, Tower_Build int, Tower_Dead int,foreign key(ID) REFERENCES higscores(ID))";
+            string player = "Create table Player (ID integer primary key,Basic_bullets_shot int,Bigger_bullets_shot int,Sniper_bullets_shot int,Shotgun_bullets_shot int, Gold int, Wave int,foreign key(ID) REFERENCES higscores(ID))";
+            string enemies = "Create table Enemies (ID integer primary key, Enemy_name varchar, Enemy_kills int, Spitter_bullets_shot,foreign key(ID) REFERENCES higscores(ID))";
 
             WriteToDB(highscore);
             WriteToDB(totalStats);
@@ -168,8 +208,8 @@ namespace TankGame
         /// </summary>
         public void InsertThings()
         {
-            string basicEnemy = "insert into Enemies (ID, Enemy name, Enemy kills,) values (null,Basic enemy,0)";
-            string basicEliteEnemy = "insert into Enemies (ID, Enemy name, Enemy kills) values (null,Basic elite enemyy,0)";
+            string basicEnemy = "Insert into Enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (null,'Basic_enemy',0,null);";
+            string basicEliteEnemy = "insert into Enemies (ID, Enemy name, Enemy kills) values (null,Basic elite enemy,0)";
             string spitterEnemy = "insert into Enemies (ID, Enemy name, Enemy kills, Spitter bullets shot) values (null,Spitter enemy, 0, 0)";
             string player = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,0,0,0,100,0)";
             string player2 = "insert into Player (ID, Bullets shot, Gold, Wave) values (null,0,0,0,0,100,0)";
@@ -177,7 +217,7 @@ namespace TankGame
             string shotgunTower = "insert into Tower (ID, Tower name, Tower kills, Tower build, Tower dead) values (null,Shotgun tower,0,0,0)";
             string sniperTower = "insert into Tower (ID, Tower name, Tower kills, Tower build, Tower dead) values (null,Sniper tower,0,0,0)";
             string machinegunTower = "insert into Tower (ID, Tower name, Tower kills, Tower build, Tower dead) values1 values (null,Machinegun tower,0,0,0)";
-            string totalData = "insert into Total stats (ID, Tower name, Total tower build, Total tower dead, Total tower kills, Total player kills, Total enemy dead) values(null,0,0,0,0,0)";
+            string totalData = "insert into Total stats (ID, Total_bullets_fired, Total tower build, Total tower dead, Total tower kills, Total player kills, Total enemy dead) values(null,0,0,0,0,0,0)";
 
             WriteToDB(basicEnemy);
             WriteToDB(basicEliteEnemy);
@@ -253,6 +293,8 @@ namespace TankGame
             int scoresCount = 0;
             List<string> names = new List<string>();
             List<int> scores = new List<int>();
+            List<int> ids = new List<int>();
+
             List<string> enemyNames = new List<string>();
             List<int> enemyKills = new List<int>();
             List<int> spitterBullets = new List<int>();
@@ -273,14 +315,17 @@ namespace TankGame
             List<int> totalEnemyDead = new List<int>();
             List<int> totalPlayerKills = new List<int>();
 
-            string highscore = "select Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
-            SQLiteCommand command = new SQLiteCommand(highscore);
+            SQLiteConnection DBConnect = new SQLiteConnection("Data source = TankGameDatabase.db; Version = 3; ");
+            DBConnect.Open();
+            string highscore = "select Highscore.Name, Highscore.Score, HighScore.ID from Highscore limit 10 order by score desc";
+            SQLiteCommand command = new SQLiteCommand(highscore, DBConnect);
             SQLiteDataReader highscoreReader = command.ExecuteReader();
             while (highscoreReader.Read())
             {
                 names.Add((string)highscoreReader["Name"]);
                 scores.Add((int)highscoreReader["Score"]);
-                enemyNames.Add((string)highscoreReader["Enemy name"]);
+                ids.Add((int)highscoreReader["ID"]);
+
                 enemyKills.Add((int)highscoreReader["Enemy kills"]);
                 spitterBullets.Add((int)highscoreReader["Spitter bullets shot"]);
                 gold.Add((int)highscoreReader["Gold"]);
@@ -300,11 +345,17 @@ namespace TankGame
                 totalEnemyDead.Add((int)highscoreReader["Total enemy dead"]);
                 totalPlayerKills.Add((int)highscoreReader["Total player kills"]);
             }
+            DBConnect.Close();
+            string enemyNameCommand = "";//command to get EnemyName
+            enemyNames = ReadFromDB(enemyNameCommand, "Enemy name");
+
+            string enemyKillCommand = "";//command to get EnemyName
+            enemyKills = ReadFromDB(enemyKillCommand, "Enemy kills", 1);
 
 
             for (int i = 0; i < scoresCount; i++)
             {
-                highscores.Add(new Highscore(names[i], scores[i], enemyNames[i], enemyKills[i], spitterBullets[i], gold[i], basicBullets[i], biggerBullets[i], sniperBullets[i], shotgunBullets[i], 
+                highscores.Add(new Highscore(names[i], scores[i], enemyNames[i], enemyKills[i], spitterBullets[i], gold[i], basicBullets[i], biggerBullets[i], sniperBullets[i], shotgunBullets[i],
                 waves[i], towerNames[i], towerKills[i], towerDead[i], towerBuild[i], totalBullets[i], totalTowersBuild[i], totalTowersDead[i], totalTowerKills[i], totalEnemyDead[i], totalPlayerKills[i]));
             }
         }
