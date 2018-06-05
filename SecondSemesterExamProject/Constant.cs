@@ -17,7 +17,7 @@ namespace TankGame
     class Constant
     {
         public readonly static int width = 1240;
-        public readonly static int higth = 720;
+        public readonly static int hight = 720;
 
         #region Menu
         public readonly static string menuBackGround = "Background1";
@@ -44,7 +44,7 @@ namespace TankGame
         #endregion
 
         #region Vehicles
-        public static readonly float buildTowerCoolDown = 1;
+        public static readonly float buildTowerCoolDown = 0.25f;
         public static readonly int respawntime = 15;
         public static readonly int maxAmountOfVehicles = 2;
 
@@ -213,22 +213,24 @@ namespace TankGame
         #region BasicEliteEnemy
         public readonly static int basicEliteEnemyGold = 6;
         public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
-        public static readonly int basicEliteEnemyHealth = 500;
-        public static readonly float basicEliteEnemyMovementSpeed = 30;
+        public static readonly int basicEliteEnemyHealth = 600;
+        public static readonly float basicEliteEnemyMovementSpeed = 35;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
         public static readonly int basicEliteEnemyDamage = 15;
         public readonly static int basicEliteEnemyAttackRadius = 150;
+        public static readonly float basicEliteSpawnWave = 15;
         public static readonly float basicEliteSpawnModifier = 100;
         #endregion
         #region SwarmerEnemy
-        public readonly static int swarmerEnemyGold = 2;
+        public readonly static int swarmerEnemyGold = 1;
         public static readonly string swarmerEnemySpriteSheet = "SwarmerEnemy";
-        public static readonly int swarmerEnemyHealth = 100;
+        public static readonly int swarmerEnemyHealth = 30;
         public static readonly float swarmerEnemyMovementSpeed = 60;
         public static readonly float swarmerEnemyAttackRate = 0.6f;
         public static readonly int swarmerEnemyDamage = 5;
         public readonly static int swarmerEnemyAttackRadius = 150;
         public static readonly int swarmerSpawnMax = 3;
+        public static readonly float swarmerSpawnWave = 3;
         public static readonly float swarmerSpawnModifier = 200;
         #endregion
         #endregion
@@ -240,6 +242,7 @@ namespace TankGame
         public static readonly float spitterMovementSpeed = 20;
         public static readonly float spitterAttackRate = 1.5f;
         public static readonly float spitterAttackRange = 150;
+        public static readonly float spitterSpawnWave = 5;
         public static readonly float spitterSpawnModifier = 150;
         public static readonly BulletType spitterBulletType = BulletType.SpitterBullet;
         public static readonly int spitterSpread = 4;

@@ -55,7 +55,7 @@ namespace TankGame
                 {
                     translation.X = 0;
                 }
-                if (position.Y >= Constant.higth && translation.Y >= 0 && comp == null)
+                if (position.Y >= Constant.hight && translation.Y >= 0 && comp == null)
                 {
                     translation.Y = 0;
                 }
