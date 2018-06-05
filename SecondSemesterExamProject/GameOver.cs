@@ -61,7 +61,7 @@ namespace TankGame
 
         private void DrawEnemiesKilled(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, "Enemies killed: ", new Vector2(statsPosX, 120), statsColor);
+            spriteBatch.DrawString(font, "Enemies killed", new Vector2(statsPosX, 120), statsColor);
 
             spriteBatch.DrawString(font, "Basic Enemies killed: " + Stats.BasicEnemyKilled,
                 new Vector2(statsPosX, 140), Color.Gold);
