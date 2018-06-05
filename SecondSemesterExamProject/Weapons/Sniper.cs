@@ -17,10 +17,10 @@ namespace TankGame
             this.weaponSpread = Constant.sniperSpread;
         }
 
-        public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)
+        public override void Shoot(Alignment alignment, float rotation)
         {
             vehicle.Stats.SniperFired++;
-            base.Shoot(vector2, alignment, rotation);
+            base.Shoot(alignment, rotation);
         }
 
     public override string ToString()

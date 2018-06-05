@@ -26,10 +26,10 @@ namespace TankGame
         /// <param name="vector2"></param>
         /// <param name="alignment"></param>
         /// <param name="rotation"></param>
-        public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)
+        public override void Shoot(Alignment alignment, float rotation)
         {
             vehicle.Stats.MachinegunFired++;
-            base.Shoot(vector2,alignment,rotation);
+            base.Shoot(alignment,rotation);
         }
         public override string ToString()
         {
