@@ -41,7 +41,7 @@ namespace TankGame
         private  int biggerBulletCounter;
         private  int sniperBulletCounter;
         private  int shotgunPelletsCounter;
-        private  int spitterBulletCounter;
+        private static  int spitterBulletCounter;
 
         private  int bulletsMissed;
 
@@ -70,7 +70,7 @@ namespace TankGame
             get { return shotgunPelletsCounter; }
             set { shotgunPelletsCounter = value; }
         }
-        public  int SpitterBulletCounter
+        public static int SpitterBulletCounter
         {
             get { return spitterBulletCounter; }
             set { spitterBulletCounter = value; }
