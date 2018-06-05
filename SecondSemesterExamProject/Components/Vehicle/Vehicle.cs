@@ -221,7 +221,7 @@ namespace TankGame
                 if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly, Rotation); //Fires the weapon
+                    weapon.Shoot( Alignment.Friendly, Rotation); //Fires the weapon
 
                     animator.PlayAnimation("Shoot"); //play shooting animation
 

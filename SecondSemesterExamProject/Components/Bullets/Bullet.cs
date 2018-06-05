@@ -22,6 +22,7 @@ namespace TankGame
         protected bool isRotated = false;
         protected bool shouldDie;
 
+        protected Vehicle shooter;
 
 
         #region Attributes for object pool
@@ -46,6 +47,12 @@ namespace TankGame
         {
             get { return isRotated; }
             set { isRotated = value; }
+        }
+
+        public Vehicle Shooter
+        {
+            get { return shooter; }
+            set { shooter = value; }
         }
 
         public bool ShouldDie
@@ -140,8 +147,11 @@ namespace TankGame
                 shouldDie = true;
                 if (!(this is SniperBullet))
                 {
+                    if (shooter != null)
+                    {
 
-                    Stats.BulletsMissed++;
+                        shooter.Stats.BulletsMissed++;
+                    }
                 }
                 DestroyBullet();
             }
@@ -301,7 +311,10 @@ namespace TankGame
                             }
                             else if (type is Terrain && (!(this is SniperBullet)))
                             {
-                                Stats.BulletsMissed++;
+                                if (shooter != null)
+                                {
+                                    shooter.Stats.BulletsMissed++;
+                                }
                             }
                             BulletSpecialEffect(other);
                         }

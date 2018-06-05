@@ -31,6 +31,12 @@ namespace TankGame
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
         private Texture2D menuBackGround;
+        private int playerAmount;
+
+        public int PlayerAmount
+        {
+            get { return playerAmount; }
+        }
 
         public Menu()
         {
