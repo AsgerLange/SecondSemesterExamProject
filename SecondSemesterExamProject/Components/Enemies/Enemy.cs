@@ -287,11 +287,6 @@ namespace TankGame
             {
                 animator.PlayAnimation("Idle");
                 isPlayingAnimation = false;
-                //if (isPlayingAnimation == false)
-                //{
-                //    animator.PlayAnimation("Idle");
-                //    isPlayingAnimation = false;
-                //}
             }
         }
 
