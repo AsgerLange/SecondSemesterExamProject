@@ -86,8 +86,8 @@ namespace TankGame
                 DrawWeaponsFired(spriteBatch, vehicle);
                 DrawTowersCreated(spriteBatch, vehicle);
                 DrawGoldEarned(spriteBatch, vehicle);
+                DrawBulletsCreated(spriteBatch, vehicle);
             }
-            DrawBulletsCreated(spriteBatch);
         }
 
         private void DrawEnemiesKilled(SpriteBatch spriteBatch)
@@ -126,61 +126,91 @@ namespace TankGame
             if (vehicle.Control == Controls.WASD)
             {
                 spriteBatch.DrawString(font, "Player 1 gold earned: "
-                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p1StatsPosX, 360), p1StatsColor);
+                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p1StatsPosX, 540), p1StatsColor);
+
             }
             else if (vehicle.Control == Controls.UDLR)
             {
                 spriteBatch.DrawString(font, "Player 2 gold earned: "
-                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p2StatsPosX, 360), p2StatsColor);
+                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p2StatsPosX, 540), p2StatsColor);
+
             }
         }
-        private void DrawBulletsCreated(SpriteBatch spriteBatch)
+        private void DrawBulletsCreated(SpriteBatch spriteBatch, Vehicle vehicle)
         {
-            spriteBatch.DrawString(font, "Bullets Created: ", new Vector2(statsPosX, 240), statsColor);
 
-            spriteBatch.DrawString(font, "Basic bullets fired: " + Stats.BasicBulletCounter
-                , new Vector2(statsPosX, 260), statsColor);
-            spriteBatch.DrawString(font, "Bigger Bullets fired: " + Stats.BiggerBulletCounter
-                , new Vector2(statsPosX, 280), statsColor);
-            spriteBatch.DrawString(font, "Sniper bullets fired: " + Stats.SniperBulletCounter,
-                new Vector2(statsPosX, 300), statsColor);
-            spriteBatch.DrawString(font, "Shotgun pellets fired: " + Stats.ShotgunPelletsCounter,
-                new Vector2(statsPosX, 320), statsColor);
-            //spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
-            //    new Vector2(statsPosX, 340), statsColor);
+            if (vehicle.Control == Controls.WASD)
+            {
+                spriteBatch.DrawString(font, "Bullets Created: ", new Vector2(p1StatsPosX, 240), p1StatsColor);
 
-            spriteBatch.DrawString(font, "Total bullets missed: " + Stats.BulletsMissed,
-               new Vector2(statsPosX, 360), statsColor);
-            spriteBatch.DrawString(font, "Total bullet accuracy: " + Stats.CalculateAccuracy() + "%",
-              new Vector2(statsPosX, 380), statsColor);
+                spriteBatch.DrawString(font, "Basic bullets fired: " + vehicle.Stats.BasicBulletCounter
+                    , new Vector2(p1StatsPosX, 260), p1StatsColor);
+                spriteBatch.DrawString(font, "Bigger bullets fired: " + vehicle.Stats.BiggerBulletCounter
+                    , new Vector2(p1StatsPosX, 280), p1StatsColor);
+                spriteBatch.DrawString(font, "Sniper bullets fired: " + vehicle.Stats.SniperBulletCounter,
+                    new Vector2(p1StatsPosX, 300), p1StatsColor);
+                spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
+                    new Vector2(p1StatsPosX, 320), p1StatsColor);
+                //spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
+                //    new Vector2(statsPosX, 340), statsColor);
+
+                spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
+                   new Vector2(p1StatsPosX, 360), p1StatsColor);
+                spriteBatch.DrawString(font, "Total bullet accuracy: " + vehicle.Stats.CalculateAccuracy() + "%",
+                  new Vector2(p1StatsPosX, 380), p1StatsColor);
+
+
+            }
+            else if (vehicle.Control == Controls.UDLR)
+            {
+
+                spriteBatch.DrawString(font, "Bullets Created: ", new Vector2(p2StatsPosX, 240), p2StatsColor);
+
+                spriteBatch.DrawString(font, "Basic bullets fired: " + vehicle.Stats.BasicBulletCounter
+                    , new Vector2(p2StatsPosX, 260), p2StatsColor);
+                spriteBatch.DrawString(font, "Bigger Bullets fired: " + vehicle.Stats.BiggerBulletCounter
+                    , new Vector2(p2StatsPosX, 280), p2StatsColor);
+                spriteBatch.DrawString(font, "Sniper bullets fired: " + vehicle.Stats.SniperBulletCounter,
+                    new Vector2(p2StatsPosX, 300), p2StatsColor);
+                spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
+                    new Vector2(p2StatsPosX, 320), p2StatsColor);
+                //spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
+                //    new Vector2(p2StatsPosX, 340), statsColor);
+
+                spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
+                   new Vector2(p2StatsPosX, 360), p2StatsColor);
+                spriteBatch.DrawString(font, "Total bullet accuracy: " + vehicle.Stats.CalculateAccuracy() + "%",
+                  new Vector2(p2StatsPosX, 380), p2StatsColor);
+            }
+
         }
         private void DrawTowersCreated(SpriteBatch spriteBatch, Vehicle vehicle)
         {
             if (vehicle.Control == Controls.WASD)
             {
-                spriteBatch.DrawString(font, "Player1 Towers Built: ", new Vector2(p1StatsPosX, 240), Color.Gold);
+                spriteBatch.DrawString(font, "Player1 Towers Built: ", new Vector2(p1StatsPosX, 420), Color.Gold);
 
                 spriteBatch.DrawString(font, "Basic towers built: " + vehicle.Stats.BasicTowerBuilt
-                    , new Vector2(p1StatsPosX, 260), p1StatsColor);
+                    , new Vector2(p1StatsPosX, 440), p1StatsColor);
                 spriteBatch.DrawString(font, "Sniper towers built:: " + vehicle.Stats.SniperTowerBuilt
-                    , new Vector2(p1StatsPosX, 280), p1StatsColor);
+                    , new Vector2(p1StatsPosX, 460), p1StatsColor);
                 spriteBatch.DrawString(font, "Shotgun Towers built: " + vehicle.Stats.ShotgunTowerbuilt,
-                    new Vector2(p1StatsPosX, 300), p1StatsColor);
+                    new Vector2(p1StatsPosX, 480), p1StatsColor);
                 spriteBatch.DrawString(font, "Machinegun towers built: " + vehicle.Stats.MachinegunTowerbuilt,
-                    new Vector2(p1StatsPosX, 320), p1StatsColor);
+                    new Vector2(p1StatsPosX, 500), p1StatsColor);
             }
             if (vehicle.Control == Controls.UDLR)
             {
-                spriteBatch.DrawString(font, "Player2 Towers Built: ", new Vector2(p2StatsPosX, 240), Color.Gold);
+                spriteBatch.DrawString(font, "Player2 Towers Built: ", new Vector2(p2StatsPosX, 420), Color.Gold);
 
                 spriteBatch.DrawString(font, "Basic towers built: " + vehicle.Stats.BasicTowerBuilt
-    , new Vector2(p2StatsPosX, 260), p2StatsColor);
+    , new Vector2(p2StatsPosX, 440), p2StatsColor);
                 spriteBatch.DrawString(font, "Sniper towers built:: " + vehicle.Stats.SniperTowerBuilt
-                    , new Vector2(p2StatsPosX, 280), p2StatsColor);
+                    , new Vector2(p2StatsPosX, 460), p2StatsColor);
                 spriteBatch.DrawString(font, "Shotgun Towers built: " + vehicle.Stats.ShotgunTowerbuilt,
-                    new Vector2(p2StatsPosX, 300), p2StatsColor);
+                    new Vector2(p2StatsPosX, 480), p2StatsColor);
                 spriteBatch.DrawString(font, "Machinegun towers built: " + vehicle.Stats.MachinegunTowerbuilt,
-                    new Vector2(p2StatsPosX, 320), p2StatsColor);
+                    new Vector2(p2StatsPosX, 500), p2StatsColor);
             }
         }
         public void Update()
