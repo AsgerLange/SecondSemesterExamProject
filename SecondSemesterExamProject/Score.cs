@@ -192,7 +192,9 @@ namespace TankGame
 
         }
 
-
+        /// <summary>
+        /// Update everything here please  
+        /// </summary>
         public void UpdateData()
         {
 
@@ -251,21 +253,59 @@ namespace TankGame
             int scoresCount = 0;
             List<string> names = new List<string>();
             List<int> scores = new List<int>();
-
+            List<string> enemyNames = new List<string>();
+            List<int> enemyKills = new List<int>();
+            List<int> spitterBullets = new List<int>();
+            List<int> gold = new List<int>();
+            List<int> basicBullets = new List<int>();
+            List<int> biggerBullets = new List<int>();
+            List<int> sniperBullets = new List<int>();
+            List<int> shotgunBullets = new List<int>();
+            List<int> waves = new List<int>();
+            List<string> towerNames = new List<string>();
+            List<int> towerKills = new List<int>();
+            List<int> towerBuild = new List<int>();
+            List<int> towerDead = new List<int>();
+            List<int> totalBullets = new List<int>();
+            List<int> totalTowersBuild = new List<int>();
+            List<int> totalTowersDead = new List<int>();
+            List<int> totalTowerKills = new List<int>();
+            List<int> totalEnemyDead = new List<int>();
+            List<int> totalPlayerKills = new List<int>();
 
             string highscore = "select Highscore.Name, Highscore.Score from Highscore limit 10 order by score desc";
             SQLiteCommand command = new SQLiteCommand(highscore);
             SQLiteDataReader highscoreReader = command.ExecuteReader();
             while (highscoreReader.Read())
             {
-                names.Add((string)highscoreReader["name"]);
+                names.Add((string)highscoreReader["Name"]);
                 scores.Add((int)highscoreReader["Score"]);
+                enemyNames.Add((string)highscoreReader["Enemy name"]);
+                enemyKills.Add((int)highscoreReader["Enemy kills"]);
+                spitterBullets.Add((int)highscoreReader["Spitter bullets shot"]);
+                gold.Add((int)highscoreReader["Gold"]);
+                basicBullets.Add((int)highscoreReader["Basic bullets shot"]);
+                biggerBullets.Add((int)highscoreReader["Bigger bullets shot"]);
+                sniperBullets.Add((int)highscoreReader["Sniper bullets shot"]);
+                shotgunBullets.Add((int)highscoreReader["Shotgun bullets shot"]);
+                waves.Add((int)highscoreReader["Wave"]);
+                towerNames.Add((string)highscoreReader["Tower name"]);
+                towerKills.Add((int)highscoreReader["Tower kills"]);
+                towerBuild.Add((int)highscoreReader["Tower build"]);
+                towerDead.Add((int)highscoreReader["Tower dead"]);
+                totalBullets.Add((int)highscoreReader["Total bullets fired"]);
+                totalTowersBuild.Add((int)highscoreReader["Total tower build"]);
+                totalTowersDead.Add((int)highscoreReader["Total tower dead"]);
+                totalTowerKills.Add((int)highscoreReader["Total tower kills"]);
+                totalEnemyDead.Add((int)highscoreReader["Total enemy dead"]);
+                totalPlayerKills.Add((int)highscoreReader["Total player kills"]);
             }
 
 
             for (int i = 0; i < scoresCount; i++)
             {
-                highscores.Add(new Highscore(names[i], scores[i], "", 1, 1, 1, 1, 1, 1, 1, 1, "", 1, 1, 1, 1, 1, 1, 1, 1, 1));
+                highscores.Add(new Highscore(names[i], scores[i], enemyNames[i], enemyKills[i], spitterBullets[i], gold[i], basicBullets[i], biggerBullets[i], sniperBullets[i], shotgunBullets[i], 
+                waves[i], towerNames[i], towerKills[i], towerDead[i], towerBuild[i], totalBullets[i], totalTowersBuild[i], totalTowersDead[i], totalTowerKills[i], totalEnemyDead[i], totalPlayerKills[i]));
             }
         }
     }
