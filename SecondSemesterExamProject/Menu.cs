@@ -38,6 +38,16 @@ namespace TankGame
             get { return playerAmount; }
         }
 
+        public VehicleType P1
+        {
+            get { return p1; }
+        }
+
+        public VehicleType P2
+        {
+            get { return p2; }
+        }
+
         public Menu()
         {
             p1TypeInt = (int)p1;
@@ -229,7 +239,6 @@ namespace TankGame
             {
                 SpawnPlayers();
                 GameWorld.Instance.GetGameState = GameState.Game;
-                GameWorld.Instance.IsMouseVisible = false;
             }
         }
 
