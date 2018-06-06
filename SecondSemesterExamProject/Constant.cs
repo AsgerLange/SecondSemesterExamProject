@@ -8,7 +8,7 @@ namespace TankGame
 {
     enum VehicleType { None, Tank, Bike, Plane }
     enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
-    enum EnemyType { BasicEnemy, BasicEliteEnemy, Swarmer, Spitter };
+    enum EnemyType { BasicEnemy, BasicEliteEnemy, Swarmer, Spitter, SiegebreakerEnemy };
     enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
     enum CrateType { WeaponCrate, TowerCrate, MoneyCrate, HealthCrate };
     enum WeaponType { BasicWeapon, MachineGun, Shotgun, Sniper }
@@ -76,7 +76,7 @@ namespace TankGame
 
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
-        public static readonly float HQFireRate = 2f;
+        public static readonly float HQFireRate = 2;
         public static readonly int HQHealth = 1000;
         public static readonly int HQAttackRange = 400;
         public static readonly BulletType HQbulletType = BulletType.BiggerBullet;
@@ -211,7 +211,6 @@ namespace TankGame
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
         public readonly static int basicEnemyAttackRadius = 100;
-
         #endregion
         #region BasicEliteEnemy
         public readonly static int basicEliteEnemyGold = 6;
@@ -235,6 +234,17 @@ namespace TankGame
         public static readonly int swarmerSpawnMax = 3;
         public static readonly float swarmerSpawnWave = 3;
         public static readonly float swarmerSpawnModifier = 200;
+        #endregion
+        #region SiegebreakerEnemy
+        public readonly static int siegeBreakerEnemyGold = 14;
+        public static readonly string siegeBreakerSpriteSheet = "SiegebreakerEnemy";
+        public static readonly int siegeBreakerEnemyHealth = 3000;
+        public static readonly float siegeBreakerEnemyMovementSpeed = 40;
+        public static readonly float siegeBreakerEnemyAttackRate = 0.9f;
+        public static readonly int siegeBreakerEnemyDamage = 40;
+        public readonly static int siegeBreakerEnemyAttackRadius = 200;
+        public static readonly float siegeBreakerSpawnWave = 0;
+        public static readonly float siegeBreakerSpawnModifier = 800;
         #endregion
         #endregion
         #region Ranged
