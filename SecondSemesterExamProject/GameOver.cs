@@ -151,8 +151,7 @@ namespace TankGame
                     new Vector2(p1StatsPosX, 300), p1StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p1StatsPosX, 320), p1StatsColor);
-                //spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
-                //    new Vector2(statsPosX, 340), statsColor);
+               
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
                    new Vector2(p1StatsPosX, 360), p1StatsColor);
@@ -174,8 +173,7 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 300), p2StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p2StatsPosX, 320), p2StatsColor);
-                //spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
-                //    new Vector2(p2StatsPosX, 340), statsColor);
+             
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
                    new Vector2(p2StatsPosX, 360), p2StatsColor);
@@ -212,6 +210,8 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Machinegun towers built: " + vehicle.Stats.MachinegunTowerbuilt,
                     new Vector2(p2StatsPosX, 500), p2StatsColor);
             }
+            spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
+             new Vector2(statsPosX, 240), statsColor);
         }
         public void Update()
         {
