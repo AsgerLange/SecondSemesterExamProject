@@ -413,6 +413,8 @@ namespace TankGame
                     spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.hight - 60), Color.YellowGreen);
                 }
                 DrawLootToString(spriteBatch);
+                spriteBatch.DrawString(font, "Towers: "+GameWorld.Instance.TowerAmount+"/"+Constant.maxTowerAmount,
+                    new Vector2(Constant.width/2-50,Constant.hight-50), Color.Gold);
 
 
             }
@@ -488,7 +490,7 @@ namespace TankGame
                 {
                     (comp as Vehicle).spriteRenderer.Sprite = this.spriteRenderer.Sprite;
                     (comp as Vehicle).Stats = this.stats;
-                    (comp as Vehicle).weapon = this.weapon;
+                    (comp as Vehicle).weapon = new BasicWeapon((comp.GameObject));
                    
 
                     (comp as Vehicle).Money = this.money;
