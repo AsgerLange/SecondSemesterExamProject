@@ -8,7 +8,7 @@ namespace TankGame
 {
     enum VehicleType { None, Tank, Bike, Plane }
     enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
-    enum EnemyType { BasicEnemy, BasicEliteEnemy, Swarmer, Spitter };
+    enum EnemyType { BasicEnemy, BasicEliteEnemy, Swarmer, Spitter, SiegebreakerEnemy };
     enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
     enum CrateType { WeaponCrate, TowerCrate, MoneyCrate, HealthCrate };
     enum WeaponType { BasicWeapon, MachineGun, Shotgun, Sniper }
@@ -72,6 +72,8 @@ namespace TankGame
         #endregion
 
         #region Tower
+        public static readonly int maxTowerAmount = 25;
+
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
         public static readonly float HQFireRate = 2;
@@ -199,6 +201,7 @@ namespace TankGame
         #endregion;
 
         #region Enemies
+        public static readonly int maxEnemyOnScreen = 80;  
         #region Melee
         #region BasicEnemy
         public readonly static int basicEnemyGold = 2;
@@ -231,6 +234,17 @@ namespace TankGame
         public static readonly int swarmerSpawnMax = 3;
         public static readonly float swarmerSpawnWave = 3;
         public static readonly float swarmerSpawnModifier = 200;
+        #endregion
+        #region SiegebreakerEnemy
+        public readonly static int siegeBreakerEnemyGold = 14;
+        public static readonly string siegeBreakerSpriteSheet = "SiegebreakerEnemy";
+        public static readonly int siegeBreakerEnemyHealth = 3000;
+        public static readonly float siegeBreakerEnemyMovementSpeed = 40;
+        public static readonly float siegeBreakerEnemyAttackRate = 0.9f;
+        public static readonly int siegeBreakerEnemyDamage = 40;
+        public readonly static int siegeBreakerEnemyAttackRadius = 200;
+        public static readonly float siegeBreakerSpawnWave = 0;
+        public static readonly float siegeBreakerSpawnModifier = 800;
         #endregion
         #endregion
         #region Ranged
