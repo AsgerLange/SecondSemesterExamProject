@@ -73,7 +73,7 @@ namespace TankGame
         #endregion
 
         #region Tower
-        public static readonly int maxTowerAmount = 25;
+        public static readonly int maxTowerAmount = 20;
 
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
@@ -202,7 +202,7 @@ namespace TankGame
         #endregion;
 
         #region Enemies
-        public static readonly int maxEnemyOnScreen = 100;
+        public static readonly int maxEnemyOnScreen = 120;
         #region Melee
         #region BasicEnemy
         public readonly static int basicEnemyGold = 2;
