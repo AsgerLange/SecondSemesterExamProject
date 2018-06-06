@@ -116,7 +116,7 @@ namespace TankGame
 
             if (vehicle.Control == Controls.WASD)
             {
-                spriteBatch.DrawString(font, "Bullets Created: ", new Vector2(p1StatsPosX, 240), p1StatsColor);
+                spriteBatch.DrawString(font, "Bullets created", new Vector2(p1StatsPosX, 240), p1StatsColor);
 
                 spriteBatch.DrawString(font, "Basic bullets fired: " + vehicle.Stats.BasicBulletCounter
                     , new Vector2(p1StatsPosX, 260), p1StatsColor);
@@ -138,7 +138,7 @@ namespace TankGame
             else if (vehicle.Control == Controls.UDLR)
             {
 
-                spriteBatch.DrawString(font, "Bullets Created: ", new Vector2(p2StatsPosX, 240), p2StatsColor);
+                spriteBatch.DrawString(font, "Bullets created", new Vector2(p2StatsPosX, 240), p2StatsColor);
 
                 spriteBatch.DrawString(font, "Basic bullets fired: " + vehicle.Stats.BasicBulletCounter
                     , new Vector2(p2StatsPosX, 260), p2StatsColor);
@@ -161,7 +161,7 @@ namespace TankGame
         {
             if (vehicle.Control == Controls.WASD)
             {
-                spriteBatch.DrawString(font, "Player1 Towers Built: ", new Vector2(p1StatsPosX, 420), Color.Gold);
+                spriteBatch.DrawString(font, "Player1 Towers built", new Vector2(p1StatsPosX, 420), Color.Gold);
 
                 spriteBatch.DrawString(font, "Basic towers built: " + vehicle.Stats.BasicTowerBuilt
                     , new Vector2(p1StatsPosX, 440), p1StatsColor);
@@ -174,7 +174,7 @@ namespace TankGame
             }
             if (vehicle.Control == Controls.UDLR)
             {
-                spriteBatch.DrawString(font, "Player2 Towers Built: ", new Vector2(p2StatsPosX, 420), Color.Gold);
+                spriteBatch.DrawString(font, "Player2 Towers built", new Vector2(p2StatsPosX, 420), Color.Gold);
 
                 spriteBatch.DrawString(font, "Basic towers built: " + vehicle.Stats.BasicTowerBuilt
     , new Vector2(p2StatsPosX, 440), p2StatsColor);
