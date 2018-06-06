@@ -259,12 +259,21 @@ namespace TankGame
                     if (component is BasicEliteEnemy)
                     {
                         tmp.Health = Constant.basicEliteEnemyHealth;
-
                     }
+
+                    if (component is SwarmerEnemy)
+                    {
+                        tmp.Health = Constant.swarmerEnemyHealth;
+                    }
+
+                    if (component is SiegebreakerEnemy)
+                    {
+                        tmp.Health = Constant.siegeBreakerEnemyHealth;
+                    }
+
                     if (component is Spitter)
                     {
                         tmp.Health = Constant.spitterHealth;
-
                     }
 
 
