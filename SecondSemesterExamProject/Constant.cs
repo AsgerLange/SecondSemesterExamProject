@@ -72,6 +72,8 @@ namespace TankGame
         #endregion
 
         #region Tower
+        public static readonly int maxTowerAmount = 25;
+
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
         public static readonly float HQFireRate = 2;
@@ -199,6 +201,7 @@ namespace TankGame
         #endregion;
 
         #region Enemies
+        public static readonly int maxEnemyOnScreen = 80;  
         #region Melee
         #region BasicEnemy
         public readonly static int basicEnemyGold = 2;
@@ -208,7 +211,6 @@ namespace TankGame
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
         public readonly static int basicEnemyAttackRadius = 100;
-
         #endregion
         #region BasicEliteEnemy
         public readonly static int basicEliteEnemyGold = 6;

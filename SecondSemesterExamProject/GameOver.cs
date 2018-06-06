@@ -85,7 +85,7 @@ namespace TankGame
             {
                 DrawWeaponsFired(spriteBatch, vehicle);
                 DrawTowersCreated(spriteBatch, vehicle);
-                DrawGoldEarned(spriteBatch, vehicle);
+                DrawMisc(spriteBatch, vehicle);
                 DrawBulletsCreated(spriteBatch, vehicle);
             }
         }
@@ -100,6 +100,9 @@ namespace TankGame
             spriteBatch.DrawString(font, "Elite Enemies killed: " + Stats.BasicEliteEnemyKilled, new Vector2(statsPosX, 160), statsColor);
 
             spriteBatch.DrawString(font, "Spitter Enemies killed: " + Stats.SpitterKilled, new Vector2(statsPosX, 180), statsColor);
+
+            spriteBatch.DrawString(font, "Swarmer Enemies killed: " + Stats.SwarmerKilled, new Vector2(statsPosX, 200), statsColor);
+
         }
 
         private void DrawWeaponsFired(SpriteBatch spriteBatch, Vehicle vehicle)
@@ -123,19 +126,25 @@ namespace TankGame
 
             }
         }
-        private void DrawGoldEarned(SpriteBatch spriteBatch, Vehicle vehicle)
+        private void DrawMisc(SpriteBatch spriteBatch, Vehicle vehicle)
         {
             if (vehicle.Control == Controls.WASD)
             {
+                spriteBatch.DrawString(font, "Miscellaneous", new Vector2(p1StatsPosX, 540), statsColor);
                 spriteBatch.DrawString(font, "Player 1 gold earned: "
-                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p1StatsPosX, 540), p1StatsColor);
+                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p1StatsPosX, 560), p1StatsColor);
+                spriteBatch.DrawString(font, "Player 1 deaths: "
+                    + vehicle.Stats.TotalAmountOfPlayerDeaths, new Vector2(p1StatsPosX, 580), p1StatsColor);
 
             }
             else if (vehicle.Control == Controls.UDLR)
             {
+                spriteBatch.DrawString(font, "Miscellaneous"
+                    , new Vector2(p2StatsPosX, 540), statsColor);
                 spriteBatch.DrawString(font, "Player 2 gold earned: "
-                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p2StatsPosX, 540), p2StatsColor);
-
+                    + vehicle.Stats.TotalAmountOfGold, new Vector2(p2StatsPosX, 560), p2StatsColor);
+                spriteBatch.DrawString(font, "Player 2 deaths: "
+            + vehicle.Stats.TotalAmountOfPlayerDeaths, new Vector2(p2StatsPosX, 580), p2StatsColor);
             }
         }
         private void DrawBulletsCreated(SpriteBatch spriteBatch, Vehicle vehicle)
@@ -143,7 +152,7 @@ namespace TankGame
 
             if (vehicle.Control == Controls.WASD)
             {
-                spriteBatch.DrawString(font, "Bullets created", new Vector2(p1StatsPosX, 240), p1StatsColor);
+                spriteBatch.DrawString(font, "Bullets created: ", new Vector2(p1StatsPosX, 240), statsColor);
 
                 spriteBatch.DrawString(font, "Basic bullets fired: " + vehicle.Stats.BasicBulletCounter
                     , new Vector2(p1StatsPosX, 260), p1StatsColor);
@@ -165,7 +174,7 @@ namespace TankGame
             else if (vehicle.Control == Controls.UDLR)
             {
 
-                spriteBatch.DrawString(font, "Bullets created", new Vector2(p2StatsPosX, 240), p2StatsColor);
+                spriteBatch.DrawString(font, "Bullets created: ", new Vector2(p2StatsPosX, 240), statsColor);
 
                 spriteBatch.DrawString(font, "Basic bullets fired: " + vehicle.Stats.BasicBulletCounter
                     , new Vector2(p2StatsPosX, 260), p2StatsColor);

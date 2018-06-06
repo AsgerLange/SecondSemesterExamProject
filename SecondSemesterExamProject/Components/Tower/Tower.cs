@@ -277,7 +277,7 @@ namespace TankGame
         protected virtual void Die()
         {
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
-
+            GameWorld.Instance.TowerAmount--;
         }
     }
 }

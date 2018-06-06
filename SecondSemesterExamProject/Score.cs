@@ -32,7 +32,7 @@ namespace TankGame
 
         public Score()
         {
-            textBox = new Rectangle(Constant.width / 2 - 150, Constant.hight / 2, 300, 50);//the textbox pos
+            textBox = new Rectangle(Constant.width / 2 - 200, Constant.hight / 2, 400, 50);//the textbox pos
 
             if (!(File.Exists(@"TankGameDatabase.db")))
             {
@@ -40,7 +40,7 @@ namespace TankGame
                 CreateTables();
             }
 
-            highscores.Add(new Highscore("Stefan", 9999, "BasicEnemy", 10000, 10, 50000, 10, 10, 10, 10, 9999, "BasicTower", 0, 100, 0, 9999, 100, 0, 0, 10000, 0));
+            highscores.Add(new Highscore("Stefan", 9999, 50000));
         }
 
 
@@ -103,10 +103,10 @@ namespace TankGame
         public void CreateTables()
         {
             string highscore = "Create table Highscores (ID integer primary key, Name varchar, Score int)";
-            string totalStats = "Create table Total_stats (ID integer primary key, Total_bullets_fired int, Total_tower_build int, Total_tower_dead int, Total_tower_kills int, Total_player_kills int, Total_enemy_dead int)";
-            string tower = "Create table Tower (ID integer, Tower_name varchar primary key, Tower_kills int, Tower_Build int, Tower_Dead int,foreign key(ID) REFERENCES higscores(ID))";
+            string totalStats = "Create table Total_stats (ID integer primary key, Total_bullets_fired int, Total_tower_build int, Total_player_deaths int, Total_enemy_killed int, Total_games_played int)";
             string player = "Create table Player (ID integer, Gold int, Accuracy int, PlayerID integer, Wave int, foreign key(ID) REFERENCES higscores(ID))";
-            string enemies = "Create table Enemies (ID integer, Enemy_name varchar primary key, Enemy_kills int, Spitter_bullets_shot,foreign key(ID) REFERENCES higscores(ID))";
+            string tower = "Create table Tower (ID integer,PlayerID integer, Tower_name varchar, Tower_Build int, foreign key(PlayerID) REFERENCES player(PlayerID),foreign key(ID) REFERENCES higscores(ID))";
+            string enemies = "Create table Enemies (ID integer, Enemy_name varchar, Enemy_kills int, Spitter_bullets_shot,foreign key(ID) REFERENCES higscores(ID))";
             string bullets = "Create table bullets (ID integer, PlayerID integer, bullets_shot int, bullet_Name, foreign key(PlayerID) REFERENCES player(PlayerID),foreign key(ID) REFERENCES higscores(ID))";
 
             WriteToDB(highscore);
@@ -115,6 +115,9 @@ namespace TankGame
             WriteToDB(player);
             WriteToDB(enemies);
             WriteToDB(bullets);
+
+            string totalStatsSetup = "insert into Total_stats(ID, Total_bullets_fired, Total_tower_build, Total_player_deaths, Total_enemy_killed, Total_games_played) values(null,0,0,0,0,0); ";
+            WriteToDB(totalStatsSetup);
         }
 
         /// <summary>
@@ -199,7 +202,7 @@ namespace TankGame
             spriteBatch.Draw(BackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             if (scoreSaved == false && nameEntered == false)
             {
-                spriteBatch.Draw(theBox, new Vector2(textBox.X, textBox.Y - 10), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
+                spriteBatch.Draw(theBox, new Vector2(textBox.X - 5, textBox.Y - 15), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
                 spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Black);//Draws the text
             }
             if (scoreSaved && nameEntered)
@@ -275,6 +278,7 @@ namespace TankGame
                 string player1 = "insert into player (ID,gold, Accuracy,PlayerID,wave) values (" + ID + "," + gold + "," + accuracy + ",1," + wave + ");";
                 WriteToDB(player1);
                 WriteBullets(ID, 1);
+                WriteTower(ID, 1);
             }
             if (GameWorld.Instance.GetMenu.P2 != VehicleType.None)
             {
@@ -292,9 +296,90 @@ namespace TankGame
                 string player2 = "insert into player (ID,gold, Accuracy,PlayerID,wave) values (" + ID + "," + gold + "," + accuracy + ",2," + wave + ");";
                 WriteToDB(player2);
                 WriteBullets(ID, 2);
+                WriteTower(ID, 2);
             }
+            WriteEnemies(ID);
+            WriteToTotalStats();
 
             scoreSaved = true;
+        }
+
+        /// <summary>
+        /// Updates the total Stats with the info from the current game
+        /// </summary>
+        private void WriteToTotalStats()
+        {
+            foreach (Vehicle VH in GameWorld.Instance.Vehicles)
+            {
+                if ((VH.Control == Controls.WASD) || (VH.Control == Controls.UDLR))
+                {
+                    int bulletsFiredThisGame = VH.Stats.BasicBulletCounter + VH.Stats.BiggerBulletCounter + VH.Stats.ShotgunPelletsCounter + VH.Stats.SniperBulletCounter;
+                    string totalStatsUpdateBulletsFired = "UPDATE Total_stats SET Total_bullets_fired = Total_bullets_fired + " + bulletsFiredThisGame + " where ID = 1";
+                    WriteToDB(totalStatsUpdateBulletsFired);
+
+                    int towersBuildThisGame = VH.Stats.BasicTowerBuilt + VH.Stats.MachinegunTowerbuilt + VH.Stats.ShotgunTowerbuilt + VH.Stats.SniperTowerBuilt;
+                    string totalStatsUpdateTowerBuild = "UPDATE Total_stats SET Total_tower_build = Total_tower_build + " + towersBuildThisGame + " where ID = 1";
+                    WriteToDB(totalStatsUpdateTowerBuild);
+
+                    int playerDeathAmountThisGame = VH.Stats.PlayerDeathAmmount;
+                    string totalStatsUpdatePlayerDeaths = "UPDATE Total_stats SET Total_player_deaths = Total_player_deaths + " + playerDeathAmountThisGame + " where ID = 1";
+                    WriteToDB(totalStatsUpdatePlayerDeaths);
+                }
+            }
+
+            int enemiesKilled = Stats.BasicEnemyKilled + Stats.BasicEliteEnemyKilled + Stats.SwarmerKilled + Stats.SpitterKilled;
+            string totalStatsUpdateEnemyKilled = "UPDATE Total_stats SET Total_enemy_killed = Total_enemy_killed + " + enemiesKilled + " where ID = 1";
+            WriteToDB(totalStatsUpdateEnemyKilled);
+
+            string totalStatsUpdateGamesPlayed = "UPDATE Total_stats SET Total_games_played = Total_games_played + 1 where ID = 1";
+            WriteToDB(totalStatsUpdateGamesPlayed);
+        }
+
+        /// <summary>
+        /// Writes the stats relevent to towers into the DB
+        /// </summary>
+        /// <param name="iD"></param>
+        private void WriteTower(int iD, int playerID)
+        {
+            int towerBuildBasic = 0;
+            int towerBuildShot = 0;
+            int towerBuildSniper = 0;
+            int towerBuildMachine = 0;
+
+            foreach (Vehicle VH in GameWorld.Instance.Vehicles)
+            {
+                if ((playerID == 1 && VH.Control == Controls.WASD) || (playerID == 2 && VH.Control == Controls.UDLR))
+                {
+                    towerBuildBasic = VH.Stats.BasicTowerBuilt;
+                    towerBuildShot = VH.Stats.ShotgunTowerbuilt;
+                    towerBuildSniper = VH.Stats.SniperTowerBuilt;
+                    towerBuildMachine = VH.Stats.MachinegunTowerbuilt;
+                }
+            }
+            string BasicTower = "insert into tower (ID,PlayerID,Tower_name,Tower_Build) values (" + iD + "," + playerID + "," + "'BasicTower'" + "," + towerBuildBasic + ");";
+            string ShotgunTower = "insert into tower (ID,PlayerID,Tower_name,Tower_Build) values (" + iD + "," + playerID + "," + "'ShotgunTower'" + "," + towerBuildShot + ");";
+            string SniperTower = "insert into tower (ID,PlayerID,Tower_name,Tower_Build) values (" + iD + "," + playerID + "," + "'SniperTower'" + "," + towerBuildSniper + ");";
+            string MachineGunTower = "insert into tower (ID,PlayerID,Tower_name,Tower_Build) values (" + iD + "," + playerID + "," + "'MachinegunTower'" + "," + towerBuildMachine + ");";
+            WriteToDB(BasicTower);
+            WriteToDB(ShotgunTower);
+            WriteToDB(SniperTower);
+            WriteToDB(MachineGunTower);
+        }
+
+        /// <summary>
+        /// Writes the stats relevent to enemies into the DB
+        /// </summary>
+        /// <param name="iD"></param>
+        private void WriteEnemies(int iD)
+        {
+            string BasicEnemy = "insert into enemies (ID, Enemy_name,Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'BasicEnemy'" + "," + Stats.BasicEnemyKilled + ", null );";
+            string BasicEliteEnemy = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'BasicEliteEnemy'" + "," + Stats.BasicEliteEnemyKilled + ", null );";
+            string SwarmerEnemy = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'SwarmerEnemy'" + "," + Stats.SwarmerKilled + ", null );";
+            string Spitter = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'Spitter'" + "," + Stats.SpitterKilled + "," + Stats.SpitterBulletCounter + ");";
+            WriteToDB(BasicEnemy);
+            WriteToDB(BasicEliteEnemy);
+            WriteToDB(SwarmerEnemy);
+            WriteToDB(Spitter);
         }
 
         /// <summary>
@@ -366,24 +451,7 @@ namespace TankGame
                 scores.Add((int)highscoreReader["Score"]);
                 ids.Add((int)highscoreReader["ID"]);
 
-                enemyKills.Add((int)highscoreReader["Enemy kills"]);
-                spitterBullets.Add((int)highscoreReader["Spitter bullets shot"]);
                 gold.Add((int)highscoreReader["Gold"]);
-                basicBullets.Add((int)highscoreReader["Basic bullets shot"]);
-                biggerBullets.Add((int)highscoreReader["Bigger bullets shot"]);
-                sniperBullets.Add((int)highscoreReader["Sniper bullets shot"]);
-                shotgunBullets.Add((int)highscoreReader["Shotgun bullets shot"]);
-                waves.Add((int)highscoreReader["Wave"]);
-                towerNames.Add((string)highscoreReader["Tower name"]);
-                towerKills.Add((int)highscoreReader["Tower kills"]);
-                towerBuild.Add((int)highscoreReader["Tower build"]);
-                towerDead.Add((int)highscoreReader["Tower dead"]);
-                totalBullets.Add((int)highscoreReader["Total bullets fired"]);
-                totalTowersBuild.Add((int)highscoreReader["Total tower build"]);
-                totalTowersDead.Add((int)highscoreReader["Total tower dead"]);
-                totalTowerKills.Add((int)highscoreReader["Total tower kills"]);
-                totalEnemyDead.Add((int)highscoreReader["Total enemy dead"]);
-                totalPlayerKills.Add((int)highscoreReader["Total player kills"]);
             }
             DBConnect.Close();
             string enemyNameCommand = "";//command to get EnemyName
@@ -395,8 +463,7 @@ namespace TankGame
 
             for (int i = 0; i < scoresCount; i++)
             {
-                highscores.Add(new Highscore(names[i], scores[i], enemyNames[i], enemyKills[i], spitterBullets[i], gold[i], basicBullets[i], biggerBullets[i], sniperBullets[i], shotgunBullets[i],
-                waves[i], towerNames[i], towerKills[i], towerDead[i], towerBuild[i], totalBullets[i], totalTowersBuild[i], totalTowersDead[i], totalTowerKills[i], totalEnemyDead[i], totalPlayerKills[i]));
+                highscores.Add(new Highscore(names[i], scores[i], gold[i]));
             }
         }
     }

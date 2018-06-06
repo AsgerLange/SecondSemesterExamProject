@@ -27,8 +27,10 @@ namespace TankGame
         //List containing enemies to be released
         private static List<GameObject> releaseList = new List<GameObject>();
 
+        private static Queue<GameObject> enemiesWaitingToBeSpawned = new Queue<GameObject>();
 
-        
+
+
         public static EnemyPool Instance
         {
             get
@@ -71,6 +73,7 @@ namespace TankGame
                         go.Update();
                     }
                 }
+
                 Release();
             }
         }
@@ -144,7 +147,35 @@ namespace TankGame
         /// <returns></returns>
         public GameObject CreateEnemy(Vector2 position, EnemyType enemyType)
         {
-            if (inActiveEnemies.Count > 0)
+            if (enemiesWaitingToBeSpawned.Count > 0 && activeEnemies.Count < Constant.maxEnemyOnScreen)
+            {
+                int deQueueAmount = 0;
+
+                deQueueAmount = enemiesWaitingToBeSpawned.Count;
+                if (Constant.maxEnemyOnScreen - ActiveEnemies.Count < deQueueAmount)
+                {
+                    deQueueAmount = Constant.maxEnemyOnScreen - activeEnemies.Count;
+                }
+
+                for (int i = 0; i < deQueueAmount; i++)
+                {
+
+                    GameObject tmp;
+
+                    tmp = enemiesWaitingToBeSpawned.Dequeue();
+
+                    lock (GameWorld.colliderKey)
+                    {
+                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+                        GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                    }
+
+                    AddEnemy(tmp);
+                }
+            }
+            if (inActiveEnemies.Count > 0 &&
+                 activeEnemies.Count <= Constant.maxEnemyOnScreen &&
+                 enemiesWaitingToBeSpawned.Count == 0)
             {
                 GameObject tmp = null;
                 lock (inActiveKey)
@@ -182,33 +213,29 @@ namespace TankGame
                     }
                     tmp.Transform.Position = position;
 
-                    lock (activeKey)
-                    {
-                        ActiveEnemies.Add(tmp);
-                    }
+                    AddEnemy(tmp);
 
                     return tmp;
                 }
                 else
                 {
                     tmp = GameObjectDirector.Instance.Construct(position, enemyType);
-                    lock (activeKey)
-                    {
-                        ActiveEnemies.Add(tmp);
-                    }
+
+                    AddEnemy(tmp);
+
 
                     return tmp;
                 }
             }
+
             else
             {
                 GameObject tmp;
 
                 tmp = GameObjectDirector.Instance.Construct(position, enemyType);
-                lock (activeKey)
-                {
-                    ActiveEnemies.Add(tmp);
-                }
+
+                AddEnemy(tmp);
+
 
                 return tmp;
             }
@@ -233,10 +260,10 @@ namespace TankGame
         {
             enemy.Transform.Position = new Vector2(100, 100);
 
-            ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
 
             lock (GameWorld.colliderKey)
             {
+                ((Collider)enemy.GetComponent("Collider")).DoCollsionChecks = false;
                 GameWorld.Instance.Colliders.Remove((Collider)enemy.GetComponent("Collider"));
             }
 
@@ -299,6 +326,31 @@ namespace TankGame
                 }
             }
             releaseList.Clear();
+        }
+
+        /// <summary>
+        /// Adds the enemy to the queue or to the game depending on how many is in game already
+        /// </summary>
+        /// <param name="tmp"></param>
+        private void AddEnemy(GameObject tmp)
+        {
+            lock (activeKey)
+            {
+                if (activeEnemies.Count < Constant.maxEnemyOnScreen)
+                {
+
+                    ActiveEnemies.Add(tmp);
+                }
+                else
+                {
+                    lock (GameWorld.colliderKey)
+                    {
+                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = false;
+                        GameWorld.Instance.Colliders.Remove((Collider)tmp.GetComponent("Collider"));
+                    }
+                    enemiesWaitingToBeSpawned.Enqueue(tmp);
+                }
+            }
         }
     }
 }
