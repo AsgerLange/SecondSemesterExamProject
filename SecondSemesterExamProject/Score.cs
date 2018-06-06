@@ -154,24 +154,388 @@ namespace TankGame
         /// </summary>
         public void HandleKey(GameTime gameTime, Keys currentKey)
         {
-            string keyString = currentKey.ToString();//Turns the currentkeys into a string
-            if (currentKey == Keys.Space)
+            string keyString;
+            switch (currentKey)
             {
-                name += " ";
+                case Keys.Tab:
+                    break;
+                case Keys.CapsLock:
+                    break;
+                case Keys.Escape:
+                    break;
+                case Keys.PageUp:
+                    break;
+                case Keys.PageDown:
+                    break;
+                case Keys.End:
+                    break;
+                case Keys.Home:
+                    break;
+                case Keys.Left:
+                    break;
+                case Keys.Up:
+                    break;
+                case Keys.Right:
+                    break;
+                case Keys.Down:
+                    break;
+                case Keys.Select:
+                    break;
+                case Keys.Print:
+                    break;
+                case Keys.Execute:
+                    break;
+                case Keys.PrintScreen:
+                    break;
+                case Keys.Insert:
+                    break;
+                case Keys.Help:
+                    break;
+                case Keys.D0:
+                    keyString = "0";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D1:
+                    keyString = "1";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D2:
+                    keyString = "2";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D3:
+                    keyString = "3";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D4:
+                    keyString = "4";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D5:
+                    keyString = "5";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break; ;
+                case Keys.D6:
+                    keyString = "6";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D7:
+                    keyString = "7";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D8:
+                    keyString = "8";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D9:
+                    keyString = "9";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.LeftWindows:
+                    break;
+                case Keys.RightWindows:
+                    break;
+                case Keys.Apps:
+                    break;
+                case Keys.Sleep:
+                    break;
+                case Keys.NumPad0:
+                    keyString = "0";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad1:
+                    keyString = "1";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad2:
+                    keyString = "2";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad3:
+                    keyString = "3";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad4:
+                    keyString = "4";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad5:
+                    keyString = "5";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad6:
+                    keyString = "6";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad7:
+                    keyString = "7";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad8:
+                    keyString = "8";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad9:
+                    keyString = "9";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.Multiply:
+                    break;
+                case Keys.Add:
+                    break;
+                case Keys.Separator:
+                    break;
+                case Keys.Subtract:
+                    break;
+                case Keys.Decimal:
+                    break;
+                case Keys.Divide:
+                    break;
+                case Keys.F1:
+                    break;
+                case Keys.F2:
+                    break;
+                case Keys.F3:
+                    break;
+                case Keys.F4:
+                    break;
+                case Keys.F5:
+                    break;
+                case Keys.F6:
+                    break;
+                case Keys.F7:
+                    break;
+                case Keys.F8:
+                    break;
+                case Keys.F9:
+                    break;
+                case Keys.F10:
+                    break;
+                case Keys.F11:
+                    break;
+                case Keys.F12:
+                    break;
+                case Keys.F13:
+                    break;
+                case Keys.F14:
+                    break;
+                case Keys.F15:
+                    break;
+                case Keys.F16:
+                    break;
+                case Keys.F17:
+                    break;
+                case Keys.F18:
+                    break;
+                case Keys.F19:
+                    break;
+                case Keys.F20:
+                    break;
+                case Keys.F21:
+                    break;
+                case Keys.F22:
+                    break;
+                case Keys.F23:
+                    break;
+                case Keys.F24:
+                    break;
+                case Keys.NumLock:
+                    break;
+                case Keys.Scroll:
+                    break;
+                case Keys.LeftShift:
+                    break;
+                case Keys.RightShift:
+                    break;
+                case Keys.LeftControl:
+                    break;
+                case Keys.RightControl:
+                    break;
+                case Keys.LeftAlt:
+                    break;
+                case Keys.RightAlt:
+                    break;
+                case Keys.BrowserBack:
+                    break;
+                case Keys.VolumeMute:
+                    break;
+                case Keys.VolumeDown:
+                    break;
+                case Keys.VolumeUp:
+                    break;
+                case Keys.MediaNextTrack:
+                    break;
+                case Keys.MediaPreviousTrack:
+                    break;
+                case Keys.MediaStop:
+                    break;
+                case Keys.MediaPlayPause:
+                    break;
+                case Keys.LaunchMail:
+                    break;
+                case Keys.SelectMedia:
+                    break;
+                case Keys.LaunchApplication1:
+                    break;
+                case Keys.LaunchApplication2:
+                    break;
+                case Keys.OemSemicolon:
+                    break;
+                case Keys.OemPlus:
+                    break;
+                case Keys.OemComma:
+                    break;
+                case Keys.OemMinus:
+                    break;
+                case Keys.OemPeriod:
+                    break;
+                case Keys.OemQuestion:
+                    break;
+                case Keys.OemTilde:
+                    break;
+                case Keys.OemOpenBrackets:
+                    break;
+                case Keys.OemPipe:
+                    break;
+                case Keys.OemCloseBrackets:
+                    break;
+                case Keys.OemQuotes:
+                    break;
+                case Keys.Oem8:
+                    break;
+                case Keys.OemBackslash:
+                    break;
+                case Keys.ProcessKey:
+                    break;
+                case Keys.Attn:
+                    break;
+                case Keys.Crsel:
+                    break;
+                case Keys.Exsel:
+                    break;
+                case Keys.EraseEof:
+                    break;
+                case Keys.Play:
+                    break;
+                case Keys.Zoom:
+                    break;
+                case Keys.Pa1:
+                    break;
+                case Keys.OemClear:
+                    break;
+                case Keys.ChatPadGreen:
+                    break;
+                case Keys.ChatPadOrange:
+                    break;
+                case Keys.Pause:
+                    break;
+                case Keys.ImeConvert:
+                    break;
+                case Keys.ImeNoConvert:
+                    break;
+                case Keys.Kana:
+                    break;
+                case Keys.Kanji:
+                    break;
+                case Keys.OemAuto:
+                    break;
+                case Keys.OemCopy:
+                    break;
+                case Keys.OemEnlW:
+                    break;
+                case Keys.Enter:
+                    if (name != string.Empty)
+                    {
+                        nameEntered = true;
+                        CreateHighScore();
+                    }
+                    break;
+                case Keys.Back:
+                    if (name.Length > 0)
+                    {
+                        name = name.Remove(name.Length - 1);
+                    }
+                    break;
+                case Keys.Delete:
+                    if (name.Length > 0)
+                    {
+                        name = name.Remove(name.Length - 1);
+                    }
+                    break;
+                case Keys.Space:
+                    name += " ";
+                    break;
+
+                default:
+                    keyString = currentKey.ToString();//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
             }
-            else if ((currentKey == Keys.Back || currentKey == Keys.Delete) && name.Length > 0)
-            {
-                name = name.Remove(name.Length - 1);
-            }
-            else if (currentKey == Keys.Enter)
-            {
-                nameEntered = true;
-                CreateHighScore();
-            }
-            else if (keyString.Length < 21)
-            {
-                name += keyString;
-            }
+
+
             //Set the timer to the current time
             timer = gameTime.TotalGameTime.TotalMilliseconds;
         }
