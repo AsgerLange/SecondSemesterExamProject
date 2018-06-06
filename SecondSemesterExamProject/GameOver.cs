@@ -14,6 +14,7 @@ namespace TankGame
         private SpriteFont font;
         private SpriteFont titleFont;
 
+        public int Score { get; set; }
 
         private float p1StatsPosX = 500;
         private Color p1StatsColor = Color.CornflowerBlue;
@@ -24,27 +25,58 @@ namespace TankGame
         private Color statsColor = Color.Gold;
         private float statsPosX = 225;
 
+        Button ContinueButton;
 
+        public GameOver()
+        {
+            string text = "Continue";
+            Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
+            {
+                Text = text
+            };
+            Continue.PenColour = Color.Gold;
+            Continue.click += Continue_click;
+            ContinueButton = Continue;
+
+        }
+
+        /// <summary>
+        /// handles what happens when the player presses continue
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Continue_click(object sender, EventArgs e)
+        {
+            GameWorld.Instance.GetGameState = GameState.Score;
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (ContinueButton != null)
+            {
+                ContinueButton.Draw(spriteBatch);
+            }
             DrawGameOver(spriteBatch);
             DrawGameRecap(spriteBatch);
         }
+
         public void LoadContent(ContentManager content)
         {
             font = content.Load<SpriteFont>(Constant.buttonFont);
             titleFont = content.Load<SpriteFont>(Constant.titleFont);
-
+            if (ContinueButton != null)
+            {
+                ContinueButton.LoadContent(content);
+            }
         }
+
         private void DrawGameOver(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.Instance.backGround, GameWorld.Instance.screenSize
-            , null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            spriteBatch.Draw(GameWorld.Instance.backGround, GameWorld.Instance.screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
 
-            spriteBatch.DrawString(titleFont, "GameOver", new Vector2(Constant.width / 4, 2), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None,
-                0.1f);
+            spriteBatch.DrawString(titleFont, "GameOver", new Vector2(Constant.width / 4, 2), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
         }
+
         private void DrawGameRecap(SpriteBatch spriteBatch)
         {
             DrawEnemiesKilled(spriteBatch);
@@ -58,7 +90,6 @@ namespace TankGame
             }
         }
 
-
         private void DrawEnemiesKilled(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, "Enemies killed", new Vector2(statsPosX, 120), statsColor);
@@ -69,13 +100,10 @@ namespace TankGame
             spriteBatch.DrawString(font, "Elite Enemies killed: " + Stats.BasicEliteEnemyKilled, new Vector2(statsPosX, 160), statsColor);
 
             spriteBatch.DrawString(font, "Spitter Enemies killed: " + Stats.SpitterKilled, new Vector2(statsPosX, 180), statsColor);
-
-
         }
 
         private void DrawWeaponsFired(SpriteBatch spriteBatch, Vehicle vehicle)
         {
-
             if (vehicle.Control == Controls.WASD)
             {
                 spriteBatch.DrawString(font, "Player1 weapons fired: ", new Vector2(p1StatsPosX, 120), Color.Gold);
@@ -97,7 +125,6 @@ namespace TankGame
         }
         private void DrawGoldEarned(SpriteBatch spriteBatch, Vehicle vehicle)
         {
-
             if (vehicle.Control == Controls.WASD)
             {
                 spriteBatch.DrawString(font, "Player 1 gold earned: "
@@ -190,6 +217,16 @@ namespace TankGame
         }
         public void Update()
         {
+            if (ContinueButton != null)
+            {
+                ContinueButton.Update();
+            }
+            int cal = 0;
+            foreach (Vehicle VH in GameWorld.Instance.Vehicles)
+            {
+                cal += VH.Stats.TotalAmountOfGold;
+            }
+            Score = cal * GameWorld.Instance.GetSpawn.Wave + Stats.BasicEnemyKilled * 1 + Stats.SwarmerKilled * 1 + Stats.SpitterKilled * 5 + Stats.BasicEliteEnemyKilled * 10;
         }
     }
 }
