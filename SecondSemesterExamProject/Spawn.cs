@@ -9,7 +9,7 @@ namespace TankGame
 {
     class Spawn
     {
-        private int wave = 1000;
+        private int wave = 0;
         private int waveSize = 0;
         private int spawned = 0;
         private Random rnd = new Random();
@@ -148,6 +148,10 @@ namespace TankGame
                 int waveMax = wave + Constant.waveSizeVariable + 1;
 
                 waveSize = rnd.Next(waveMin, waveMax);
+                if (waveSize > 400)
+                {
+                    waveSize = 400;
+                }
 
                 SpawnEnemy(WaveSize, spawnRectangle);
                 waveStamp = GameWorld.Instance.TotalGameTime;

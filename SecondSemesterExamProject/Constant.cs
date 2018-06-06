@@ -53,7 +53,7 @@ namespace TankGame
         public static readonly float tankMoveSpeed = 120;
         public static readonly int tankHealth = 500;
         public static readonly float tankRotateSpeed = 2.1F;
-        public static readonly int tankStartGold = 200000;
+        public static readonly int tankStartGold = 150;
         #endregion
         #region Plane
         public static readonly string planeSpriteSheet = "PlayerPlane";
@@ -76,11 +76,11 @@ namespace TankGame
 
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
-        public static readonly float HQFireRate = 1f;
-        public static readonly int HQHealth = 1;//000;
+        public static readonly float HQFireRate = 2f;
+        public static readonly int HQHealth = 1000;
         public static readonly int HQAttackRange = 400;
         public static readonly BulletType HQbulletType = BulletType.BiggerBullet;
-        public static readonly int HQSpread = 0;
+        public static readonly int HQSpread = 4;
 
         #endregion
 
@@ -211,7 +211,6 @@ namespace TankGame
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
         public readonly static int basicEnemyAttackRadius = 100;
-
         #endregion
         #region BasicEliteEnemy
         public readonly static int basicEliteEnemyGold = 6;
