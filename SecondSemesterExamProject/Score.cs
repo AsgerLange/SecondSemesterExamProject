@@ -318,10 +318,14 @@ namespace TankGame
                     shotgunBulletShot = VH.Stats.ShotgunPelletsCounter;
                 }
             }
-            string basicBullet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + basicBulletShot + "," + "BasicBullet" + "); ";
-            string biggerBullet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + biggerBulletShot + "," + "biggerBullet" + "); ";
-            string sniperBullet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + sniperBulletShot + "," + "sniperBullet" + "); ";
-            string shotgunPellet = "insert into bullets (ID,playerID, bullets_shot,bulletName) values (" + ID + "," + playerID + "," + shotgunBulletShot + "," + "shotgunPellet" + "); ";
+            string basicBullet = "insert into bullets (ID,playerID, bullets_shot,bullet_Name) values (" + ID + "," + playerID + "," + basicBulletShot + "," + "'BasicBullet'" + "); ";
+            string biggerBullet = "insert into bullets (ID,playerID, bullets_shot,bullet_Name) values (" + ID + "," + playerID + "," + biggerBulletShot + "," + "'biggerBullet'" + "); ";
+            string sniperBullet = "insert into bullets (ID,playerID, bullets_shot,bullet_Name) values (" + ID + "," + playerID + "," + sniperBulletShot + "," + "'sniperBullet'" + "); ";
+            string shotgunPellet = "insert into bullets (ID,playerID, bullets_shot,bullet_Name) values (" + ID + "," + playerID + "," + shotgunBulletShot + "," + "'shotgunPellet'" + "); ";
+            WriteToDB(basicBullet);
+            WriteToDB(biggerBullet);
+            WriteToDB(sniperBullet);
+            WriteToDB(shotgunPellet);
         }
 
         public void LoadScoreToScreen()
