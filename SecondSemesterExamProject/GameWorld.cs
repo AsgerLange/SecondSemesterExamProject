@@ -43,18 +43,15 @@ namespace TankGame
         private Random rnd = new Random();
         private int playerAmount;
         private GameOver gameOver;
-        /// <summary>
-        /// Scaling the game based on amount of players
-        /// </summary>
-
         Score score;
-
 
         //Background
         public Texture2D backGround;
         public Rectangle screenSize;
-
-
+        public GameOver GetGameOver
+        {
+            get { return gameOver; }
+        }
         public List<Collider> Colliders
         {
             get
@@ -171,7 +168,7 @@ namespace TankGame
         protected override void Initialize()
         {
 
-           // graphics.ToggleFullScreen();
+            // graphics.ToggleFullScreen();
 
             IsMouseVisible = true;
 
@@ -200,7 +197,7 @@ namespace TankGame
 
 
             //creates a score to keep track of scores and stats
-            //score = new Score();
+            score = new Score();
 
             base.Initialize();
         }
@@ -213,7 +210,7 @@ namespace TankGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //score.LoadContent(Content);
+            score.LoadContent(Content);
             backGround = Content.Load<Texture2D>(Constant.gameBackGround);
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -287,9 +284,7 @@ namespace TankGame
                             }
                         }
                         break;
-
                     }
-
                 }
 
                 lock (BulletPool.activeListKey)
@@ -309,7 +304,7 @@ namespace TankGame
             else if (gameState == GameState.Score)
             {
                 //handles score funktions
-                //score.Update(gameTime);
+                score.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -415,7 +410,7 @@ namespace TankGame
             else if (gameState == GameState.Score)
             {
                 //draw score
-                //score.Draw(spriteBatch);
+                score.Draw(spriteBatch);
             }
 
             spriteBatch.End();
@@ -459,6 +454,10 @@ namespace TankGame
             }
             return playerAmount;
         }
+
+        /// <summary>
+        /// sets the gamestate to gameOver
+        /// </summary>
         public void GameOver()
         {
             this.gameState = GameState.GameOver;
