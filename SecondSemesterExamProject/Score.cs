@@ -156,6 +156,7 @@ namespace TankGame
         /// Handles spesific keys such as space, backspace, delete and enter.
         /// </summary>
         public void HandleKey(GameTime gameTime, Keys currentKey)
+        #region Keyboard input
         {
             string keyString;
             switch (currentKey)
@@ -542,6 +543,7 @@ namespace TankGame
             //Set the timer to the current time
             timer = gameTime.TotalGameTime.TotalMilliseconds;
         }
+        #endregion
 
         /// <summary>
         /// Loads the content for inputspace
