@@ -148,6 +148,10 @@ namespace TankGame
                 int waveMax = wave + Constant.waveSizeVariable + 1;
 
                 waveSize = rnd.Next(waveMin, waveMax);
+                if (waveSize > 400)
+                {
+                    waveSize = 400;
+                }
 
                 SpawnEnemy(WaveSize, spawnRectangle);
                 waveStamp = GameWorld.Instance.TotalGameTime;

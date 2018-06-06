@@ -169,7 +169,7 @@ namespace TankGame
             deathTimeStamp = GameWorld.Instance.TotalGameTime;
             GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
-            this.stats.TotalAmountOfPlayerDeaths++;
+            this.stats.PlayerDeathAmmount++;
         }
 
         /// <summary>
