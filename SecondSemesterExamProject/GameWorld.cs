@@ -42,6 +42,8 @@ namespace TankGame
         private Spawn spawner;
         private Random rnd = new Random();
         private int playerAmount;
+        private int towerAmount;
+
         private GameOver gameOver;
         Score score;
 
@@ -120,6 +122,11 @@ namespace TankGame
         {
             get { return playerAmount; }
             set { playerAmount = value; }
+        }
+        public int TowerAmount
+        {
+            get { return towerAmount; }
+            set { towerAmount = value; }
         }
         public Spawn GetSpawn
         {
