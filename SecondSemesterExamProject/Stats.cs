@@ -29,7 +29,7 @@ namespace TankGame
             get { return totalAmountOfGold; }
             set { totalAmountOfGold = value; }
         }
-        public int TotalAmountOfPlayerDeaths
+        public int PlayerDeathAmmount
         {
             get { return totalAmountOfPlayerDeaths; }
             set { totalAmountOfPlayerDeaths = value; }

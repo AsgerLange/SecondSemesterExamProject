@@ -211,7 +211,6 @@ namespace TankGame
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
         public readonly static int basicEnemyAttackRadius = 100;
-
         #endregion
         #region BasicEliteEnemy
         public readonly static int basicEliteEnemyGold = 6;
