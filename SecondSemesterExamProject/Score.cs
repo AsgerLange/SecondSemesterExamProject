@@ -325,14 +325,14 @@ namespace TankGame
                     string totalStatsUpdatePlayerDeaths = "UPDATE Total_stats SET Total_player_deaths = Total_player_deaths + " + playerDeathAmountThisGame + " where ID = 1";
                     WriteToDB(totalStatsUpdatePlayerDeaths);
                 }
-
-                int enemiesKilled = Stats.BasicEnemyKilled + Stats.BasicEliteEnemyKilled + Stats.SwarmerKilled + Stats.SpitterKilled;
-                string totalStatsUpdateEnemyKilled = "UPDATE Total_stats SET Total_enemy_killed = Total_enemy_killed + " + enemiesKilled + " where ID = 1";
-                WriteToDB(totalStatsUpdateEnemyKilled);
-
-                string totalStatsUpdateGamesPlayed = "UPDATE Total_stats SET Total_games_played = Total_games_played + 1 where ID = 1";
-                WriteToDB(totalStatsUpdateGamesPlayed);
             }
+
+            int enemiesKilled = Stats.BasicEnemyKilled + Stats.BasicEliteEnemyKilled + Stats.SwarmerKilled + Stats.SpitterKilled;
+            string totalStatsUpdateEnemyKilled = "UPDATE Total_stats SET Total_enemy_killed = Total_enemy_killed + " + enemiesKilled + " where ID = 1";
+            WriteToDB(totalStatsUpdateEnemyKilled);
+
+            string totalStatsUpdateGamesPlayed = "UPDATE Total_stats SET Total_games_played = Total_games_played + 1 where ID = 1";
+            WriteToDB(totalStatsUpdateGamesPlayed);
         }
 
         /// <summary>

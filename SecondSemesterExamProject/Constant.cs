@@ -74,8 +74,8 @@ namespace TankGame
         #region Tower
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
-        public static readonly float HQFireRate = 20000;
-        public static readonly int HQHealth = 1;//000;
+        public static readonly float HQFireRate = 2;
+        public static readonly int HQHealth = 1000;
         public static readonly int HQAttackRange = 400;
         public static readonly BulletType HQbulletType = BulletType.BiggerBullet;
         public static readonly int HQSpread = 4;
