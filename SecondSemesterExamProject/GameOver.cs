@@ -134,7 +134,7 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Player 1 gold earned: "
                     + vehicle.Stats.TotalAmountOfGold, new Vector2(p1StatsPosX, 560), p1StatsColor);
                 spriteBatch.DrawString(font, "Player 1 deaths: "
-                    + vehicle.Stats.TotalAmountOfPlayerDeaths, new Vector2(p1StatsPosX, 580), p1StatsColor);
+                    + vehicle.Stats.PlayerDeathAmmount, new Vector2(p1StatsPosX, 580), p1StatsColor);
 
             }
             else if (vehicle.Control == Controls.UDLR)
@@ -144,7 +144,7 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Player 2 gold earned: "
                     + vehicle.Stats.TotalAmountOfGold, new Vector2(p2StatsPosX, 560), p2StatsColor);
                 spriteBatch.DrawString(font, "Player 2 deaths: "
-            + vehicle.Stats.TotalAmountOfPlayerDeaths, new Vector2(p2StatsPosX, 580), p2StatsColor);
+            + vehicle.Stats.PlayerDeathAmmount, new Vector2(p2StatsPosX, 580), p2StatsColor);
             }
         }
         private void DrawBulletsCreated(SpriteBatch spriteBatch, Vehicle vehicle)
@@ -162,7 +162,7 @@ namespace TankGame
                     new Vector2(p1StatsPosX, 300), p1StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p1StatsPosX, 320), p1StatsColor);
-               
+
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
                    new Vector2(p1StatsPosX, 360), p1StatsColor);
@@ -184,7 +184,7 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 300), p2StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p2StatsPosX, 320), p2StatsColor);
-             
+
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
                    new Vector2(p2StatsPosX, 360), p2StatsColor);
