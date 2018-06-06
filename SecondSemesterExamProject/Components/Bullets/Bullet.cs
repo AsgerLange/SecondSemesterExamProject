@@ -145,13 +145,10 @@ namespace TankGame
             if (GameWorld.Instance.TotalGameTime >= (timeStamp + lifeSpan))
             {
                 shouldDie = true;
-                if (!(this is SniperBullet))
+                if (shooter != null)
                 {
-                    if (shooter != null)
-                    {
+                    IncrementMissCoint();
 
-                        shooter.Stats.BulletsMissed++;
-                    }
                 }
                 DestroyBullet();
             }
@@ -309,12 +306,9 @@ namespace TankGame
                             {
                                 (type as Tower).Health -= bulletDmg;
                             }
-                            else if (type is Terrain && (!(this is SniperBullet)))
+                            else if (type is Terrain)
                             {
-                                if (shooter != null)
-                                {
-                                    shooter.Stats.BulletsMissed++;
-                                }
+                                IncrementMissCoint();
                             }
                             BulletSpecialEffect(other);
                         }
@@ -341,6 +335,33 @@ namespace TankGame
         {
             canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);
+        }
+
+        /// <summary>
+        /// handles incrementing the miss counts for bullets
+        /// </summary>
+        private void IncrementMissCoint()
+        {
+            if (shooter != null)
+            {
+                if (!(this is SniperBullet))
+                {
+
+                    shooter.Stats.BulletsMissed++;
+
+                }
+                else if ((this is SniperBullet))
+                {
+
+                    //Snipers' damage is reduced upon hitting an enemy, so if the damage == the base damage and it
+                    //disappears, it hasn't hit an enemy
+                    if ((this as SniperBullet).BulletDamage == Constant.sniperBulletBulletDmg)
+                    {
+
+                        shooter.Stats.BulletsMissed++;
+                    }
+                }
+            }
         }
     }
 }
