@@ -33,6 +33,7 @@ namespace TankGame
         public readonly static string GreenButtonDownTexture = "ArrowGreenDown";
         public readonly static string blueButtonTexture = "Button";
         public readonly static string RedButtonTexture = "Rutton";
+        public readonly static string TexBoxButton = "TextBoxButton";
         public readonly static string buttonFont = "stat";
         public readonly static string startGameButton = "Start Game";
         #endregion
