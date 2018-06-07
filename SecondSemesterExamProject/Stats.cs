@@ -37,35 +37,35 @@ namespace TankGame
         #endregion;
 
         #region BulletCounters
-        private  int basicBulletCounter;
-        private  int biggerBulletCounter;
-        private  int sniperBulletCounter;
-        private  int shotgunPelletsCounter;
-        private static  int spitterBulletCounter;
+        private int basicBulletCounter;
+        private int biggerBulletCounter;
+        private int sniperBulletCounter;
+        private int shotgunPelletsCounter;
+        private static int spitterBulletCounter;
 
-        private  int bulletsMissed;
+        private int bulletsMissed;
 
-        public  int BulletsMissed
+        public int BulletsMissed
         {
             get { return bulletsMissed; }
             set { bulletsMissed = value; }
         }
-        public  int BasicBulletCounter
+        public int BasicBulletCounter
         {
             get { return basicBulletCounter; }
             set { basicBulletCounter = value; }
         }
-        public  int BiggerBulletCounter
+        public int BiggerBulletCounter
         {
             get { return biggerBulletCounter; }
             set { biggerBulletCounter = value; }
         }
-        public  int SniperBulletCounter
+        public int SniperBulletCounter
         {
             get { return sniperBulletCounter; }
             set { sniperBulletCounter = value; }
         }
-        public  int ShotgunPelletsCounter
+        public int ShotgunPelletsCounter
         {
             get { return shotgunPelletsCounter; }
             set { shotgunPelletsCounter = value; }
@@ -78,12 +78,11 @@ namespace TankGame
         #endregion;
 
         #region EnemyKillCounts
-
         private static int basicEnemyKilled = 0;
         private static int basicEliteEnemyKilled = 0;
         private static int spitterKilled = 0;
         private static int swarmerKilled = 0;
-
+        private static int siegeBreakerKilled = 0;
 
         public static int BasicEnemyKilled
         {
@@ -96,7 +95,6 @@ namespace TankGame
             get { return basicEliteEnemyKilled; }
             set { basicEliteEnemyKilled = value; }
         }
-
         public static int SpitterKilled
         {
             get { return spitterKilled; }
@@ -106,6 +104,11 @@ namespace TankGame
         {
             get { return swarmerKilled; }
             set { swarmerKilled = value; }
+        }
+        public static int SiegeBreakerKilled
+        {
+            get { return siegeBreakerKilled; }
+            set { siegeBreakerKilled = value; }
         }
         #endregion;
 
@@ -166,6 +169,10 @@ namespace TankGame
         }
         #endregion
 
+        /// <summary>
+        /// Stat constructor
+        /// </summary>
+        /// <param name="vehicle">the vehicle who owns the stat object</param>
         public Stats(Vehicle vehicle)
         {
             this.vehicle = vehicle;
@@ -174,15 +181,15 @@ namespace TankGame
         /// Calculates Accuracy, based on total amounts of bullets fired and missed
         /// </summary>
         /// <returns></returns>
-        public  int CalculateAccuracy()
+        public int CalculateAccuracy()
         {
             float result;
 
             float sum;
 
-                sum = vehicle.Stats.BasicBulletCounter + vehicle.Stats.biggerBulletCounter +
-                vehicle.Stats.sniperBulletCounter + vehicle.Stats.shotgunPelletsCounter;
-            if (sum ==0)
+            sum = vehicle.Stats.BasicBulletCounter + vehicle.Stats.biggerBulletCounter +
+            vehicle.Stats.sniperBulletCounter + vehicle.Stats.shotgunPelletsCounter;
+            if (sum == 0)
             {
                 sum = 1;
             }

@@ -235,7 +235,12 @@ namespace TankGame
             {
                 cal += VH.Stats.TotalAmountOfGold;
             }
-            Score = cal * GameWorld.Instance.GetSpawn.Wave + Stats.BasicEnemyKilled * 1 + Stats.SwarmerKilled * 1 + Stats.SpitterKilled * 5 + Stats.BasicEliteEnemyKilled * 10;
+            int waveModifier = GameWorld.Instance.GetSpawn.Wave;
+            if (waveModifier > 10)
+            {
+                waveModifier = 10;
+            }
+            Score = cal * waveModifier + Stats.BasicEnemyKilled * 1 + Stats.SwarmerKilled * 1 + Stats.SpitterKilled * 5 + Stats.BasicEliteEnemyKilled * 10 + Stats.SiegeBreakerKilled * 50;
         }
     }
 }

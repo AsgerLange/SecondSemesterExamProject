@@ -18,10 +18,13 @@ namespace TankGame
         public static string name = string.Empty;//string.Empty;//Contains the string we need to use for player input
         private bool scoreSaved = false;
         private bool nameEntered = false;
-        Rectangle textBox;
-        Texture2D theBox;
+        private bool scoresLoaded = false;
+        private Rectangle textBox;
+        private Texture2D theBox;
+        private Texture2D scoreBackGround;
         private Texture2D BackGround;
-        SpriteFont font;
+        private Vector2 scoreBackGroundPos = new Vector2(Constant.width / 2 - 150, 120);
+        private SpriteFont font;
         private KeyboardState lastKeyboardState;//Checks the last key pressed
         private Keys[] lastKey;//Contains a array of the keys that has been pressed.
         private string parsedText;
@@ -32,15 +35,13 @@ namespace TankGame
 
         public Score()
         {
-            textBox = new Rectangle(Constant.width / 2 - 200, Constant.hight / 2, 400, 50);//the textbox pos
+            textBox = new Rectangle(Constant.width / 2 - 150, Constant.hight / 2, 450, 50);//the textbox pos
 
             if (!(File.Exists(@"TankGameDatabase.db")))
             {
                 SQLiteConnection.CreateFile("TankGameDatabase.db");
                 CreateTables();
             }
-
-            highscores.Add(new Highscore("Stefan", 9999, 50000));
         }
 
 
@@ -150,34 +151,406 @@ namespace TankGame
                 lastKeyboardState = keyboardState;//Sets the lastkeystate to be the keyboard state we get
                 lastKey = keys;//Saves the last key that was pressed.
             }
+            if (scoreSaved && nameEntered)
+            {
+                if (scoresLoaded == false)
+                {
+                    LoadScoreToScreen();
+                }
+            }
         }
-
         /// <summary>
         /// Handles spesific keys such as space, backspace, delete and enter.
         /// </summary>
         public void HandleKey(GameTime gameTime, Keys currentKey)
+        #region Keyboard input
         {
-            string keyString = currentKey.ToString();//Turns the currentkeys into a string
-            if (currentKey == Keys.Space)
+            string keyString;
+            switch (currentKey)
             {
-                name += " ";
+                case Keys.Tab:
+                    break;
+                case Keys.CapsLock:
+                    break;
+                case Keys.Escape:
+                    break;
+                case Keys.PageUp:
+                    break;
+                case Keys.PageDown:
+                    break;
+                case Keys.End:
+                    break;
+                case Keys.Home:
+                    break;
+                case Keys.Left:
+                    break;
+                case Keys.Up:
+                    break;
+                case Keys.Right:
+                    break;
+                case Keys.Down:
+                    break;
+                case Keys.Select:
+                    break;
+                case Keys.Print:
+                    break;
+                case Keys.Execute:
+                    break;
+                case Keys.PrintScreen:
+                    break;
+                case Keys.Insert:
+                    break;
+                case Keys.Help:
+                    break;
+                case Keys.D0:
+                    keyString = "0";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D1:
+                    keyString = "1";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D2:
+                    keyString = "2";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D3:
+                    keyString = "3";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D4:
+                    keyString = "4";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D5:
+                    keyString = "5";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break; ;
+                case Keys.D6:
+                    keyString = "6";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D7:
+                    keyString = "7";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D8:
+                    keyString = "8";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.D9:
+                    keyString = "9";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.LeftWindows:
+                    break;
+                case Keys.RightWindows:
+                    break;
+                case Keys.Apps:
+                    break;
+                case Keys.Sleep:
+                    break;
+                case Keys.NumPad0:
+                    keyString = "0";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad1:
+                    keyString = "1";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad2:
+                    keyString = "2";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad3:
+                    keyString = "3";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad4:
+                    keyString = "4";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad5:
+                    keyString = "5";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad6:
+                    keyString = "6";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad7:
+                    keyString = "7";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad8:
+                    keyString = "8";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.NumPad9:
+                    keyString = "9";//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
+                case Keys.Multiply:
+                    break;
+                case Keys.Add:
+                    break;
+                case Keys.Separator:
+                    break;
+                case Keys.Subtract:
+                    break;
+                case Keys.Decimal:
+                    break;
+                case Keys.Divide:
+                    break;
+                case Keys.F1:
+                    break;
+                case Keys.F2:
+                    break;
+                case Keys.F3:
+                    break;
+                case Keys.F4:
+                    break;
+                case Keys.F5:
+                    break;
+                case Keys.F6:
+                    break;
+                case Keys.F7:
+                    break;
+                case Keys.F8:
+                    break;
+                case Keys.F9:
+                    break;
+                case Keys.F10:
+                    break;
+                case Keys.F11:
+                    break;
+                case Keys.F12:
+                    break;
+                case Keys.F13:
+                    break;
+                case Keys.F14:
+                    break;
+                case Keys.F15:
+                    break;
+                case Keys.F16:
+                    break;
+                case Keys.F17:
+                    break;
+                case Keys.F18:
+                    break;
+                case Keys.F19:
+                    break;
+                case Keys.F20:
+                    break;
+                case Keys.F21:
+                    break;
+                case Keys.F22:
+                    break;
+                case Keys.F23:
+                    break;
+                case Keys.F24:
+                    break;
+                case Keys.NumLock:
+                    break;
+                case Keys.Scroll:
+                    break;
+                case Keys.LeftShift:
+                    break;
+                case Keys.RightShift:
+                    break;
+                case Keys.LeftControl:
+                    break;
+                case Keys.RightControl:
+                    break;
+                case Keys.LeftAlt:
+                    break;
+                case Keys.RightAlt:
+                    break;
+                case Keys.BrowserBack:
+                    break;
+                case Keys.VolumeMute:
+                    break;
+                case Keys.VolumeDown:
+                    break;
+                case Keys.VolumeUp:
+                    break;
+                case Keys.MediaNextTrack:
+                    break;
+                case Keys.MediaPreviousTrack:
+                    break;
+                case Keys.MediaStop:
+                    break;
+                case Keys.MediaPlayPause:
+                    break;
+                case Keys.LaunchMail:
+                    break;
+                case Keys.SelectMedia:
+                    break;
+                case Keys.LaunchApplication1:
+                    break;
+                case Keys.LaunchApplication2:
+                    break;
+                case Keys.OemSemicolon:
+                    break;
+                case Keys.OemPlus:
+                    break;
+                case Keys.OemComma:
+                    break;
+                case Keys.OemMinus:
+                    break;
+                case Keys.OemPeriod:
+                    break;
+                case Keys.OemQuestion:
+                    break;
+                case Keys.OemTilde:
+                    break;
+                case Keys.OemOpenBrackets:
+                    break;
+                case Keys.OemPipe:
+                    break;
+                case Keys.OemCloseBrackets:
+                    break;
+                case Keys.OemQuotes:
+                    break;
+                case Keys.Oem8:
+                    break;
+                case Keys.OemBackslash:
+                    break;
+                case Keys.ProcessKey:
+                    break;
+                case Keys.Attn:
+                    break;
+                case Keys.Crsel:
+                    break;
+                case Keys.Exsel:
+                    break;
+                case Keys.EraseEof:
+                    break;
+                case Keys.Play:
+                    break;
+                case Keys.Zoom:
+                    break;
+                case Keys.Pa1:
+                    break;
+                case Keys.OemClear:
+                    break;
+                case Keys.ChatPadGreen:
+                    break;
+                case Keys.ChatPadOrange:
+                    break;
+                case Keys.Pause:
+                    break;
+                case Keys.ImeConvert:
+                    break;
+                case Keys.ImeNoConvert:
+                    break;
+                case Keys.Kana:
+                    break;
+                case Keys.Kanji:
+                    break;
+                case Keys.OemAuto:
+                    break;
+                case Keys.OemCopy:
+                    break;
+                case Keys.OemEnlW:
+                    break;
+                case Keys.Enter:
+                    if (name != string.Empty)
+                    {
+                        nameEntered = true;
+                        CreateHighScore();
+                    }
+                    break;
+                case Keys.Back:
+                    if (name.Length > 0)
+                    {
+                        name = name.Remove(name.Length - 1);
+                    }
+                    break;
+                case Keys.Delete:
+                    if (name.Length > 0)
+                    {
+                        name = name.Remove(name.Length - 1);
+                    }
+                    break;
+                case Keys.Space:
+                    name += " ";
+                    break;
+
+                default:
+                    keyString = currentKey.ToString();//Turns the currentkeys into a string
+                    if (keyString.Length + name.Length < 21)
+                    {
+                        name += keyString;
+                    }
+                    break;
             }
-            else if ((currentKey == Keys.Back || currentKey == Keys.Delete) && name.Length > 0)
-            {
-                name = name.Remove(name.Length - 1);
-            }
-            else if (currentKey == Keys.Enter)
-            {
-                nameEntered = true;
-                CreateHighScore();
-            }
-            else if (keyString.Length < 21)
-            {
-                name += keyString;
-            }
+
+
             //Set the timer to the current time
             timer = gameTime.TotalGameTime.TotalMilliseconds;
         }
+        #endregion
 
         /// <summary>
         /// Loads the content for inputspace
@@ -186,6 +559,7 @@ namespace TankGame
         {
             theBox = content.Load<Texture2D>(Constant.TexBoxButton);
             font = content.Load<SpriteFont>("Stat");
+            scoreBackGround = content.Load<Texture2D>("ScoreScreen");
             BackGround = content.Load<Texture2D>(Constant.menuBackGround);
             foreach (Highscore HS in highscores)
             {
@@ -202,11 +576,16 @@ namespace TankGame
             spriteBatch.Draw(BackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             if (scoreSaved == false && nameEntered == false)
             {
+                string nameText = "Enter your Name Here";
+                spriteBatch.DrawString(font, nameText, new Vector2(textBox.X + 5, textBox.Y - 50), Color.Black);//Draws the text
                 spriteBatch.Draw(theBox, new Vector2(textBox.X - 5, textBox.Y - 15), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
                 spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Black);//Draws the text
             }
-            if (scoreSaved && nameEntered)
-            {
+            if (scoreSaved && nameEntered && scoresLoaded)
+            {//HigscoreScreen
+                string text = "HighScores:";
+                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 170), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+                spriteBatch.Draw(scoreBackGround, scoreBackGroundPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                 for (int i = 0; i < highscores.Count; i++)
                 {
                     highscores[i].Draw(spriteBatch, i);
@@ -376,10 +755,12 @@ namespace TankGame
             string BasicEliteEnemy = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'BasicEliteEnemy'" + "," + Stats.BasicEliteEnemyKilled + ", null );";
             string SwarmerEnemy = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'SwarmerEnemy'" + "," + Stats.SwarmerKilled + ", null );";
             string Spitter = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'Spitter'" + "," + Stats.SpitterKilled + "," + Stats.SpitterBulletCounter + ");";
+            string siegeBreaker = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'SiegeBreaker'" + "," + Stats.SiegeBreakerKilled + ", null );";
             WriteToDB(BasicEnemy);
             WriteToDB(BasicEliteEnemy);
             WriteToDB(SwarmerEnemy);
             WriteToDB(Spitter);
+            WriteToDB(siegeBreaker);
         }
 
         /// <summary>
@@ -413,58 +794,30 @@ namespace TankGame
             WriteToDB(shotgunPellet);
         }
 
+        /// <summary>
+        /// get the top 10 highscores
+        /// </summary>
         public void LoadScoreToScreen()
         {
-            int scoresCount = 0;
             List<string> names = new List<string>();
             List<int> scores = new List<int>();
-            List<int> ids = new List<int>();
+            List<int> iDs = new List<int>();
 
-            List<string> enemyNames = new List<string>();
-            List<int> enemyKills = new List<int>();
-            List<int> spitterBullets = new List<int>();
-            List<int> gold = new List<int>();
-            List<int> basicBullets = new List<int>();
-            List<int> biggerBullets = new List<int>();
-            List<int> sniperBullets = new List<int>();
-            List<int> shotgunBullets = new List<int>();
-            List<int> waves = new List<int>();
-            List<string> towerNames = new List<string>();
-            List<int> towerKills = new List<int>();
-            List<int> towerBuild = new List<int>();
-            List<int> towerDead = new List<int>();
-            List<int> totalBullets = new List<int>();
-            List<int> totalTowersBuild = new List<int>();
-            List<int> totalTowersDead = new List<int>();
-            List<int> totalTowerKills = new List<int>();
-            List<int> totalEnemyDead = new List<int>();
-            List<int> totalPlayerKills = new List<int>();
+            string nameString = "select Name from highscores ORDER BY Score desc limit 10;";
+            names = ReadFromDB(nameString, "Name");
 
-            SQLiteConnection DBConnect = new SQLiteConnection("Data source = TankGameDatabase.db; Version = 3; ");
-            DBConnect.Open();
-            string highscore = "select Highscore.Name, Highscore.Score, HighScore.ID from Highscore limit 10 order by score desc";
-            SQLiteCommand command = new SQLiteCommand(highscore, DBConnect);
-            SQLiteDataReader highscoreReader = command.ExecuteReader();
-            while (highscoreReader.Read())
+            string scoresString = "select Score from highscores ORDER BY Score desc limit 10;";
+            scores = ReadFromDB(scoresString, "Score", 1);
+
+            for (int i = 0; i < names.Count; i++)
             {
-                names.Add((string)highscoreReader["Name"]);
-                scores.Add((int)highscoreReader["Score"]);
-                ids.Add((int)highscoreReader["ID"]);
-
-                gold.Add((int)highscoreReader["Gold"]);
+                highscores.Add(new Highscore(names[i], scores[i]));
             }
-            DBConnect.Close();
-            string enemyNameCommand = "";//command to get EnemyName
-            enemyNames = ReadFromDB(enemyNameCommand, "Enemy name");
-
-            string enemyKillCommand = "";//command to get EnemyName
-            enemyKills = ReadFromDB(enemyKillCommand, "Enemy kills", 1);
-
-
-            for (int i = 0; i < scoresCount; i++)
+            foreach (Highscore HS in highscores)
             {
-                highscores.Add(new Highscore(names[i], scores[i], gold[i]));
+                HS.LoadContent(GameWorld.Instance.Content);
             }
+            scoresLoaded = true;
         }
     }
 }
