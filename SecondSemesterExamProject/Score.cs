@@ -18,6 +18,7 @@ namespace TankGame
         public static string name = string.Empty;//string.Empty;//Contains the string we need to use for player input
         private bool scoreSaved = false;
         private bool nameEntered = false;
+        private bool scoresLoaded = false;
         Rectangle textBox;
         Texture2D theBox;
         private Texture2D BackGround;
@@ -39,8 +40,6 @@ namespace TankGame
                 SQLiteConnection.CreateFile("TankGameDatabase.db");
                 CreateTables();
             }
-
-            highscores.Add(new Highscore("Stefan", 9999, 50000));
         }
 
 
@@ -150,8 +149,14 @@ namespace TankGame
                 lastKeyboardState = keyboardState;//Sets the lastkeystate to be the keyboard state we get
                 lastKey = keys;//Saves the last key that was pressed.
             }
+            if (scoreSaved && nameEntered)
+            {
+                if (scoresLoaded == false)
+                {
+                    LoadScoreToScreen();
+                }
+            }
         }
-
         /// <summary>
         /// Handles spesific keys such as space, backspace, delete and enter.
         /// </summary>
@@ -205,8 +210,10 @@ namespace TankGame
                 spriteBatch.Draw(theBox, new Vector2(textBox.X - 5, textBox.Y - 15), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
                 spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Black);//Draws the text
             }
-            if (scoreSaved && nameEntered)
+            if (scoreSaved && nameEntered && scoresLoaded)
             {
+                string text = "HighScores:";
+                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 175), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
                 for (int i = 0; i < highscores.Count; i++)
                 {
                     highscores[i].Draw(spriteBatch, i);
@@ -376,10 +383,12 @@ namespace TankGame
             string BasicEliteEnemy = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'BasicEliteEnemy'" + "," + Stats.BasicEliteEnemyKilled + ", null );";
             string SwarmerEnemy = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'SwarmerEnemy'" + "," + Stats.SwarmerKilled + ", null );";
             string Spitter = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'Spitter'" + "," + Stats.SpitterKilled + "," + Stats.SpitterBulletCounter + ");";
+            string siegeBreaker = "insert into enemies (ID, Enemy_name, Enemy_kills, Spitter_bullets_shot) values (" + iD + "," + "'SiegeBreaker'" + "," + Stats.SiegeBreakerKilled + ", null );";
             WriteToDB(BasicEnemy);
             WriteToDB(BasicEliteEnemy);
             WriteToDB(SwarmerEnemy);
             WriteToDB(Spitter);
+            WriteToDB(siegeBreaker);
         }
 
         /// <summary>
@@ -413,58 +422,30 @@ namespace TankGame
             WriteToDB(shotgunPellet);
         }
 
+        /// <summary>
+        /// get the top 10 highscores
+        /// </summary>
         public void LoadScoreToScreen()
         {
-            int scoresCount = 0;
             List<string> names = new List<string>();
             List<int> scores = new List<int>();
-            List<int> ids = new List<int>();
+            List<int> iDs = new List<int>();
 
-            List<string> enemyNames = new List<string>();
-            List<int> enemyKills = new List<int>();
-            List<int> spitterBullets = new List<int>();
-            List<int> gold = new List<int>();
-            List<int> basicBullets = new List<int>();
-            List<int> biggerBullets = new List<int>();
-            List<int> sniperBullets = new List<int>();
-            List<int> shotgunBullets = new List<int>();
-            List<int> waves = new List<int>();
-            List<string> towerNames = new List<string>();
-            List<int> towerKills = new List<int>();
-            List<int> towerBuild = new List<int>();
-            List<int> towerDead = new List<int>();
-            List<int> totalBullets = new List<int>();
-            List<int> totalTowersBuild = new List<int>();
-            List<int> totalTowersDead = new List<int>();
-            List<int> totalTowerKills = new List<int>();
-            List<int> totalEnemyDead = new List<int>();
-            List<int> totalPlayerKills = new List<int>();
+            string nameString = "select Name from highscores ORDER BY Score desc limit 10;";
+            names = ReadFromDB(nameString, "Name");
 
-            SQLiteConnection DBConnect = new SQLiteConnection("Data source = TankGameDatabase.db; Version = 3; ");
-            DBConnect.Open();
-            string highscore = "select Highscore.Name, Highscore.Score, HighScore.ID from Highscore limit 10 order by score desc";
-            SQLiteCommand command = new SQLiteCommand(highscore, DBConnect);
-            SQLiteDataReader highscoreReader = command.ExecuteReader();
-            while (highscoreReader.Read())
+            string scoresString = "select Score from highscores ORDER BY Score desc limit 10;";
+            scores = ReadFromDB(scoresString, "Score", 1);
+
+            for (int i = 0; i < names.Count; i++)
             {
-                names.Add((string)highscoreReader["Name"]);
-                scores.Add((int)highscoreReader["Score"]);
-                ids.Add((int)highscoreReader["ID"]);
-
-                gold.Add((int)highscoreReader["Gold"]);
+                highscores.Add(new Highscore(names[i], scores[i]));
             }
-            DBConnect.Close();
-            string enemyNameCommand = "";//command to get EnemyName
-            enemyNames = ReadFromDB(enemyNameCommand, "Enemy name");
-
-            string enemyKillCommand = "";//command to get EnemyName
-            enemyKills = ReadFromDB(enemyKillCommand, "Enemy kills", 1);
-
-
-            for (int i = 0; i < scoresCount; i++)
+            foreach (Highscore HS in highscores)
             {
-                highscores.Add(new Highscore(names[i], scores[i], gold[i]));
+                HS.LoadContent(GameWorld.Instance.Content);
             }
+            scoresLoaded = true;
         }
     }
 }
