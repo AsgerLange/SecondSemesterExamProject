@@ -614,4 +614,22 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ScoreScreen.png
+#begin BackgroundMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BackgroundMusic.mp3
+
+
+#begin BackgroundMusic1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BackgroundMusic1.mp3
+
+#begin TestSoundEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:TestSoundEffect.wav
 
