@@ -98,12 +98,12 @@ namespace TankGame
         #region ShotgunTower
         public static readonly int shotgunTowerPrice = 300;
         public static readonly string ShotgunTowerSpriteSheet = "TowerShotgun";
-        public static readonly float ShotgunTowerFireRate = 2f;
+        public static readonly float ShotgunTowerFireRate = 1.9f;
         public static readonly int ShotgunTowerHealth = 350;
         public static readonly BulletType ShotgunTowerBulletType = BulletType.ShotgunPellet;
-        public static readonly int shotgunTowerAttackRange = 130;
-        public static readonly int ShotgunTowerSpread = 8;
-        public static readonly int shotgunTowerPelletAmount = 10;
+        public static readonly int shotgunTowerAttackRange = 140;
+        public static readonly int ShotgunTowerSpread = 10;
+        public static readonly int shotgunTowerPelletAmount = 15;
         public static readonly int shotgunTowerAmount = 2;
         #endregion;
 
