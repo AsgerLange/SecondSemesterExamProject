@@ -33,6 +33,7 @@ namespace TankGame
         public readonly static string GreenButtonDownTexture = "ArrowGreenDown";
         public readonly static string blueButtonTexture = "Button";
         public readonly static string RedButtonTexture = "Rutton";
+        public readonly static string TexBoxButton = "TextBoxButton";
         public readonly static string buttonFont = "stat";
         public readonly static string startGameButton = "Start Game";
         #endregion
@@ -72,7 +73,7 @@ namespace TankGame
         #endregion
 
         #region Tower
-        public static readonly int maxTowerAmount = 25;
+        public static readonly int maxTowerAmount = 20;
 
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
@@ -201,7 +202,7 @@ namespace TankGame
         #endregion;
 
         #region Enemies
-        public static readonly int maxEnemyOnScreen = 80;  
+        public static readonly int maxEnemyOnScreen = 120;
         #region Melee
         #region BasicEnemy
         public readonly static int basicEnemyGold = 2;
@@ -243,8 +244,8 @@ namespace TankGame
         public static readonly float siegeBreakerEnemyAttackRate = 0.9f;
         public static readonly int siegeBreakerEnemyDamage = 40;
         public readonly static int siegeBreakerEnemyAttackRadius = 200;
-        public static readonly float siegeBreakerSpawnWave = 0;
-        public static readonly float siegeBreakerSpawnModifier = 800;
+        public static readonly float siegeBreakerSpawnWave = 20;
+        public static readonly float siegeBreakerSpawnModifier = 50;
         #endregion
         #endregion
         #region Ranged
