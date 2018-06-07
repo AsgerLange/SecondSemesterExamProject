@@ -55,11 +55,8 @@ namespace TankGame
         {
             Vehicle shooter = FindShooter(gameObject);
 
-            if (shooter != null)
-            {
 
-                IncrementBulletCounts(bulletType, shooter);
-            }
+            IncrementBulletCounts(bulletType, shooter);
 
             if (inActiveBullets.Count > 0)
             {
@@ -305,27 +302,33 @@ namespace TankGame
         /// <param name="type">Type of bullet that was fired</param>
         private static void IncrementBulletCounts(BulletType type, Vehicle vehicle)
         {
-
-            switch (type)
+            if (vehicle != null)
             {
-                case BulletType.BasicBullet:
-                    vehicle.Stats.BasicBulletCounter++;
-                    break;
-                case BulletType.BiggerBullet:
-                    vehicle.Stats.BiggerBulletCounter++;
-                    break;
-                case BulletType.ShotgunPellet:
-                    vehicle.Stats.ShotgunPelletsCounter++;
-                    break;
-                case BulletType.SniperBullet:
-                    vehicle.Stats.SniperBulletCounter++;
-                    break;
-                case BulletType.SpitterBullet:
-                    Stats.SpitterBulletCounter++;
-                    break;
-                default:
-                    System.Diagnostics.Debug.WriteLine("Error in bullet pool IncrementBulletCounts()");
-                    break;
+                switch (type)
+                {
+                    case BulletType.BasicBullet:
+                        vehicle.Stats.BasicBulletCounter++;
+                        break;
+                    case BulletType.BiggerBullet:
+                        vehicle.Stats.BiggerBulletCounter++;
+                        break;
+                    case BulletType.ShotgunPellet:
+                        vehicle.Stats.ShotgunPelletsCounter++;
+                        break;
+                    case BulletType.SniperBullet:
+                        vehicle.Stats.SniperBulletCounter++;
+                        break;
+
+                    default:
+                        System.Diagnostics.Debug.WriteLine("Error in bullet pool IncrementBulletCounts()");
+                        break;
+                }
+
+            }
+            else if (vehicle == null && type == BulletType.SpitterBullet)
+            {
+
+                Stats.SpitterBulletCounter++;
 
             }
 

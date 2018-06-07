@@ -169,6 +169,10 @@ namespace TankGame
         }
         #endregion
 
+        /// <summary>
+        /// Stat constructor
+        /// </summary>
+        /// <param name="vehicle">the vehicle who owns the stat object</param>
         public Stats(Vehicle vehicle)
         {
             this.vehicle = vehicle;
