@@ -23,7 +23,7 @@ namespace TankGame
         private Texture2D theBox;
         private Texture2D scoreBackGround;
         private Texture2D BackGround;
-        private Vector2 scoreBackGroundPos = new Vector2(Constant.width / 2 - 200, 170);
+        private Vector2 scoreBackGroundPos = new Vector2(Constant.width / 2 - 150, 120);
         private SpriteFont font;
         private KeyboardState lastKeyboardState;//Checks the last key pressed
         private Keys[] lastKey;//Contains a array of the keys that has been pressed.
