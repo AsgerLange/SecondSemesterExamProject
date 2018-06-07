@@ -547,7 +547,7 @@ namespace TankGame
                     {
                         keyString = currentKey.ToString().ToLower();//Turns the currentkeys into a string
                     }
-                    if (keyString.Length + name.Length < 21)
+                    if (keyString.Length + name.Length < 15)
                     {
                         name += keyString;
                     }
@@ -591,8 +591,8 @@ namespace TankGame
             }
             if (scoreSaved && nameEntered && scoresLoaded)
             {//HigscoreScreen
-                string text = "HighScores:";
-                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 170), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+                string text = "HIGH SCORES";
+                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 1.84f - font.MeasureString(text).X / 2, 135), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
                 spriteBatch.Draw(scoreBackGround, scoreBackGroundPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                 for (int i = 0; i < highscores.Count; i++)
                 {
