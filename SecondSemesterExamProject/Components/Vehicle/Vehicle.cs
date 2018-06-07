@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+
 
 namespace TankGame
 {
@@ -17,6 +19,8 @@ namespace TankGame
         private SpriteFont font;
         public Animator animator;
         private Stats stats;
+        private SoundEffect shootSoundEffect;
+
 
         protected Weapon weapon;
         protected TowerPlacer towerPlacer;
@@ -223,9 +227,11 @@ namespace TankGame
 
                     weapon.Shoot(Alignment.Friendly, Rotation); //Fires the weapon
 
+                    shootSoundEffect.Play(1f, 0, 0); //Plays shooting soundeffect
+
                     animator.PlayAnimation("Shoot"); //play shooting animation
 
-                    isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
+                    isPlayingAnimation = true; //allows the animation to not be overwritten by m    ovement animations
 
                     spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
 
@@ -353,6 +359,8 @@ namespace TankGame
         /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
+            shootSoundEffect = content.Load<SoundEffect>("TestSoundEffect");
+
             this.animator = (Animator)GameObject.GetComponent("Animator");
             font = content.Load<SpriteFont>("Stat");
 
