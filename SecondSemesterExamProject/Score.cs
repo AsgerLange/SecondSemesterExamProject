@@ -19,10 +19,12 @@ namespace TankGame
         private bool scoreSaved = false;
         private bool nameEntered = false;
         private bool scoresLoaded = false;
-        Rectangle textBox;
-        Texture2D theBox;
+        private Rectangle textBox;
+        private Texture2D theBox;
+        private Texture2D scoreBackGround;
         private Texture2D BackGround;
-        SpriteFont font;
+        private Vector2 scoreBackGroundPos = new Vector2(Constant.width / 2 - 200, 170);
+        private SpriteFont font;
         private KeyboardState lastKeyboardState;//Checks the last key pressed
         private Keys[] lastKey;//Contains a array of the keys that has been pressed.
         private string parsedText;
@@ -557,6 +559,7 @@ namespace TankGame
         {
             theBox = content.Load<Texture2D>(Constant.TexBoxButton);
             font = content.Load<SpriteFont>("Stat");
+            scoreBackGround = content.Load<Texture2D>("ScoreScreen");
             BackGround = content.Load<Texture2D>(Constant.menuBackGround);
             foreach (Highscore HS in highscores)
             {
@@ -579,9 +582,10 @@ namespace TankGame
                 spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Black);//Draws the text
             }
             if (scoreSaved && nameEntered && scoresLoaded)
-            {
+            {//HigscoreScreen
                 string text = "HighScores:";
                 spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 170), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+                spriteBatch.Draw(scoreBackGround, scoreBackGroundPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                 for (int i = 0; i < highscores.Count; i++)
                 {
                     highscores[i].Draw(spriteBatch, i);
