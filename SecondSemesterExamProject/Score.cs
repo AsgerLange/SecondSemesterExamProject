@@ -184,7 +184,7 @@ namespace TankGame
         /// </summary>
         public virtual void LoadContent(ContentManager content)
         {
-            theBox = content.Load<Texture2D>("Button");
+            theBox = content.Load<Texture2D>(Constant.TexBoxButton);
             font = content.Load<SpriteFont>("Stat");
             BackGround = content.Load<Texture2D>(Constant.menuBackGround);
             foreach (Highscore HS in highscores)
