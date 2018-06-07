@@ -86,7 +86,6 @@ namespace TankGame
             get
             {
                 return activeEnemies;
-
             }
             set
             {

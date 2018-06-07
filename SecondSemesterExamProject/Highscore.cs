@@ -15,15 +15,12 @@ namespace TankGame
         #region StatFields
         private string highscoreName;
         private int score;
-        private int gold;
         #endregion
 
-        public Highscore(string highscoreName, int score, int gold)
+        public Highscore(string highscoreName, int score)
         {
             this.highscoreName = highscoreName;
             this.score = score;
-            this.gold = gold;
-
         }
 
         public void Draw(SpriteBatch spriteBatch, int number)

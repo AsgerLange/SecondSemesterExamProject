@@ -213,7 +213,7 @@ namespace TankGame
             KeyboardState keyState = Keyboard.GetState();
 
             //if the player is pressing the "Shoot" button
-            if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
+            if (((keyState.IsKeyDown(Keys.LeftShift) || (keyState.IsKeyDown(Keys.LeftAlt))) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.OemComma) && control == Controls.UDLR))
             {
 
@@ -221,7 +221,7 @@ namespace TankGame
                 if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    weapon.Shoot( Alignment.Friendly, Rotation); //Fires the weapon
+                    weapon.Shoot(Alignment.Friendly, Rotation); //Fires the weapon
 
                     animator.PlayAnimation("Shoot"); //play shooting animation
 
@@ -242,7 +242,7 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
+            if ((keyState.IsKeyDown(Keys.LeftControl) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.OemPeriod) && control == Controls.UDLR))
             {
                 if (builtTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
@@ -413,8 +413,8 @@ namespace TankGame
                     spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.hight - 60), Color.YellowGreen);
                 }
                 DrawLootToString(spriteBatch);
-                spriteBatch.DrawString(font, "Towers: "+GameWorld.Instance.TowerAmount+"/"+Constant.maxTowerAmount,
-                    new Vector2(Constant.width/2-50,Constant.hight-50), Color.Gold);
+                spriteBatch.DrawString(font, "Towers: " + GameWorld.Instance.TowerAmount + "/" + Constant.maxTowerAmount,
+                    new Vector2(Constant.width / 2 - 50, Constant.hight - 50), Color.Gold);
 
 
             }
@@ -491,7 +491,7 @@ namespace TankGame
                     (comp as Vehicle).spriteRenderer.Sprite = this.spriteRenderer.Sprite;
                     (comp as Vehicle).Stats = this.stats;
                     (comp as Vehicle).weapon = new BasicWeapon((comp.GameObject));
-                   
+
 
                     (comp as Vehicle).Money = this.money;
 

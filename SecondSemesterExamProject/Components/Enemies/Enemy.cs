@@ -374,6 +374,11 @@ namespace TankGame
                 case EnemyType.Swarmer:
                     Stats.SwarmerKilled++;
                     break;
+
+                case EnemyType.SiegebreakerEnemy:
+                    Stats.SiegeBreakerKilled++;
+                    break;
+
                 default:
                     System.Diagnostics.Debug.WriteLine("error incrementenemydeath");
                     break;
