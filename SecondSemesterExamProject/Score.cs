@@ -33,7 +33,7 @@ namespace TankGame
 
         public Score()
         {
-            textBox = new Rectangle(Constant.width / 2 - 200, Constant.hight / 2, 400, 50);//the textbox pos
+            textBox = new Rectangle(Constant.width / 2 - 150, Constant.hight / 2, 450, 50);//the textbox pos
 
             if (!(File.Exists(@"TankGameDatabase.db")))
             {
@@ -573,13 +573,15 @@ namespace TankGame
             spriteBatch.Draw(BackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             if (scoreSaved == false && nameEntered == false)
             {
+                string nameText = "Enter your Name Here";
+                spriteBatch.DrawString(font, nameText, new Vector2(textBox.X + 5, textBox.Y - 50), Color.Black);//Draws the text
                 spriteBatch.Draw(theBox, new Vector2(textBox.X - 5, textBox.Y - 15), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
                 spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Black);//Draws the text
             }
             if (scoreSaved && nameEntered && scoresLoaded)
             {
                 string text = "HighScores:";
-                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 175), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 170), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
                 for (int i = 0; i < highscores.Count; i++)
                 {
                     highscores[i].Draw(spriteBatch, i);
