@@ -54,7 +54,6 @@ namespace TankGame
             this.go = go;
             if (go != null)
             {
-
                 foreach (Component comp in go.GetComponentList)
                 {
                     if (comp is Vehicle)
@@ -86,9 +85,7 @@ namespace TankGame
         /// </summary>
         protected void SwitchBackToBasicWeapon()
         {
-
             vehicle.Weapon = new BasicWeapon(go.GameObject);
-
         }
 
         /// <summary>

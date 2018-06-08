@@ -29,7 +29,7 @@ namespace TankGame
         /// <param name="vector2"></param>
         /// <param name="alignment"></param>
         /// <param name="rotation"></param>
-        public override void Shoot( Alignment alignment, float rotation)
+        public override void Shoot(Alignment alignment, float rotation)
         {
             PlayShootSoundEffect();
             for (int i = 0; i < Constant.shotgunPelletAmount; i++)
@@ -37,7 +37,7 @@ namespace TankGame
                 BulletPool.CreateBullet(go, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             }
             Ammo--;
-           vehicle. Stats.ShotgunFired++;
+            vehicle.Stats.ShotgunFired++;
         }
         public override string ToString()
         {
