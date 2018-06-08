@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
@@ -23,8 +25,8 @@ namespace TankGame
             base.Shoot(alignment, rotation);
         }
 
-    public override string ToString()
-    {
+        public override string ToString()
+        {
             if (ammo > 1000)
             {
                 return "Sniper: LOTS!";
@@ -32,9 +34,25 @@ namespace TankGame
             else
             {
 
-            return "Sniper: " + ammo.ToString(); 
+                return "Sniper: " + ammo.ToString();
             }
-    }
+        }
+        public override void LoadContent(ContentManager content)
+        {
+            shootSoundEffect = content.Load<SoundEffect>("SniperShot");
 
+        }
+
+
+        /// <summary>
+        /// Plays sound effect for weapons's shooting ability
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+
+
+            shootSoundEffect.Play(1f, 0f, 0); //Plays shooting soundeffect
+
+        }
     }
 }
