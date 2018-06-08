@@ -229,7 +229,14 @@ namespace TankGame
 
                     shootSoundEffect.Play(1f, 0, 0); //Plays shooting soundeffect
 
-                    animator.PlayAnimation("Shoot"); //play shooting animation
+                    if (weapon is MachineGun)
+                    {
+                        animator.PlayAnimation("ShootMachinegun"); //play shooting animation
+                    }
+                    else
+                    {
+                        animator.PlayAnimation("Shoot"); //play shooting animation
+                    }
 
                     isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
 
@@ -335,7 +342,7 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            if (animationName == "Shoot")
+            if (animationName == "Shoot" || animationName == "ShootMachinegun")
             {
                 isPlayingAnimation = false;
                 spriteRenderer.Offset = Vector2.Zero;
