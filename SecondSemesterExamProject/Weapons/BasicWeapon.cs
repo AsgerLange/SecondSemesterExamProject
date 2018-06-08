@@ -31,11 +31,11 @@ namespace TankGame
         /// <param name="vector2">position</param>
         /// <param name="alignment">alignment of the bullet</param>
         /// <param name="rotation">rotation of the vehicle that shot the bullet</param>
-        public override void Shoot( Alignment alignment, float rotation)
+        public override void Shoot(Alignment alignment, float rotation)
         {
             vehicle.Stats.BasicWeaponFired++;
             base.Shoot(alignment, rotation);
-            
+
         }
         public override string ToString()
         {
@@ -53,6 +53,14 @@ namespace TankGame
         {
             shootSoundEffect = content.Load<SoundEffect>("BasicWeaponShot");
 
+        }
+
+        /// <summary>
+        /// Plays sound effect for weapons's shooting ability
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+            shootSoundEffect.Play(1, 0, 0); //Plays shooting soundeffect
         }
     }
 }

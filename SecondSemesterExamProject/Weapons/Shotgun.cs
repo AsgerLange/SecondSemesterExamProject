@@ -55,5 +55,16 @@ namespace TankGame
             shootSoundEffect = content.Load<SoundEffect>("ShotgunShot");
 
         }
+
+        /// <summary>
+        /// Plays sound effect for weapons's shooting ability
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+
+
+            shootSoundEffect.Play(1f, 0f, 0); //Plays shooting soundeffect
+
+        }
     }
 }

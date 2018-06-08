@@ -56,7 +56,9 @@ namespace TankGame
         /// </summary>
         protected override void PlayShootSoundEffect()
         {
-            shootSoundEffect.Play(0.3f, 0, 0); //Plays shooting soundeffect
+
+
+            shootSoundEffect.Play(0.5f,0.5f,0); //Plays shooting soundeffect
 
         }
     }
