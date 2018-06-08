@@ -151,8 +151,16 @@ namespace TankGame
         {
             if (isAlive == true)
             {
+                bool isBullet = false;
 
-                if (other.GetAlignment != Alignment.Enemy)
+                foreach (Component go in other.GameObject.GetComponentList)
+                {
+                    if (go is Bullet)
+                    {
+                        isBullet = true;
+                    }
+                }
+                if (other.GetAlignment != Alignment.Enemy && isBullet == false)
                 {
                     float force = Constant.pushForce;
                     Vector2 dir = GameObject.Transform.Position - other.GameObject.Transform.Position;
