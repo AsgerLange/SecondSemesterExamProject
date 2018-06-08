@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 namespace TankGame
 {
 
-    class Weapon
+    class Weapon : ILoadable
     {
         protected float fireRate; //rate of fire
 
@@ -21,6 +23,9 @@ namespace TankGame
         protected Vehicle vehicle;
 
         protected GameObject go; //game object that owne the weapon
+
+        protected SoundEffect shootSoundEffect;
+
 
         public float FireRate
         {
@@ -45,6 +50,7 @@ namespace TankGame
         }
         public Weapon(GameObject go)
         {
+            LoadContent(GameWorld.Instance.Content);
             this.go = go;
             if (go != null)
             {
@@ -67,6 +73,7 @@ namespace TankGame
         public virtual void Shoot(Alignment alignment, float rotation)
         {
 
+            PlayShootSoundEffect();
             BulletPool.CreateBullet(go, alignment,
                        bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             Ammo--;
@@ -79,6 +86,20 @@ namespace TankGame
         protected void SwitchBackToBasicWeapon()
         {
             vehicle.Weapon = new BasicWeapon(go.GameObject);
+        }
+
+        /// <summary>
+        /// Plays sound effect for weapons's shooting ability
+        /// </summary>
+        protected virtual void PlayShootSoundEffect()
+        {
+            shootSoundEffect.Play(1f, 0, 0); //Plays shooting soundeffect
+
+        }
+
+        public virtual void LoadContent(ContentManager content)
+        {
+            
         }
     }
 

@@ -490,7 +490,7 @@ namespace TankGame
         public void PlayBackgroundSong(Song song)
         {
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.5f;
+            MediaPlayer.Volume = 0.3f;
             MediaPlayer.Play(song);
         }
     }
