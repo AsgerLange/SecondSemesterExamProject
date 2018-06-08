@@ -216,8 +216,8 @@ namespace TankGame
             KeyboardState keyState = Keyboard.GetState();
 
             //if the player is pressing the "Shoot" button
-            if (((keyState.IsKeyDown(Keys.LeftShift) || (keyState.IsKeyDown(Keys.LeftAlt))) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.OemComma) && control == Controls.UDLR))
+            if (((keyState.IsKeyDown(Keys.F) || (keyState.IsKeyDown(Keys.Space))) && control == Controls.WASD)
+                || ((keyState.IsKeyDown(Keys.OemComma) || (keyState.IsKeyDown(Keys.Enter))) && control == Controls.UDLR))
             {
 
                 //if enough time has passed since last shot
@@ -253,8 +253,8 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((keyState.IsKeyDown(Keys.LeftControl) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.OemPeriod) && control == Controls.UDLR))
+            if (((keyState.IsKeyDown(Keys.LeftAlt) || (keyState.IsKeyDown(Keys.G))) && control == Controls.WASD)
+                 || ((keyState.IsKeyDown(Keys.OemPeriod) || (keyState.IsKeyDown(Keys.Back))) && control == Controls.UDLR))
             {
                 if (builtTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
                 {
