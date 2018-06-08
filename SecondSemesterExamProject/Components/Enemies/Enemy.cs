@@ -249,7 +249,7 @@ namespace TankGame
         {
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
 
-            if (isPlayingAnimation == false)
+            if (isPlayingAnimation == false && isAlive)
             {
                 animator.PlayAnimation("Walk");
                 isPlayingAnimation = true;
@@ -355,6 +355,9 @@ namespace TankGame
             }
 
         }
+        /// <summary>
+        /// Increments deathCounters in Stats, depending on what kind of enemy dies
+        /// </summary>
         private void IncrementEnemyDeaths()
         {
             switch (enemyType)

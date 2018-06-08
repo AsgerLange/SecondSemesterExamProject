@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +44,22 @@ namespace TankGame
 
                 return "Machinegun: " + ammo.ToString();
             }
+        }
+        public override void LoadContent(ContentManager content)
+        {
+            shootSoundEffect = content.Load<SoundEffect>("MachinegunShot2");
+
+        }
+
+        /// <summary>
+        /// Plays sound effect for weapons's shooting ability
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+
+
+            shootSoundEffect.Play(0.5f,0.5f,0); //Plays shooting soundeffect
+
         }
     }
 }
