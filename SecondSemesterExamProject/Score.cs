@@ -165,6 +165,7 @@ namespace TankGame
         public void HandleKey(GameTime gameTime, Keys currentKey)
         #region Keyboard input
         {
+            KeyboardState keyboardState = Keyboard.GetState();
             string keyString;
             switch (currentKey)
             {
@@ -538,8 +539,15 @@ namespace TankGame
                     break;
 
                 default:
-                    keyString = currentKey.ToString();//Turns the currentkeys into a string
-                    if (keyString.Length + name.Length < 21)
+                    if (keyboardState.IsKeyDown(Keys.LeftShift) || keyboardState.IsKeyDown(Keys.RightShift))
+                    {
+                        keyString = currentKey.ToString();//Turns the currentkeys into a string
+                    }
+                    else
+                    {
+                        keyString = currentKey.ToString().ToLower();//Turns the currentkeys into a string
+                    }
+                    if (keyString.Length + name.Length < 15)
                     {
                         name += keyString;
                     }
@@ -583,8 +591,8 @@ namespace TankGame
             }
             if (scoreSaved && nameEntered && scoresLoaded)
             {//HigscoreScreen
-                string text = "HighScores:";
-                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 170), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+                string text = "HIGH SCORES";
+                spriteBatch.DrawString(font, text, new Vector2(Constant.width / 1.84f - font.MeasureString(text).X / 2, 135), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
                 spriteBatch.Draw(scoreBackGround, scoreBackGroundPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                 for (int i = 0; i < highscores.Count; i++)
                 {
