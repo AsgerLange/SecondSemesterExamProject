@@ -165,6 +165,7 @@ namespace TankGame
         public void HandleKey(GameTime gameTime, Keys currentKey)
         #region Keyboard input
         {
+            KeyboardState keyboardState = Keyboard.GetState();
             string keyString;
             switch (currentKey)
             {
@@ -538,7 +539,14 @@ namespace TankGame
                     break;
 
                 default:
-                    keyString = currentKey.ToString();//Turns the currentkeys into a string
+                    if (keyboardState.IsKeyDown(Keys.LeftShift) || keyboardState.IsKeyDown(Keys.RightShift))
+                    {
+                        keyString = currentKey.ToString();//Turns the currentkeys into a string
+                    }
+                    else
+                    {
+                        keyString = currentKey.ToString().ToLower();//Turns the currentkeys into a string
+                    }
                     if (keyString.Length + name.Length < 15)
                     {
                         name += keyString;
