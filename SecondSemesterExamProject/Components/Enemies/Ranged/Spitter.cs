@@ -41,6 +41,7 @@ namespace TankGame
 
         protected override void Shoot()
         {
+
             base.Shoot();
         }
 

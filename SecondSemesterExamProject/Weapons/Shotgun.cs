@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
@@ -27,14 +29,15 @@ namespace TankGame
         /// <param name="vector2"></param>
         /// <param name="alignment"></param>
         /// <param name="rotation"></param>
-        public override void Shoot( Alignment alignment, float rotation)
+        public override void Shoot(Alignment alignment, float rotation)
         {
+            PlayShootSoundEffect();
             for (int i = 0; i < Constant.shotgunPelletAmount; i++)
             {
                 BulletPool.CreateBullet(go, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             }
             Ammo--;
-           vehicle. Stats.ShotgunFired++;
+            vehicle.Stats.ShotgunFired++;
         }
         public override string ToString()
         {
@@ -46,6 +49,22 @@ namespace TankGame
             {
                 return "Shotgun: " + ammo.ToString();
             }
+        }
+        public override void LoadContent(ContentManager content)
+        {
+            shootSoundEffect = content.Load<SoundEffect>("ShotgunShot");
+
+        }
+
+        /// <summary>
+        /// Plays sound effect for weapons's shooting ability
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+
+
+            shootSoundEffect.Play(1f, 0f, 0); //Plays shooting soundeffect
+
         }
     }
 }

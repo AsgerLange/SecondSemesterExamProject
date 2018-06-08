@@ -99,9 +99,11 @@ namespace TankGame
 
             spriteBatch.DrawString(font, "Elite Enemies killed: " + Stats.BasicEliteEnemyKilled, new Vector2(statsPosX, 160), statsColor);
 
-            spriteBatch.DrawString(font, "Spitter Enemies killed: " + Stats.SpitterKilled, new Vector2(statsPosX, 180), statsColor);
+            spriteBatch.DrawString(font, "Spitters killed: " + Stats.SpitterKilled, new Vector2(statsPosX, 180), statsColor);
 
-            spriteBatch.DrawString(font, "Swarmer Enemies killed: " + Stats.SwarmerKilled, new Vector2(statsPosX, 200), statsColor);
+            spriteBatch.DrawString(font, "Swarmers killed: " + Stats.SwarmerKilled, new Vector2(statsPosX, 200), statsColor);
+
+            spriteBatch.DrawString(font, "SiegeBreakers killed: " + Stats.SiegeBreakerKilled, new Vector2(statsPosX, 220), statsColor);
 
         }
 
@@ -222,7 +224,7 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 500), p2StatsColor);
             }
             spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
-             new Vector2(statsPosX, 240), statsColor);
+             new Vector2(statsPosX, 260), statsColor);
         }
         public void Update()
         {
