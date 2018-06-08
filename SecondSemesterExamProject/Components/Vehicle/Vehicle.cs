@@ -19,7 +19,6 @@ namespace TankGame
         private SpriteFont font;
         public Animator animator;
         private Stats stats;
-        private SoundEffect shootSoundEffect;
 
 
         protected Weapon weapon;
@@ -227,7 +226,6 @@ namespace TankGame
 
                     weapon.Shoot(Alignment.Friendly, Rotation); //Fires the weapon
 
-                    shootSoundEffect.Play(1f, 0, 0); //Plays shooting soundeffect
 
                     animator.PlayAnimation("Shoot"); //play shooting animation
 
@@ -359,7 +357,6 @@ namespace TankGame
         /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
-            shootSoundEffect = content.Load<SoundEffect>("TestSoundEffect");
 
             this.animator = (Animator)GameObject.GetComponent("Animator");
             font = content.Load<SpriteFont>("Stat");

@@ -614,12 +614,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ScoreScreen.png
+
 #begin BackgroundMusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:BackgroundMusic.mp3
-
 
 #begin BackgroundMusic1.mp3
 /importer:Mp3Importer
@@ -632,4 +632,40 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:TestSoundEffect.wav
+
+#begin MachinegunShot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:MachinegunShot.wav
+
+#begin MachinegunShot1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:MachinegunShot1.wav
+
+#begin ShotgunShot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ShotgunShot.wav
+
+#begin BasicWeaponShot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BasicWeaponShot.wav
+
+#begin SniperShot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SniperShot.wav
+
+#begin Machinegunshot2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Machinegunshot2.wav
 
