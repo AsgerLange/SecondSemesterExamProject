@@ -280,7 +280,7 @@ namespace TankGame
                         bool otherIsBullet = false;
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {
-                            if (comp is Tower || comp is Enemy || comp is Vehicle || comp is Terrain)
+                            if (comp is Tower || comp is Enemy || comp is Vehicle || comp is Terrain || comp is Crate)
                             {
                                 type = comp;
                                 break;
@@ -291,9 +291,14 @@ namespace TankGame
                                 break;
                             }
                         }
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy && otherIsBullet == false)
+          
+                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy 
+                            && otherIsBullet == false)
                             || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy) || type is Terrain)
                         {
+                            if (!(type is Crate))
+                            {
+
                             if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
                             {
                                 (type as Enemy).Health -= bulletDmg;
@@ -310,7 +315,9 @@ namespace TankGame
                             {
                                 IncrementMissCoint();
                             }
+                            
                             BulletSpecialEffect(other);
+                            }
                         }
                         if (shouldDie)
                         {
