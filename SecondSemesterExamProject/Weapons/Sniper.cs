@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
@@ -35,6 +37,11 @@ namespace TankGame
             return "Sniper: " + ammo.ToString(); 
             }
     }
+        public override void LoadContent(ContentManager content)
+        {
+            shootSoundEffect = content.Load<SoundEffect>("SniperShot");
+
+        }
 
     }
 }

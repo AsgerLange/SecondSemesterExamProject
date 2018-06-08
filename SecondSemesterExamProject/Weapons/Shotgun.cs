@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
@@ -29,6 +31,7 @@ namespace TankGame
         /// <param name="rotation"></param>
         public override void Shoot(Alignment alignment, float rotation)
         {
+            PlayShootSoundEffect();
             for (int i = 0; i < Constant.shotgunPelletAmount; i++)
             {
                 BulletPool.CreateBullet(go, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
@@ -46,6 +49,11 @@ namespace TankGame
             {
                 return "Shotgun: " + ammo.ToString();
             }
+        }
+        public override void LoadContent(ContentManager content)
+        {
+            shootSoundEffect = content.Load<SoundEffect>("ShotgunShot");
+
         }
     }
 }
