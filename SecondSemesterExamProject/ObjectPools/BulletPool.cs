@@ -323,20 +323,13 @@ namespace TankGame
                         System.Diagnostics.Debug.WriteLine("Error in bullet pool IncrementBulletCounts()");
                         break;
                 }
-
             }
-            else if (vehicle == null && type == BulletType.SpitterBullet)
+            else if (type == BulletType.SpitterBullet)
             {
-
                 Stats.SpitterBulletCounter++;
-
             }
-
-
         }
     }
-
-
 }
 
 

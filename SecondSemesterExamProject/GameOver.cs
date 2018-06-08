@@ -92,18 +92,20 @@ namespace TankGame
 
         private void DrawEnemiesKilled(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, "Enemies killed", new Vector2(statsPosX, 120), statsColor);
+            spriteBatch.DrawString(font, "Enemies killed", new Vector2(statsPosX, 160), statsColor);
 
             spriteBatch.DrawString(font, "Basic Enemies killed: " + Stats.BasicEnemyKilled,
-                new Vector2(statsPosX, 140), Color.Gold);
+                new Vector2(statsPosX, 180), Color.Gold);
 
-            spriteBatch.DrawString(font, "Elite Enemies killed: " + Stats.BasicEliteEnemyKilled, new Vector2(statsPosX, 160), statsColor);
+            spriteBatch.DrawString(font, "Elite Enemies killed: " +
+                Stats.BasicEliteEnemyKilled, new Vector2(statsPosX, 200), statsColor);
 
-            spriteBatch.DrawString(font, "Spitters killed: " + Stats.SpitterKilled, new Vector2(statsPosX, 180), statsColor);
+            spriteBatch.DrawString(font, "Spitters killed: " + Stats.SpitterKilled, new Vector2(statsPosX, 220), statsColor);
 
-            spriteBatch.DrawString(font, "Swarmers killed: " + Stats.SwarmerKilled, new Vector2(statsPosX, 200), statsColor);
+            spriteBatch.DrawString(font, "Swarmers killed: " + Stats.SwarmerKilled, new Vector2(statsPosX, 240), statsColor);
 
-            spriteBatch.DrawString(font, "SiegeBreakers killed: " + Stats.SiegeBreakerKilled, new Vector2(statsPosX, 220), statsColor);
+            spriteBatch.DrawString(font, "SiegeBreakers killed: "
+                + Stats.SiegeBreakerKilled, new Vector2(statsPosX, 260), statsColor);
 
         }
 
@@ -148,6 +150,8 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Player 2 deaths: "
             + vehicle.Stats.PlayerDeathAmmount, new Vector2(p2StatsPosX, 580), p2StatsColor);
             }
+            spriteBatch.DrawString(font, "Wave Number: " + GameWorld.Instance.GetSpawn.Wave,
+             new Vector2(statsPosX, 120), statsColor);
         }
         private void DrawBulletsCreated(SpriteBatch spriteBatch, Vehicle vehicle)
         {
@@ -224,7 +228,7 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 500), p2StatsColor);
             }
             spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
-             new Vector2(statsPosX, 260), statsColor);
+             new Vector2(statsPosX, 300), statsColor);
         }
         public void Update()
         {

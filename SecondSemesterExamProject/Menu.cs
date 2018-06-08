@@ -25,12 +25,19 @@ namespace TankGame
         private Vector2 p2Pos = new Vector2(Constant.width - 450, Constant.hight / 2);
         private Vector2 p2UpPos = new Vector2(Constant.width - 465, Constant.hight / 2 - 45);
         private Vector2 p2DownPos = new Vector2(Constant.width - 465, Constant.hight / 2 + 30);
+        private Vector2 p1ControlsPos = new Vector2(200, Constant.hight/2-75);
+        private Vector2 p2ControlsPos = new Vector2(Constant.width / 2 + 250, Constant.hight/2-100);
+
         private GameObject p1Choice;
         private GameObject p2Choice;
         private SpriteFont titleFont;
         private SpriteFont font;
         private List<Button> buttons = new List<Button>();
         private Texture2D menuBackGround;
+        private Texture2D p1ControlsImage;
+        private Texture2D p2ControlsImage;
+
+
 
         public VehicleType P1
         {
@@ -194,15 +201,22 @@ namespace TankGame
                     but.Draw(spriteBatch);
                 }
             }
+
+
             if (p1 != VehicleType.None)
             {
+                spriteBatch.Draw(p1ControlsImage, p1ControlsPos, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0.5f);
+
                 p1Choice.Draw(spriteBatch);
             }
             if (p2 != VehicleType.None)
             {
+                spriteBatch.Draw(p2ControlsImage, p2ControlsPos, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0.5f);
+
                 p2Choice.Draw(spriteBatch);
             }
-            spriteBatch.Draw(menuBackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            spriteBatch.Draw(menuBackGround, new Rectangle(0, 0, Constant.width, Constant.hight),
+                null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
         }
 
         /// <summary>
@@ -215,6 +229,9 @@ namespace TankGame
             titleFont = content.Load<SpriteFont>(Constant.titleFont);
             titlePos = new Vector2(Constant.width / 2 - titleFont.MeasureString(title).X / 2, 30);
             menuBackGround = content.Load<Texture2D>(Constant.menuBackGround);
+            p1ControlsImage = content.Load<Texture2D>(Constant.p1ControlImagePath);
+            p2ControlsImage = content.Load<Texture2D>(Constant.p2ControlImagePath);
+
 
             foreach (Button but in buttons)
             {
