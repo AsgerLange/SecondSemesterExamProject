@@ -99,7 +99,7 @@ namespace TankGame
 
         public virtual void LoadContent(ContentManager content)
         {
-            
+            shootSoundEffect = content.Load<SoundEffect>("BasicWeaponShot");
         }
     }
 
