@@ -231,7 +231,7 @@ namespace TankGame
 
                     animator.PlayAnimation("Shoot"); //play shooting animation
 
-                    isPlayingAnimation = true; //allows the animation to not be overwritten by m    ovement animations
+                    isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
 
                     spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
 
