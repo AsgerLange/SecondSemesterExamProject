@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -26,6 +27,12 @@ namespace TankGame
 
         public static Barrier barrier;
         GraphicsDeviceManager graphics;
+
+        #region Sound
+        Song backgroundMusic;
+
+
+        #endregion;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
         private List<GameObject> gameObjectsToAdd = new List<GameObject>(); //list of all gameobjects
@@ -219,6 +226,13 @@ namespace TankGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             score.LoadContent(Content);
             backGround = Content.Load<Texture2D>(Constant.gameBackGround);
+
+            backgroundMusic = Content.Load<Song>("BackgroundMusic1");
+           
+
+
+            PlayBackgroundSong(backgroundMusic);
+
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // TODO: use this.Content to load your game content here
@@ -468,6 +482,16 @@ namespace TankGame
         public void GameOver()
         {
             this.gameState = GameState.GameOver;
+        }
+
+        /// <summary>
+        /// plays the background music
+        /// </summary>
+        public void PlayBackgroundSong(Song song)
+        {
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.5f;
+            MediaPlayer.Play(song);
         }
     }
 }

@@ -25,8 +25,20 @@ namespace TankGame
 
         public void Draw(SpriteBatch spriteBatch, int number)
         {
-            string text = "" + (number + 1) + "   " + highscoreName + "   " + score;
-            spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - font.MeasureString(text).X / 2, 200 + ((font.MeasureString(text).Y) + 10) * number), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+            string text="";
+            int numberToScreen = number + 1;
+            if (numberToScreen > 9)
+            {
+                text = "[ " + numberToScreen + " ]  " + highscoreName;
+            }
+            else
+            {
+                text = " [ " + numberToScreen + " ]   " + highscoreName;
+            }
+            spriteBatch.DrawString(font, text, new Vector2(Constant.width / 2 - 138, 200 + ((font.MeasureString(text).Y) + 20) * number), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+
+            string scorePoint = "" + score;
+            spriteBatch.DrawString(font, scorePoint, new Vector2(Constant.width / 2 + 140, 200 + ((font.MeasureString(scorePoint).Y) + 20) * number), Color.Gold, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
         }
 
         public virtual void LoadContent(ContentManager content)
