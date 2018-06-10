@@ -82,7 +82,7 @@ namespace TankGame
         #region HQ
         public static readonly string HQSpriteSheet = "HQ";
         public static readonly float HQFireRate = 2;
-        public static readonly int HQHealth = 1000;
+        public static readonly int HQHealth = 1;
         public static readonly int HQAttackRange = 400;
         public static readonly BulletType HQbulletType = BulletType.BiggerBullet;
         public static readonly int HQSpread = 4;
@@ -182,8 +182,8 @@ namespace TankGame
         #endregion;
 
         #region Sniper
-        public readonly static float sniperFireRate = 1.6f;
-        public readonly static int sniperAmmo = 20;
+        public readonly static float sniperFireRate = 1f;
+        public readonly static int sniperAmmo = 30;
         public readonly static BulletType sniperBulletType = BulletType.SniperBullet;
         public readonly static int sniperSpread = 0;
 
@@ -212,7 +212,7 @@ namespace TankGame
         public readonly static int basicEnemyGold = 2;
         public static readonly string basicEnemySpriteSheet = "BasicEnemy";
         public static readonly int basicEnemyHealth = 200;
-        public static readonly float basicEnemyMovementSpeed = 25;
+        public static readonly float basicEnemyMovementSpeed = 1000;
         public static readonly float basicEnemyAttackRate = 0.7f;
         public static readonly int basicEnemyDamage = 10;
         public readonly static int basicEnemyAttackRadius = 100;
@@ -281,9 +281,9 @@ namespace TankGame
         public static readonly string TowerCrateSpriteSheet = "CrateTower";
         public static readonly string GunCrateSpriteSheet = "CrateWeapon";
         public static readonly string MoneyCrateSpriteSheet = "CrateMoney";
-        public static readonly int moneyCrateMoney = 100;
+        public static readonly int moneyCrateMoney = 75;
         public static readonly float crateSpawnDelay = 17;
-        public static readonly int healthCrate = 150;
+        public static readonly int healthCrate = 75;
         #endregion
     }
 }

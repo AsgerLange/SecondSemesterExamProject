@@ -115,6 +115,11 @@ namespace TankGame
                     this.lifeSpan = Constant.sniperBulletLifeSpan;
                     this.bulletDmg = Constant.sniperBulletBulletDmg;
                     break;
+                case BulletType.SpitterBullet:
+                    this.movementSpeed = Constant.spitterBulletMovementSpeed;
+                    this.lifeSpan = Constant.spitterBulletLifeSpan;
+                    this.bulletDmg = Constant.spitterBulletDmg;
+                    break;
 
                 default:
                     break;

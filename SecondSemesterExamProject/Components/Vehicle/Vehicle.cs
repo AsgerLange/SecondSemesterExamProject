@@ -35,6 +35,8 @@ namespace TankGame
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
+        private Texture2D aimLine;
+        private Vector2 movementDirection;
 
         protected float shotTimeStamp; //when a vehicle last fired its weapon
         protected float builtTimeStamp; //when a vehicle last built a tower
@@ -331,7 +333,10 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         protected void TranslateMovement(Vector2 translation)
         {
+            movementDirection = translation;
+
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
+
         }
 
         /// <summary>
@@ -367,7 +372,7 @@ namespace TankGame
 
             this.animator = (Animator)GameObject.GetComponent("Animator");
             font = content.Load<SpriteFont>("Stat");
-
+            aimLine = content.Load<Texture2D>("AimLine");
             CreateAnimation();
 
             animator.PlayAnimation("Idle");
@@ -398,9 +403,23 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
             DrawInfo(spriteBatch);
+
+            if (weapon is Sniper && GameWorld.Instance.GetGameState == GameState.Game)
+            {
+                //FIX
+                DrawShotDirection(this.GameObject.Transform.Position, GetDirectionVectorFromDegrees(Rotation), spriteBatch);
+            }
         }
 
-        /// <summary>
+        private void DrawShotDirection(Vector2 position, Vector2 direction, SpriteBatch spriteBatch)
+        {
+            float angle = (float)Math.Atan2(position.Y - direction.Y, position.X - direction.X);
+            float distance = Vector2.Distance(position, direction);
+
+            spriteBatch.Draw(aimLine, new Rectangle((int)direction.X, (int)direction.Y, (int)distance, 1), null, Color.Red, angle, Vector2.Zero, SpriteEffects.None, 1);
+        }
+
+        /// <summary>2
         /// Draws the vehicle info out to screen depending on the controls used
         /// </summary>
         /// <param name="spriteBatch"></param>
@@ -517,5 +536,22 @@ namespace TankGame
         {
             return vehicleType.ToString();
         }
+
+        public Vector2 GetDirectionVectorFromDegrees(float Degrees)
+        {
+            // return new Vector2((float)Math.Sin(Degrees), -(float)Math.Cos(Degrees));
+
+            // return Vector2.Transform(new Vector2(0,-1), Matrix.CreateRotationZ(MathHelper.ToRadians(this.rotation)));
+
+
+            float myAngleInRadians =(float) Math.PI;
+            Vector2 angleVector = new Vector2(
+                (float)Math.Cos(myAngleInRadians),
+                -(float)Math.Sin(myAngleInRadians));
+
+            return angleVector;
+          
+        }
+       
     }
 }
