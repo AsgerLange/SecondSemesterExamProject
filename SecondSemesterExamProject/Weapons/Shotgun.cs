@@ -71,7 +71,7 @@ namespace TankGame
         {
 
 
-            shootSoundEffect.Play(1f, 0f, 0); //Plays shooting soundeffect
+            shootSoundEffect.Play(0.9f, 0f, 0); //Plays shooting soundeffect
 
         }
     }
