@@ -405,21 +405,32 @@ namespace TankGame
             DrawInfo(spriteBatch);
 
             if (weapon is Sniper && GameWorld.Instance.GetGameState == GameState.Game)
-            {
-                //FIX
-                DrawShotDirection(this.GameObject.Transform.Position, GetDirectionVectorFromDegrees(Rotation), spriteBatch);
+            {                
+                DrawShotDirection(this.GameObject.Transform.Position, GetDirectionVectorFromRotation(),
+                    spriteBatch);
             }
         }
 
+        /// <summary>
+        /// Draws a line between two points
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
+        /// <param name="spriteBatch"></param>
         private void DrawShotDirection(Vector2 position, Vector2 direction, SpriteBatch spriteBatch)
         {
+            direction = direction * Constant.aimLineLenght;
+
+            direction = position + direction;
+
             float angle = (float)Math.Atan2(position.Y - direction.Y, position.X - direction.X);
             float distance = Vector2.Distance(position, direction);
 
-            spriteBatch.Draw(aimLine, new Rectangle((int)direction.X, (int)direction.Y, (int)distance, 1), null, Color.Red, angle, Vector2.Zero, SpriteEffects.None, 1);
+            spriteBatch.Draw(aimLine, new Rectangle((int)direction.X, (int)direction.Y, (int)distance, 1),
+                null, Color.Red, angle, Vector2.Zero, SpriteEffects.None, 1);
         }
 
-        /// <summary>2
+        /// <summary>
         /// Draws the vehicle info out to screen depending on the controls used
         /// </summary>
         /// <param name="spriteBatch"></param>
@@ -537,21 +548,16 @@ namespace TankGame
             return vehicleType.ToString();
         }
 
-        public Vector2 GetDirectionVectorFromDegrees(float Degrees)
+        /// <summary>
+        /// Gets a direction vector from degrees(rotation)
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GetDirectionVectorFromRotation()
         {
-            // return new Vector2((float)Math.Sin(Degrees), -(float)Math.Cos(Degrees));
+            return Vector2.Transform(new Vector2(0, -1),
+                Matrix.CreateRotationZ(MathHelper.ToRadians(this.rotation)));
 
-            // return Vector2.Transform(new Vector2(0,-1), Matrix.CreateRotationZ(MathHelper.ToRadians(this.rotation)));
-
-
-            float myAngleInRadians =(float) Math.PI;
-            Vector2 angleVector = new Vector2(
-                (float)Math.Cos(myAngleInRadians),
-                -(float)Math.Sin(myAngleInRadians));
-
-            return angleVector;
-          
         }
-       
+
     }
 }
