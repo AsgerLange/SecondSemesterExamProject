@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -25,6 +26,8 @@ namespace TankGame
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
+            shootSound = content.Load<SoundEffect>("BasicWeaponShot");
+
             base.LoadContent(content);
         }
 
@@ -79,7 +82,19 @@ namespace TankGame
         /// </summary>
         protected override void Shoot()
         {
+
             base.Shoot();
+        }
+
+
+        /// <summary>
+        /// Plays shoot sound effect
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+            shootSound.Play(0.4f, 0, 0);
+          
+
         }
     }
 }

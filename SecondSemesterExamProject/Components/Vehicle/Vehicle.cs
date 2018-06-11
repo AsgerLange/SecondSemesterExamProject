@@ -19,7 +19,7 @@ namespace TankGame
         private SpriteFont font;
         public Animator animator;
         private Stats stats;
-
+        private SoundEffect vehicleDeathSound;
 
         protected Weapon weapon;
         protected TowerPlacer towerPlacer;
@@ -84,6 +84,7 @@ namespace TankGame
                 {
                     health = 0;
                     animator.PlayAnimation("Death");
+                    vehicleDeathSound.Play();
                     isPlayingAnimation = true;
                     IsAlive = false;
                 }
@@ -374,6 +375,7 @@ namespace TankGame
             font = content.Load<SpriteFont>("Stat");
             aimLine = content.Load<Texture2D>("AimLine");
             CreateAnimation();
+            vehicleDeathSound = content.Load<SoundEffect>("VehicleDeath");
 
             animator.PlayAnimation("Idle");
         }

@@ -711,3 +711,15 @@
 /processorParam:Quality=Best
 /build:HQdeath.wav
 
+#begin TowerDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:TowerDeath.wav
+
+#begin VehicleDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:VehicleDeath.wav
+
