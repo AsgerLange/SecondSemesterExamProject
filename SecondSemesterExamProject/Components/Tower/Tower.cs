@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -20,6 +21,8 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
         protected BulletType bulletType;
+        protected SoundEffect dieSoundEffect;
+
 
         /// <summary>
         /// Property for health, kills tower, if HP < zero
@@ -34,6 +37,11 @@ namespace TankGame
                 if (health <= 0)
                 {
                     health = 0;
+
+                    if (dieSoundEffect != null)
+                    {
+                        dieSoundEffect.Play();
+                    }
                     animator.PlayAnimation("Death");
                 }
             }
@@ -276,6 +284,7 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
+          
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             GameWorld.Instance.TowerAmount--;
         }

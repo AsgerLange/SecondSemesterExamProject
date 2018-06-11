@@ -191,15 +191,23 @@ namespace TankGame
         /// <param name="go"></param>
         private void MoveTo(GameObject go)
         {
-            float x = go.Transform.Position.X;
-            float y = go.Transform.Position.Y;
+            if (go != null)
+            {
 
-            Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
-            direction.Normalize();
+                float x = go.Transform.Position.X;
+                float y = go.Transform.Position.Y;
 
-            RotateToMatchDirection(direction);
+                Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
+                direction.Normalize();
 
-            TranslateMovement(direction);
+                RotateToMatchDirection(direction);
+
+                TranslateMovement(direction);
+            }
+            else
+            {
+                MoveTo(GameWorld.Instance.GameObjects[0]/*HQ*/);
+            }
         }
 
         /// <summary>
@@ -343,10 +351,8 @@ namespace TankGame
 
                 if (targetGameObject.GetComponent("Collider") != target)
                 {
-
                     this.targetGameObject = target.GameObject;
-
-
+                    
                 }
             }
             else

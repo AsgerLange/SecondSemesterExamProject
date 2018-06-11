@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -24,6 +25,7 @@ namespace TankGame
         public override void LoadContent(ContentManager content)
         {
             font = content.Load<SpriteFont>("Stat");
+            dieSoundEffect = content.Load<SoundEffect>("HQdeath");
             base.LoadContent(content);
         }
 
