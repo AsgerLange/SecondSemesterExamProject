@@ -115,18 +115,18 @@ namespace TankGame
             {
                 spriteBatch.DrawString(font, "Player1 weapons fired: ", new Vector2(p1StatsPosX, 120), Color.Gold);
                 spriteBatch.DrawString(font, "Basic weapon fired: " + vehicle.Stats.BasicWeaponFired, new Vector2(p1StatsPosX, 140), p1StatsColor);
-                spriteBatch.DrawString(font, "Sniper weapon fired: " + vehicle.Stats.SniperFired, new Vector2(p1StatsPosX, 160), p1StatsColor);
-                spriteBatch.DrawString(font, "Shotgun weapon fired: " + vehicle.Stats.ShotgunFired, new Vector2(p1StatsPosX, 180), p1StatsColor);
-                spriteBatch.DrawString(font, "Machinegun weapon fired: " + vehicle.Stats.MachinegunFired, new Vector2(p1StatsPosX, 200), p1StatsColor);
+                spriteBatch.DrawString(font, "Snipers fired: " + vehicle.Stats.SniperFired, new Vector2(p1StatsPosX, 160), p1StatsColor);
+                spriteBatch.DrawString(font, "Shotguns fired: " + vehicle.Stats.ShotgunFired, new Vector2(p1StatsPosX, 180), p1StatsColor);
+                spriteBatch.DrawString(font, "Machineguns fired: " + vehicle.Stats.MachinegunFired, new Vector2(p1StatsPosX, 200), p1StatsColor);
 
             }
             else if (vehicle.Control == Controls.UDLR)
             {
                 spriteBatch.DrawString(font, "Player2 weapons fired: ", new Vector2(p2StatsPosX, 120), statsColor);
                 spriteBatch.DrawString(font, "Basic weapon fired: " + vehicle.Stats.BasicWeaponFired, new Vector2(p2StatsPosX, 140), p2StatsColor);
-                spriteBatch.DrawString(font, "Sniper weapon fired: " + vehicle.Stats.SniperFired, new Vector2(p2StatsPosX, 160), p2StatsColor);
-                spriteBatch.DrawString(font, "Shotgun weapon fired: " + vehicle.Stats.ShotgunFired, new Vector2(p2StatsPosX, 180), p2StatsColor);
-                spriteBatch.DrawString(font, "Machinegun weapon fired: " + vehicle.Stats.MachinegunFired, new Vector2(p2StatsPosX, 200), p2StatsColor);
+                spriteBatch.DrawString(font, "Snipers fired: " + vehicle.Stats.SniperFired, new Vector2(p2StatsPosX, 160), p2StatsColor);
+                spriteBatch.DrawString(font, "Shotguns fired: " + vehicle.Stats.ShotgunFired, new Vector2(p2StatsPosX, 180), p2StatsColor);
+                spriteBatch.DrawString(font, "Machineguns fired: " + vehicle.Stats.MachinegunFired, new Vector2(p2StatsPosX, 200), p2StatsColor);
 
             }
         }

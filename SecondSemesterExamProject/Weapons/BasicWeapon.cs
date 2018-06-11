@@ -37,6 +37,10 @@ namespace TankGame
             base.Shoot(alignment, rotation);
 
         }
+        /// <summary>
+        /// Returns name and amount of ammo
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             if (ammo > 1000)
@@ -49,6 +53,10 @@ namespace TankGame
                 return "Basic Weapon: " + ammo.ToString();
             }
         }
+        /// <summary>
+        /// loads content for basic weapon
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
             shootSoundEffect = content.Load<SoundEffect>("BasicWeaponShot");
