@@ -69,10 +69,16 @@ namespace TankGame
         /// </summary>
         protected override void PlayShootSoundEffect()
         {
+            if (vehicle.Control == Controls.WASD)
+            {
 
+                shootSoundEffect.Play(0.5f, 0f, 0); //Plays shooting soundeffect
+            }
+            else
+            {
+                shootSoundEffect.Play(0.5f, 1f, 0); 
 
-            shootSoundEffect.Play(1f, 0f, 0); //Plays shooting soundeffect
-
+            }
         }
     }
 }

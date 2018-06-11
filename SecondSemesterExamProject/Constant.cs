@@ -58,7 +58,7 @@ namespace TankGame
         public static readonly string tankSpriteSheet = "PlayerTank";
         public static readonly float tankMoveSpeed = 120;
         public static readonly int tankHealth = 500;
-        public static readonly float tankRotateSpeed = 2.1F;
+        public static readonly float tankRotateSpeed = 1.7F;
         public static readonly int tankStartGold = 150;
         #endregion
         #region Plane
@@ -73,7 +73,7 @@ namespace TankGame
         public static readonly float bikeMoveSpeed = 200;
         public static readonly int bikeHealth = 250;
         public static readonly float bikeRotateSpeed = 3f;
-        public static readonly int bikeStartGold = 150;
+        public static readonly int bikeStartGold = 10000;
         #endregion;
         #endregion
 
@@ -285,7 +285,7 @@ namespace TankGame
         public static readonly string MoneyCrateSpriteSheet = "CrateMoney";
         public static readonly int moneyCrateMoney = 75;
         public static readonly float crateSpawnDelay = 17;
-        public static readonly int healthCrate = 75;
+        public static readonly int healthCrate = 100;
         #endregion
     }
 }
