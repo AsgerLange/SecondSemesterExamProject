@@ -24,15 +24,9 @@ namespace TankGame
         private GameState gameState = new GameState();
         private Menu menu;
         public static readonly object colliderKey = new object();
-
         public static Barrier barrier;
         GraphicsDeviceManager graphics;
-
-        #region Sound
         Song backgroundMusic;
-
-
-        #endregion;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
         private List<GameObject> gameObjectsToAdd = new List<GameObject>(); //list of all gameobjects
@@ -228,7 +222,7 @@ namespace TankGame
             backGround = Content.Load<Texture2D>(Constant.gameBackGround);
 
             backgroundMusic = Content.Load<Song>("BackgroundMusic1");
-           
+
 
 
             PlayBackgroundSong(backgroundMusic);
