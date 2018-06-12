@@ -459,7 +459,8 @@ namespace TankGame
                 DrawLootToString(spriteBatch);
                 spriteBatch.DrawString(font, "Towers: " + GameWorld.Instance.TowerAmount + "/" + Constant.maxTowerAmount,
                     new Vector2(Constant.width / 2 - 50, Constant.hight - 50), Color.Gold);
-
+                spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
+                    new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
 
             }
         }
