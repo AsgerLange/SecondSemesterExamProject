@@ -33,6 +33,10 @@ namespace TankGame
             vehicle.Stats.MachinegunFired++;
             base.Shoot(alignment,rotation);
         }
+        /// <summary>
+        /// Returns name and amount of ammo
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             if (ammo > 1000)
@@ -45,6 +49,10 @@ namespace TankGame
                 return "Machinegun: " + ammo.ToString();
             }
         }
+        /// <summary>
+        /// loads content for machinegun
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
             shootSoundEffect = content.Load<SoundEffect>("MachinegunShot2");
@@ -56,10 +64,17 @@ namespace TankGame
         /// </summary>
         protected override void PlayShootSoundEffect()
         {
+            if (vehicle.Control == Controls.WASD)
+            {
 
 
-            shootSoundEffect.Play(0.5f,0.5f,0); //Plays shooting soundeffect
+                shootSoundEffect.Play(0.4f, 0.5f, 0); //Plays shooting soundeffect
+            }
+            else
+            {
+                shootSoundEffect.Play(0.4f, 1f, 0); //Plays shooting soundeffect
 
+            }
         }
     }
 }

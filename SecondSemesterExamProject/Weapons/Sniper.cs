@@ -19,12 +19,20 @@ namespace TankGame
             this.weaponSpread = Constant.sniperSpread;
         }
 
+        /// <summary>
+        /// handles shooting for sniper weapon
+        /// </summary>
+        /// <param name="alignment"></param>
+        /// <param name="rotation"></param>
         public override void Shoot(Alignment alignment, float rotation)
         {
             vehicle.Stats.SniperFired++;
             base.Shoot(alignment, rotation);
         }
-
+        /// <summary>
+        /// Returns name and amount of ammo
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             if (ammo > 1000)
@@ -37,6 +45,10 @@ namespace TankGame
                 return "Sniper: " + ammo.ToString();
             }
         }
+        /// <summary>
+        /// loads content for sniper
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
             shootSoundEffect = content.Load<SoundEffect>("SniperShot");
@@ -49,9 +61,16 @@ namespace TankGame
         /// </summary>
         protected override void PlayShootSoundEffect()
         {
+            if (vehicle.Control==Controls.WASD)
+            {
+            shootSoundEffect.Play(0.4f, 0f, 0); //Plays shooting soundeffect
 
+            }
+            else
+            {
+                shootSoundEffect.Play(0.4f, 0.5f, 0); //Plays shooting soundeffect
 
-            shootSoundEffect.Play(1f, 0f, 0); //Plays shooting soundeffect
+            }
 
         }
     }

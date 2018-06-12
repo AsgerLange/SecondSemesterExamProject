@@ -52,12 +52,13 @@ namespace TankGame
         public static readonly float buildTowerCoolDown = 0.25f;
         public static readonly int respawntime = 15;
         public static readonly int maxAmountOfVehicles = 2;
+        public readonly static int aimLineLenght = 650;
 
         #region Tank
         public static readonly string tankSpriteSheet = "PlayerTank";
         public static readonly float tankMoveSpeed = 120;
         public static readonly int tankHealth = 500;
-        public static readonly float tankRotateSpeed = 2.1F;
+        public static readonly float tankRotateSpeed = 1.7F;
         public static readonly int tankStartGold = 150;
         #endregion
         #region Plane
@@ -72,7 +73,7 @@ namespace TankGame
         public static readonly float bikeMoveSpeed = 200;
         public static readonly int bikeHealth = 250;
         public static readonly float bikeRotateSpeed = 3f;
-        public static readonly int bikeStartGold = 150;
+        public static readonly int bikeStartGold = 10000;
         #endregion;
         #endregion
 
@@ -182,10 +183,11 @@ namespace TankGame
         #endregion;
 
         #region Sniper
-        public readonly static float sniperFireRate = 1.6f;
-        public readonly static int sniperAmmo = 20;
+        public readonly static float sniperFireRate = 1f;
+        public readonly static int sniperAmmo = 30;
         public readonly static BulletType sniperBulletType = BulletType.SniperBullet;
         public readonly static int sniperSpread = 0;
+
 
         #endregion;
 
@@ -281,9 +283,9 @@ namespace TankGame
         public static readonly string TowerCrateSpriteSheet = "CrateTower";
         public static readonly string GunCrateSpriteSheet = "CrateWeapon";
         public static readonly string MoneyCrateSpriteSheet = "CrateMoney";
-        public static readonly int moneyCrateMoney = 100;
+        public static readonly int moneyCrateMoney = 75;
         public static readonly float crateSpawnDelay = 17;
-        public static readonly int healthCrate = 150;
+        public static readonly int healthCrate = 100;
         #endregion
     }
 }

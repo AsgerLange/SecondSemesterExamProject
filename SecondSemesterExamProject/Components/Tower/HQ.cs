@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -23,7 +24,10 @@ namespace TankGame
 
         public override void LoadContent(ContentManager content)
         {
+            shootSound = content.Load<SoundEffect>("BasicWeaponShot");
+
             font = content.Load<SpriteFont>("Stat");
+            dieSoundEffect = content.Load<SoundEffect>("HQdeath");
             base.LoadContent(content);
         }
 
@@ -45,6 +49,8 @@ namespace TankGame
 
         protected override void Shoot()
         {
+            
+
             base.Shoot();
         }
 
@@ -72,6 +78,16 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, "HQ Health: " + Health, new Vector2((Constant.width / 2) - (font.MeasureString(("HQ Health: " + Health)).X / 2), 2), Color.Gold);
+        }
+
+
+        /// <summary>
+        /// Plays shoot sound effect
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+            shootSound.Play(0.3f, 0, 0);
+
         }
     }
 }

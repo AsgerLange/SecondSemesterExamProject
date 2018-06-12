@@ -48,6 +48,10 @@ namespace TankGame
                 }
             }
         }
+        /// <summary>
+        /// Base constructor for any weapon
+        /// </summary>
+        /// <param name="go"></param>
         public Weapon(GameObject go)
         {
             LoadContent(GameWorld.Instance.Content);
@@ -97,6 +101,10 @@ namespace TankGame
 
         }
 
+        /// <summary>
+        /// base 
+        /// </summary>
+        /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
             shootSoundEffect = content.Load<SoundEffect>("BasicWeaponShot");
