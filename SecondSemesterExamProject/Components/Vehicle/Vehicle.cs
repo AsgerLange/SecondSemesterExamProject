@@ -19,7 +19,7 @@ namespace TankGame
         private SpriteFont font;
         public Animator animator;
         private Stats stats;
-
+        private SoundEffect vehicleDeathSound;
 
         protected Weapon weapon;
         protected TowerPlacer towerPlacer;
@@ -35,6 +35,8 @@ namespace TankGame
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
+        private Texture2D aimLine;
+        private Vector2 movementDirection;
 
         protected float shotTimeStamp; //when a vehicle last fired its weapon
         protected float builtTimeStamp; //when a vehicle last built a tower
@@ -82,6 +84,7 @@ namespace TankGame
                 {
                     health = 0;
                     animator.PlayAnimation("Death");
+                    vehicleDeathSound.Play();
                     isPlayingAnimation = true;
                     IsAlive = false;
                 }
@@ -331,7 +334,10 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         protected void TranslateMovement(Vector2 translation)
         {
+            movementDirection = translation;
+
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
+
         }
 
         /// <summary>
@@ -367,8 +373,9 @@ namespace TankGame
 
             this.animator = (Animator)GameObject.GetComponent("Animator");
             font = content.Load<SpriteFont>("Stat");
-
+            aimLine = content.Load<Texture2D>("AimLine");
             CreateAnimation();
+            vehicleDeathSound = content.Load<SoundEffect>("VehicleDeath");
 
             animator.PlayAnimation("Idle");
         }
@@ -398,6 +405,31 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
             DrawInfo(spriteBatch);
+
+            if (weapon is Sniper && GameWorld.Instance.GetGameState == GameState.Game)
+            {                
+                DrawShotDirection(this.GameObject.Transform.Position, GetDirectionVectorFromRotation(),
+                    spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Draws a line between two points
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
+        /// <param name="spriteBatch"></param>
+        private void DrawShotDirection(Vector2 position, Vector2 direction, SpriteBatch spriteBatch)
+        {
+            direction = direction * Constant.aimLineLenght;
+
+            direction = position + direction;
+
+            float angle = (float)Math.Atan2(position.Y - direction.Y, position.X - direction.X);
+            float distance = Vector2.Distance(position, direction);
+
+            spriteBatch.Draw(aimLine, new Rectangle((int)direction.X, (int)direction.Y, (int)distance, 1),
+                null, Color.Red, angle, Vector2.Zero, SpriteEffects.None, 1);
         }
 
         /// <summary>
@@ -517,5 +549,17 @@ namespace TankGame
         {
             return vehicleType.ToString();
         }
+
+        /// <summary>
+        /// Gets a direction vector from degrees(rotation)
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GetDirectionVectorFromRotation()
+        {
+            return Vector2.Transform(new Vector2(0, -1),
+                Matrix.CreateRotationZ(MathHelper.ToRadians(this.rotation)));
+
+        }
+
     }
 }

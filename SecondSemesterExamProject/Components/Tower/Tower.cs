@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -20,6 +21,10 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
         protected BulletType bulletType;
+        protected SoundEffect dieSoundEffect;
+        protected SoundEffect shootSound;
+
+
 
         /// <summary>
         /// Property for health, kills tower, if HP < zero
@@ -34,6 +39,11 @@ namespace TankGame
                 if (health <= 0)
                 {
                     health = 0;
+
+                    if (dieSoundEffect != null)
+                    {
+                        dieSoundEffect.Play();
+                    }
                     animator.PlayAnimation("Death");
                 }
             }
@@ -89,6 +99,7 @@ namespace TankGame
                     float rotation = GetDegreesFromDestination(direction);
                     BulletPool.CreateBullet(GameObject, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
+                    PlayShootSoundEffect();
                 }
             }
         }
@@ -258,6 +269,11 @@ namespace TankGame
         {
             this.animator = (Animator)GameObject.GetComponent("Animator");
 
+            if (dieSoundEffect == null)
+            {
+                dieSoundEffect = content.Load<SoundEffect>("TowerDeath");
+            }
+
             CreateAnimation();
 
             animator.PlayAnimation("Idle");
@@ -276,8 +292,17 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
+
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
             GameWorld.Instance.TowerAmount--;
+        }
+        /// <summary>
+        /// plays shoot sound effect
+        /// </summary>
+        protected virtual void PlayShootSoundEffect()
+        {
+            shootSound.Play(0.5f, 0, 0);
+
         }
     }
 }
