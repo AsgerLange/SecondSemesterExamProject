@@ -114,6 +114,12 @@ namespace TankGame
             this.movementSpeed = -20; //Slows enemy down when attacking ( Resets after attackanimation is done)
             base.AttackTower(tower);
         }
-
+        /// <summary>
+        /// Plays the death sound effect for this specefic enemy type
+        /// </summary>
+        protected override void PlayDeathSound()
+        {
+            deathSound.Play(1f, -1f, 0);
+        }
     }
 }

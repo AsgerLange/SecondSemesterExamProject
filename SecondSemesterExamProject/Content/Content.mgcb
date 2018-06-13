@@ -723,3 +723,15 @@
 /processorParam:Quality=Best
 /build:VehicleDeath.wav
 
+#begin EnemyDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:EnemyDeath.wav
+
+#begin Pickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Pickup.wav
+
