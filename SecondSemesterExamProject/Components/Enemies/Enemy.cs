@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -25,6 +26,7 @@ namespace TankGame
         protected float attackTimeStamp;
         protected int attackVariation = 1;
         protected float attackRange;
+        protected SoundEffect deathSound;
 
         public EnemyType GetEnemyType
         {
@@ -43,10 +45,14 @@ namespace TankGame
                 health = value;
                 if (health <= 0)
                 {
-                    isPlayingAnimation = true;
-                    isAlive = false;
-                    animator.PlayAnimation("Death");
-                    health = 0;
+                    if (isAlive)
+                    {
+                        PlayDeathSound();
+                        isPlayingAnimation = true;
+                        isAlive = false;
+                        animator.PlayAnimation("Death");
+                        health = 0;
+                    }
                 }
             }
         }
@@ -150,6 +156,8 @@ namespace TankGame
             CreateAnimation();
 
             animator.PlayAnimation("TPose");
+
+            deathSound = content.Load<SoundEffect>("EnemyDeath");
 
         }
 
@@ -352,7 +360,7 @@ namespace TankGame
                 if (targetGameObject.GetComponent("Collider") != target)
                 {
                     this.targetGameObject = target.GameObject;
-                    
+
                 }
             }
             else
@@ -511,6 +519,13 @@ namespace TankGame
         protected virtual void InteractionOnCollision(Collider other)
         {
             //Overwrited by melee enemies
+        }
+        /// <summary>
+        /// plays the death sound effect
+        /// </summary>
+        protected virtual void PlayDeathSound()
+        {
+            deathSound.Play(0.6f,0,0);
         }
     }
 }
