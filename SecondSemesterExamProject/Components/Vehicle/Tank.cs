@@ -34,7 +34,8 @@ namespace TankGame
             animator.CreateAnimation("Idle", new Animation(5, 40, 0, 28, 40, 6, Vector2.Zero));
             animator.CreateAnimation("MoveForward", new Animation(5, 80, 0, 28, 40, 8, Vector2.Zero));
             animator.CreateAnimation("MoveBackward", new Animation(5, 120, 0, 28, 40, 8, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 10 / weapon.FireRate, new Vector2(-1, -1)));
+            animator.CreateAnimation("Shoot", new Animation(5, 160, 0, 28, 47, 13, new Vector2(0, -1)));
+            animator.CreateAnimation("ShootMachinegun", new Animation(5, 160, 0, 28, 47, 13, new Vector2(0, -1)));
             animator.CreateAnimation("MoveShootForward", new Animation(5, 207, 0, 28, 49, 8, Vector2.Zero));
             animator.CreateAnimation("MoveShootBackward", new Animation(5, 256, 0, 28, 49, 8, Vector2.Zero));
             animator.CreateAnimation("Death", new Animation(7, 305, 0, 28, 40, 6, Vector2.Zero));

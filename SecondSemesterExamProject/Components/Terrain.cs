@@ -52,6 +52,7 @@ namespace TankGame
                 {
                     float force = Constant.pushForce;
                     Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
+                    
                     dir.Normalize();
 
                     other.GameObject.Transform.Translate(dir * force);

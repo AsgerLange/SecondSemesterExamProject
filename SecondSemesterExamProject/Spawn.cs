@@ -22,6 +22,8 @@ namespace TankGame
         private float crateStamp;
         private float eliteBasicEnemyChance = Constant.basicEliteSpawnModifier;//spawn chance out of 1000
         private float spitterChance = Constant.spitterSpawnModifier;
+        private float swarmerChance = Constant.swarmerSpawnModifier;
+        private float siegeBreakerEnemyChance = Constant.siegeBreakerSpawnModifier;
 
 
         /// <summary>
@@ -94,8 +96,39 @@ namespace TankGame
             if (Constant.waveSpawnDelay + waveStamp <= GameWorld.Instance.TotalGameTime)
             {
                 wave++;
-                eliteBasicEnemyChance += (eliteBasicEnemyChance * 0.03f);//add to the chance of harder enemies
-                spitterChance += (spitterChance * 0.03f);
+
+                if (wave >= Constant.siegeBreakerSpawnWave)
+                {
+                    siegeBreakerEnemyChance += (siegeBreakerEnemyChance * 0.03f);//add to the chance of harder enemies
+                    if (siegeBreakerEnemyChance > 600)
+                    {
+                        siegeBreakerEnemyChance = 600;
+                    }
+                }
+                if (wave >= Constant.basicEliteSpawnWave)
+                {
+                    eliteBasicEnemyChance += (eliteBasicEnemyChance * 0.03f);//add to the chance of harder enemies
+                    if (eliteBasicEnemyChance > 800)
+                    {
+                        eliteBasicEnemyChance = 800;
+                    }
+                }
+                if (wave >= Constant.spitterSpawnWave)
+                {
+                    spitterChance += (spitterChance * 0.03f);
+                    if (spitterChance > 800)
+                    {
+                        spitterChance = 800;
+                    }
+                }
+                if (wave >= Constant.swarmerSpawnWave)
+                {
+                    swarmerChance += (swarmerChance * 0.03f);
+                    if (swarmerChance > 800)
+                    {
+                        swarmerChance = 800;
+                    }
+                }
 
                 int side = rnd.Next(0, 5);
                 Rectangle spawnRectangle;
@@ -125,6 +158,10 @@ namespace TankGame
                 int waveMax = wave + Constant.waveSizeVariable + 1;
 
                 waveSize = rnd.Next(waveMin, waveMax);
+                if (waveSize > 400)
+                {
+                    waveSize = 400;
+                }
 
                 SpawnEnemy(WaveSize, spawnRectangle);
                 waveStamp = GameWorld.Instance.TotalGameTime;
@@ -181,9 +218,43 @@ namespace TankGame
                 spawnPos = new Vector2(rnd.Next(spawnRectangle.X, spawnRectangle.X + spawnRectangle.Width),
                        rnd.Next(spawnRectangle.Y, spawnRectangle.Y + spawnRectangle.Height));
 
-                bool chosen = false;
-                int roll = rnd.Next(1001);
-                if (roll <= eliteBasicEnemyChance)
+                enemyType = ChooseEnemyType();
+
+                if (enemyType == EnemyType.Swarmer)
+                {
+                    int roll = rnd.Next(1, Constant.swarmerSpawnMax + 1);
+                    for (int s = 0; s < roll; s++)
+                    {
+                        EnemyPool.Instance.CreateEnemy(new Vector2(spawnPos.X + s, spawnPos.Y), enemyType);
+                    }
+                }
+                else
+                {
+                    EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
+                }
+
+                spawned++;
+            }
+        }
+
+        /// <summary>
+        /// Returns the enemyType that has been chosen
+        /// </summary>
+        /// <returns></returns>
+        private EnemyType ChooseEnemyType()
+        {
+            EnemyType enemyType;
+            bool chosen = false;
+            int roll = rnd.Next(1001);
+            if (wave >= Constant.siegeBreakerSpawnWave && roll <= siegeBreakerEnemyChance && !chosen)
+            {
+                enemyType = EnemyType.SiegebreakerEnemy;
+                chosen = true;
+            }
+            else
+            {
+                roll = rnd.Next(1001);
+                if (wave >= Constant.basicEliteSpawnWave && roll <= eliteBasicEnemyChance && !chosen)
                 {
                     enemyType = EnemyType.BasicEliteEnemy;
                     chosen = true;
@@ -191,20 +262,27 @@ namespace TankGame
                 else
                 {
                     roll = rnd.Next(1001);
-                    if (roll <= spitterChance && !chosen)
+                    if (wave >= Constant.spitterSpawnWave && roll <= spitterChance && !chosen)
                     {
                         enemyType = EnemyType.Spitter;
                         chosen = true;
                     }
                     else
                     {
-                        enemyType = EnemyType.BasicEnemy;
+                        roll = rnd.Next(1001);
+                        if (wave >= Constant.swarmerSpawnWave && roll <= swarmerChance)
+                        {
+                            enemyType = EnemyType.Swarmer;
+                            chosen = true;
+                        }
+                        else
+                        {
+                            enemyType = EnemyType.BasicEnemy;
+                        }
                     }
                 }
-                EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
-
-                spawned++;
             }
+            return enemyType;
         }
     }
 }

@@ -59,31 +59,30 @@ namespace TankGame
         /// <param name="rotation"></param>
         public void PlaceTower()
         {
-
-            if (vehicle.Money >= towerBuildCost)
+            if (GameWorld.Instance.TowerAmount < Constant.maxTowerAmount)
             {
-                GameObject towerGO;
 
-                //Gameobjectdirector builds a new tower
-                towerGO = GameObjectDirector.Instance.Construct(new Vector2(vehicle.GameObject.Transform.Position.X + 1,
-                    vehicle.GameObject.Transform.Position.Y + 1),towerType,vehicle);
+                if (vehicle.Money >= towerBuildCost)
+                {
+                    GameObject towerGO;
 
-                //its content is loaded
-                towerGO.LoadContent(GameWorld.Instance.Content);
+                    //Gameobjectdirector builds a new tower
+                    towerGO = GameObjectDirector.Instance.Construct(new Vector2(vehicle.GameObject.Transform.Position.X + 1,
+                        vehicle.GameObject.Transform.Position.Y + 1), towerType, vehicle);
 
-                //it's added to gameworld next update cycle
-                GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
+                    //its content is loaded
+                    towerGO.LoadContent(GameWorld.Instance.Content);
 
-                //pays for the tower
-                vehicle.Money -= towerBuildCost;
+                    //it's added to gameworld next update cycle
+                    GameWorld.Instance.GameObjectsToAdd.Add(towerGO);
 
+                    //pays for the tower
+                    vehicle.Money -= towerBuildCost;
 
-                TowerAmount--;
-
+                    GameWorld.Instance.TowerAmount++;
+                    TowerAmount--;
+                }
             }
-
-
-
         }
 
         /// <summary>
@@ -128,11 +127,10 @@ namespace TankGame
         {
             if (towerAmount > 1000)
             {
-                return towerType.ToString() + ": LOTS!";
+                return towerType.ToString() + " ($" + towerBuildCost + ")";
             }
             else
             {
-
                 return towerType.ToString() + ": " + towerAmount.ToString() + " ($" + towerBuildCost + ")";
             }
         }

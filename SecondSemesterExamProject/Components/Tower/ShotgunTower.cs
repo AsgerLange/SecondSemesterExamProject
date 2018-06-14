@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -22,6 +23,8 @@ namespace TankGame
 
         public override void LoadContent(ContentManager content)
         {
+            shootSound = content.Load<SoundEffect>("ShotgunShot");
+
             base.LoadContent(content);
         }
 
@@ -73,12 +76,22 @@ namespace TankGame
                     float rotation = GetDegreesFromDestination(direction);
                     for (int i = 0; i < Constant.shotgunTowerPelletAmount; i++)
                     {
-                        BulletPool.CreateBullet(GameObject.Transform.Position, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+                        BulletPool.CreateBullet(GameObject, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
 
                     }
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
+                    PlayShootSoundEffect();
                 }
             }
+        }
+
+        /// <summary>
+        /// Plays shoot sound effect
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+            shootSound.Play(0.2f, 0, 0);
+
         }
     }
 }

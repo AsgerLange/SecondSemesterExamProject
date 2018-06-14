@@ -48,6 +48,7 @@ namespace TankGame
         /// <param name="vehicle"></param>
         protected override void GiveLoot(Vehicle vehicle)
         {
+            base.GiveLoot(vehicle);
             switch (weaponType)
             {
                 

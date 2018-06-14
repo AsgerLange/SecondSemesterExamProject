@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -25,6 +26,7 @@ namespace TankGame
         protected float attackTimeStamp;
         protected int attackVariation = 1;
         protected float attackRange;
+        protected SoundEffect deathSound;
 
         public EnemyType GetEnemyType
         {
@@ -43,9 +45,14 @@ namespace TankGame
                 health = value;
                 if (health <= 0)
                 {
-                    isAlive = false;
-                    animator.PlayAnimation("Death");
-                    isPlayingAnimation = true;
+                    if (isAlive)
+                    {
+                        PlayDeathSound();
+                        isPlayingAnimation = true;
+                        isAlive = false;
+                        animator.PlayAnimation("Death");
+                        health = 0;
+                    }
                 }
             }
         }
@@ -150,6 +157,8 @@ namespace TankGame
 
             animator.PlayAnimation("TPose");
 
+            deathSound = content.Load<SoundEffect>("EnemyDeath");
+
         }
 
         /// <summary>
@@ -190,15 +199,23 @@ namespace TankGame
         /// <param name="go"></param>
         private void MoveTo(GameObject go)
         {
-            float x = go.Transform.Position.X;
-            float y = go.Transform.Position.Y;
+            if (go != null)
+            {
 
-            Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
-            direction.Normalize();
+                float x = go.Transform.Position.X;
+                float y = go.Transform.Position.Y;
 
-            RotateToMatchDirection(direction);
+                Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
+                direction.Normalize();
 
-            TranslateMovement(direction);
+                RotateToMatchDirection(direction);
+
+                TranslateMovement(direction);
+            }
+            else
+            {
+                MoveTo(GameWorld.Instance.GameObjects[0]/*HQ*/);
+            }
         }
 
         /// <summary>
@@ -248,7 +265,7 @@ namespace TankGame
         {
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
 
-            if (isPlayingAnimation == false)
+            if (isPlayingAnimation == false && isAlive)
             {
                 animator.PlayAnimation("Walk");
                 isPlayingAnimation = true;
@@ -261,7 +278,7 @@ namespace TankGame
         protected virtual void CreateAnimation()
         {
             //Enemy Animation Set
-            animator.CreateAnimation("TPose", new Animation(1, 0, 0, 23, 23, 3, Vector2.Zero));
+            animator.CreateAnimation("TPose", new Animation(1, 0, 0, 23, 23, 3, Vector2.Zero)); //Please note that this only displays correctly for Basic Enemy and is only a failure detection measure
         }
 
         /// <summary>
@@ -342,9 +359,7 @@ namespace TankGame
 
                 if (targetGameObject.GetComponent("Collider") != target)
                 {
-
                     this.targetGameObject = target.GameObject;
-
 
                 }
             }
@@ -354,6 +369,9 @@ namespace TankGame
             }
 
         }
+        /// <summary>
+        /// Increments deathCounters in Stats, depending on what kind of enemy dies
+        /// </summary>
         private void IncrementEnemyDeaths()
         {
             switch (enemyType)
@@ -368,6 +386,14 @@ namespace TankGame
 
                 case EnemyType.Spitter:
                     Stats.SpitterKilled++;
+                    break;
+
+                case EnemyType.Swarmer:
+                    Stats.SwarmerKilled++;
+                    break;
+
+                case EnemyType.SiegebreakerEnemy:
+                    Stats.SiegeBreakerKilled++;
                     break;
 
                 default:
@@ -493,6 +519,13 @@ namespace TankGame
         protected virtual void InteractionOnCollision(Collider other)
         {
             //Overwrited by melee enemies
+        }
+        /// <summary>
+        /// plays the death sound effect
+        /// </summary>
+        protected virtual void PlayDeathSound()
+        {
+            deathSound.Play(0.6f,0,0);
         }
     }
 }

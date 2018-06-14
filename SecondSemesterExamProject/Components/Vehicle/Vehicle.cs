@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+
 
 namespace TankGame
 {
@@ -17,6 +19,7 @@ namespace TankGame
         private SpriteFont font;
         public Animator animator;
         private Stats stats;
+        private SoundEffect vehicleDeathSound;
 
         protected Weapon weapon;
         protected TowerPlacer towerPlacer;
@@ -32,6 +35,8 @@ namespace TankGame
         protected float rotation = 0;
         protected float rotateSpeed;
         protected SpriteRenderer spriteRenderer;
+        private Texture2D aimLine;
+        private Vector2 movementDirection;
 
         protected float shotTimeStamp; //when a vehicle last fired its weapon
         protected float builtTimeStamp; //when a vehicle last built a tower
@@ -79,6 +84,7 @@ namespace TankGame
                 {
                     health = 0;
                     animator.PlayAnimation("Death");
+                    vehicleDeathSound.Play();
                     isPlayingAnimation = true;
                     IsAlive = false;
                 }
@@ -153,7 +159,7 @@ namespace TankGame
             this.money = money;
             this.stats = new Stats(this);
             this.PlayerNumber = playerNumber;
-            this.towerPlacer = new TowerPlacer(this, towerType, 1);
+            this.towerPlacer = new TowerPlacer(this, TowerType.BasicTower, 100000);
             this.weapon = new BasicWeapon(this.GameObject);
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -169,7 +175,7 @@ namespace TankGame
             deathTimeStamp = GameWorld.Instance.TotalGameTime;
             GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
-            this.stats.TotalAmountOfPlayerDeaths++;
+            this.stats.PlayerDeathAmmount++;
         }
 
         /// <summary>
@@ -213,17 +219,25 @@ namespace TankGame
             KeyboardState keyState = Keyboard.GetState();
 
             //if the player is pressing the "Shoot" button
-            if ((keyState.IsKeyDown(Keys.F) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.OemComma) && control == Controls.UDLR))
+            if (((keyState.IsKeyDown(Keys.F) || (keyState.IsKeyDown(Keys.Space))) && control == Controls.WASD)
+                || ((keyState.IsKeyDown(Keys.OemComma) || (keyState.IsKeyDown(Keys.Enter))) && control == Controls.UDLR))
             {
 
                 //if enough time has passed since last shot
                 if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    weapon.Shoot(GameObject.Transform.Position, Alignment.Friendly, Rotation); //Fires the weapon
+                    weapon.Shoot(Alignment.Friendly, Rotation); //Fires the weapon
 
-                    animator.PlayAnimation("Shoot"); //play shooting animation
+
+                    if (weapon is MachineGun)
+                    {
+                        animator.PlayAnimation("ShootMachinegun"); //play shooting animation
+                    }
+                    else
+                    {
+                        animator.PlayAnimation("Shoot"); //play shooting animation
+                    }
 
                     isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
 
@@ -242,8 +256,8 @@ namespace TankGame
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if ((keyState.IsKeyDown(Keys.G) && control == Controls.WASD)
-                || (keyState.IsKeyDown(Keys.OemPeriod) && control == Controls.UDLR))
+            if (((keyState.IsKeyDown(Keys.LeftAlt) || (keyState.IsKeyDown(Keys.G))) && control == Controls.WASD)
+                 || ((keyState.IsKeyDown(Keys.OemPeriod) || (keyState.IsKeyDown(Keys.Back))) && control == Controls.UDLR))
             {
                 if (builtTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
                 {
@@ -320,7 +334,10 @@ namespace TankGame
         /// <param name="movementSpeed"></param>
         protected void TranslateMovement(Vector2 translation)
         {
+            movementDirection = translation;
+
             GameObject.Transform.Translate(translation * GameWorld.Instance.DeltaTime * movementSpeed);
+
         }
 
         /// <summary>
@@ -329,7 +346,7 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            if (animationName == "Shoot")
+            if (animationName == "Shoot" || animationName == "ShootMachinegun")
             {
                 isPlayingAnimation = false;
                 spriteRenderer.Offset = Vector2.Zero;
@@ -353,10 +370,12 @@ namespace TankGame
         /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
+
             this.animator = (Animator)GameObject.GetComponent("Animator");
             font = content.Load<SpriteFont>("Stat");
-
+            aimLine = content.Load<Texture2D>("AimLine");
             CreateAnimation();
+            vehicleDeathSound = content.Load<SoundEffect>("VehicleDeath");
 
             animator.PlayAnimation("Idle");
         }
@@ -386,6 +405,31 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
             DrawInfo(spriteBatch);
+
+            if (weapon is Sniper && GameWorld.Instance.GetGameState == GameState.Game)
+            {                
+                DrawShotDirection(this.GameObject.Transform.Position, GetDirectionVectorFromRotation(),
+                    spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Draws a line between two points
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
+        /// <param name="spriteBatch"></param>
+        private void DrawShotDirection(Vector2 position, Vector2 direction, SpriteBatch spriteBatch)
+        {
+            direction = direction * Constant.aimLineLenght;
+
+            direction = position + direction;
+
+            float angle = (float)Math.Atan2(position.Y - direction.Y, position.X - direction.X);
+            float distance = Vector2.Distance(position, direction);
+
+            spriteBatch.Draw(aimLine, new Rectangle((int)direction.X, (int)direction.Y, (int)distance, 1),
+                null, Color.Red, angle, Vector2.Zero, SpriteEffects.None, 1);
         }
 
         /// <summary>
@@ -400,20 +444,23 @@ namespace TankGame
                 {
                     spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
                     spriteBatch.DrawString(font, "$" + money, new Vector2(2, 20), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.higth - 20), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.higth - 40), Color.CornflowerBlue);
-                    spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.higth - 60), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.hight - 20), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.hight - 40), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(2, Constant.hight - 60), Color.CornflowerBlue);
                 }
                 else if (control == Controls.UDLR)
                 {
                     spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, 2), Color.YellowGreen);
                     spriteBatch.DrawString(font, "$" + money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
-                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.higth - 20), Color.YellowGreen);
-                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.higth - 40), Color.YellowGreen);
-                    spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.higth - 60), Color.YellowGreen);
+                    spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.hight - 20), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.hight - 40), Color.YellowGreen);
+                    spriteBatch.DrawString(font, this.ToString(), new Vector2(Constant.width - font.MeasureString(this.ToString()).X - 2, Constant.hight - 60), Color.YellowGreen);
                 }
                 DrawLootToString(spriteBatch);
-
+                spriteBatch.DrawString(font, "Towers: " + GameWorld.Instance.TowerAmount + "/" + Constant.maxTowerAmount,
+                    new Vector2(Constant.width / 2 - 50, Constant.hight - 50), Color.Gold);
+                spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
+                    new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
 
             }
         }
@@ -431,15 +478,12 @@ namespace TankGame
                 string timeLeftString = Convert.ToInt32(timeLeft).ToString();
                 if (control == Controls.WASD)
                 {
-
                     spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(2, 2), Color.CornflowerBlue);
                 }
                 else if (control == Controls.UDLR)
                 {
-
                     spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
                 }
-
             }
         }
         /// <summary>
@@ -460,7 +504,7 @@ namespace TankGame
 
             if (latestLootCrate != null)
             {
-                if (lootTimeStamp + 3 >= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
+                if (lootTimeStamp + 3 /* Seconds*/>= GameWorld.Instance.TotalGameTime) //amount of time text is showed on screen
                 {
                     if (control == Controls.WASD)//p1
                     {
@@ -491,8 +535,9 @@ namespace TankGame
                 {
                     (comp as Vehicle).spriteRenderer.Sprite = this.spriteRenderer.Sprite;
                     (comp as Vehicle).Stats = this.stats;
-                    (comp as Vehicle).weapon = this.weapon;
-                    (comp as Vehicle).towerPlacer = this.towerPlacer;
+                    (comp as Vehicle).weapon = new BasicWeapon((comp.GameObject));
+
+
                     (comp as Vehicle).Money = this.money;
 
                 }
@@ -505,5 +550,17 @@ namespace TankGame
         {
             return vehicleType.ToString();
         }
+
+        /// <summary>
+        /// Gets a direction vector from degrees(rotation)
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GetDirectionVectorFromRotation()
+        {
+            return Vector2.Transform(new Vector2(0, -1),
+                Matrix.CreateRotationZ(MathHelper.ToRadians(this.rotation)));
+
+        }
+
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
@@ -17,14 +19,22 @@ namespace TankGame
             this.weaponSpread = Constant.sniperSpread;
         }
 
-        public override void Shoot(Vector2 vector2, Alignment alignment, float rotation)
+        /// <summary>
+        /// handles shooting for sniper weapon
+        /// </summary>
+        /// <param name="alignment"></param>
+        /// <param name="rotation"></param>
+        public override void Shoot(Alignment alignment, float rotation)
         {
             vehicle.Stats.SniperFired++;
-            base.Shoot(vector2, alignment, rotation);
+            base.Shoot(alignment, rotation);
         }
-
-    public override string ToString()
-    {
+        /// <summary>
+        /// Returns name and amount of ammo
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
             if (ammo > 1000)
             {
                 return "Sniper: LOTS!";
@@ -32,9 +42,36 @@ namespace TankGame
             else
             {
 
-            return "Sniper: " + ammo.ToString(); 
+                return "Sniper: " + ammo.ToString();
             }
-    }
+        }
+        /// <summary>
+        /// loads content for sniper
+        /// </summary>
+        /// <param name="content"></param>
+        public override void LoadContent(ContentManager content)
+        {
+            shootSoundEffect = content.Load<SoundEffect>("SniperShot");
 
+        }
+
+
+        /// <summary>
+        /// Plays sound effect for weapons's shooting ability
+        /// </summary>
+        protected override void PlayShootSoundEffect()
+        {
+            if (vehicle.Control==Controls.WASD)
+            {
+            shootSoundEffect.Play(0.4f, 0f, 0); //Plays shooting soundeffect
+
+            }
+            else
+            {
+                shootSoundEffect.Play(0.4f, 0.5f, 0); //Plays shooting soundeffect
+
+            }
+
+        }
     }
 }

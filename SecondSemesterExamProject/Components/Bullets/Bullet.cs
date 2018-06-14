@@ -22,6 +22,7 @@ namespace TankGame
         protected bool isRotated = false;
         protected bool shouldDie;
 
+        protected Vehicle shooter;
 
 
         #region Attributes for object pool
@@ -46,6 +47,12 @@ namespace TankGame
         {
             get { return isRotated; }
             set { isRotated = value; }
+        }
+
+        public Vehicle Shooter
+        {
+            get { return shooter; }
+            set { shooter = value; }
         }
 
         public bool ShouldDie
@@ -108,6 +115,11 @@ namespace TankGame
                     this.lifeSpan = Constant.sniperBulletLifeSpan;
                     this.bulletDmg = Constant.sniperBulletBulletDmg;
                     break;
+                case BulletType.SpitterBullet:
+                    this.movementSpeed = Constant.spitterBulletMovementSpeed;
+                    this.lifeSpan = Constant.spitterBulletLifeSpan;
+                    this.bulletDmg = Constant.spitterBulletDmg;
+                    break;
 
                 default:
                     break;
@@ -138,10 +150,10 @@ namespace TankGame
             if (GameWorld.Instance.TotalGameTime >= (timeStamp + lifeSpan))
             {
                 shouldDie = true;
-                if (!(this is SniperBullet))
+                if (shooter != null)
                 {
+                    IncrementMissCoint();
 
-                    Stats.BulletsMissed++;
                 }
                 DestroyBullet();
             }
@@ -273,7 +285,7 @@ namespace TankGame
                         bool otherIsBullet = false;
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {
-                            if (comp is Tower || comp is Enemy || comp is Vehicle || comp is Terrain)
+                            if (comp is Tower || comp is Enemy || comp is Vehicle || comp is Terrain || comp is Crate)
                             {
                                 type = comp;
                                 break;
@@ -284,9 +296,14 @@ namespace TankGame
                                 break;
                             }
                         }
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy && otherIsBullet == false)
+          
+                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy 
+                            && otherIsBullet == false)
                             || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy) || type is Terrain)
                         {
+                            if (!(type is Crate))
+                            {
+
                             if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
                             {
                                 (type as Enemy).Health -= bulletDmg;
@@ -299,11 +316,13 @@ namespace TankGame
                             {
                                 (type as Tower).Health -= bulletDmg;
                             }
-                            else if (type is Terrain && (!(this is SniperBullet)))
+                            else if (type is Terrain)
                             {
-                                Stats.BulletsMissed++;
+                                IncrementMissCoint();
                             }
+                            
                             BulletSpecialEffect(other);
+                            }
                         }
                         if (shouldDie)
                         {
@@ -328,6 +347,33 @@ namespace TankGame
         {
             canRelease = false;
             BulletPool.releaseList.Add(this.GameObject);
+        }
+
+        /// <summary>
+        /// handles incrementing the miss counts for bullets
+        /// </summary>
+        private void IncrementMissCoint()
+        {
+            if (shooter != null)
+            {
+                if (!(this is SniperBullet))
+                {
+
+                    shooter.Stats.BulletsMissed++;
+
+                }
+                else if ((this is SniperBullet))
+                {
+
+                    //Snipers' damage is reduced upon hitting an enemy, so if the damage == the base damage and it
+                    //disappears, it hasn't hit an enemy
+                    if ((this as SniperBullet).BulletDamage == Constant.sniperBulletBulletDmg)
+                    {
+
+                        shooter.Stats.BulletsMissed++;
+                    }
+                }
+            }
         }
     }
 }

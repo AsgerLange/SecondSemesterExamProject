@@ -41,9 +41,16 @@ namespace TankGame
 
         protected override void Shoot()
         {
+
             base.Shoot();
         }
 
-        
+        /// <summary>
+        /// Plays the death sound effect for this specefic enemy type
+        /// </summary>
+        protected override void PlayDeathSound()
+        {
+            deathSound.Play(0.6f, 0.5f, 0);
+        }
     }
 }

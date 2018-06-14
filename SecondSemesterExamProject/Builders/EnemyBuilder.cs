@@ -36,6 +36,26 @@ namespace TankGame
 
                     break;
 
+                case EnemyType.Swarmer:
+                    go.AddComponent(new SpriteRenderer(go, Constant.swarmerEnemySpriteSheet, 0.2f));
+
+                    go.AddComponent(new Animator(go));
+
+                    go.AddComponent(new SwarmerEnemy(go, Constant.swarmerEnemyHealth, Constant.swarmerEnemyDamage,
+                            Constant.swarmerEnemyMovementSpeed, Constant.swarmerEnemyAttackRate, Constant.swarmerEnemyAttackRadius, type));
+
+                    break;
+
+                case EnemyType.SiegebreakerEnemy:
+                    go.AddComponent(new SpriteRenderer(go, Constant.siegeBreakerSpriteSheet, 0.2f));
+
+                    go.AddComponent(new Animator(go));
+
+                    go.AddComponent(new SiegebreakerEnemy(go, Constant.siegeBreakerEnemyHealth, Constant.siegeBreakerEnemyDamage,
+                            Constant.siegeBreakerEnemyMovementSpeed, Constant.siegeBreakerEnemyAttackRate, Constant.siegeBreakerEnemyAttackRadius, type));
+
+                    break;
+
                 case EnemyType.Spitter:
                     go.AddComponent(new SpriteRenderer(go, Constant.spitterSpriteSheet, 0.2f));
 
