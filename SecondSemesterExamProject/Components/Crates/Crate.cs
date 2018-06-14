@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TankGame
 {
@@ -18,7 +19,7 @@ namespace TankGame
 
         protected bool isAlive = true;
 
-
+        protected SoundEffect pickUpSound;
         /// <summary>
         /// Constructor for LootCrate
         /// </summary>
@@ -42,6 +43,8 @@ namespace TankGame
             CreateAnimation();
 
             animator.PlayAnimation("Spawn");
+
+            pickUpSound = content.Load<SoundEffect>("Pickup");
         }
         /// <summary>
         /// creates animations for the loot crate
@@ -140,7 +143,7 @@ namespace TankGame
         /// <param name="vehicle"></param>
         protected virtual void GiveLoot(Vehicle vehicle)
         {
-
+            pickUpSound.Play(0.5f,0,0);
         }
 
         /// <summary>
