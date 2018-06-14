@@ -723,6 +723,11 @@
 /processorParam:Quality=Best
 /build:VehicleDeath.wav
 
+#begin EnemyDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:EnemyDeath.wav
 #begin GameLogo.ico
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -734,4 +739,11 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GameLogo.ico
+
+#begin Pickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Pickup.wav
+
 
