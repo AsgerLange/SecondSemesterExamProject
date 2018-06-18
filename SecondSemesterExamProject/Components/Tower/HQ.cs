@@ -20,7 +20,7 @@ namespace TankGame
             this.attackRange = Constant.HQAttackRange;
             this.bulletType = Constant.HQbulletType;
             this.spread = Constant.HQSpread;
-            
+            GameObject.Transform.canMove = false;
         }
 
         public override void LoadContent(ContentManager content)

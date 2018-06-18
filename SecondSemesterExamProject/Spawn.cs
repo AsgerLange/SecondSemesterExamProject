@@ -83,7 +83,8 @@ namespace TankGame
         /// </summary>
         private void SpawnCrate()
         {
-            if (Constant.crateSpawnDelay + crateStamp <= GameWorld.Instance.TotalGameTime)
+            if ((GameWorld.Instance.pvp==false && Constant.crateSpawnDelay + crateStamp <= GameWorld.Instance.TotalGameTime) 
+                || (GameWorld.Instance.pvp == true && (Constant.crateSpawnDelay/2) + crateStamp <= GameWorld.Instance.TotalGameTime))
             {
                 GameWorld.Instance.GameObjectsToAdd.Add(GameObjectDirector.Instance.ConstructCrate());
 

@@ -159,8 +159,17 @@ namespace TankGame
 
 
             this.control = control;
-            this.health = health;
-            this.maxHealth = health;
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = health*3;
+                this.maxHealth = this.health;
+            }
+            else
+            {
+                this.health = health ;
+                this.maxHealth = this.health;
+
+            }
             this.movementSpeed = movementSpeed;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
@@ -183,6 +192,11 @@ namespace TankGame
             GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             this.stats.PlayerDeathAmmount++;
+
+            if (this.stats.PlayerDeathAmmount>= Constant.maxDeaths)
+            {
+                GameWorld.Instance.GameOver();
+            }
         }
 
         public void Setup()
@@ -484,16 +498,32 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Towers: " + GameWorld.Instance.TowerAmount + "/" + Constant.maxTowerAmount,
                     new Vector2(Constant.width / 2 - 50, Constant.hight - 50), Color.Gold);
 
-                if (GameWorld.Instance.pvp==false)
+                if (GameWorld.Instance.pvp == false)
                 {
                     spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
                         new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
 
                 }
-
             }
         }
 
+        public void DrawDeaths(SpriteBatch spriteBatch)
+        {
+            if (GameWorld.Instance.pvp)
+            {
+                if (control==Controls.WASD)
+                {
+                spriteBatch.DrawString(font, stats.PlayerDeathAmmount.ToString(), new Vector2(Constant.width/2+20, 20), Color.YellowGreen);
+
+                }
+                else
+                {
+                    spriteBatch.DrawString(font, stats.PlayerDeathAmmount.ToString(), new Vector2(Constant.width / 2 -20, 20), Color.CornflowerBlue);
+
+                }
+
+            }
+        }
         /// <summary>
         /// Draws the amount of seconds untill respawn
         /// </summary>
@@ -502,7 +532,17 @@ namespace TankGame
         {
             if (IsAlive == false)
             {
-                float timeLeft = deathTimeStamp + Constant.respawntime - GameWorld.Instance.TotalGameTime;
+                float timeLeft;
+                if (GameWorld.Instance.pvp)
+                {
+
+                 timeLeft = deathTimeStamp + Constant.respawntime/2 - GameWorld.Instance.TotalGameTime;
+                }
+                else
+                {
+                     timeLeft = deathTimeStamp + Constant.respawntime - GameWorld.Instance.TotalGameTime;
+
+                }
 
                 string timeLeftString = Convert.ToInt32(timeLeft).ToString();
                 if (control == Controls.WASD)
@@ -514,6 +554,7 @@ namespace TankGame
                     spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
                 }
             }
+
         }
         /// <summary>
         /// gives the vehicle the basic weapon (for when weapon runs out of ammo)
@@ -572,7 +613,7 @@ namespace TankGame
                 }
             }
             GameWorld.Instance.Vehicles.Remove(this);
-            GameWorld.Instance.VehiclesToRemove.Clear();
+            GameWorld.Instance.VehiclesToRemove.Remove(this.GameObject);
 
         }
         public override string ToString()

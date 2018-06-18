@@ -65,7 +65,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// initializes the vehicles to be drawn
+        /// initializes the vehicles to be 3n
         /// </summary>
         private void AddVehiclesToBeDrawn()
         {
@@ -166,7 +166,7 @@ namespace TankGame
             p2Down.click += P2Down_click;
             buttons.Add(p2Down);
 
-            pvpButton = new Button(new Vector2(startGamePos.X, startGamePos.Y+50), Constant.RedButtonTexture, Constant.buttonFont)
+            pvpButton = new Button(new Vector2(startGamePos.X, startGamePos.Y + 50), Constant.RedButtonTexture, Constant.buttonFont)
             {
                 Text = "Start PVP"
             };
@@ -268,7 +268,7 @@ namespace TankGame
 
                 //Creates the new spawner that spawns the waves
                 GameWorld.Instance.GetSpawn = new Spawn(Constant.width, Constant.hight);
-                
+
 
             }
         }
@@ -342,9 +342,9 @@ namespace TankGame
         }
         private void Pvp_click(object sender, EventArgs e)
         {
-            GameWorld.Instance.pvp = true;
-            if ( GameWorld.Instance.pvp == true && (!(p1 == VehicleType.None) && !(p2 == VehicleType.None)))
+            if ((!(p1 == VehicleType.None) && !(p2 == VehicleType.None)))
             {
+                GameWorld.Instance.pvp = true;
                 SpawnPlayers();
                 GameWorld.Instance.GetGameState = GameState.Game;
 

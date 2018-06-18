@@ -17,6 +17,7 @@ namespace TankGame
         public Ranged(GameObject gameObject, int health, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType, BulletType bulletType,  int spread
             ) : base(gameObject, health, movementSpeed, attackRate,attackRange, enemyType)
         {
+            this.CanAttackPlane = true;
             this.bulletType = bulletType;
             this.attackRange = attackRange;
             this.spread = spread;

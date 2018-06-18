@@ -18,8 +18,17 @@ namespace TankGame
         public void Build(VehicleType type, Controls controls, int playerNumber, Alignment alignment)
         {
             go = new GameObject();
-            go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.hight / 2); //spawns in the middle
-                    go.AddComponent(new Collider(go, alignment));//adds collider
+            if (GameWorld.Instance.pvp == false)
+            {
+                go.Transform.Position = new Vector2(Constant.width / 2 + 1, Constant.hight / 2); //spawns in the middle
+                go.AddComponent(new Collider(go, alignment));//adds collider
+
+            }
+            else
+            {
+                go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(Constant.width), GameWorld.Instance.Rnd.Next(Constant.hight)); //spawns in the middle
+                go.AddComponent(new Collider(go, alignment));//adds collider
+            }
 
 
             switch (type)

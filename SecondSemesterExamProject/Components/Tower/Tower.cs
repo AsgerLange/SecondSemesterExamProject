@@ -25,7 +25,7 @@ namespace TankGame
         protected Alignment alignment;
         protected SoundEffect dieSoundEffect;
         protected SoundEffect shootSound;
-
+        protected float spawnTimeStamp;
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace TankGame
         /// <param name="gameObject"></param>
         public Tower(GameObject gameObject) : base(gameObject)
         {
-            GameObject.Transform.canMove = false;
+            spawnTimeStamp = GameWorld.Instance.TotalGameTime;
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
@@ -93,6 +93,7 @@ namespace TankGame
         public virtual void Update()
         {
 
+            Deploy();
             Shoot();
         }
 
@@ -301,6 +302,13 @@ namespace TankGame
 
         }
 
+        private void Deploy()
+        {
+            if (GameWorld.Instance.TotalGameTime>spawnTimeStamp+2 && GameObject.Transform.canMove == true)
+            {
+                GameObject.Transform.canMove = false;
+            }
+        }
         /// <summary>
         /// handles what happens when a tower dies
         /// </summary>
@@ -318,5 +326,6 @@ namespace TankGame
             shootSound.Play(0.5f, 0, 0);
 
         }
+
     }
 }

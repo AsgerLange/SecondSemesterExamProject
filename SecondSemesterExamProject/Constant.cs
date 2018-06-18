@@ -18,7 +18,10 @@ namespace TankGame
     {
         public readonly static int width = 1240;
         public readonly static int hight = 720;
+        #region PVP
+        public readonly static int maxDeaths = 5;
 
+        #endregion
         #region Menu
         public readonly static string menuBackGround = "Background1";
         public readonly static string gameBackGround = "Background1";
@@ -161,7 +164,7 @@ namespace TankGame
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.25f;
-        public static readonly int shotgunPelletDmg = 12;
+        public static readonly int shotgunPelletDmg = 50;
         #endregion;
 
         #region EnemyBullets
