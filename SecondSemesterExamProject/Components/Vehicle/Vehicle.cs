@@ -82,11 +82,14 @@ namespace TankGame
                 health = value;
                 if (health <= 0)
                 {
-                    health = 0;
-                    animator.PlayAnimation("Death");
-                    vehicleDeathSound.Play();
-                    isPlayingAnimation = true;
-                    IsAlive = false;
+                    if (IsAlive)
+                    {
+                        IsAlive = false;
+                        health = 0;
+                        animator.PlayAnimation("Death");
+                        vehicleDeathSound.Play();
+                        isPlayingAnimation = true;
+                    }
                 }
                 else if (health > maxHealth)
                 {
@@ -407,7 +410,7 @@ namespace TankGame
             DrawInfo(spriteBatch);
 
             if (weapon is Sniper && GameWorld.Instance.GetGameState == GameState.Game)
-            {                
+            {
                 DrawShotDirection(this.GameObject.Transform.Position, GetDirectionVectorFromRotation(),
                     spriteBatch);
             }
