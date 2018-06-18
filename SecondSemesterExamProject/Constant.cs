@@ -161,7 +161,7 @@ namespace TankGame
         public static readonly string shotgunPelletSheet = "ShotgunPellet";
         public static readonly float shotgunPelletMovementSpeed = 750;
         public static readonly float shotgunPelletLifeSpan = 0.25f;
-        public static readonly int shotgunPelletDmg = 50;
+        public static readonly int shotgunPelletDmg = 12;
         #endregion;
 
         #region EnemyBullets

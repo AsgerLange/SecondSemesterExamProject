@@ -21,6 +21,7 @@ namespace TankGame
     /// </summary>
     class GameWorld : Game
     {
+        public bool pvp = false;
         private GameState gameState = new GameState();
         private Menu menu;
         public static readonly object colliderKey = new object();
@@ -81,6 +82,11 @@ namespace TankGame
         {
             get { return gameObjectsToRemove; }
             set { gameObjectsToRemove = value; }
+        }
+        public Map Map
+        {
+            get { return map; }
+            set { map = value; }
         }
 
         public GameState GetGameState
@@ -197,11 +203,9 @@ namespace TankGame
             //secure that enemyPool has been started
             EnemyPool ep = EnemyPool.Instance;
 
-            //adds objects to the map
-            map = new Map();
 
-            //Creates the new spawner that spawns the waves
-            spawner = new Spawn(Constant.width, Constant.hight);
+
+
 
 
             //creates a score to keep track of scores and stats
@@ -270,8 +274,12 @@ namespace TankGame
                 //adds Gameobjects
                 AddGameObjects();
 
-                //call the Spawner
-                spawner.Update();
+                if (GetSpawn != null)
+                {
+                    //call the Spawner
+                    spawner.Update();
+
+                }
 
                 //Updates GameObjects
                 foreach (var go in gameObjects)

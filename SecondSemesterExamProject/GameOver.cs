@@ -79,7 +79,10 @@ namespace TankGame
 
         private void DrawGameRecap(SpriteBatch spriteBatch)
         {
-            DrawEnemiesKilled(spriteBatch);
+            if (GameWorld.Instance.pvp == false)
+            {
+                DrawEnemiesKilled(spriteBatch);
+            }
 
             foreach (Vehicle vehicle in GameWorld.Instance.Vehicles)
             {
@@ -150,8 +153,12 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Player 2 deaths: "
             + vehicle.Stats.PlayerDeathAmmount, new Vector2(p2StatsPosX, 580), p2StatsColor);
             }
-            spriteBatch.DrawString(font, "Wave Number: " + GameWorld.Instance.GetSpawn.Wave,
-             new Vector2(statsPosX, 120), statsColor);
+            if (GameWorld.Instance.pvp == false)
+            {
+                spriteBatch.DrawString(font, "Wave Number: " + GameWorld.Instance.GetSpawn.Wave,
+                 new Vector2(statsPosX, 120), statsColor);
+
+            }
         }
         private void DrawBulletsCreated(SpriteBatch spriteBatch, Vehicle vehicle)
         {
@@ -241,12 +248,17 @@ namespace TankGame
             {
                 cal += VH.Stats.TotalAmountOfGold;
             }
-            int waveModifier = GameWorld.Instance.GetSpawn.Wave;
-            if (waveModifier > 10)
+
+            if (GameWorld.Instance.pvp == false)
             {
-                waveModifier = 10;
+
+                int waveModifier = GameWorld.Instance.GetSpawn.Wave;
+                if (waveModifier > 10)
+                {
+                    waveModifier = 10;
+                }
+                Score = cal * waveModifier + Stats.BasicEnemyKilled * 1 + Stats.SwarmerKilled * 1 + Stats.SpitterKilled * 5 + Stats.BasicEliteEnemyKilled * 10 + Stats.SiegeBreakerKilled * 50;
             }
-            Score = cal * waveModifier + Stats.BasicEnemyKilled * 1 + Stats.SwarmerKilled * 1 + Stats.SpitterKilled * 5 + Stats.BasicEliteEnemyKilled * 10 + Stats.SiegeBreakerKilled * 50;
         }
     }
 }

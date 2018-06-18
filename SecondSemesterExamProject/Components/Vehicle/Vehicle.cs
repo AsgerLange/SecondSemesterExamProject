@@ -29,6 +29,7 @@ namespace TankGame
         protected int money;
         protected Controls control;
         protected VehicleType vehicleType;
+        public Alignment alignment;
 
         protected float movementSpeed;
 
@@ -48,6 +49,7 @@ namespace TankGame
         public bool IsAlive { get; set; }
 
         protected bool isPlayingAnimation = false;
+        private bool hasSetup = false;
 
         public Weapon Weapon
         {
@@ -154,6 +156,8 @@ namespace TankGame
         public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
             TowerType towerType, int playerNumber) : base(gameObject)
         {
+
+
             this.control = control;
             this.health = health;
             this.maxHealth = health;
@@ -167,7 +171,7 @@ namespace TankGame
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
-
+            Setup();
         }
 
         /// <summary>
@@ -181,6 +185,22 @@ namespace TankGame
             this.stats.PlayerDeathAmmount++;
         }
 
+        public void Setup()
+        {
+            if (hasSetup == false)
+            {
+
+                foreach (Component comp in GameObject.GetComponentList)
+                {
+                    if (comp is Collider)
+                    {
+                        this.alignment = (comp as Collider).GetAlignment;
+                        break;
+                    }
+                }
+                hasSetup = true;
+            }
+        }
         /// <summary>
         /// Handles the vehicles movement etc...
         /// </summary>
@@ -194,6 +214,7 @@ namespace TankGame
 
                 BuildTower(); //and building tower
             }
+
         }
 
         /// <summary>
@@ -230,7 +251,7 @@ namespace TankGame
                 if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    weapon.Shoot(Alignment.Friendly, Rotation); //Fires the weapon
+                    weapon.Shoot(alignment, Rotation); //Fires the weapon
 
 
                     if (weapon is MachineGun)
@@ -462,8 +483,13 @@ namespace TankGame
                 DrawLootToString(spriteBatch);
                 spriteBatch.DrawString(font, "Towers: " + GameWorld.Instance.TowerAmount + "/" + Constant.maxTowerAmount,
                     new Vector2(Constant.width / 2 - 50, Constant.hight - 50), Color.Gold);
-                spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
-                    new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
+
+                if (GameWorld.Instance.pvp==false)
+                {
+                    spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
+                        new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
+
+                }
 
             }
         }
@@ -530,7 +556,7 @@ namespace TankGame
         /// </summary>
         public void Respawn(int playerNumber)
         {
-            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control, playerNumber);
+            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control, playerNumber, alignment);
 
             foreach (Component comp in tmp.GetComponentList)
             {

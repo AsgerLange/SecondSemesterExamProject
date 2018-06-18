@@ -13,7 +13,12 @@ namespace TankGame
 
         public Map()
         {
-            PlaceHQ();
+            if (GameWorld.Instance.pvp == false)
+            {
+
+                PlaceHQ();
+            }
+
             PlaceRocks();
         }
 
@@ -78,6 +83,7 @@ namespace TankGame
         /// </summary>
         public void PlaceHQ()
         {
+
             GameObject hq;
             hq = new GameObject();
             hq.Transform.Position = new Vector2(Constant.width / 2, Constant.hight / 2);
@@ -85,7 +91,9 @@ namespace TankGame
             hq.AddComponent(new Animator(hq));
             hq.AddComponent(new HQ(hq));
             hq.AddComponent(new Collider(hq, Alignment.Friendly));
-            GameWorld.Instance.GameObjects.Add(hq);
+            hq.LoadContent(GameWorld.Instance.Content);
+            GameWorld.Instance.GameObjectsToAdd.Add(hq);
+
         }
     }
 }

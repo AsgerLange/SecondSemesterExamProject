@@ -69,8 +69,12 @@ namespace TankGame
         /// </summary>
         public void Update()
         {
-            SpawnSingle();
-            CreateWave();
+            if (GameWorld.Instance.pvp == false)
+            {
+
+                SpawnSingle();
+                CreateWave();
+            }
             SpawnCrate();
         }
 

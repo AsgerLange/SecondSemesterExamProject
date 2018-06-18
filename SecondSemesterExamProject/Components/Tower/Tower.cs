@@ -22,6 +22,7 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
         protected BulletType bulletType;
+        protected Alignment alignment;
         protected SoundEffect dieSoundEffect;
         protected SoundEffect shootSound;
 
@@ -63,6 +64,14 @@ namespace TankGame
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
+            foreach (Component comp in GameObject.GetComponentList)
+            {
+                if (comp is Collider)
+                {
+                    alignment = (comp as Collider).GetAlignment;
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -102,7 +111,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+                    BulletPool.CreateBullet(GameObject, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                     PlayShootSoundEffect();
                 }
@@ -159,7 +168,7 @@ namespace TankGame
             {
                 foreach (Collider other in GameWorld.Instance.Colliders)
                 {
-                    if (other.GetAlignment == Alignment.Enemy)
+                    if (other.GetAlignment != alignment && other.GetAlignment != Alignment.Neutral)
                     {
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {

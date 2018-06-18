@@ -117,7 +117,7 @@ namespace TankGame
                             isBullet = true;
                         }
                     }
-                    if (other.GetAlignment == Alignment.Friendly && isBullet == false)
+                    if (isBullet == false)
                     {
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {

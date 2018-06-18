@@ -68,7 +68,7 @@ namespace TankGame
 
                     //Gameobjectdirector builds a new tower
                     towerGO = GameObjectDirector.Instance.Construct(new Vector2(vehicle.GameObject.Transform.Position.X + 1,
-                        vehicle.GameObject.Transform.Position.Y + 1), towerType, vehicle);
+                        vehicle.GameObject.Transform.Position.Y + 1), towerType, vehicle, vehicle.alignment);
 
                     //its content is loaded
                     towerGO.LoadContent(GameWorld.Instance.Content);
