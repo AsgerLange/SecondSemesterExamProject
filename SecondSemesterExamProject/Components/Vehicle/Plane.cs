@@ -45,7 +45,15 @@ namespace TankGame
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
+            if (GameWorld.Instance.pvp)
+            {
+                this.weapon = new BasicWeapon(this.GameObject);
+            }
+            else
+            {
+
             this.weapon = new MachineGun(this.GameObject);
+            }
 
             base.LoadContent(content);
         }

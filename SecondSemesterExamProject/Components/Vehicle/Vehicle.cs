@@ -178,7 +178,7 @@ namespace TankGame
             this.stats = new Stats(this);
             this.PlayerNumber = playerNumber;
             this.towerPlacer = new TowerPlacer(this, TowerType.BasicTower, 100000);
-            this.weapon = new BasicWeapon(this.GameObject);
+            
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
