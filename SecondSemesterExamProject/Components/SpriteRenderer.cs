@@ -20,7 +20,7 @@ namespace TankGame
         public bool UseRect { get { return useRect; } set { useRect = value; } }
         private Vector2 offset;
         private float rotation = 0;//in radians
-
+        public Color color = Color.White;
 
         public float Scale
         {
@@ -66,12 +66,12 @@ namespace TankGame
             if (UseRect)
             {
                 Vector2 origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
-                spriteBatch.Draw(sprite, GameObject.Transform.Position + offset, rectangle, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, GameObject.Transform.Position + offset, rectangle, color, rotation, origin, scale, SpriteEffects.None, layerDepth);
             }
             else
             {
                 Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-                spriteBatch.Draw(sprite, GameObject.Transform.Position + offset, null, Color.White, rotation, origin, scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(sprite, GameObject.Transform.Position + offset, null, color, rotation, origin, scale, SpriteEffects.None, layerDepth);
             }
         }
 

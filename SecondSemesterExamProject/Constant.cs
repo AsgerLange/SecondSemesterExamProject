@@ -18,7 +18,10 @@ namespace TankGame
     {
         public readonly static int width = 1240;
         public readonly static int hight = 720;
+        #region PVP
+        public readonly static int maxDeaths = 5;
 
+        #endregion
         #region Menu
         public readonly static string menuBackGround = "Background1";
         public readonly static string gameBackGround = "Background1";

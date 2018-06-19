@@ -12,6 +12,7 @@ namespace TankGame
 {
     class Menu
     {
+
         private VehicleType p1 = VehicleType.Tank;
         private VehicleType p2 = VehicleType.None;
         private int p1TypeInt;
@@ -25,8 +26,8 @@ namespace TankGame
         private Vector2 p2Pos = new Vector2(Constant.width - 450, Constant.hight / 2);
         private Vector2 p2UpPos = new Vector2(Constant.width - 465, Constant.hight / 2 - 45);
         private Vector2 p2DownPos = new Vector2(Constant.width - 465, Constant.hight / 2 + 30);
-        private Vector2 p1ControlsPos = new Vector2(200, Constant.hight/2-75);
-        private Vector2 p2ControlsPos = new Vector2(Constant.width / 2 + 250, Constant.hight/2-100);
+        private Vector2 p1ControlsPos = new Vector2(200, Constant.hight / 2 - 75);
+        private Vector2 p2ControlsPos = new Vector2(Constant.width / 2 + 250, Constant.hight / 2 - 100);
 
         private GameObject p1Choice;
         private GameObject p2Choice;
@@ -37,6 +38,7 @@ namespace TankGame
         private Texture2D p1ControlsImage;
         private Texture2D p2ControlsImage;
 
+        private Button pvpButton;
 
 
         public VehicleType P1
@@ -63,7 +65,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// initializes the vehicles to be drawn
+        /// initializes the vehicles to be 3n
         /// </summary>
         private void AddVehiclesToBeDrawn()
         {
@@ -163,6 +165,14 @@ namespace TankGame
             Button p2Down = new Button(p2DownPos, Constant.GreenButtonDownTexture, Constant.buttonFont);
             p2Down.click += P2Down_click;
             buttons.Add(p2Down);
+
+            pvpButton = new Button(new Vector2(startGamePos.X, startGamePos.Y + 50), Constant.RedButtonTexture, Constant.buttonFont)
+            {
+                Text = "Start PVP"
+            };
+            pvpButton.PenColour = Color.Gold;
+            pvpButton.click += Pvp_click;
+            buttons.Add(pvpButton);
         }
 
         /// <summary>
@@ -250,6 +260,16 @@ namespace TankGame
             {
                 SpawnPlayers();
                 GameWorld.Instance.GetGameState = GameState.Game;
+
+
+                //adds objects to the map
+                GameWorld.Instance.Map = new Map();
+
+
+                //Creates the new spawner that spawns the waves
+                GameWorld.Instance.GetSpawn = new Spawn(Constant.width, Constant.hight);
+
+
             }
         }
 
@@ -320,7 +340,24 @@ namespace TankGame
             p2Choice = ChangeVehicle(p2, 2);
             p2Choice.Transform.Position = p2Pos;
         }
+        private void Pvp_click(object sender, EventArgs e)
+        {
+            if ((!(p1 == VehicleType.None) && !(p2 == VehicleType.None)))
+            {
+                GameWorld.Instance.pvp = true;
+                SpawnPlayers();
+                GameWorld.Instance.GetGameState = GameState.Game;
 
+
+                //adds objects to the map
+                GameWorld.Instance.Map = new Map();
+
+
+                //Creates the new spawner that spawns the waves
+                GameWorld.Instance.GetSpawn = new Spawn(Constant.width, Constant.hight);
+
+            }
+        }
         /// <summary>
         /// spawns the player(s)
         /// </summary>
@@ -328,11 +365,21 @@ namespace TankGame
         {
             if (!(p1 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p1, Controls.WASD, 1);
+                GameObjectDirector.Instance.Construct(p1, Controls.WASD, 1, Alignment.Friendly);
+
             }
             if (!(p2 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p2, Controls.UDLR, 2);
+                if (GameWorld.Instance.pvp == false)
+                {
+                    GameObjectDirector.Instance.Construct(p2, Controls.UDLR, 2, Alignment.Friendly);
+
+                }
+                else
+                {
+                    GameObjectDirector.Instance.Construct(p2, Controls.UDLR, 2, Alignment.Enemy);
+
+                }
             }
         }
     }

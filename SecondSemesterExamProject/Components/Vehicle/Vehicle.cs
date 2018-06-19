@@ -29,6 +29,7 @@ namespace TankGame
         protected int money;
         protected Controls control;
         protected VehicleType vehicleType;
+        public Alignment alignment;
 
         protected float movementSpeed;
 
@@ -48,6 +49,7 @@ namespace TankGame
         public bool IsAlive { get; set; }
 
         protected bool isPlayingAnimation = false;
+        private bool hasSetup = false;
 
         public Weapon Weapon
         {
@@ -154,9 +156,20 @@ namespace TankGame
         public Vehicle(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
             TowerType towerType, int playerNumber) : base(gameObject)
         {
+
+
             this.control = control;
-            this.health = health;
-            this.maxHealth = health;
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = health*3;
+                this.maxHealth = this.health;
+            }
+            else
+            {
+                this.health = health ;
+                this.maxHealth = this.health;
+
+            }
             this.movementSpeed = movementSpeed;
             this.rotateSpeed = rotateSpeed;
             this.money = money;
@@ -167,7 +180,7 @@ namespace TankGame
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
-
+            Setup();
         }
 
         /// <summary>
@@ -179,8 +192,29 @@ namespace TankGame
             GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             this.stats.PlayerDeathAmmount++;
+
+            if (this.stats.PlayerDeathAmmount>= Constant.maxDeaths)
+            {
+                GameWorld.Instance.GameOver();
+            }
         }
 
+        public void Setup()
+        {
+            if (hasSetup == false)
+            {
+
+                foreach (Component comp in GameObject.GetComponentList)
+                {
+                    if (comp is Collider)
+                    {
+                        this.alignment = (comp as Collider).GetAlignment;
+                        break;
+                    }
+                }
+                hasSetup = true;
+            }
+        }
         /// <summary>
         /// Handles the vehicles movement etc...
         /// </summary>
@@ -194,6 +228,7 @@ namespace TankGame
 
                 BuildTower(); //and building tower
             }
+
         }
 
         /// <summary>
@@ -230,7 +265,7 @@ namespace TankGame
                 if ((shotTimeStamp + weapon.FireRate) <= GameWorld.Instance.TotalGameTime)
                 {
 
-                    weapon.Shoot(Alignment.Friendly, Rotation); //Fires the weapon
+                    weapon.Shoot(alignment, Rotation); //Fires the weapon
 
 
                     if (weapon is MachineGun)
@@ -462,12 +497,33 @@ namespace TankGame
                 DrawLootToString(spriteBatch);
                 spriteBatch.DrawString(font, "Towers: " + GameWorld.Instance.TowerAmount + "/" + Constant.maxTowerAmount,
                     new Vector2(Constant.width / 2 - 50, Constant.hight - 50), Color.Gold);
-                spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
-                    new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
 
+                if (GameWorld.Instance.pvp == false)
+                {
+                    spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
+                        new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
+
+                }
             }
         }
 
+        public void DrawDeaths(SpriteBatch spriteBatch)
+        {
+            if (GameWorld.Instance.pvp)
+            {
+                if (control==Controls.WASD)
+                {
+                spriteBatch.DrawString(font, stats.PlayerDeathAmmount.ToString(), new Vector2(Constant.width/2+20, 20), Color.YellowGreen);
+
+                }
+                else
+                {
+                    spriteBatch.DrawString(font, stats.PlayerDeathAmmount.ToString(), new Vector2(Constant.width / 2 -20, 20), Color.CornflowerBlue);
+
+                }
+
+            }
+        }
         /// <summary>
         /// Draws the amount of seconds untill respawn
         /// </summary>
@@ -476,7 +532,17 @@ namespace TankGame
         {
             if (IsAlive == false)
             {
-                float timeLeft = deathTimeStamp + Constant.respawntime - GameWorld.Instance.TotalGameTime;
+                float timeLeft;
+                if (GameWorld.Instance.pvp)
+                {
+
+                 timeLeft = deathTimeStamp + Constant.respawntime/2 - GameWorld.Instance.TotalGameTime;
+                }
+                else
+                {
+                     timeLeft = deathTimeStamp + Constant.respawntime - GameWorld.Instance.TotalGameTime;
+
+                }
 
                 string timeLeftString = Convert.ToInt32(timeLeft).ToString();
                 if (control == Controls.WASD)
@@ -488,6 +554,7 @@ namespace TankGame
                     spriteBatch.DrawString(font, Convert.ToInt32(timeLeft).ToString(), new Vector2(Constant.width - font.MeasureString(timeLeftString).X - 2, 2), Color.YellowGreen);
                 }
             }
+
         }
         /// <summary>
         /// gives the vehicle the basic weapon (for when weapon runs out of ammo)
@@ -530,7 +597,7 @@ namespace TankGame
         /// </summary>
         public void Respawn(int playerNumber)
         {
-            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control, playerNumber);
+            var tmp = GameObjectDirector.Instance.Construct(vehicleType, control, playerNumber, alignment);
 
             foreach (Component comp in tmp.GetComponentList)
             {
@@ -546,7 +613,7 @@ namespace TankGame
                 }
             }
             GameWorld.Instance.Vehicles.Remove(this);
-            GameWorld.Instance.VehiclesToRemove.Clear();
+            GameWorld.Instance.VehiclesToRemove.Remove(this.GameObject);
 
         }
         public override string ToString()

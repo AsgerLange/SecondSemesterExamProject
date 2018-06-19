@@ -276,7 +276,7 @@ namespace TankGame
 
                     tmp.IsAlive = true;
                     tmp.CanRelease = true;
-
+                    tmp.CanAttackPlane = false;
                     if (component is BasicEnemy)
                     {
                         tmp.Health = Constant.basicEnemyHealth;
@@ -300,6 +300,7 @@ namespace TankGame
                     if (component is Spitter)
                     {
                         tmp.Health = Constant.spitterHealth;
+                        tmp.CanAttackPlane = true;
                     }
 
 

@@ -28,6 +28,7 @@ namespace TankGame
         {
             shootSound = content.Load<SoundEffect>("MachinegunShot");
 
+            
             base.LoadContent(content);
         }
 

@@ -27,6 +27,7 @@ namespace TankGame
         protected int attackVariation = 1;
         protected float attackRange;
         protected SoundEffect deathSound;
+        protected bool canAttackPlane = false;
 
         public EnemyType GetEnemyType
         {
@@ -36,6 +37,11 @@ namespace TankGame
         {
             get { return isAlive; }
             set { isAlive = value; }
+        }
+        public bool CanAttackPlane
+        {
+            get { return canAttackPlane; }
+            set { canAttackPlane = value; }
         }
         public int Health
         {
@@ -356,7 +362,6 @@ namespace TankGame
 
             if (target != null)
             {
-
                 if (targetGameObject.GetComponent("Collider") != target)
                 {
                     this.targetGameObject = target.GameObject;
@@ -421,6 +426,8 @@ namespace TankGame
             float distance = 0;
 
             bool otherIsBullet = false;
+            bool otherIsPlane = false;
+
 
             lock (GameWorld.colliderKey)
             {
@@ -432,14 +439,16 @@ namespace TankGame
                         {
                             foreach (Component comp in other.GameObject.GetComponentList)
                             {
-                                if (comp is Bullet)
+                                if (comp is Bullet || comp is Plane)
                                 {
                                     otherIsBullet = true;
+                                    otherIsPlane = true;
+
                                     break;
                                 }
 
                             }
-                            if (otherIsBullet == false)
+                            if (otherIsBullet == false || (otherIsPlane && this.canAttackPlane))
                             {
 
                                 float otherDistance;
@@ -525,7 +534,7 @@ namespace TankGame
         /// </summary>
         protected virtual void PlayDeathSound()
         {
-            deathSound.Play(0.6f,0,0);
+            deathSound.Play(0.6f, 0, 0);
         }
     }
 }

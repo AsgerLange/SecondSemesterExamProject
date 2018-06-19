@@ -21,6 +21,7 @@ namespace TankGame
     /// </summary>
     class GameWorld : Game
     {
+        public bool pvp = false;
         private GameState gameState = new GameState();
         private Menu menu;
         public static readonly object colliderKey = new object();
@@ -81,6 +82,11 @@ namespace TankGame
         {
             get { return gameObjectsToRemove; }
             set { gameObjectsToRemove = value; }
+        }
+        public Map Map
+        {
+            get { return map; }
+            set { map = value; }
         }
 
         public GameState GetGameState
@@ -197,11 +203,9 @@ namespace TankGame
             //secure that enemyPool has been started
             EnemyPool ep = EnemyPool.Instance;
 
-            //adds objects to the map
-            map = new Map();
 
-            //Creates the new spawner that spawns the waves
-            spawner = new Spawn(Constant.width, Constant.hight);
+
+
 
 
             //creates a score to keep track of scores and stats
@@ -270,8 +274,12 @@ namespace TankGame
                 //adds Gameobjects
                 AddGameObjects();
 
-                //call the Spawner
-                spawner.Update();
+                if (GetSpawn != null)
+                {
+                    //call the Spawner
+                    spawner.Update();
+
+                }
 
                 //Updates GameObjects
                 foreach (var go in gameObjects)
@@ -288,12 +296,12 @@ namespace TankGame
                         {
                             if (comp is Vehicle)
                             {
-                                if ((comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
+                                if ((pvp == false && (comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
+                                    || (pvp == true && (comp as Vehicle).DeathTimeStamp + Constant.respawntime / 2 <= totalGameTime))
                                 {
                                     (comp as Vehicle).Respawn((comp as Vehicle).PlayerNumber);
 
-                                    VehiclesToRemove.Clear();
-
+                                    
                                     break;
                                 }
                             }
@@ -340,7 +348,7 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1)
+            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
             {
                 GameOver();
             }
@@ -414,6 +422,8 @@ namespace TankGame
                         go.Draw(spriteBatch);
                     }
                 }
+                DrawScore(spriteBatch);
+
                 DrawVehiclesRespawnTimeRemaining(spriteBatch);
 
                 spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
@@ -439,7 +449,6 @@ namespace TankGame
         {
             if (VehiclesToRemove.Count > 0)
             {
-
                 foreach (GameObject go in vehiclesToRemove)
                 {
                     foreach (Component comp in go.GetComponentList)
@@ -451,6 +460,15 @@ namespace TankGame
                     }
                 }
             }
+        }
+        private void DrawScore(SpriteBatch spriteBatch)
+        {
+            foreach (Vehicle vehicle in vehicles)
+            {
+
+                vehicle.DrawDeaths(spriteBatch);
+            }
+
         }
         public int UpdatePlayerAmount()
         {

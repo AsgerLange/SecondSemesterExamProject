@@ -29,7 +29,7 @@ namespace TankGame
             {
                 float force = Constant.pushForce * 2;
 
-                if (other.GetAlignment != Alignment.Neutral)
+                if (other.GetAlignment != Alignment.Neutral || (other.GameObject.GetComponent("Tower") is Tower))
                 {
                     Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;
                     dir.Normalize();
@@ -48,7 +48,7 @@ namespace TankGame
             if (!(other.GameObject.GetComponent("Plane") is Plane))
             {
 
-                if (other.GetAlignment != Alignment.Neutral)
+                if (other.GetAlignment != Alignment.Neutral || (other.GameObject.GetComponent("Tower") is Tower))
                 {
                     float force = Constant.pushForce;
                     Vector2 dir = other.GameObject.Transform.Position - GameObject.Transform.Position;

@@ -152,7 +152,7 @@ namespace TankGame
                 shouldDie = true;
                 if (shooter != null)
                 {
-                    IncrementMissCoint();
+                    IncrementMissCount();
 
                 }
                 DestroyBullet();
@@ -296,37 +296,47 @@ namespace TankGame
                                 break;
                             }
                         }
-          
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy 
-                            && otherIsBullet == false)
-                            || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy) || type is Terrain)
+                        if (otherIsBullet == false)
                         {
-                            if (!(type is Crate))
-                            {
 
-                            if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+                            if (other.GetAlignment != thisCollider.GetAlignment)
                             {
-                                (type as Enemy).Health -= bulletDmg;
+                                if (!(type is Crate))
+                                {
+
+                                    if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+                                    {
+                                        (type as Enemy).Health -= bulletDmg;
+                                        BulletSpecialEffect(other);
+
+                                    }
+                                    else if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy
+                                        || type is Vehicle && thisCollider.GetAlignment == Alignment.Friendly)
+                                    {
+                                        (type as Vehicle).Health -= bulletDmg;
+                                        BulletSpecialEffect(other);
+
+                                    }
+                                    else if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy
+                                        || type is Tower && thisCollider.GetAlignment == Alignment.Friendly)
+                                    {
+                                        (type as Tower).Health -= bulletDmg;
+                                        BulletSpecialEffect(other);
+
+                                    }
+                                    else if (type is Terrain)
+                                    {
+                                        IncrementMissCount();
+                                        BulletSpecialEffect(other);
+
+                                    }
+
+                                }
                             }
-                            else if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
+                            if (shouldDie)
                             {
-                                (type as Vehicle).Health -= bulletDmg;
+                                DestroyBullet();
                             }
-                            else if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy)
-                            {
-                                (type as Tower).Health -= bulletDmg;
-                            }
-                            else if (type is Terrain)
-                            {
-                                IncrementMissCoint();
-                            }
-                            
-                            BulletSpecialEffect(other);
-                            }
-                        }
-                        if (shouldDie)
-                        {
-                            DestroyBullet();
                         }
                     }
                 }
@@ -352,7 +362,7 @@ namespace TankGame
         /// <summary>
         /// handles incrementing the miss counts for bullets
         /// </summary>
-        private void IncrementMissCoint()
+        private void IncrementMissCount()
         {
             if (shooter != null)
             {
