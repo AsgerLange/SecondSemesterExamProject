@@ -45,7 +45,7 @@ namespace TankGame
         private Random rnd = new Random();
         private int playerAmount;
         private int towerAmount;
-
+        
         private GameOver gameOver;
         Score score;
 
@@ -56,6 +56,7 @@ namespace TankGame
         {
             get { return gameOver; }
         }
+        public bool MusicIsPlaying { get; set; }
         public List<Collider> Colliders
         {
             get
@@ -229,7 +230,7 @@ namespace TankGame
 
 
 
-            PlayBackgroundSong(backgroundMusic);
+            PlayBackgroundSong();
 
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -499,11 +500,17 @@ namespace TankGame
         /// <summary>
         /// plays the background music
         /// </summary>
-        public void PlayBackgroundSong(Song song)
+        public void PlayBackgroundSong()
         {
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.25f;
-            MediaPlayer.Play(song);
+            MediaPlayer.Play(backgroundMusic);
+            MusicIsPlaying = true;
+        }
+        public void StopMusic()
+        {
+            MediaPlayer.Stop();
+            MusicIsPlaying = false;
         }
     }
 }

@@ -15,7 +15,17 @@ namespace TankGame
         public MachineGunTower(GameObject gameObject): base(gameObject)
         {
             this.attackRate = Constant.machineGunTowerFireRate;
-            this.health = Constant.machineGunTowerHealth;
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = Constant.machineGunTowerHealth * Constant.pvpHealthModifier;
+
+            }
+            else
+            {
+                this.health = Constant.machineGunTowerHealth;
+
+
+            }
             this.attackRange = Constant.machineGunTowerAttackRange;
             this.bulletType = Constant.machineGunTowerBulletType;
             this.spread = Constant.machineGunTowerSpread;

@@ -45,6 +45,8 @@ namespace TankGame
         protected float lootTimeStamp; // when a vehicle received loot
         private Crate latestLootCrate; //For displaying reward
         private float deathTimeStamp;
+        private static float muteTimeStamp;
+
         public int PlayerNumber { get; set; }
         public bool IsAlive { get; set; }
 
@@ -161,7 +163,7 @@ namespace TankGame
             this.control = control;
             if (GameWorld.Instance.pvp == true)
             {
-                this.health = health*3;
+                this.health = health*Constant.pvpHealthModifier;
                 this.maxHealth = this.health;
             }
             else
@@ -227,6 +229,8 @@ namespace TankGame
                 Shoot(); //same for shooting
 
                 BuildTower(); //and building tower
+
+                ToggleMusic();
             }
 
         }
@@ -630,6 +634,24 @@ namespace TankGame
             return Vector2.Transform(new Vector2(0, -1),
                 Matrix.CreateRotationZ(MathHelper.ToRadians(this.rotation)));
 
+        }
+
+        private void ToggleMusic()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+          
+            if (keyState.IsKeyDown(Keys.M) && GameWorld.Instance.TotalGameTime > muteTimeStamp+1 && GameWorld.Instance.MusicIsPlaying)
+            {
+                GameWorld.Instance.StopMusic();
+                muteTimeStamp = GameWorld.Instance.TotalGameTime;
+            }
+            else if (keyState.IsKeyDown(Keys.M) && GameWorld.Instance.TotalGameTime > muteTimeStamp + 1 && GameWorld.Instance.MusicIsPlaying == false)
+            {
+                GameWorld.Instance.PlayBackgroundSong();
+                muteTimeStamp = GameWorld.Instance.TotalGameTime;
+
+            }
         }
 
     }

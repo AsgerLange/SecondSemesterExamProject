@@ -14,7 +14,17 @@ namespace TankGame
         public ShotgunTower(GameObject gameObject) : base(gameObject)
         {
             this.attackRate = Constant.ShotgunTowerFireRate;
-            this.health = Constant.ShotgunTowerHealth;
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = Constant.ShotgunTowerHealth * Constant.pvpHealthModifier;
+
+            }
+            else
+            {
+                this.health = Constant.ShotgunTowerHealth;
+
+
+            }
             this.attackRange = Constant.shotgunTowerAttackRange;
             this.bulletType = Constant.ShotgunTowerBulletType;
             this.spread = Constant.ShotgunTowerSpread;
