@@ -199,10 +199,13 @@ namespace TankGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //initializes the barrier
-            barrier = new Barrier(2);
+            barrier = new Barrier(3);
 
             //secure that enemyPool has been started
             EnemyPool ep = EnemyPool.Instance;
+
+            BulletPool bp = BulletPool.Instance;
+
 
 
 
@@ -311,14 +314,7 @@ namespace TankGame
                     }
                 }
 
-                lock (BulletPool.activeListKey)
-                {
-                    foreach (var go in BulletPool.ActiveBullets)
-                    {
-                        go.Update();
-                    }
-                }
-                BulletPool.ReleaseList();
+               
                 RemoveObjects();
             }
             else if (gameState == GameState.GameOver)

@@ -18,6 +18,7 @@ namespace TankGame
         private static EnemyPool instance;
         //The enemyPool is in its own thread
         private static Thread enemyPoolThread;
+
         //List containing active Enemies
         private static List<GameObject> inActiveEnemies = new List<GameObject>();
 
@@ -57,6 +58,7 @@ namespace TankGame
             }
             enemyPoolThread.Start();
         }
+       
 
         /// <summary>
         /// keeps the enemies updated

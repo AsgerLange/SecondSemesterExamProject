@@ -78,7 +78,7 @@ namespace TankGame
         {
 
             PlayShootSoundEffect();
-            BulletPool.CreateBullet(go, alignment,
+            BulletPool.Instance.CreateBullet(go, alignment,
                        bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             Ammo--;
 

@@ -34,7 +34,7 @@ namespace TankGame
             PlayShootSoundEffect();
             for (int i = 0; i < Constant.shotgunPelletAmount; i++)
             {
-                BulletPool.CreateBullet(go, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
+                BulletPool.Instance.CreateBullet(go, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-weaponSpread, weaponSpread)));
             }
             Ammo--;
             vehicle.Stats.ShotgunFired++;
