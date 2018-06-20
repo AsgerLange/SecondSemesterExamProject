@@ -54,8 +54,7 @@ namespace TankGame
 
             if (vehicle.Control == Controls.UDLR)
             {
-            ((SpriteRenderer)go.GetComponent("SpriteRenderer")).color = Color.Lime;
-
+                ((SpriteRenderer)go.GetComponent("SpriteRenderer")).color = Color.Lime;
             }
         }
 
