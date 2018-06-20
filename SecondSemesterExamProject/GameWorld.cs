@@ -515,7 +515,7 @@ namespace TankGame
         public void PlayBackgroundSong()
         {
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.25f;
+            MediaPlayer.Volume = 0.20f;
             MediaPlayer.Play(backgroundMusic);
             MusicIsPlaying = true;
         }
