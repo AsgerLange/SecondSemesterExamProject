@@ -203,11 +203,6 @@ namespace TankGame
             //secure that enemyPool has been started
             EnemyPool ep = EnemyPool.Instance;
 
-
-
-
-
-
             //creates a score to keep track of scores and stats
             score = new Score();
 
@@ -301,7 +296,7 @@ namespace TankGame
                                 {
                                     (comp as Vehicle).Respawn((comp as Vehicle).PlayerNumber);
 
-                                    
+
                                     break;
                                 }
                             }
