@@ -20,6 +20,7 @@ namespace TankGame
         public readonly static int hight = 720;
         #region PVP
         public readonly static int maxDeaths = 5;
+        public readonly static int pvpHealthModifier = 3;
 
         #endregion
         #region Menu

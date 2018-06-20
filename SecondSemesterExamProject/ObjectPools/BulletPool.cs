@@ -3,13 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TankGame
 {
 
-    static class BulletPool
+    class BulletPool
     {
+        public static readonly object activeKey = new object();
+        public static readonly object inActiveKey = new object();
+        public static readonly object releaseKey = new object();
+
+        private static Thread bulletPoolThread;
+
         //List containing active bullets
         private static List<GameObject> inActiveBullets = new List<GameObject>();
 
@@ -21,8 +28,19 @@ namespace TankGame
 
         public static readonly object activeListKey = new object();
         public static readonly object inActiveListKey = new object();
+        private static BulletPool instance;
 
-
+        public static BulletPool Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new BulletPool();
+                }
+                return instance;
+            }
+        }
 
         /// <summary>
         /// Get/set property for the activeBullets list
@@ -45,13 +63,46 @@ namespace TankGame
             }
         }
 
+        private BulletPool()
+        {
+            if (bulletPoolThread == null)
+            {
+                bulletPoolThread = new Thread(Update)
+                {
+                    IsBackground = true
+                };
+            }
+            bulletPoolThread.Start();
+        }
+
+        private void Update()
+        {
+            while (GameWorld.Instance.gameRunning)
+            {
+                GameWorld.barrier.SignalAndWait();
+                lock (activeListKey)
+                {
+
+                    lock (activeKey)
+                    {
+                        foreach (var go in ActiveBullets)
+                        {
+                            go.Update();
+                        }
+                    }
+                }
+
+                ReleaseList();
+            }
+        }
+
         /// <summary>
         /// Recycles old Bullet objects, or Creates new ones if the inactiveBullet list is empty
         /// </summary>
         /// <param name="position">The position where the bullet should spawn</param>
         /// <param name="alignment">The allignment of the bullet (Enemy/Friendly/neutral)</param>
         /// <returns></returns>
-        public static GameObject CreateBullet(GameObject gameObject, Alignment alignment, BulletType bulletType, float directionRotation)
+        public GameObject CreateBullet(GameObject gameObject, Alignment alignment, BulletType bulletType, float directionRotation)
         {
             Vehicle shooter = FindShooter(gameObject);
 
@@ -95,6 +146,7 @@ namespace TankGame
 
 
                     Component bullet = null;
+
                     foreach (Component comp in tmp.GetComponentList)
                     {
                         if (comp is Bullet)
@@ -104,11 +156,13 @@ namespace TankGame
                         }
                     }
 
+                    ((Bullet)bullet).DirRotation = directionRotation;
+                    ((Bullet)bullet).SpriteRenderer.Rotation = directionRotation;
+
                     ((Bullet)bullet).CanRelease = true;
                     ((Bullet)bullet).ShouldDie = false;
                     ((Bullet)bullet).Shooter = shooter;
 
-                    ((Bullet)bullet).DirRotation = directionRotation;
 
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 

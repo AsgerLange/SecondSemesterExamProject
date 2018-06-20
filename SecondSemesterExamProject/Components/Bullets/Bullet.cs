@@ -34,6 +34,11 @@ namespace TankGame
         }
         #endregion;
 
+        public SpriteRenderer SpriteRenderer
+        {
+            get { return spriteRenderer; }
+            set { spriteRenderer = value; }
+        }
         public BulletType GetBulletType
         {
             get { return bulletType; }
@@ -136,7 +141,6 @@ namespace TankGame
         public virtual void Update()
         {
             BulletMovement();
-            spriteRenderer.Rotation = rotation;
 
             CheckIfBulletIsExpired();
 
@@ -172,13 +176,15 @@ namespace TankGame
 
             //Translates movemement
             TranslateMovement(translation);
-
             if (isRotated == false)
             {
                 //Rotates the bullet to fit its direction
                 rotation = GetDegreesFromDestination(translation);
+                spriteRenderer.Rotation = rotation;
+
                 isRotated = true;
             }
+
         }
 
         /// <summary>

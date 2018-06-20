@@ -14,7 +14,17 @@ namespace TankGame
         public ShotgunTower(GameObject gameObject) : base(gameObject)
         {
             this.attackRate = Constant.ShotgunTowerFireRate;
-            this.health = Constant.ShotgunTowerHealth;
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = Constant.ShotgunTowerHealth * Constant.pvpHealthModifier;
+
+            }
+            else
+            {
+                this.health = Constant.ShotgunTowerHealth;
+
+
+            }
             this.attackRange = Constant.shotgunTowerAttackRange;
             this.bulletType = Constant.ShotgunTowerBulletType;
             this.spread = Constant.ShotgunTowerSpread;
@@ -76,7 +86,7 @@ namespace TankGame
                     float rotation = GetDegreesFromDestination(direction);
                     for (int i = 0; i < Constant.shotgunTowerPelletAmount; i++)
                     {
-                        BulletPool.CreateBullet(GameObject, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+                        BulletPool.Instance.CreateBullet(GameObject, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
 
                     }
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;

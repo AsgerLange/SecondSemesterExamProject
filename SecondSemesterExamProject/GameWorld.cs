@@ -45,7 +45,7 @@ namespace TankGame
         private Random rnd = new Random();
         private int playerAmount;
         private int towerAmount;
-
+        
         private GameOver gameOver;
         Score score;
 
@@ -56,6 +56,7 @@ namespace TankGame
         {
             get { return gameOver; }
         }
+        public bool MusicIsPlaying { get; set; }
         public List<Collider> Colliders
         {
             get
@@ -198,10 +199,12 @@ namespace TankGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //initializes the barrier
-            barrier = new Barrier(2);
+            barrier = new Barrier(3);
 
             //secure that enemyPool has been started
             EnemyPool ep = EnemyPool.Instance;
+
+            BulletPool bp = BulletPool.Instance;
 
             //creates a score to keep track of scores and stats
             score = new Score();
@@ -224,7 +227,7 @@ namespace TankGame
 
 
 
-            PlayBackgroundSong(backgroundMusic);
+            PlayBackgroundSong();
 
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -305,14 +308,7 @@ namespace TankGame
                     }
                 }
 
-                lock (BulletPool.activeListKey)
-                {
-                    foreach (var go in BulletPool.ActiveBullets)
-                    {
-                        go.Update();
-                    }
-                }
-                BulletPool.ReleaseList();
+               
                 RemoveObjects();
             }
             else if (gameState == GameState.GameOver)
@@ -494,11 +490,17 @@ namespace TankGame
         /// <summary>
         /// plays the background music
         /// </summary>
-        public void PlayBackgroundSong(Song song)
+        public void PlayBackgroundSong()
         {
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.25f;
-            MediaPlayer.Play(song);
+            MediaPlayer.Play(backgroundMusic);
+            MusicIsPlaying = true;
+        }
+        public void StopMusic()
+        {
+            MediaPlayer.Stop();
+            MusicIsPlaying = false;
         }
     }
 }
