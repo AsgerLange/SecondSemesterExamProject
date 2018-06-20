@@ -17,7 +17,7 @@ namespace TankGame
         /// <param name="gameObject"></param>
         public WeaponCrate(GameObject gameObject) : base(gameObject)
         {
-            int random = GameWorld.Instance.Rnd.Next(1,(Enum.GetNames(typeof(WeaponType)).Length));
+            int random = GameWorld.Instance.Rnd.Next(1,(Enum.GetNames(typeof(WeaponType)).Length-1));
 
             weaponType = (WeaponType)random;
 

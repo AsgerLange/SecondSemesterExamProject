@@ -504,7 +504,7 @@ namespace TankGame
         /// <param name="other"></param>
         public virtual void OnCollisionStay(Collider other)
         {
-            bool push = true;//
+            bool push = true;
 
             if (other.GetAlignment != Alignment.Neutral)
             {

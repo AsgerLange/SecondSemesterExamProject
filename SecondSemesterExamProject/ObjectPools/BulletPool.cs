@@ -161,7 +161,10 @@ namespace TankGame
                     ((Bullet)bullet).CanRelease = true;
                     ((Bullet)bullet).ShouldDie = false;
                     ((Bullet)bullet).Shooter = shooter;
-
+                    if (bullet is MonsterBullet)
+                    {
+                        ((MonsterBullet)bullet).ChangeColor();
+                    }
 
                     ((Bullet)bullet).TimeStamp = GameWorld.Instance.TotalGameTime;
 
@@ -234,7 +237,7 @@ namespace TankGame
         public static void CleanUp(GameObject bullet)
         {
             //Reset all bullet attributes
-            bullet.Transform.Position = new Vector2(100, 100);
+            bullet.Transform.Position = new Vector2(-1000, -1000);
             //  ((Collider)bullet.GetComponent("Collider")).EmptyLists();
 
             lock (GameWorld.colliderKey)
@@ -286,6 +289,13 @@ namespace TankGame
                         tmp.LifeSpan = Constant.spitterBulletLifeSpan;
                         tmp.BulletDamage = Constant.spitterBulletDmg;
                         tmp.MovementSpeed = Constant.spitterBulletMovementSpeed;
+                    }
+                    else if (component is MonsterBullet)
+                    {
+                        tmp = component as MonsterBullet;
+                        tmp.LifeSpan = Constant.monsterBulletLifeSpan;
+                        tmp.BulletDamage = Constant.monsterBulletDmg;
+                        tmp.MovementSpeed = Constant.monsterBulletMovementSpeed;
                     }
                     break;
                 }
@@ -370,6 +380,9 @@ namespace TankGame
                         break;
                     case BulletType.SniperBullet:
                         vehicle.Stats.SniperBulletCounter++;
+                        break;
+                    case BulletType.MonsterBullet:
+                        vehicle.Stats.MonsterBulletCounter++;
                         break;
 
                     default:
