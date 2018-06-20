@@ -14,8 +14,8 @@ namespace TankGame
         protected int spread;
         protected bool isAttacking = false;
 
-        public Ranged(GameObject gameObject, int health, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType, BulletType bulletType,  int spread
-            ) : base(gameObject, health, movementSpeed, attackRate,attackRange, enemyType)
+        public Ranged(GameObject gameObject, int health, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, BulletType bulletType, int spread
+            ) : base(gameObject, health, movementSpeed, attackRate, attackRange, enemyType)
         {
             this.CanAttackPlane = true;
             this.bulletType = bulletType;
@@ -57,31 +57,45 @@ namespace TankGame
 
             if (attackTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
             {
+                bool isBullet = false;
                 Collider target;
                 target = FindTargetInRange();
                 if (target != null)
                 {
-                    Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
-
-                    direction.Normalize();
-
-                    float rotation = GetDegreesFromDestination(direction);
-
-                    RotateToMatchDirection(direction);
-                                    
-                    BulletPool.Instance.CreateBullet(GameObject, Alignment.Enemy,
-                        bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
-
-                    if (attackVariation > 2)//Adds animation variation
+                    foreach (Component comp in target.GameObject.GetComponentList)
                     {
-                        attackVariation = 1;
+                        if (comp is Bullet)
+                        {
+                            isBullet = true;
+                            break;
+                        }
+
                     }
-                    animator.PlayAnimation("Attack" + attackVariation);
-                    attackVariation++;
+                    if (isBullet == false)
+                    {
 
-                    attackTimeStamp = GameWorld.Instance.TotalGameTime;
+                        Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
 
-                    isAttacking = true;
+                        direction.Normalize();
+
+                        float rotation = GetDegreesFromDestination(direction);
+
+                        RotateToMatchDirection(direction);
+
+                        BulletPool.Instance.CreateBullet(GameObject, Alignment.Enemy,
+                            bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+
+                        if (attackVariation > 2)//Adds animation variation
+                        {
+                            attackVariation = 1;
+                        }
+                        animator.PlayAnimation("Attack" + attackVariation);
+                        attackVariation++;
+
+                        attackTimeStamp = GameWorld.Instance.TotalGameTime;
+
+                        isAttacking = true;
+                    }
                 }
                 else
                 {
@@ -90,8 +104,8 @@ namespace TankGame
             }
         }
 
-        
-        
+
+
         /// <summary>
         /// handles which animation should the tank be running
         /// </summary>

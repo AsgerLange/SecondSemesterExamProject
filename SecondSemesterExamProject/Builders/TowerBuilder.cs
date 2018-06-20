@@ -52,7 +52,7 @@ namespace TankGame
             }
             go.AddComponent(new Animator(go));
 
-            if (vehicle.Control == Controls.UDLR)
+            if (vehicle.Control == Controls.UDLR && GameWorld.Instance.pvp)
             {
             ((SpriteRenderer)go.GetComponent("SpriteRenderer")).color = Color.Lime;
 

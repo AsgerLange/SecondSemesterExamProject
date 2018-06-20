@@ -30,13 +30,15 @@ namespace TankGame
         public GameOver()
         {
             string text = "Continue";
-            Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
-            {
-                Text = text
-            };
-            Continue.PenColour = Color.Gold;
-            Continue.click += Continue_click;
-            ContinueButton = Continue;
+
+                Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
+                {
+                    Text = text
+                };
+                Continue.PenColour = Color.Gold;
+                Continue.click += Continue_click;
+                ContinueButton = Continue;
+                     
 
         }
 
@@ -128,7 +130,7 @@ namespace TankGame
                 {
                     spriteBatch.DrawString(font, "Green score: " + vehicle.Stats.PlayerDeathAmmount, new Vector2(statsPosX, 180), Color.YellowGreen);
 
-                    if (vehicle.Stats.PlayerDeathAmmount==Constant.maxDeaths)
+                    if (vehicle.Stats.PlayerDeathAmmount == Constant.maxDeaths)
                     {
                         spriteBatch.DrawString(font, "Green VICTORY!", new Vector2(statsPosX, 120), Color.YellowGreen);
 
