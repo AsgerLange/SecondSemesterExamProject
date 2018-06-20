@@ -18,7 +18,7 @@ namespace TankGame
         /// </summary>
         public void Build()
         {
-            int random = GameWorld.Instance.Rnd.Next(6);
+            int random = GameWorld.Instance.Rnd.Next(1,6);
 
             switch (random)
             {

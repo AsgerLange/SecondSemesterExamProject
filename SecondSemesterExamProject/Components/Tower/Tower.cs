@@ -316,6 +316,7 @@ namespace TankGame
         {
 
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            //fix
             GameWorld.Instance.TowerAmount--;
         }
         /// <summary>
