@@ -298,7 +298,7 @@ namespace TankGame
                 Die();
             }
 
-            if (animationName == "Walk")
+            if (animationName == "Walk" && IsAlive)
             {
                 if (isPlayingAnimation == true)
                 {
@@ -307,9 +307,14 @@ namespace TankGame
             }
             else
             {
-                animator.PlayAnimation("Idle");
-                isPlayingAnimation = false;
+                if (IsAlive)
+                {
+
+                    animator.PlayAnimation("Idle");
+                    isPlayingAnimation = false;
+                }
             }
+
         }
 
         /// <summary>
@@ -455,7 +460,7 @@ namespace TankGame
                             }
                             if (otherIsBullet == false)
                             {
-                                if (otherIsPlane && this.canAttackPlane)
+                                if (otherIsPlane==false || otherIsPlane && this.canAttackPlane)
                                 {
 
 
