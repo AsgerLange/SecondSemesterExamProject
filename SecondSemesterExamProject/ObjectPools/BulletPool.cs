@@ -158,7 +158,6 @@ namespace TankGame
 
                     ((Bullet)bullet).DirRotation = directionRotation;
                     ((Bullet)bullet).SpriteRenderer.Rotation = directionRotation;
-
                     ((Bullet)bullet).CanRelease = true;
                     ((Bullet)bullet).ShouldDie = false;
                     ((Bullet)bullet).Shooter = shooter;
