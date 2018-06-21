@@ -170,7 +170,7 @@ namespace TankGame
                         break;
                     }
                 }
-                if (other.GetAlignment != Alignment.Enemy && isBullet == false || (other.GetAlignment == Alignment.Enemy && GameWorld.Instance.pvp))
+                if (other.GetAlignment != Alignment.Enemy && isBullet == false || (other.GetAlignment == Alignment.Enemy && GameWorld.Instance.pvp && isBullet == false))
                 {
                     float force = Constant.pushForce;
                     Vector2 dir = GameObject.Transform.Position - other.GameObject.Transform.Position;
