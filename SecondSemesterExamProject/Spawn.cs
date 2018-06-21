@@ -9,7 +9,7 @@ namespace TankGame
 {
     class Spawn
     {
-        private int wave = 30;
+        private int wave = 0;
         private int waveSize = 0;
         private int spawned = 0;
         private Random rnd = new Random();

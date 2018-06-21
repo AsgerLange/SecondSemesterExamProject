@@ -52,7 +52,7 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public GameObject Construct(Vector2 position, BulletType type, float rotation, Alignment alignment)
+        public GameObject Construct(Vector2 position, BulletType type, float rotation, Alignment alignment )
         {
             bulletBuilder.Build(position, type, rotation, alignment);
 

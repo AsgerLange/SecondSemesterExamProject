@@ -45,13 +45,15 @@ namespace TankGame
         private Random rnd = new Random();
         private int playerAmount;
         private int towerAmount;
-        
+
         private GameOver gameOver;
         Score score;
 
         //Background
         public Texture2D backGround;
         public Rectangle screenSize;
+        private Texture2D pvpBackGround;
+
         public GameOver GetGameOver
         {
             get { return gameOver; }
@@ -223,6 +225,7 @@ namespace TankGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             score.LoadContent(Content);
             backGround = Content.Load<Texture2D>(Constant.gameBackGround);
+            pvpBackGround = Content.Load<Texture2D>("PvpBackGround");
 
             backgroundMusic = Content.Load<Song>("BackgroundMusic1");
 
@@ -287,29 +290,9 @@ namespace TankGame
                 }
 
                 //Checks if any vehicle needs to respawn
-                if (vehiclesToRemove.Count > 0)
-                {
-                    foreach (GameObject go in vehiclesToRemove)
-                    {
-                        foreach (Component comp in go.GetComponentList)
-                        {
-                            if (comp is Vehicle)
-                            {
-                                if ((pvp == false && (comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
-                                    || (pvp == true && (comp as Vehicle).DeathTimeStamp + Constant.respawntime / 2 <= totalGameTime))
-                                {
-                                    (comp as Vehicle).Respawn((comp as Vehicle).PlayerNumber);
+                Respawn();
 
 
-                                    break;
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-
-               
                 RemoveObjects();
             }
             else if (gameState == GameState.GameOver)
@@ -346,6 +329,31 @@ namespace TankGame
             }
         }
 
+        private void Respawn()
+        {
+            if (vehiclesToRemove.Count > 0)
+            {
+                foreach (GameObject go in vehiclesToRemove)
+                {
+                    foreach (Component comp in go.GetComponentList)
+                    {
+                        if (comp is Vehicle)
+                        {
+                            if ((pvp == false && (comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
+                                || (pvp == true && (comp as Vehicle).DeathTimeStamp + Constant.respawntime / 2 <= totalGameTime))
+                            {
+                                (comp as Vehicle).Respawn((comp as Vehicle).PlayerNumber);
+
+
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+        }
         /// <summary>
         /// Removes dead objects
         /// </summary>
@@ -418,7 +426,15 @@ namespace TankGame
 
                 DrawVehiclesRespawnTimeRemaining(spriteBatch);
 
-                spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                if (pvp == false)
+                {
+                    spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                }
+                else
+                {
+                    spriteBatch.Draw(pvpBackGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+                }
             }
             else if (gameState == GameState.GameOver)
             {

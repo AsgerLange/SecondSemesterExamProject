@@ -298,7 +298,7 @@ namespace TankGame
                 Die();
             }
 
-            if (animationName == "Walk")
+            if (animationName == "Walk" && IsAlive)
             {
                 if (isPlayingAnimation == true)
                 {
@@ -307,9 +307,14 @@ namespace TankGame
             }
             else
             {
-                animator.PlayAnimation("Idle");
-                isPlayingAnimation = false;
+                if (IsAlive)
+                {
+
+                    animator.PlayAnimation("Idle");
+                    isPlayingAnimation = false;
+                }
             }
+
         }
 
         /// <summary>
@@ -439,32 +444,41 @@ namespace TankGame
                         {
                             foreach (Component comp in other.GameObject.GetComponentList)
                             {
-                                if (comp is Bullet || comp is Plane)
+                                if (comp is Bullet)
                                 {
                                     otherIsBullet = true;
+
+
+                                }
+                                if (comp is Plane)
+                                {
+
                                     otherIsPlane = true;
 
-                                    break;
                                 }
 
                             }
-                            if (otherIsBullet == false || (otherIsPlane && this.canAttackPlane))
+                            if (otherIsBullet == false)
                             {
+                                if (otherIsPlane==false || (otherIsPlane && this.canAttackPlane))
+                                {
 
-                                float otherDistance;
-                                otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                    * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                    + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
-                                    * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
-                                if (closestTarget == null)
-                                {
-                                    closestTarget = other;
-                                    distance = otherDistance;
-                                }
-                                else if (distance > otherDistance)
-                                {
-                                    closestTarget = other;
-                                    distance = otherDistance;
+
+                                    float otherDistance;
+                                    otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                        * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                        + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                        * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                                    if (closestTarget == null)
+                                    {
+                                        closestTarget = other;
+                                        distance = otherDistance;
+                                    }
+                                    else if (distance > otherDistance)
+                                    {
+                                        closestTarget = other;
+                                        distance = otherDistance;
+                                    }
                                 }
                             }
                         }

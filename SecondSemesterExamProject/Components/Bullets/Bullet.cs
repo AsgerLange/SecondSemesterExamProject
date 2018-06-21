@@ -125,6 +125,11 @@ namespace TankGame
                     this.lifeSpan = Constant.spitterBulletLifeSpan;
                     this.bulletDmg = Constant.spitterBulletDmg;
                     break;
+                case BulletType.MonsterBullet:
+                    this.movementSpeed = Constant.monsterBulletMovementSpeed;
+                    this.lifeSpan = Constant.monsterBulletLifeSpan;
+                    this.bulletDmg = Constant.monsterBulletDmg;
+                    break;
 
                 default:
                     break;
@@ -372,7 +377,7 @@ namespace TankGame
         {
             if (shooter != null)
             {
-                if (!(this is SniperBullet))
+                if (!(this is SniperBullet|| this is MonsterBullet))
                 {
 
                     shooter.Stats.BulletsMissed++;
@@ -384,6 +389,16 @@ namespace TankGame
                     //Snipers' damage is reduced upon hitting an enemy, so if the damage == the base damage and it
                     //disappears, it hasn't hit an enemy
                     if ((this as SniperBullet).BulletDamage == Constant.sniperBulletBulletDmg)
+                    {
+
+                        shooter.Stats.BulletsMissed++;
+                    }
+                }
+                else if ((this is MonsterBullet))
+                {
+
+                    
+                    if ((this as MonsterBullet).hasHit == true)
                     {
 
                         shooter.Stats.BulletsMissed++;

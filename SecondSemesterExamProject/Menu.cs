@@ -128,6 +128,14 @@ namespace TankGame
                         Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower, player));
                     ((Plane)playerDraw.GetComponent("Plane")).IsAlive = false;
                     break;
+                case VehicleType.MonsterVehicle:
+                    playerDraw.Transform.Position = new Vector2(0, 0);
+                    playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.monsterSpriteSheet + player, 0.05f));
+                    playerDraw.AddComponent(new Animator(playerDraw));
+                    playerDraw.AddComponent(new MonsterVehicle(playerDraw, Controls.WASD, Constant.monsterHealth, Constant.monsterMoveSpeed,
+                        Constant.monsterRotateSpeed, Constant.monsterStartGold, TowerType.BasicTower, player));
+                    ((MonsterVehicle)playerDraw.GetComponent("MonsterVehicle")).IsAlive = false;
+                    break;
 
                 default:
                     break;

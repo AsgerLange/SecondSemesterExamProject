@@ -26,7 +26,7 @@ namespace TankGame
             }
             else
             {
-                go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(Constant.width), GameWorld.Instance.Rnd.Next(Constant.hight)); //spawns in the middle
+                go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(75, Constant.width - 75), GameWorld.Instance.Rnd.Next(75, Constant.hight - 75));
                 go.AddComponent(new Collider(go, alignment));//adds collider
             }
 
@@ -56,6 +56,12 @@ namespace TankGame
                        , Constant.planeRotateSpeed, Constant.planeStartGold, TowerType.BasicTower, playerNumber));
                     break;
 
+                case VehicleType.MonsterVehicle:
+                    go.AddComponent(new SpriteRenderer(go, Constant.monsterSpriteSheet + playerNumber, 0.1f));
+                    go.AddComponent(new Animator(go));
+                    go.AddComponent(new MonsterVehicle(go, controls, Constant.monsterHealth, Constant.monsterMoveSpeed
+                       , Constant.monsterRotateSpeed, Constant.monsterStartGold, TowerType.BasicTower, playerNumber));
+                    break;
                 default:
                     break;
             }

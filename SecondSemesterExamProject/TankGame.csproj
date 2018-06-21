@@ -141,6 +141,7 @@
     <Compile Include="Components\Tower\SniperTower.cs" />
     <Compile Include="Components\Tower\TowerPlacer.cs" />
     <Compile Include="Components\Vehicle\Bike.cs" />
+    <Compile Include="Components\Vehicle\MonsterVehicle.cs" />
     <Compile Include="Components\Vehicle\Plane.cs" />
     <Compile Include="GameOver.cs" />
     <Compile Include="Highscore.cs" />
@@ -179,6 +180,8 @@
     <Compile Include="Components\Transform.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Weapons\MachineGun.cs" />
+    <Compile Include="Components\Bullets\MonsterBullet.cs" />
+    <Compile Include="Weapons\MonsterWeapon.cs" />
     <Compile Include="Weapons\Sniper.cs" />
     <Compile Include="Weapons\Shotgun.cs" />
     <Compile Include="Weapons\Weapon.cs" />
