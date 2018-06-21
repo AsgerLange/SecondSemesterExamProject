@@ -47,7 +47,7 @@ namespace TankGame
         protected float lootTimeStamp; // when a vehicle received loot
         private Crate latestLootCrate; //For displaying reward
         private float deathTimeStamp;
-        private static float muteTimeStamp;
+        
 
         public int PlayerNumber { get; set; }
         public bool IsAlive { get; set; }
@@ -238,7 +238,7 @@ namespace TankGame
 
                 BuildTower(); //and building tower
 
-                ToggleMusic();
+               
             }
             
 
@@ -673,23 +673,6 @@ namespace TankGame
 
         }
 
-        private void ToggleMusic()
-        {
-            KeyboardState keyState = Keyboard.GetState();
-
-
-            if (keyState.IsKeyDown(Keys.M) && GameWorld.Instance.TotalGameTime > muteTimeStamp + 1 && GameWorld.Instance.MusicIsPlaying)
-            {
-                GameWorld.Instance.StopMusic();
-                muteTimeStamp = GameWorld.Instance.TotalGameTime;
-            }
-            else if (keyState.IsKeyDown(Keys.M) && GameWorld.Instance.TotalGameTime > muteTimeStamp + 1 && GameWorld.Instance.MusicIsPlaying == false)
-            {
-                GameWorld.Instance.PlayBackgroundSong();
-                muteTimeStamp = GameWorld.Instance.TotalGameTime;
-
-            }
-        }
         protected virtual void PlayDeathSound()
         {
             vehicleDeathSound.Play(1f, 0f, 0);
