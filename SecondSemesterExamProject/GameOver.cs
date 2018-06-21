@@ -31,14 +31,14 @@ namespace TankGame
         {
             string text = "Continue";
 
-                Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
-                {
-                    Text = text
-                };
-                Continue.PenColour = Color.Gold;
-                Continue.click += Continue_click;
-                ContinueButton = Continue;
-                     
+            Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
+            {
+                Text = text
+            };
+            Continue.PenColour = Color.Gold;
+            Continue.click += Continue_click;
+            ContinueButton = Continue;
+
 
         }
 
@@ -54,9 +54,12 @@ namespace TankGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (ContinueButton != null)
+            if (GameWorld.Instance.pvp == false)
             {
-                ContinueButton.Draw(spriteBatch);
+                if (ContinueButton != null)
+                {
+                    ContinueButton.Draw(spriteBatch);
+                }
             }
             DrawGameOver(spriteBatch);
             DrawGameRecap(spriteBatch);
@@ -276,9 +279,12 @@ namespace TankGame
         }
         public void Update()
         {
-            if (ContinueButton != null)
+            if (GameWorld.Instance.pvp == false)
             {
-                ContinueButton.Update();
+                if (ContinueButton != null)
+                {
+                    ContinueButton.Update();
+                }
             }
             int cal = 0;
             foreach (Vehicle VH in GameWorld.Instance.Vehicles)
