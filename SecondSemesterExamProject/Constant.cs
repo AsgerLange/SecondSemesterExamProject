@@ -312,7 +312,7 @@ namespace TankGame
         public static readonly string TowerCrateSpriteSheet = "CrateTower";
         public static readonly string GunCrateSpriteSheet = "CrateWeapon";
         public static readonly string MoneyCrateSpriteSheet = "CrateMoney";
-        public static readonly int moneyCrateMoney = 75;
+        public static readonly int moneyCrateMoney = 100;
         public static readonly float crateSpawnDelay = 17;
         public static readonly int healthCrate = 100;
         #endregion
