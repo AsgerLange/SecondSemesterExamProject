@@ -47,7 +47,7 @@ namespace TankGame
         private int towerAmount;
 
         private GameOver gameOver;
-        Score score;
+        public Score score;
 
         //Background
         public Texture2D backGround;
@@ -297,6 +297,10 @@ namespace TankGame
                 //Checks if any vehicle needs to respawn
                 Respawn();
 
+                if (pvp)
+                {
+                    RegenGold();
+                }
 
                 RemoveObjects();
             }
@@ -388,6 +392,24 @@ namespace TankGame
                 gameObjectsToRemove.Clear();
             }
 
+
+        }
+
+        private void RegenGold()
+        {
+
+            foreach (Vehicle vehicle in vehicles)
+            {
+                if (vehicle.IsAlive)
+                {
+
+                    if (vehicle.goldTimeStamp + 0.3 <= totalGameTime)
+                    {
+                        vehicle.Money += 1;
+                        vehicle.goldTimeStamp = GameWorld.instance.TotalGameTime;
+                    }
+                }
+            }
 
         }
 

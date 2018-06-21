@@ -12,7 +12,9 @@ namespace TankGame
 {
     class Menu
     {
+        private bool checkedForUnlockables = false;
 
+        private bool monsterUnlocked = false;
         private VehicleType p1 = VehicleType.Tank;
         private VehicleType p2 = VehicleType.None;
         private int p1TypeInt;
@@ -98,6 +100,7 @@ namespace TankGame
         private GameObject ChangeVehicle(VehicleType type, int player)
         {
             GameObject playerDraw = new GameObject();
+            
             switch (type)
             {
                 case VehicleType.None:
@@ -128,6 +131,7 @@ namespace TankGame
                         Constant.tankRotateSpeed, Constant.tankStartGold, TowerType.BasicTower, player));
                     ((Plane)playerDraw.GetComponent("Plane")).IsAlive = false;
                     break;
+
                 case VehicleType.MonsterVehicle:
                     playerDraw.Transform.Position = new Vector2(0, 0);
                     playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.monsterSpriteSheet + player, 0.05f));
@@ -144,6 +148,25 @@ namespace TankGame
             return playerDraw;
         }
 
+        private void UnlockMonsterVehicle()
+        {
+            if (monsterUnlocked == false && checkedForUnlockables==false)
+            {
+                string command = "select wave from player ORDER BY wave desc;";
+                string collumn = "wave";
+                List<int> output = new List<int>();
+                output = GameWorld.Instance.score.ReadFromDB(command, collumn, 1);
+
+                foreach (int item in output)
+                {
+                    if (item >= 20)
+                    {
+                        monsterUnlocked = true;
+                        break;
+                    }
+                }
+            }
+        }
         /// <summary>
         /// places the buttons on the menu screen
         /// </summary>
@@ -184,10 +207,21 @@ namespace TankGame
         }
 
         /// <summary>
+        /// Checks ealier sessions for unlockables
+        /// </summary>
+        private void CheckIfUnlocked()
+        {
+            UnlockMonsterVehicle();
+
+
+            checkedForUnlockables = true;
+        }
+        /// <summary>
         /// updates the menu
         /// </summary>
         public void Update()
         {
+           
             if (buttons.Count > 0)
             {
                 foreach (Button but in buttons)
@@ -250,7 +284,6 @@ namespace TankGame
             p1ControlsImage = content.Load<Texture2D>(Constant.p1ControlImagePath);
             p2ControlsImage = content.Load<Texture2D>(Constant.p2ControlImagePath);
 
-
             foreach (Button but in buttons)
             {
                 but.LoadContent(content);
@@ -289,7 +322,13 @@ namespace TankGame
         private void P1Up_click(object sender, EventArgs e)
         {
             p1TypeInt++;
-            if (p1TypeInt >= Enum.GetNames(typeof(VehicleType)).Length)
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked==false)
+            {
+                maxLenght -= 1;
+            }
+
+            if (p1TypeInt >= maxLenght)
             {
                 p1TypeInt = 0;
             }
@@ -306,9 +345,14 @@ namespace TankGame
         private void P1Down_click(object sender, EventArgs e)
         {
             p1TypeInt--;
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked == false)
+            {
+                maxLenght -= 1;
+            }
             if (p1TypeInt < 0)
             {
-                p1TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
+                p1TypeInt = maxLenght - 1;
             }
             p1 = (VehicleType)p1TypeInt;
             p1Choice = ChangeVehicle(p1, 1);
@@ -323,7 +367,12 @@ namespace TankGame
         private void P2Up_click(object sender, EventArgs e)
         {
             p2TypeInt++;
-            if (p2TypeInt >= Enum.GetNames(typeof(VehicleType)).Length)
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked == false)
+            {
+                maxLenght -= 1;
+            }
+            if (p2TypeInt >= maxLenght)
             {
                 p2TypeInt = 0;
             }
@@ -340,9 +389,14 @@ namespace TankGame
         private void P2Down_click(object sender, EventArgs e)
         {
             p2TypeInt--;
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked == false)
+            {
+                maxLenght -= 1;
+            }
             if (p2TypeInt < 0)
             {
-                p2TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
+                p2TypeInt = maxLenght - 1;
             }
             p2 = (VehicleType)p2TypeInt;
             p2Choice = ChangeVehicle(p2, 2);
