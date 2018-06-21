@@ -181,7 +181,7 @@ namespace TankGame
         #endregion;
 
         #region MonsterBullet
-        public static readonly string monsterBulletSheet = "MonsterBullet";
+        public static readonly string monsterBulletSheet = "MonsterShockwaveBullet";
         public static readonly float monsterBulletMovementSpeed = 360;
         public static readonly float monsterBulletLifeSpan = 0.2f;
         public static readonly int monsterBulletDmg = 250;
@@ -312,7 +312,7 @@ namespace TankGame
         public static readonly string TowerCrateSpriteSheet = "CrateTower";
         public static readonly string GunCrateSpriteSheet = "CrateWeapon";
         public static readonly string MoneyCrateSpriteSheet = "CrateMoney";
-        public static readonly int moneyCrateMoney = 75;
+        public static readonly int moneyCrateMoney = 100;
         public static readonly float crateSpawnDelay = 17;
         public static readonly int healthCrate = 100;
         #endregion

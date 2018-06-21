@@ -20,7 +20,7 @@ namespace TankGame
 
         public override void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 31, 10,1, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(3, 12, 0, 28, 12 , 20, Vector2.Zero));
 
             base.CreateAnimation();
         }
@@ -48,9 +48,9 @@ namespace TankGame
         }
         public override void DestroyBullet()
         {
-            hasHit = false;
             colorChanged = false;
             base.DestroyBullet();
+            hasHit = false;
         }
         protected override void BulletSpecialEffect(Collider other)
         {
@@ -58,9 +58,9 @@ namespace TankGame
             {
                 base.BulletSpecialEffect(other);
             }
-            else if (hasHit == false)
+            else if (hasHit == false && !((other.GameObject.GetComponent("Terrain") is Terrain)))
             {
-                hasHit = false;
+                hasHit = true;
             }
         }
         public void ChangeColor()

@@ -31,14 +31,14 @@ namespace TankGame
         {
             string text = "Continue";
 
-                Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
-                {
-                    Text = text
-                };
-                Continue.PenColour = Color.Gold;
-                Continue.click += Continue_click;
-                ContinueButton = Continue;
-                     
+            Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
+            {
+                Text = text
+            };
+            Continue.PenColour = Color.Gold;
+            Continue.click += Continue_click;
+            ContinueButton = Continue;
+
 
         }
 
@@ -54,9 +54,12 @@ namespace TankGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (ContinueButton != null)
+            if (GameWorld.Instance.pvp == false)
             {
-                ContinueButton.Draw(spriteBatch);
+                if (ContinueButton != null)
+                {
+                    ContinueButton.Draw(spriteBatch);
+                }
             }
             DrawGameOver(spriteBatch);
             DrawGameRecap(spriteBatch);
@@ -214,7 +217,8 @@ namespace TankGame
                     new Vector2(p1StatsPosX, 300), p1StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p1StatsPosX, 320), p1StatsColor);
-
+                spriteBatch.DrawString(font, "Shockwaves fired: " + vehicle.Stats.MonsterBulletCounter,
+                  new Vector2(p1StatsPosX, 340), p1StatsColor);
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
                    new Vector2(p1StatsPosX, 360), p1StatsColor);
@@ -235,6 +239,9 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 300), p2StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p2StatsPosX, 320), p2StatsColor);
+               
+                spriteBatch.DrawString(font, "Shockwaves fired: " + vehicle.Stats.MonsterBulletCounter,
+                    new Vector2(p2StatsPosX, 340), p2StatsColor);
 
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
@@ -276,9 +283,12 @@ namespace TankGame
         }
         public void Update()
         {
-            if (ContinueButton != null)
+            if (GameWorld.Instance.pvp == false)
             {
-                ContinueButton.Update();
+                if (ContinueButton != null)
+                {
+                    ContinueButton.Update();
+                }
             }
             int cal = 0;
             foreach (Vehicle VH in GameWorld.Instance.Vehicles)

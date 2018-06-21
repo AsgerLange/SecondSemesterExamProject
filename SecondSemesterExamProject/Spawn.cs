@@ -135,7 +135,7 @@ namespace TankGame
                     }
                 }
 
-                int side = rnd.Next(0, 5);
+                int side = rnd.Next(1, 5);
                 Rectangle spawnRectangle;
                 switch (side)
                 {
@@ -182,7 +182,7 @@ namespace TankGame
         {
             if (Constant.singleSpawnDelay + spawnStamp <= GameWorld.Instance.TotalGameTime)
             {
-                int side = rnd.Next(0, 5);
+                int side = rnd.Next(1, 5);
                 Rectangle spawnRectangle;
                 switch (side)
                 {
