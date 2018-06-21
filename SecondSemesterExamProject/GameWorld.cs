@@ -206,13 +206,8 @@ namespace TankGame
             //secure that enemyPool has been started
             EnemyPool ep = EnemyPool.Instance;
 
+            //secure that bulletPool has been started
             BulletPool bp = BulletPool.Instance;
-
-
-
-
-
-
 
             //creates a score to keep track of scores and stats
             score = new Score();

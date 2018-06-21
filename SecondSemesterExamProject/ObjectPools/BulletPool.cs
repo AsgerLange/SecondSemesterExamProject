@@ -316,10 +316,12 @@ namespace TankGame
         /// </summary>
         public static void ReleaseList()
         {
-
-            foreach (GameObject go in releaseList)
+            lock (releaseKey)
             {
-                ReleaseBullet(go);
+                foreach (GameObject go in releaseList)
+                {
+                    ReleaseBullet(go);
+                }
             }
             releaseList.Clear();
         }
