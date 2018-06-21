@@ -14,7 +14,7 @@ namespace TankGame
     {
         private bool checkedForUnlockables = false;
 
-        private bool monsterUnlocked = false;
+        public bool monsterUnlocked = false;
         private VehicleType p1 = VehicleType.Tank;
         private VehicleType p2 = VehicleType.None;
         private int p1TypeInt;

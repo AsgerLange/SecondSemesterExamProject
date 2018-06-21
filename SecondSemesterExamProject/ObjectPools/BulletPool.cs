@@ -11,7 +11,6 @@ namespace TankGame
 
     class BulletPool
     {
-        public static readonly object activeKey = new object();
         public static readonly object inActiveKey = new object();
         public static readonly object releaseKey = new object();
 
@@ -30,17 +29,6 @@ namespace TankGame
         public static readonly object inActiveListKey = new object();
         private static BulletPool instance;
 
-        public static BulletPool Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new BulletPool();
-                }
-                return instance;
-            }
-        }
 
         /// <summary>
         /// Get/set property for the activeBullets list
@@ -63,6 +51,23 @@ namespace TankGame
             }
         }
 
+        /// <summary>
+        /// SingleTon BulletPool Instance
+        /// </summary>
+        public static BulletPool Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new BulletPool();
+                }
+                return instance;
+            }
+        }
+        /// <summary>
+        /// Private Constructor for BulletPool - Starts the bulletPoolThread that handles Update()
+        /// </summary>
         private BulletPool()
         {
             if (bulletPoolThread == null)
@@ -75,23 +80,22 @@ namespace TankGame
             bulletPoolThread.Start();
         }
 
+        /// <summary>
+        /// Calls Update() on each Enemy in the ActiveBullets list 
+        /// </summary>
         private void Update()
         {
             while (GameWorld.Instance.gameRunning)
             {
-                GameWorld.barrier.SignalAndWait();
-                lock (activeListKey)
-                {
+                GameWorld.barrier.SignalAndWait(); //Waits for the other threads
 
-                    lock (activeKey)
+                lock (activeListKey) 
+                {
+                    foreach (var go in ActiveBullets)
                     {
-                        foreach (var go in ActiveBullets)
-                        {
-                            go.Update();
-                        }
+                        go.Update();
                     }
                 }
-
                 ReleaseList();
             }
         }
