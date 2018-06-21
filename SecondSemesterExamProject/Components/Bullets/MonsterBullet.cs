@@ -48,9 +48,9 @@ namespace TankGame
         }
         public override void DestroyBullet()
         {
-            hasHit = false;
             colorChanged = false;
             base.DestroyBullet();
+            hasHit = false;
         }
         protected override void BulletSpecialEffect(Collider other)
         {
@@ -58,9 +58,9 @@ namespace TankGame
             {
                 base.BulletSpecialEffect(other);
             }
-            else if (hasHit == false)
+            else if (hasHit == false && !((other.GameObject.GetComponent("Terrain") is Terrain)))
             {
-                hasHit = false;
+                hasHit = true;
             }
         }
         public void ChangeColor()
