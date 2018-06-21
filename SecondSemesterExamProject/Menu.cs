@@ -100,7 +100,7 @@ namespace TankGame
         private GameObject ChangeVehicle(VehicleType type, int player)
         {
             GameObject playerDraw = new GameObject();
-            
+
             switch (type)
             {
                 case VehicleType.None:
@@ -150,7 +150,7 @@ namespace TankGame
 
         private void UnlockMonsterVehicle()
         {
-            if (monsterUnlocked == false && checkedForUnlockables==false)
+            if (monsterUnlocked == false && checkedForUnlockables == false)
             {
                 string command = "select wave from player ORDER BY wave desc;";
                 string collumn = "wave";
@@ -211,17 +211,20 @@ namespace TankGame
         /// </summary>
         private void CheckIfUnlocked()
         {
-            UnlockMonsterVehicle();
+            if (checkedForUnlockables == false)
+            {
 
+                UnlockMonsterVehicle();
 
-            checkedForUnlockables = true;
+                checkedForUnlockables = true;
+            }
         }
         /// <summary>
         /// updates the menu
         /// </summary>
         public void Update()
         {
-           
+            CheckIfUnlocked();
             if (buttons.Count > 0)
             {
                 foreach (Button but in buttons)
@@ -323,7 +326,7 @@ namespace TankGame
         {
             p1TypeInt++;
             int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
-            if (monsterUnlocked==false)
+            if (monsterUnlocked == false)
             {
                 maxLenght -= 1;
             }
