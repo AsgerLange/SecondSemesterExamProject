@@ -217,7 +217,8 @@ namespace TankGame
                     new Vector2(p1StatsPosX, 300), p1StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p1StatsPosX, 320), p1StatsColor);
-
+                spriteBatch.DrawString(font, "Shockwaves fired: " + vehicle.Stats.MonsterBulletCounter,
+                  new Vector2(p1StatsPosX, 340), p1StatsColor);
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
                    new Vector2(p1StatsPosX, 360), p1StatsColor);
@@ -238,6 +239,9 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 300), p2StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p2StatsPosX, 320), p2StatsColor);
+               
+                spriteBatch.DrawString(font, "Shockwaves fired: " + vehicle.Stats.MonsterBulletCounter,
+                    new Vector2(p2StatsPosX, 340), p2StatsColor);
 
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,

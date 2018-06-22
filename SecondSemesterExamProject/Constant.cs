@@ -181,9 +181,9 @@ namespace TankGame
         #endregion;
 
         #region MonsterBullet
-        public static readonly string monsterBulletSheet = "MonsterBullet";
-        public static readonly float monsterBulletMovementSpeed = 220;
-        public static readonly float monsterBulletLifeSpan = 0.5f;
+        public static readonly string monsterBulletSheet = "MonsterShockwaveBullet";
+        public static readonly float monsterBulletMovementSpeed = 360;
+        public static readonly float monsterBulletLifeSpan = 0.2f;
         public static readonly int monsterBulletDmg = 250;
         #endregion
         #region EnemyBullets
