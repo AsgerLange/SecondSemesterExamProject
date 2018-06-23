@@ -48,8 +48,8 @@ namespace TankGame
             }
             go = new GameObject();
 
-            go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(Constant.width),
-                GameWorld.Instance.Rnd.Next(Constant.hight));
+            go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, Constant.width - 100),
+                GameWorld.Instance.Rnd.Next(100, Constant.hight - 100));
 
             switch (type)
             {

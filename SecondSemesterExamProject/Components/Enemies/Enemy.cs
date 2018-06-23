@@ -12,11 +12,12 @@ namespace TankGame
 
     class Enemy : Component, IAnimatable, IUpdatable, ILoadable, ICollisionStay
     {
+        public bool playerSpawned = false;
 
         public Animator animator;
         protected EnemyType enemyType;
         private SpriteRenderer spriteRenderer;
-        protected GameObject targetGameObject = GameWorld.Instance.GameObjects[0]; //HQ by default
+        protected GameObject targetGameObject;
         protected float rotation = 0;
         protected float movementSpeed;
         protected float attackRate;
@@ -61,6 +62,11 @@ namespace TankGame
                     }
                 }
             }
+        }
+        public float AttackRange
+        {
+            get { return attackRange; }
+            set { attackRange = value; }
         }
         public float MovementSpeed
         {
@@ -123,14 +129,15 @@ namespace TankGame
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
 
-            FollowHQ();
+
         }
 
         /// <summary>
         /// finds the 
         /// </summary>
-        private void FollowHQ()
+        protected virtual void FollowHQ()
         {
+
             foreach (var go in GameWorld.Instance.GameObjects)
             {
                 if (go.GetComponent("HQ") is HQ)
@@ -157,6 +164,9 @@ namespace TankGame
         /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
+
+
+
             this.animator = (Animator)GameObject.GetComponent("Animator");
 
             CreateAnimation();
@@ -172,7 +182,7 @@ namespace TankGame
         /// </summary>
         public virtual void AI()
         {
-            MoveTo(targetGameObject); //Enemy moves towards player1
+            MoveTo(targetGameObject);
 
             ChangeTargetToNearestTarget();
         }
@@ -208,10 +218,11 @@ namespace TankGame
             if (go != null)
             {
 
-                float x = go.Transform.Position.X;
-                float y = go.Transform.Position.Y;
+                float x = go.Transform.Position.X - 1;
+                float y = go.Transform.Position.Y - 1; //-1 because gameobjects disappear if they're directly on top of another
 
                 Vector2 direction = new Vector2(x - this.GameObject.Transform.Position.X, y - this.GameObject.Transform.Position.Y);
+
                 direction.Normalize();
 
                 RotateToMatchDirection(direction);
@@ -220,7 +231,7 @@ namespace TankGame
             }
             else
             {
-                MoveTo(GameWorld.Instance.GameObjects[0]/*HQ*/);
+                FollowHQ();
             }
         }
 
@@ -273,7 +284,10 @@ namespace TankGame
 
             if (isPlayingAnimation == false && isAlive)
             {
-                animator.PlayAnimation("Walk");
+                if (isAlive)
+                {
+                    animator.PlayAnimation("Walk");
+                }
                 isPlayingAnimation = true;
             }
         }
@@ -326,30 +340,36 @@ namespace TankGame
             {
                 EnemyPool.Instance.ReleaseList.Add(this.GameObject);
                 canRelease = false;
-                IncrementEnemyDeaths();
-                foreach (GameObject go in GameWorld.Instance.GameObjects)
+
+                if (playerSpawned == false)
                 {
-                    foreach (Component com in go.GetComponentList)
+                    IncrementEnemyDeaths();
+
+
+                    foreach (GameObject go in GameWorld.Instance.GameObjects)
                     {
-                        if (com is Vehicle)
+                        foreach (Component com in go.GetComponentList)
                         {
-                            int moneyReward;
-                            //Balancing gold income, to limit tower building in multiplayer
-                            try
+                            if (com is Vehicle)
                             {
-                                moneyReward = (EnemyGold() / GameWorld.Instance.PlayerAmount);
+                                int moneyReward;
+                                //Balancing gold income, to limit tower building in multiplayer
+                                try
+                                {
+                                    moneyReward = (EnemyGold() / GameWorld.Instance.PlayerAmount);
+                                }
+                                catch (Exception)
+                                {
+                                    moneyReward = 1;
+
+                                }
+
+                                (com as Vehicle).Money += moneyReward;
+
+                                (com as Vehicle).Stats.TotalAmountOfGold += moneyReward;
+
+                                break;
                             }
-                            catch (Exception)
-                            {
-                                moneyReward = 1;
-
-                            }
-
-                            (com as Vehicle).Money += moneyReward;
-
-                            (com as Vehicle).Stats.TotalAmountOfGold += moneyReward;
-
-                            break;
                         }
                     }
                 }
@@ -375,7 +395,8 @@ namespace TankGame
             }
             else
             {
-                this.targetGameObject = GameWorld.Instance.GameObjects[0];
+                FollowHQ();
+
             }
 
         }
@@ -427,7 +448,7 @@ namespace TankGame
         protected Collider FindTargetInRange()
         {
             Collider closestTarget = null;
-
+            Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
             float distance = 0;
 
             bool otherIsBullet = false;
@@ -438,7 +459,8 @@ namespace TankGame
             {
                 foreach (Collider other in GameWorld.Instance.Colliders)
                 {
-                    if (other.GetAlignment == Alignment.Friendly)
+                    if (other.GetAlignment != thisCollider.GetAlignment
+                        && other.GetAlignment != Alignment.Neutral)
                     {
                         if (AttackRadius.Contains(other.CollisionBox.Center))
                         {
@@ -460,7 +482,7 @@ namespace TankGame
                             }
                             if (otherIsBullet == false)
                             {
-                                if (otherIsPlane==false || (otherIsPlane && this.canAttackPlane))
+                                if (otherIsPlane == false || (otherIsPlane && this.canAttackPlane))
                                 {
 
 
@@ -505,6 +527,7 @@ namespace TankGame
         public virtual void OnCollisionStay(Collider other)
         {
             bool push = true;
+            Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
 
             if (other.GetAlignment != Alignment.Neutral)
             {
@@ -521,8 +544,14 @@ namespace TankGame
                                 push = false; //makes sure enemies don't push allied bullets away
                                 break;
                             }
+                            if (go is Vehicle)
+                            {
+                                push = false;
+                                break;
+                            }
                         }
-                        if (other.GetAlignment == Alignment.Enemy && push)
+
+                        if (other.GetAlignment == thisCollider.GetAlignment && push || push && playerSpawned)
                         {
                             float force = Constant.pushForce;
 

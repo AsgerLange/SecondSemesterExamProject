@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace TankGame
     class SwarmerEnemy : Melee
     {
 
+        public MonsterVehicle vehicleWhoSpawnedIt;
         /// <summary>
         /// Basic Enemy Constructor
         /// </summary>
@@ -46,8 +48,21 @@ namespace TankGame
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
+
         }
 
+        protected override void FollowHQ()
+        {
+            if (playerSpawned)
+            {
+                targetGameObject = vehicleWhoSpawnedIt.GameObject;
+            }
+            else
+            {
+                base.FollowHQ();
+            }
+            
+        }
         /// <summary>
         /// Override for Enemy.AI()
         /// </summary>
@@ -73,14 +88,26 @@ namespace TankGame
         /// </summary>
         public override void Update()
         {
+            if (playerSpawned)
+            {
+                if ((targetGameObject == GameWorld.Instance.GameObjects[0] || targetGameObject == null))
+                {
+
+                targetGameObject = vehicleWhoSpawnedIt.GameObject;
+                }
+            }
+
             base.Update();
         }
+
+
 
         /// <summary>
         /// handles what happens when the basicEnemy dies
         /// </summary>
         protected override void Die()
         {
+            vehicleWhoSpawnedIt.swarmerCount--;
             base.Die();
         }
 
@@ -90,6 +117,10 @@ namespace TankGame
             base.CheckIfCanAttack(other);
 
 
+        }
+        protected override int EnemyGold()
+        {
+            return Constant.swarmerEnemyGold;
         }
 
         /// <summary>
@@ -111,6 +142,13 @@ namespace TankGame
             this.movementSpeed = -40;//Slows enemy down when attacking ( Resets after attackanimation is done)
             base.AttackTower(tower);
         }
+
+        protected override void AttackEnemy(Enemy enemy)
+        {
+            this.movementSpeed = -40;//Slows enemy down when attacking ( Resets after attackanimation is done)
+            base.AttackEnemy(enemy);
+        }
+       
         /// <summary>
         /// Plays the death sound effect for this specefic enemy type
         /// </summary>

@@ -10,7 +10,7 @@ namespace TankGame
     class EnemyBuilder
     {
         private GameObject go;
-        public void Build(Vector2 position, EnemyType type)
+        public void Build(Vector2 position, EnemyType type, Alignment alignment)
         {
             go = new GameObject();
             go.Transform.Position = position;
@@ -70,7 +70,7 @@ namespace TankGame
                             Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate,Constant.basicEnemyAttackRadius, type));
                     break;
             }
-            go.AddComponent(new Collider(go, Alignment.Enemy));
+            go.AddComponent(new Collider(go, alignment));
         }
 
 

@@ -89,7 +89,11 @@ namespace TankGame
                         {
                             attackVariation = 1;
                         }
-                        animator.PlayAnimation("Attack" + attackVariation);
+                        if (isAlive)
+                        {
+                            animator.PlayAnimation("Attack" + attackVariation);
+                        }
+
                         attackVariation++;
 
                         attackTimeStamp = GameWorld.Instance.TotalGameTime;

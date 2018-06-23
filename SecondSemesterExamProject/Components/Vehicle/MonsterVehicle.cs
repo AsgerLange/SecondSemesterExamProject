@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace TankGame
     class MonsterVehicle : Vehicle
     {
         private float healTimeStamp;
+        public int swarmerCount = 0;
         /// <summary>
         /// Creates the tank
         /// </summary>
@@ -41,7 +43,7 @@ namespace TankGame
             animator.CreateAnimation("MoveShootForward", new Animation(5, 153, 0, 31, 51, 12, Vector2.Zero));
             animator.CreateAnimation("MoveShootBackward", new Animation(5, 153, 0, 31, 51, 12, Vector2.Zero));
             animator.CreateAnimation("Death", new Animation(7, 204, 0, 31, 51, 6, Vector2.Zero));
-           
+
 
 
         }
@@ -68,7 +70,7 @@ namespace TankGame
 
         private void RestoreHealth()
         {
-            if (healTimeStamp+ Constant.monsterRegenRate <= GameWorld.Instance.TotalGameTime)
+            if (healTimeStamp + Constant.monsterRegenRate <= GameWorld.Instance.TotalGameTime)
             {
                 Health += 1;
 
@@ -84,6 +86,66 @@ namespace TankGame
             base.OnAnimationDone(animationName);
         }
 
+        protected override void BuildTower()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (((keyState.IsKeyDown(Keys.LeftAlt) || (keyState.IsKeyDown(Keys.G))) && control == Controls.WASD)
+                 || ((keyState.IsKeyDown(Keys.OemPeriod) || (keyState.IsKeyDown(Keys.Back))) && control == Controls.UDLR))
+            {
+                if (builtTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
+                {
+                    if (Money >= 10 && EnemyPool.Instance.ActiveEnemies.Count < Constant.maxEnemyOnScreen)
+                    {
+                        if (swarmerCount < Constant.swarmerMaxAmount)
+                        {
+                            SpawnSwarmer();
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Spawns a swarmer 
+        /// </summary>
+        private void SpawnSwarmer()
+        {
+
+            GameObject tmp = EnemyPool.Instance.CreateEnemy(new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y + 10), EnemyType.Swarmer, alignment);
+            swarmerCount++;
+            foreach (Component comp in tmp.GetComponentList)
+            {
+                if (comp is Enemy && comp is SwarmerEnemy)
+                {
+
+                    (comp as Enemy).playerSpawned = true;
+                    (comp as Enemy).AttackRange = Constant.swarmerEnemyAttackRadius;
+                    (comp as SwarmerEnemy).vehicleWhoSpawnedIt = this;
+
+
+
+                }
+                if (comp is SpriteRenderer)
+                {
+                    (comp as SpriteRenderer).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SwarmerBlank");
+
+                    if (control == Controls.WASD)
+                    {
+                        (comp as SpriteRenderer).color = Color.Cyan;
+
+                    }
+                    else if (control == Controls.UDLR)
+                    {
+                        (comp as SpriteRenderer).color = Color.Lime;
+
+                    }
+                }
+
+            }
+
+            Money -= 10;
+            builtTimeStamp = GameWorld.Instance.TotalGameTime;
+        }
         /// <summary>
         /// handles what the tank does
         /// </summary>

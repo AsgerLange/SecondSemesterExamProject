@@ -88,7 +88,11 @@ namespace TankGame
         public static readonly int monsterHealth = 600;
         public static readonly float monsterRotateSpeed = 2.5f;
         public static readonly int monsterStartGold = 150;
+        public static readonly int swarmerCost = 10;
+        public static readonly int swarmerMaxAmount = 15; 
+
         public static readonly float monsterRegenRate = 0.8f; // seconds per life
+
 
         #endregion
         #endregion

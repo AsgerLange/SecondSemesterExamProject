@@ -58,7 +58,7 @@ namespace TankGame
             }
             enemyPoolThread.Start();
         }
-       
+
 
         /// <summary>
         /// keeps the enemies updated
@@ -146,7 +146,7 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="enemyType"></param>
         /// <returns></returns>
-        public GameObject CreateEnemy(Vector2 position, EnemyType enemyType)
+        public GameObject CreateEnemy(Vector2 position, EnemyType enemyType, Alignment alignment)
         {
             if (enemiesWaitingToBeSpawned.Count > 0 && activeEnemies.Count < Constant.maxEnemyOnScreen)
             {
@@ -167,8 +167,9 @@ namespace TankGame
 
                     lock (GameWorld.colliderKey)
                     {
-                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+                        ((Collider)tmp.GetComponent("Collider")).GetAlignment = alignment;
                         GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
                     }
 
                     AddEnemy(tmp);
@@ -202,7 +203,6 @@ namespace TankGame
                 }
                 if (tmp != null)
                 {
-                    ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
 
                     inActiveEnemies.Remove(tmp);
 
@@ -210,6 +210,9 @@ namespace TankGame
 
                     lock (GameWorld.colliderKey)
                     {
+                        ((Collider)tmp.GetComponent("Collider")).GetAlignment = alignment;
+                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+
                         GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
                     }
                     tmp.Transform.Position = position;
@@ -220,7 +223,7 @@ namespace TankGame
                 }
                 else
                 {
-                    tmp = GameObjectDirector.Instance.Construct(position, enemyType);
+                    tmp = GameObjectDirector.Instance.Construct(position, enemyType, alignment);
 
                     AddEnemy(tmp);
 
@@ -233,7 +236,7 @@ namespace TankGame
             {
                 GameObject tmp;
 
-                tmp = GameObjectDirector.Instance.Construct(position, enemyType);
+                tmp = GameObjectDirector.Instance.Construct(position, enemyType, alignment);
 
                 AddEnemy(tmp);
 
@@ -279,29 +282,40 @@ namespace TankGame
                     tmp.IsAlive = true;
                     tmp.CanRelease = true;
                     tmp.CanAttackPlane = false;
+                    tmp.playerSpawned = false;
+
                     if (component is BasicEnemy)
                     {
                         tmp.Health = Constant.basicEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
+
                     }
 
                     if (component is BasicEliteEnemy)
                     {
                         tmp.Health = Constant.basicEliteEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
                     }
 
                     if (component is SwarmerEnemy)
                     {
                         tmp.Health = Constant.swarmerEnemyHealth;
+                        tmp.MovementSpeed = Constant.swarmerEnemyMovementSpeed;
+
                     }
 
                     if (component is SiegebreakerEnemy)
                     {
                         tmp.Health = Constant.siegeBreakerEnemyHealth;
+                        tmp.MovementSpeed = Constant.siegeBreakerEnemyMovementSpeed;
+
                     }
 
                     if (component is Spitter)
                     {
                         tmp.Health = Constant.spitterHealth;
+                        tmp.MovementSpeed = Constant.spitterMovementSpeed;
+
                         tmp.CanAttackPlane = true;
                     }
 
