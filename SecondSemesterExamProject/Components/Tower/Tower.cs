@@ -18,6 +18,7 @@ namespace TankGame
         protected float attackRange;
         protected float shootTimeStamp;
         protected int spread;
+        protected bool isAlive;
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
         protected BulletType bulletType;
@@ -38,13 +39,17 @@ namespace TankGame
 
                 if (health <= 0)
                 {
-                    health = 0;
-
-                    if (dieSoundEffect != null)
+                    if (isAlive)
                     {
-                        dieSoundEffect.Play();
+
+                        health = 0;
+                        isAlive = false;
+                        if (dieSoundEffect != null)
+                        {
+                            dieSoundEffect.Play();
+                        }
+                        animator.PlayAnimation("Death");
                     }
-                    animator.PlayAnimation("Death");
                 }
             }
         }
@@ -55,7 +60,7 @@ namespace TankGame
         public Tower(GameObject gameObject) : base(gameObject)
         {
             GameObject.Transform.canMove = false;
-
+            isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
         }

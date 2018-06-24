@@ -82,11 +82,14 @@ namespace TankGame
                 health = value;
                 if (health <= 0)
                 {
-                    health = 0;
-                    animator.PlayAnimation("Death");
-                    vehicleDeathSound.Play();
-                    isPlayingAnimation = true;
-                    IsAlive = false;
+                    if (IsAlive)
+                    {
+                        IsAlive = false;
+                        health = 0;
+                        animator.PlayAnimation("Death");
+                        vehicleDeathSound.Play();
+                        isPlayingAnimation = true;
+                    }
                 }
                 else if (health > maxHealth)
                 {
@@ -159,7 +162,7 @@ namespace TankGame
             this.money = money;
             this.stats = new Stats(this);
             this.PlayerNumber = playerNumber;
-            this.towerPlacer = new TowerPlacer(this, TowerType.BasicTower, 10000);
+            this.towerPlacer = new TowerPlacer(this, TowerType.BasicTower, 100000);
             this.weapon = new BasicWeapon(this.GameObject);
             IsAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
@@ -407,7 +410,7 @@ namespace TankGame
             DrawInfo(spriteBatch);
 
             if (weapon is Sniper && GameWorld.Instance.GetGameState == GameState.Game)
-            {                
+            {
                 DrawShotDirection(this.GameObject.Transform.Position, GetDirectionVectorFromRotation(),
                     spriteBatch);
             }
@@ -459,7 +462,8 @@ namespace TankGame
                 DrawLootToString(spriteBatch);
                 spriteBatch.DrawString(font, "Towers: " + GameWorld.Instance.TowerAmount + "/" + Constant.maxTowerAmount,
                     new Vector2(Constant.width / 2 - 50, Constant.hight - 50), Color.Gold);
-
+                spriteBatch.DrawString(font, "Wave: " + GameWorld.Instance.GetSpawn.Wave,
+                    new Vector2(Constant.width / 2 - 50, Constant.hight - 70), Color.Gold);
 
             }
         }

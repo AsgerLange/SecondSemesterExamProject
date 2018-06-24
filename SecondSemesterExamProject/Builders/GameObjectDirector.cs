@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 
 namespace TankGame
 {
-    enum BuilderType { BulletBuilder, EnemyBuilder }
     class GameObjectDirector
     {
         private static GameObjectDirector instance;
@@ -105,7 +104,7 @@ namespace TankGame
         /// <param name="type"></param>
         /// <param name="controls"></param>
         /// <returns></returns>
-        public GameObject Construct(VehicleType type, Controls controls,int playerNumber)
+        public GameObject Construct(VehicleType type, Controls controls, int playerNumber)
         {
             vehicleBuilder.Build(type, controls, playerNumber);
 
