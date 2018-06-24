@@ -197,7 +197,7 @@ namespace TankGame
             KeyboardState keyState = Keyboard.GetState();
 
             //if the player is pressing the "Shoot" button
-            if ((keyState.IsKeyDown(Keys.R) && control == Controls.WASD)
+            if ((keyState.IsKeyDown(Keys.E) && control == Controls.WASD)
                 || (keyState.IsKeyDown(Keys.RightControl) && control== Controls.UDLR))
             {
                 enemySpawner.ToggleEnemy();
