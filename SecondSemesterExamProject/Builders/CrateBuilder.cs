@@ -18,7 +18,7 @@ namespace TankGame
         /// </summary>
         public void Build()
         {
-            int random = GameWorld.Instance.Rnd.Next(0,6);
+            int random = GameWorld.Instance.Rnd.Next(0,7);
 
             switch (random)
             {
@@ -39,6 +39,9 @@ namespace TankGame
                     break;
                 case 5:
                     type = CrateType.MoneyCrate;
+                    break;
+                case 6:
+                    type = CrateType.HealthCrate;
                     break;
 
                 default:

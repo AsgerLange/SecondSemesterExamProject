@@ -107,7 +107,11 @@ namespace TankGame
         /// </summary>
         protected override void Die()
         {
+            if (playerSpawned)
+            {
             vehicleWhoSpawnedIt.swarmerCount--;
+            }
+
             base.Die();
         }
 

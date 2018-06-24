@@ -197,11 +197,17 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            this.health = maxHealth;
             deathTimeStamp = GameWorld.Instance.TotalGameTime;
             GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             this.stats.PlayerDeathAmmount++;
+
+            lock (GameWorld.colliderKey)
+            {
+                GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                ((Collider)GameObject.GetComponent("Collider")).DoCollsionChecks = false;
+
+            }
 
             if (this.stats.PlayerDeathAmmount >= Constant.maxDeaths && GameWorld.Instance.pvp)
             {
@@ -501,8 +507,8 @@ namespace TankGame
                 {
                     if (this is MonsterVehicle)
                     {
-                        string swarmerPrice = "Spawn Swarmer: $" ;
-                        spriteBatch.DrawString(font, swarmerPrice+ Constant.swarmerCost +"    "+(this as MonsterVehicle).swarmerCount+" / "+Constant.swarmerMaxAmount, new Vector2(2, 2), Color.CornflowerBlue);
+                        string swarmerPrice = "Spawn Swarmer: $";
+                        spriteBatch.DrawString(font, swarmerPrice + Constant.swarmerCost + "    " + (this as MonsterVehicle).swarmerCount + " / " + Constant.swarmerMaxAmount, new Vector2(2, 2), Color.CornflowerBlue);
 
                     }
                     else
@@ -521,7 +527,7 @@ namespace TankGame
                         string swarmerPrice = "Spawn Swarmer: $";
 
                         spriteBatch.DrawString(font, swarmerPrice + Constant.swarmerCost + "    " + (this as MonsterVehicle).swarmerCount + " / " + Constant.swarmerMaxAmount
-                            , new Vector2(Constant.width - font.MeasureString(swarmerPrice + Constant.swarmerCost + "    " + (this as MonsterVehicle).swarmerCount + " / " + Constant.swarmerMaxAmount).X-2, 2), Color.YellowGreen);
+                            , new Vector2(Constant.width - font.MeasureString(swarmerPrice + Constant.swarmerCost + "    " + (this as MonsterVehicle).swarmerCount + " / " + Constant.swarmerMaxAmount).X - 2, 2), Color.YellowGreen);
 
                     }
                     else
@@ -547,8 +553,13 @@ namespace TankGame
             }
         }
 
+        /// <summary>
+        /// Used to show scores in pvp 
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawDeaths(SpriteBatch spriteBatch)
         {
+            // colors reversed because of points
             if (GameWorld.Instance.pvp)
             {
                 if (control == Controls.WASD)
@@ -637,9 +648,11 @@ namespace TankGame
         /// </summary>
         public void Respawn(int playerNumber)
         {
+            this.health = maxHealth;
             animator.PlayAnimation("Idle");
             isPlayingAnimation = false;
             this.IsAlive = true;
+
             GetBasicGun();
             if (GameWorld.Instance.pvp == true)
             {
@@ -651,7 +664,13 @@ namespace TankGame
 
             }
             this.Rotation = 0;
-            GameWorld.Instance.Colliders.Add((Collider)GameObject.GetComponent("Collider"));
+            lock (GameWorld.colliderKey)
+            {
+
+                GameWorld.Instance.Colliders.Add((Collider)GameObject.GetComponent("Collider"));
+                ((Collider)GameObject.GetComponent("Collider")).DoCollsionChecks = true;
+            }
+
             GameWorld.Instance.VehiclesToRemove.Remove(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
 

@@ -84,14 +84,14 @@ namespace TankGame
         #endregion;
         #region MonsterVehicle
         public static readonly string monsterSpriteSheet = "MonsterVehicle";
-        public static readonly float monsterMoveSpeed = 160;
-        public static readonly int monsterHealth = 600;
-        public static readonly float monsterRotateSpeed = 2.5f;
+        public static readonly float monsterMoveSpeed = 140;
+        public static readonly int monsterHealth = 400;
+        public static readonly float monsterRotateSpeed = 3f;
         public static readonly int monsterStartGold = 150;
         public static readonly int swarmerCost = 10;
         public static readonly int swarmerMaxAmount = 15; 
 
-        public static readonly float monsterRegenRate = 0.8f; // seconds per life
+        public static readonly float monsterRegenRate = 0.6f; // seconds per life
 
 
         #endregion
@@ -135,7 +135,7 @@ namespace TankGame
         #region SniperTower
         public static readonly int sniperTowerPrice = 400;
         public static readonly string sniperTowerSpriteSheet = "TowerSniper";
-        public static readonly float sniperTowerFireRate = 5f;
+        public static readonly float sniperTowerFireRate = 3f;
         public static readonly int sniperTowerHealth = 120;
         public static readonly BulletType sniperTowerBulletType = BulletType.SniperBullet;
         public static readonly int sniperTowerAttackRange = 400;
