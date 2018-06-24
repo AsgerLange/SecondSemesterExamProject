@@ -350,6 +350,29 @@ namespace TankGame
         /// <param name="tmp"></param>
         private void AddEnemy(GameObject tmp)
         {
+
+            bool spitter = false;
+            bool playerSpawned = false;
+
+
+            foreach (Component comp in tmp.GetComponentList)
+            {
+                if (comp is Enemy)
+                {
+                    playerSpawned = (comp as Enemy).playerSpawned;
+                }
+                if (comp is Spitter)
+                {
+                    spitter = true;
+                    break;
+                }
+            }
+
+            if (spitter == false && playerSpawned == false)
+            {
+                ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Red;
+            }
+
             lock (activeKey)
             {
                 if (activeEnemies.Count < Constant.maxEnemyOnScreen)

@@ -14,7 +14,10 @@ namespace TankGame
     class MonsterVehicle : Vehicle
     {
         private float healTimeStamp;
-        public int swarmerCount = 0;
+        public int EnemyCount = 0;
+        public EnemyType SpawnType { get; set; }
+
+        public EnemySpawner enemySpawner;
         /// <summary>
         /// Creates the tank
         /// </summary>
@@ -27,6 +30,7 @@ namespace TankGame
              TowerType tower, int playerNumber) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
         {
             this.vehicleType = VehicleType.MonsterVehicle;
+            enemySpawner = new EnemySpawner(this);
         }
 
         /// <summary>
@@ -93,13 +97,13 @@ namespace TankGame
             if (((keyState.IsKeyDown(Keys.LeftAlt) || (keyState.IsKeyDown(Keys.G))) && control == Controls.WASD)
                  || ((keyState.IsKeyDown(Keys.OemPeriod) || (keyState.IsKeyDown(Keys.Back))) && control == Controls.UDLR))
             {
-                if (builtTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
+                if (enemySpawner.BuiltTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
                 {
-                    if (Money >= 10 && EnemyPool.Instance.ActiveEnemies.Count < Constant.maxEnemyOnScreen)
+                    if (Money >= enemySpawner.EnemyBuildCost && EnemyPool.Instance.ActiveEnemies.Count < Constant.maxEnemyOnScreen)
                     {
-                        if (swarmerCount < Constant.swarmerMaxAmount)
+                        if (EnemyCount < Constant.spawnedEnemyMaxAmount)
                         {
-                            SpawnSwarmer();
+                            enemySpawner.SpawnEnemy();
                         }
                     }
                 }
@@ -110,49 +114,94 @@ namespace TankGame
         /// </summary>
         private void SpawnSwarmer()
         {
+            //    GameObject tmp;
+            //    bool spitter = false;
+            //    if (control == Controls.WASD)
+            //    {
+            //        tmp = EnemyPool.Instance.CreateEnemy(new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y + 10),
+            //            EnemyType.Spitter, alignment, Color.Cyan);
 
-            GameObject tmp = EnemyPool.Instance.CreateEnemy(new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y + 10), EnemyType.Swarmer, alignment);
-            swarmerCount++;
-            foreach (Component comp in tmp.GetComponentList)
-            {
-                if (comp is Enemy && comp is SwarmerEnemy)
-                {
+            //    }
+            //    else
+            //    {
 
-                    (comp as Enemy).playerSpawned = true;
-                    (comp as Enemy).AttackRange = Constant.swarmerEnemyAttackRadius*1.5f;
-                    (comp as SwarmerEnemy).vehicleWhoSpawnedIt = this;
+            //        tmp = EnemyPool.Instance.CreateEnemy(new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y + 10),
+            //            EnemyType.Spitter, alignment, Color.Lime);
 
 
+            //    }
+            //    EnemyCount++;
+            //    foreach (Component comp in tmp.GetComponentList)
+            //    {
+            //        if (comp is Enemy)
+            //        {
 
-                }
-                if (comp is SpriteRenderer)
-                {
-                    (comp as SpriteRenderer).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SwarmerBlank");
+            //            (comp as Enemy).AttackRange = (comp as Enemy).AttackRange * 1.5f;
+            //            (comp as Enemy).VehicleWhoSpawnedIt = this;
+            //            (comp as Enemy).playerSpawned = true;
 
-                    if (control == Controls.WASD)
-                    {
-                        (comp as SpriteRenderer).color = Color.Cyan;
+            //            if (comp is Spitter)
+            //            {
+            //                spitter = true;
+            //            }
 
-                    }
-                    else if (control == Controls.UDLR)
-                    {
-                        (comp as SpriteRenderer).color = Color.Lime;
+            //        }
 
-                    }
-                }
 
-            }
+            //    }
+            //    //(comp as SpriteRenderer).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SwarmerBlank");
 
-            Money -= 10;
-            builtTimeStamp = GameWorld.Instance.TotalGameTime;
+            //    if (control == Controls.WASD && spitter == false)
+            //    {
+
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Cyan;
+
+            //    }
+            //    else if (control == Controls.WASD && spitter)
+            //    {
+
+
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SpitterBlue");
+
+            //    }
+            //    else if (control == Controls.UDLR && spitter == false)
+            //    {
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Lime;
+
+            //    }
+            //    else if (control == Controls.UDLR && spitter)
+            //    {
+
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SpitterGreen");
+
+            //    }
+
+            //    Money -= 10;
+            //    builtTimeStamp = GameWorld.Instance.TotalGameTime;
         }
-        /// <summary>
-        /// handles what the tank does
-        /// </summary>
-        public override void Update()
+
+
+    /// <summary>
+    /// handles what the tank does
+    /// </summary>
+    public override void Update()
         {
             RestoreHealth();
+
+            CheckIfToggleEnemy();
             base.Update();
+        }
+
+        private void CheckIfToggleEnemy()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            //if the player is pressing the "Shoot" button
+            if ((keyState.IsKeyDown(Keys.R) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.RightControl) && control== Controls.UDLR))
+            {
+                enemySpawner.ToggleEnemy();
+            }
         }
 
         /// <summary>

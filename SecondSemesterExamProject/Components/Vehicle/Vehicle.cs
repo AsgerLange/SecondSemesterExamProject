@@ -299,7 +299,7 @@ namespace TankGame
                     isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
 
                     spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
-
+                   
                     shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; //Timestamp for when shot is fired (used to determine when the next shot can be fired)
 
                 }
@@ -507,8 +507,8 @@ namespace TankGame
                 {
                     if (this is MonsterVehicle)
                     {
-                        string swarmerPrice = "Spawn Swarmer: $";
-                        spriteBatch.DrawString(font, swarmerPrice + Constant.swarmerCost + "    " + (this as MonsterVehicle).swarmerCount + " / " + Constant.swarmerMaxAmount, new Vector2(2, 2), Color.CornflowerBlue);
+                        
+                        spriteBatch.DrawString(font,(this as MonsterVehicle).enemySpawner.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
 
                     }
                     else
@@ -524,10 +524,10 @@ namespace TankGame
                 {
                     if (this is MonsterVehicle)
                     {
-                        string swarmerPrice = "Spawn Swarmer: $";
+                        string enemyTypeAndPrice = (this as MonsterVehicle).enemySpawner.ToString();
 
-                        spriteBatch.DrawString(font, swarmerPrice + Constant.swarmerCost + "    " + (this as MonsterVehicle).swarmerCount + " / " + Constant.swarmerMaxAmount
-                            , new Vector2(Constant.width - font.MeasureString(swarmerPrice + Constant.swarmerCost + "    " + (this as MonsterVehicle).swarmerCount + " / " + Constant.swarmerMaxAmount).X - 2, 2), Color.YellowGreen);
+                        spriteBatch.DrawString(font, enemyTypeAndPrice
+                            , new Vector2(Constant.width - font.MeasureString(enemyTypeAndPrice).X - 2, 2), Color.YellowGreen);
 
                     }
                     else

@@ -87,11 +87,17 @@ namespace TankGame
         public static readonly float monsterMoveSpeed = 140;
         public static readonly int monsterHealth = 350;
         public static readonly float monsterRotateSpeed = 2.5f;
-        public static readonly int monsterStartGold = 150;
-        public static readonly int swarmerCost = 10;
-        public static readonly int swarmerMaxAmount = 15; 
+        public static readonly int monsterStartGold = 160;
+        public static readonly int spawnedEnemyMaxAmount = 15; 
 
         public static readonly float monsterRegenRate = 0.5f; // seconds per life
+
+        public static readonly int basicEnemyCost = 20;
+        public static readonly int basicEliteCost = 40;
+        public static readonly int swarmerCost = 10;
+        public static readonly int spitterCost = 30;
+        public static readonly int siegeBreakerCost = 100;
+
 
 
         #endregion
@@ -192,7 +198,7 @@ namespace TankGame
         #endregion
         #region EnemyBullets
         #region SpitterBullet
-        public static readonly string spitterBulletSheet = "SpitterBullet";
+        public static readonly string spitterBulletSheet = "SpitterBulletBlank";
         public static readonly float spitterBulletMovementSpeed = 210;
         public static readonly float spitterBulletLifeSpan = 0.95f;
         public static readonly int spitterBulletDmg = 10;
@@ -245,7 +251,7 @@ namespace TankGame
         #region Melee
         #region BasicEnemy
         public readonly static int basicEnemyGold = 2;
-        public static readonly string basicEnemySpriteSheet = "BasicEnemy";
+        public static readonly string basicEnemySpriteSheet = "BasicBlank";
         public static readonly int basicEnemyHealth = 200;
         public static readonly float basicEnemyMovementSpeed = 25;
         public static readonly float basicEnemyAttackRate = 0.7f;
@@ -254,7 +260,7 @@ namespace TankGame
         #endregion
         #region BasicEliteEnemy
         public readonly static int basicEliteEnemyGold = 6;
-        public static readonly string basicEliteEnemySpriteSheet = "BasicEliteEnemy";
+        public static readonly string basicEliteEnemySpriteSheet = "BasicEliteBlank";
         public static readonly int basicEliteEnemyHealth = 600;
         public static readonly float basicEliteEnemyMovementSpeed = 35;
         public static readonly float basicEliteEnemyAttackRate = 0.7f;
@@ -265,7 +271,7 @@ namespace TankGame
         #endregion
         #region SwarmerEnemy
         public readonly static int swarmerEnemyGold = 1;
-        public static readonly string swarmerEnemySpriteSheet = "SwarmerEnemy";
+        public static readonly string swarmerEnemySpriteSheet = "SwarmerBlank";
         public static readonly int swarmerEnemyHealth = 30;
         public static readonly float swarmerEnemyMovementSpeed = 60;
         public static readonly float swarmerEnemyAttackRate = 0.6f;
@@ -277,7 +283,7 @@ namespace TankGame
         #endregion
         #region SiegebreakerEnemy
         public readonly static int siegeBreakerEnemyGold = 14;
-        public static readonly string siegeBreakerSpriteSheet = "SiegebreakerEnemy";
+        public static readonly string siegeBreakerSpriteSheet = "SiegebreakerBlank";
         public static readonly int siegeBreakerEnemyHealth = 3000;
         public static readonly float siegeBreakerEnemyMovementSpeed = 40;
         public static readonly float siegeBreakerEnemyAttackRate = 0.9f;

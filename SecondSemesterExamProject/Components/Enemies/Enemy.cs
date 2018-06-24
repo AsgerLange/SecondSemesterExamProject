@@ -29,6 +29,15 @@ namespace TankGame
         protected float attackRange;
         protected SoundEffect deathSound;
         protected bool canAttackPlane = false;
+        protected Alignment alignment;
+
+        protected MonsterVehicle vehicleWhoSpawnedIt;
+
+        public MonsterVehicle VehicleWhoSpawnedIt
+        {
+            get { return vehicleWhoSpawnedIt; }
+            set { vehicleWhoSpawnedIt = value; }
+        }
 
         public EnemyType GetEnemyType
         {
@@ -94,7 +103,7 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, Alignment alignment) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
@@ -106,7 +115,7 @@ namespace TankGame
             this.enemyType = enemyType;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
-
+            this.alignment = alignment;
             FollowHQ();
         }
         /// <summary>
@@ -117,7 +126,7 @@ namespace TankGame
         /// <param name="health">The amount of health the enemy should have</param>
         /// <param name="movementSpeed">Movement speed of the enemy</param>
         /// <param name="attackRate">the attackrate of the enemy</param>
-        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) : base(gameObject)
+        public Enemy(GameObject gameObject, int health, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, Alignment alignment) : base(gameObject)
         {
             this.health = health;
             this.movementSpeed = movementSpeed;
@@ -128,6 +137,7 @@ namespace TankGame
             this.attackRange = attackRange;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
+            this.alignment = alignment;
 
 
         }
@@ -336,6 +346,11 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
+            if (playerSpawned)
+            {
+                vehicleWhoSpawnedIt.EnemyCount--;
+            }
+
             if (canRelease)
             {
                 EnemyPool.Instance.ReleaseList.Add(this.GameObject);

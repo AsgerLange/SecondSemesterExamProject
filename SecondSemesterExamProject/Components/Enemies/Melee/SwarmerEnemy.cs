@@ -12,7 +12,7 @@ namespace TankGame
     class SwarmerEnemy : Melee
     {
 
-        public MonsterVehicle vehicleWhoSpawnedIt;
+       
         /// <summary>
         /// Basic Enemy Constructor
         /// </summary>
@@ -21,8 +21,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="attackRate"></param>
-        public SwarmerEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) 
-            : base(gameObject, health, damage, movementSpeed, attackRate,attackRange, enemyType)
+        public SwarmerEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, Alignment alignment)
+            : base(gameObject, health, damage, movementSpeed, attackRate, attackRange, enemyType, alignment)
         {
 
         }
@@ -51,18 +51,7 @@ namespace TankGame
 
         }
 
-        protected override void FollowHQ()
-        {
-            if (playerSpawned)
-            {
-                targetGameObject = vehicleWhoSpawnedIt.GameObject;
-            }
-            else
-            {
-                base.FollowHQ();
-            }
-            
-        }
+     
         /// <summary>
         /// Override for Enemy.AI()
         /// </summary>
@@ -93,7 +82,7 @@ namespace TankGame
                 if ((targetGameObject == GameWorld.Instance.GameObjects[0] || targetGameObject == null))
                 {
 
-                targetGameObject = vehicleWhoSpawnedIt.GameObject;
+                    targetGameObject = vehicleWhoSpawnedIt.GameObject;
                 }
             }
 
@@ -107,11 +96,7 @@ namespace TankGame
         /// </summary>
         protected override void Die()
         {
-            if (playerSpawned)
-            {
-            vehicleWhoSpawnedIt.swarmerCount--;
-            }
-
+           
             base.Die();
         }
 
@@ -152,7 +137,7 @@ namespace TankGame
             this.movementSpeed = -40;//Slows enemy down when attacking ( Resets after attackanimation is done)
             base.AttackEnemy(enemy);
         }
-       
+
         /// <summary>
         /// Plays the death sound effect for this specefic enemy type
         /// </summary>
