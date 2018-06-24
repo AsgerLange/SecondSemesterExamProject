@@ -38,6 +38,11 @@ namespace TankGame
             get { return vehicleWhoSpawnedIt; }
             set { vehicleWhoSpawnedIt = value; }
         }
+        public Alignment Alignment
+        {
+            get { return alignment; }
+            set { alignment = value; }
+        }
 
         public EnemyType GetEnemyType
         {

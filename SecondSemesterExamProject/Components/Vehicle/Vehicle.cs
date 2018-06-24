@@ -92,7 +92,6 @@ namespace TankGame
                     {
                         animator.PlayAnimation("Death");
                         IsAlive = false;
-                        health = 0;
                         PlayDeathSound();
                         isPlayingAnimation = true;
                     }
@@ -101,6 +100,7 @@ namespace TankGame
                         animator.PlayAnimation("Death"); //just in case
 
                     }
+                    health = 0;
                 }
                 else if (health > maxHealth)
                 {
@@ -299,7 +299,7 @@ namespace TankGame
                     isPlayingAnimation = true; //allows the animation to not be overwritten by movement animations
 
                     spriteRenderer.Offset = RotateVector(spriteRenderer.Offset);//Changes offset to fit with animation
-                   
+
                     shotTimeStamp = (float)GameWorld.Instance.TotalGameTime; //Timestamp for when shot is fired (used to determine when the next shot can be fired)
 
                 }
@@ -507,8 +507,8 @@ namespace TankGame
                 {
                     if (this is MonsterVehicle)
                     {
-                        
-                        spriteBatch.DrawString(font,(this as MonsterVehicle).enemySpawner.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
+
+                        spriteBatch.DrawString(font, (this as MonsterVehicle).enemySpawner.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
 
                     }
                     else

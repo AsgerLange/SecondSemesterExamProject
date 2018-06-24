@@ -118,6 +118,7 @@ namespace TankGame
                             bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
 
                         ChangeColorOnBullet(tmp);
+
                         if (attackVariation > 2)//Adds animation variation
                         {
                             attackVariation = 1;

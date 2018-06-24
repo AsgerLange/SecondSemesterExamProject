@@ -165,6 +165,7 @@ namespace TankGame
                     ((Bullet)bullet).CanRelease = true;
                     ((Bullet)bullet).ShouldDie = false;
                     ((Bullet)bullet).Shooter = shooter;
+
                     if (bullet is MonsterBullet)
                     {
                         ((MonsterBullet)bullet).ChangeColor();
@@ -180,8 +181,7 @@ namespace TankGame
                     }
                     tmp.Transform.Position = gameObject.Transform.Position;
 
-                    lock (activeListKey)
-                    {
+                    lock (activeListKey)                    {
 
                         activeBullets.Add(tmp);
                     }

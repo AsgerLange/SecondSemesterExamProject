@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -168,11 +169,12 @@ namespace TankGame
                     lock (GameWorld.colliderKey)
                     {
                         ((Collider)tmp.GetComponent("Collider")).GetAlignment = alignment;
+
                         GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
                         ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
                     }
 
-                    AddEnemy(tmp);
+                    AddEnemy(tmp, alignment);
                 }
             }
             if (inActiveEnemies.Count > 0 &&
@@ -188,6 +190,7 @@ namespace TankGame
                         {
                             if (comp is Enemy)
                             {
+
                                 if (((Enemy)comp).GetEnemyType == enemyType)
                                 {
                                     tmp = en;
@@ -217,7 +220,7 @@ namespace TankGame
                     }
                     tmp.Transform.Position = position;
 
-                    AddEnemy(tmp);
+                    AddEnemy(tmp, alignment);
 
                     return tmp;
                 }
@@ -225,7 +228,7 @@ namespace TankGame
                 {
                     tmp = GameObjectDirector.Instance.Construct(position, enemyType, alignment);
 
-                    AddEnemy(tmp);
+                    AddEnemy(tmp, alignment);
 
 
                     return tmp;
@@ -238,7 +241,7 @@ namespace TankGame
 
                 tmp = GameObjectDirector.Instance.Construct(position, enemyType, alignment);
 
-                AddEnemy(tmp);
+                AddEnemy(tmp, alignment);
 
 
                 return tmp;
@@ -348,7 +351,7 @@ namespace TankGame
         /// Adds the enemy to the queue or to the game depending on how many is in game already
         /// </summary>
         /// <param name="tmp"></param>
-        private void AddEnemy(GameObject tmp)
+        private void AddEnemy(GameObject tmp, Alignment alignment)
         {
 
             bool spitter = false;
@@ -360,6 +363,9 @@ namespace TankGame
                 if (comp is Enemy)
                 {
                     playerSpawned = (comp as Enemy).playerSpawned;
+                    (comp as Enemy).Alignment = alignment;
+
+
                 }
                 if (comp is Spitter)
                 {
@@ -371,6 +377,11 @@ namespace TankGame
             if (spitter == false && playerSpawned == false)
             {
                 ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Red;
+            }
+            else
+            {
+                ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SpitterEnemy");
+
             }
 
             lock (activeKey)
