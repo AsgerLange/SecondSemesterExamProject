@@ -43,7 +43,6 @@ namespace TankGame
                     if (isAlive)
                     {
 
-                        health = 0;
                         isAlive = false;
                         if (dieSoundEffect != null)
                         {
@@ -51,6 +50,7 @@ namespace TankGame
                         }
                         animator.PlayAnimation("Death");
                     }
+                    health = 0;
                 }
             }
         }
@@ -304,7 +304,7 @@ namespace TankGame
 
         private void Deploy()
         {
-            if (GameWorld.Instance.TotalGameTime>spawnTimeStamp+2 && GameObject.Transform.canMove == true)
+            if (GameWorld.Instance.TotalGameTime > spawnTimeStamp + 2 && GameObject.Transform.canMove == true)
             {
                 GameObject.Transform.canMove = false;
             }

@@ -24,6 +24,7 @@ namespace TankGame
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
+                        
         }
 
         public override void OnAnimationDone(string animationName)

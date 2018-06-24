@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace TankGame
     class SwarmerEnemy : Melee
     {
 
+       
         /// <summary>
         /// Basic Enemy Constructor
         /// </summary>
@@ -19,8 +21,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="attackRate"></param>
-        public SwarmerEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType) 
-            : base(gameObject, health, damage, movementSpeed, attackRate,attackRange, enemyType)
+        public SwarmerEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, Alignment alignment)
+            : base(gameObject, health, damage, movementSpeed, attackRate, attackRange, enemyType, alignment)
         {
 
         }
@@ -46,8 +48,10 @@ namespace TankGame
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
+
         }
 
+     
         /// <summary>
         /// Override for Enemy.AI()
         /// </summary>
@@ -73,14 +77,26 @@ namespace TankGame
         /// </summary>
         public override void Update()
         {
+            if (playerSpawned)
+            {
+                if ((targetGameObject == GameWorld.Instance.GameObjects[0] || targetGameObject == null))
+                {
+
+                    targetGameObject = vehicleWhoSpawnedIt.GameObject;
+                }
+            }
+
             base.Update();
         }
+
+
 
         /// <summary>
         /// handles what happens when the basicEnemy dies
         /// </summary>
         protected override void Die()
         {
+           
             base.Die();
         }
 
@@ -90,6 +106,10 @@ namespace TankGame
             base.CheckIfCanAttack(other);
 
 
+        }
+        protected override int EnemyGold()
+        {
+            return Constant.swarmerEnemyGold;
         }
 
         /// <summary>
@@ -111,6 +131,13 @@ namespace TankGame
             this.movementSpeed = -40;//Slows enemy down when attacking ( Resets after attackanimation is done)
             base.AttackTower(tower);
         }
+
+        protected override void AttackEnemy(Enemy enemy)
+        {
+            this.movementSpeed = -40;//Slows enemy down when attacking ( Resets after attackanimation is done)
+            base.AttackEnemy(enemy);
+        }
+
         /// <summary>
         /// Plays the death sound effect for this specefic enemy type
         /// </summary>

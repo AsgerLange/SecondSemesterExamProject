@@ -135,6 +135,7 @@
     <Compile Include="Components\Enemies\Ranged\Spitter.cs" />
     <Compile Include="Components\Crates\Crate.cs" />
     <Compile Include="Components\Tower\BasicTower.cs" />
+    <Compile Include="Components\Tower\EnemySpawner.cs" />
     <Compile Include="Components\Tower\HQ.cs" />
     <Compile Include="Components\Tower\MachineGunTower.cs" />
     <Compile Include="Components\Tower\ShotgunTower.cs" />
