@@ -119,7 +119,7 @@ namespace TankGame
                 {
 
                     (comp as Enemy).playerSpawned = true;
-                    (comp as Enemy).AttackRange = Constant.swarmerEnemyAttackRadius;
+                    (comp as Enemy).AttackRange = Constant.swarmerEnemyAttackRadius*1.5f;
                     (comp as SwarmerEnemy).vehicleWhoSpawnedIt = this;
 
 
@@ -194,7 +194,7 @@ namespace TankGame
         }
         protected override void PlayDeathSound()
         {
-            vehicleDeathSound.Play(1f, -1f, 0);
+            vehicleDeathSound.Play(0.7f, -1f, 0);
         }
     }
 }
