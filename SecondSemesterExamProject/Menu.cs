@@ -148,18 +148,23 @@ namespace TankGame
             return playerDraw;
         }
 
+        /// <summary>
+        /// Unlocks the MonsterVehicle, if any player has made it past wave 20.
+        /// </summary>
         private void UnlockMonsterVehicle()
         {
             if (monsterUnlocked == false && checkedForUnlockables == false)
             {
-                string command = "select wave from player ORDER BY wave desc;";
-                string collumn = "wave";
+                string command = "select wave from player where wave >= "+Constant.monsterVehicleUnlockWave +" limit 1;";
+                string returnCollumn = "wave";
+
                 List<int> output = new List<int>();
-                output = GameWorld.Instance.score.ReadFromDB(command, collumn, 1);
+
+                output = GameWorld.Instance.score.ReadFromDB(command, returnCollumn, 1);
 
                 foreach (int item in output)
                 {
-                    if (item >= 20)
+                    if (item >= Constant.monsterVehicleUnlockWave)
                     {
                         monsterUnlocked = true;
                         break;

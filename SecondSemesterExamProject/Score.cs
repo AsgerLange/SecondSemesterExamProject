@@ -86,6 +86,7 @@ namespace TankGame
         public List<int> ReadFromDB(string command, string returnValue, int overload)
         {
             List<int> returnList = new List<int>();
+
             SQLiteConnection DBConnect = new SQLiteConnection("Data source = TankGameDatabase.db; Version = 3; ");
             DBConnect.Open();
             SQLiteCommand Command = new SQLiteCommand(command, DBConnect);

@@ -32,7 +32,7 @@ namespace TankGame
         public readonly static string title = "The Last Stand";
         public readonly static string p1ControlImagePath = "p1Controls";
         public readonly static string p2ControlImagePath = "p2Controls";
-
+        public static readonly int monsterVehicleUnlockWave = 20;
 
         #endregion
 
