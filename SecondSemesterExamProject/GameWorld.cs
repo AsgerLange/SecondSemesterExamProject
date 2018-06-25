@@ -628,7 +628,26 @@ namespace TankGame
                 //if the player is pressing the "Shoot" button
                 if (keyState.IsKeyDown(Keys.Escape))
                 {
-                    GameOver();
+                    if (pvp)
+                    {
+
+                        GameOver();
+                    }
+                    else
+                    {
+                        if (gameObjects.Count > 0)
+                        {
+                            foreach (GameObject go in gameObjects)
+                            {
+                                if (go.GetComponent("HQ") is HQ)
+                                {
+                                    ((HQ)go.GetComponent("HQ")).Health = 0;
+                                    break;
+
+                                }
+                            }
+                        }
+                    }
 
                 }
             }
