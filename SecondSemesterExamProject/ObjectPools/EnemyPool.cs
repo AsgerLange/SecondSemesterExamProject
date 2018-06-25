@@ -308,8 +308,7 @@ namespace TankGame
                         tmp.Health = Constant.spitterHealth;
                         tmp.MovementSpeed = Constant.spitterMovementSpeed;
                     }
-
-
+                    
                 }
             }
             lock (activeKey)
