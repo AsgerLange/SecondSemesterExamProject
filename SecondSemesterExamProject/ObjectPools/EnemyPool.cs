@@ -294,6 +294,7 @@ namespace TankGame
                     {
                         tmp.Health = Constant.basicEnemyHealth;
                         tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
+                        tmp.AttackRange = Constant.basicEnemyAttackRadius;
 
                     }
 
@@ -301,19 +302,21 @@ namespace TankGame
                     {
                         tmp.Health = Constant.basicEliteEnemyHealth;
                         tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
+                        tmp.AttackRange = Constant.basicEliteEnemyAttackRadius;
                     }
 
                     if (component is SwarmerEnemy)
                     {
                         tmp.Health = Constant.swarmerEnemyHealth;
                         tmp.MovementSpeed = Constant.swarmerEnemyMovementSpeed;
-
+                        tmp.AttackRange = Constant.swarmerEnemyAttackRadius;
                     }
 
                     if (component is SiegebreakerEnemy)
                     {
                         tmp.Health = Constant.siegeBreakerEnemyHealth;
                         tmp.MovementSpeed = Constant.siegeBreakerEnemyMovementSpeed;
+                        tmp.AttackRange = Constant.siegeBreakerEnemyAttackRadius;
 
                     }
 
@@ -321,6 +324,7 @@ namespace TankGame
                     {
                         tmp.Health = Constant.spitterHealth;
                         tmp.MovementSpeed = Constant.spitterMovementSpeed;
+                        tmp.AttackRange = Constant.spitterAttackRange;
 
                         tmp.CanAttackPlane = true;
                     }
