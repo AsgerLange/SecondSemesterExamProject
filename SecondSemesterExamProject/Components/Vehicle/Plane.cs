@@ -23,6 +23,8 @@ namespace TankGame
               TowerType tower, int playerNumber) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
         {
             this.vehicleType = VehicleType.Plane;
+            this.towerPlacer = new TowerPlacer(this, TowerType.MachineGunTower, 3);
+
 
         }
 

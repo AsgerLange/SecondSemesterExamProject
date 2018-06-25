@@ -273,6 +273,10 @@ namespace TankGame
                 //call the Spawner
                 spawner.Update();
 
+
+                //For presentation - destroys HQ
+                SelfDestructHQ();
+
                 //Updates GameObjects
                 foreach (var go in gameObjects)
                 {
@@ -486,6 +490,28 @@ namespace TankGame
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.25f;
             MediaPlayer.Play(song);
+        }
+        private void SelfDestructHQ()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            //if the player is pressing the "Shoot" button
+            if (keyState.IsKeyDown(Keys.Escape))
+            {
+                foreach (GameObject go in gameObjects)
+                {
+                    foreach (Component comp in go.GetComponentList)
+                    {
+                        if (comp is HQ)
+                        {
+                            if ((comp as HQ).Health > 0)
+                            {
+                                (comp as HQ).Health = 0;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
