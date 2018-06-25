@@ -82,12 +82,20 @@ namespace TankGame
             foreach (Component comp in tmp.GetComponentList)
             {
                 if (comp is Enemy)
-                {
-
-                   // (comp as Enemy).AttackRange = (comp as Enemy).AttackRange * 1.5f;
+                {                 
                     (comp as Enemy).VehicleWhoSpawnedIt = vehicle;
                     (comp as Enemy).playerSpawned = true;
-                    
+                    (comp as Enemy).AttackRange = (comp as Enemy).AttackRange * 1.5f;
+
+                    if (comp is SiegebreakerEnemy)
+                    {
+                        (comp as Enemy).Health = Constant.siegeBreakerEnemyHealth / 3;
+                        break;
+                    }
+                    if (comp is BasicEliteEnemy)
+                    {
+                        (comp as Enemy).Health = Constant.basicEliteEnemyHealth / 2;
+                    }
 
                     if (comp is Spitter)
                     {
