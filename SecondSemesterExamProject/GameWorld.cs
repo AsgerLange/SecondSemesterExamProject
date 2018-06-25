@@ -620,13 +620,17 @@ namespace TankGame
         }
         private void ManualGameover()
         {
-            KeyboardState keyState = Keyboard.GetState();
-
-            //if the player is pressing the "Shoot" button
-            if (keyState.IsKeyDown(Keys.Escape))
+            if (gameState == GameState.Game)
             {
-                GameOver();
 
+                KeyboardState keyState = Keyboard.GetState();
+
+                //if the player is pressing the "Shoot" button
+                if (keyState.IsKeyDown(Keys.Escape))
+                {
+                    GameOver();
+
+                }
             }
         }
     }
