@@ -280,26 +280,33 @@ namespace TankGame
                     if (component is BasicEnemy)
                     {
                         tmp.Health = Constant.basicEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
                     }
 
                     if (component is BasicEliteEnemy)
                     {
                         tmp.Health = Constant.basicEliteEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
+
                     }
 
                     if (component is SwarmerEnemy)
                     {
                         tmp.Health = Constant.swarmerEnemyHealth;
+                        tmp.MovementSpeed = Constant.swarmerEnemyMovementSpeed;
+
                     }
 
                     if (component is SiegebreakerEnemy)
                     {
                         tmp.Health = Constant.siegeBreakerEnemyHealth;
+                        tmp.MovementSpeed = Constant.siegeBreakerEnemyMovementSpeed;
                     }
 
                     if (component is Spitter)
                     {
                         tmp.Health = Constant.spitterHealth;
+                        tmp.MovementSpeed = Constant.spitterMovementSpeed;
                     }
 
 
