@@ -101,8 +101,7 @@ namespace TankGame
 
         private void CreateButtons()
         {
-            if (scoreSaved && nameEntered)
-            {
+            
 
                 Button MainMenuButton = new Button(new Vector2(Constant.width-225,Constant.hight-100), Constant.RedButtonTexture, Constant.buttonFont)
                 {
@@ -112,7 +111,7 @@ namespace TankGame
                 MainMenuButton.click += MainMenuButton_click;
                 MainMenuButton.LoadContent(GameWorld.Instance.Content);
                 buttons.Add(MainMenuButton);
-            }
+            
         }
 
         private void MainMenuButton_click(object sender, EventArgs e)

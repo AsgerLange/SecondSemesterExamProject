@@ -412,22 +412,17 @@ namespace TankGame
 
         public void Restart()
         {
-            //lock (activeKey)
-            //{
-            //    foreach (GameObject go in activeEnemies)
-            //    {
-            //        releaseList.Add(go);
-            //    }
-            //}
+            
             lock (activeKey)
             {
-
-                foreach (GameObject enemy in activeEnemies)
-                {
-                    releaseList.Add(enemy);
-                }
+                activeEnemies.Clear();
+                
             }
+            lock (inActiveKey)
+            {
+                inActiveEnemies.Clear();
 
+            }
             enemyPoolThread = null;
             instance = null;
         }

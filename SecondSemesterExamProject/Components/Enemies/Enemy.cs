@@ -33,6 +33,11 @@ namespace TankGame
 
         protected MonsterVehicle vehicleWhoSpawnedIt;
 
+        public float AttackTimeStamp
+        {
+            get { return attackTimeStamp; }
+            set { attackTimeStamp = value; }
+        }
         public MonsterVehicle VehicleWhoSpawnedIt
         {
             get { return vehicleWhoSpawnedIt; }
@@ -199,7 +204,11 @@ namespace TankGame
         {
             MoveTo(targetGameObject);
 
-            ChangeTargetToNearestTarget();
+            if (IsInsideScreen(this.GameObject))
+            {
+                ChangeTargetToNearestTarget();
+            }
+
         }
 
         /// <summary>
@@ -326,6 +335,10 @@ namespace TankGame
             {
                 Die();
             }
+            if (animationName.Contains("Attack"))
+            {
+                isPlayingAnimation = false;
+            }
 
             if (animationName == "Walk" && IsAlive)
             {
@@ -342,6 +355,10 @@ namespace TankGame
                     animator.PlayAnimation("Idle");
                     isPlayingAnimation = false;
                 }
+            }
+            if (animationName == "Attack" && isAlive == false)
+            {
+                animator.PlayAnimation("Death");
             }
 
         }
@@ -479,47 +496,54 @@ namespace TankGame
             {
                 foreach (Collider other in GameWorld.Instance.Colliders)
                 {
-                    if (other.GetAlignment != thisCollider.GetAlignment
-                        && other.GetAlignment != Alignment.Neutral)
+                    if (IsInsideScreen(other.GameObject))
                     {
-                        if (AttackRadius.Contains(other.CollisionBox.Center))
+
+                        if (other.GetAlignment != thisCollider.GetAlignment
+                            && other.GetAlignment != Alignment.Neutral)
                         {
-                            foreach (Component comp in other.GameObject.GetComponentList)
+                            if (AttackRadius.Contains(other.CollisionBox.Center))
                             {
-                                if (comp is Bullet)
+                                foreach (Component comp in other.GameObject.GetComponentList)
                                 {
-                                    otherIsBullet = true;
-
-
-                                }
-                                if (comp is Plane)
-                                {
-
-                                    otherIsPlane = true;
-
-                                }
-
-                            }
-                            if (otherIsBullet == false)
-                            {
-                                if (otherIsPlane == false || (otherIsPlane && this.canAttackPlane))
-                                {
-
-
-                                    float otherDistance;
-                                    otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                        * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                        + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
-                                        * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
-                                    if (closestTarget == null)
+                                    if (comp is Bullet)
                                     {
-                                        closestTarget = other;
-                                        distance = otherDistance;
+                                        otherIsBullet = true;
+
+
                                     }
-                                    else if (distance > otherDistance)
+                                    if (comp is Plane)
                                     {
-                                        closestTarget = other;
-                                        distance = otherDistance;
+
+                                        otherIsPlane = true;
+
+                                    }
+
+                                }
+                                if (otherIsBullet == false)
+                                {
+                                    if (otherIsPlane == false || (otherIsPlane && this.canAttackPlane))
+                                    {
+
+
+                                        float otherDistance;
+                                        otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                            * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                            + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                            * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                                        if (closestTarget == null)
+                                        {
+                                            closestTarget = other;
+                                            distance = otherDistance;
+                                        }
+                                        else if (distance > otherDistance)
+                                        {
+
+
+                                            closestTarget = other;
+                                            distance = otherDistance;
+
+                                        }
                                     }
                                 }
                             }
@@ -598,6 +622,24 @@ namespace TankGame
         protected virtual void PlayDeathSound()
         {
             deathSound.Play(0.6f, 0, 0);
+        }
+
+        /// <summary>
+        /// Checks if the game object's transform is inside the screen
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <returns></returns>
+        protected bool IsInsideScreen(GameObject gameObject)
+        {
+            bool isInside = false;
+
+            if (gameObject.Transform.Position.X >= 0 && gameObject.Transform.Position.X <= Constant.width
+                && gameObject.Transform.Position.Y >= 0 && gameObject.Transform.Position.Y <= Constant.width )
+            {
+                isInside = true;
+            }
+
+            return isInside;
         }
     }
 }

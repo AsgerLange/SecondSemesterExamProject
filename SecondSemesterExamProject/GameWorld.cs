@@ -338,10 +338,10 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
-            {
-                GameOver();
-            }
+            //if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
+            //{
+            //    GameOver();
+            //}
         }
 
         private void Respawn()
@@ -620,13 +620,36 @@ namespace TankGame
         }
         private void ManualGameover()
         {
-            KeyboardState keyState = Keyboard.GetState();
-
-            //if the player is pressing the "Shoot" button
-            if (keyState.IsKeyDown(Keys.Escape))
+            if (gameState == GameState.Game)
             {
-                GameOver();
 
+                KeyboardState keyState = Keyboard.GetState();
+
+                //if the player is pressing the "Shoot" button
+                if (keyState.IsKeyDown(Keys.Escape))
+                {
+                    if (pvp)
+                    {
+
+                        GameOver();
+                    }
+                    else
+                    {
+                        if (gameObjects.Count > 0)
+                        {
+                            foreach (GameObject go in gameObjects)
+                            {
+                                if (go.GetComponent("HQ") is HQ)
+                                {
+                                    ((HQ)go.GetComponent("HQ")).Health = 0;
+                                    break;
+
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
         }
     }

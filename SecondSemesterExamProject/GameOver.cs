@@ -86,14 +86,13 @@ namespace TankGame
                     ContinueButton.Draw(spriteBatch);
                 }
             }
-            else if (GameWorld.Instance.pvp)
-            {
 
-                if (MainMenuButton != null)
-                {
-                    MainMenuButton.Draw(spriteBatch);
-                }
+
+            if (MainMenuButton != null)
+            {
+                MainMenuButton.Draw(spriteBatch);
             }
+
             DrawGameOver(spriteBatch);
             DrawGameRecap(spriteBatch);
 
@@ -343,14 +342,12 @@ namespace TankGame
                 }
             }
 
-            else if (GameWorld.Instance.pvp)
-            {
 
-                if (MainMenuButton != null)
-                {
-                    MainMenuButton.Update();
-                }
+            if (MainMenuButton != null)
+            {
+                MainMenuButton.Update();
             }
+
             int cal = 0;
             foreach (Vehicle VH in GameWorld.Instance.Vehicles)
             {
