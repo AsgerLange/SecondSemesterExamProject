@@ -54,14 +54,14 @@ namespace TankGame
                 GameObject tmp;
                 if (vehicle.Control == Controls.WASD)
                 {
-                    tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 10),
+                    tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 15),
                         enemyType, vehicle.alignment);
 
                 }
                 else
                 {
 
-                    tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 10),
+                    tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 15),
                        enemyType, vehicle.alignment);
 
 

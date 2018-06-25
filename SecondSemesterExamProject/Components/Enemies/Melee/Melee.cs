@@ -115,6 +115,7 @@ namespace TankGame
             if (isAlive)
             {
                 animator.PlayAnimation("Attack" + attackVariation);
+                isPlayingAnimation = true;
             }
 
             attackVariation++;
@@ -145,6 +146,7 @@ namespace TankGame
             if (isAlive)
             {
                 animator.PlayAnimation("Attack" + attackVariation);
+                isPlayingAnimation = true;
             }
             attackVariation++;
 
@@ -170,6 +172,7 @@ namespace TankGame
             if (isAlive)
             {
                 animator.PlayAnimation("Attack" + attackVariation);
+                isPlayingAnimation = true;
             }
             attackVariation++;
 

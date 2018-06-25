@@ -335,6 +335,10 @@ namespace TankGame
             {
                 Die();
             }
+            if (animationName.Contains("Attack"))
+            {
+                isPlayingAnimation = false;
+            }
 
             if (animationName == "Walk" && IsAlive)
             {

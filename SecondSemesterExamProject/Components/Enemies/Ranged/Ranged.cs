@@ -132,6 +132,7 @@ namespace TankGame
                         if (isAlive)
                         {
                             animator.PlayAnimation("Attack" + attackVariation);
+                            isPlayingAnimation = true;
                         }
 
                         attackVariation++;
