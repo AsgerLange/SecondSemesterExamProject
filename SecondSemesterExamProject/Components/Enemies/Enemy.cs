@@ -33,6 +33,11 @@ namespace TankGame
 
         protected MonsterVehicle vehicleWhoSpawnedIt;
 
+        public float AttackTimeStamp
+        {
+            get { return attackTimeStamp; }
+            set { attackTimeStamp = value; }
+        }
         public MonsterVehicle VehicleWhoSpawnedIt
         {
             get { return vehicleWhoSpawnedIt; }
@@ -346,6 +351,10 @@ namespace TankGame
                     animator.PlayAnimation("Idle");
                     isPlayingAnimation = false;
                 }
+            }
+            if (animationName == "Attack" && isAlive == false)
+            {
+                animator.PlayAnimation("Death");
             }
 
         }

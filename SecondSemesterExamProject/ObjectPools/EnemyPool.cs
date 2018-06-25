@@ -412,18 +412,19 @@ namespace TankGame
 
         public void Restart()
         {
-            //lock (activeKey)
-            //{
-            //    foreach (GameObject go in activeEnemies)
-            //    {
-            //        releaseList.Add(go);
-            //    }
-            //}
+            
             lock (activeKey)
             {
 
                 foreach (GameObject enemy in activeEnemies)
                 {
+                    foreach (Component comp in enemy.GetComponentList)
+                    {
+                        if (comp is Enemy)
+                        {
+                            (comp as Enemy).AttackTimeStamp = 0;
+                        }
+                    }
                     releaseList.Add(enemy);
                 }
             }
