@@ -10,7 +10,7 @@ namespace TankGame
     class EnemyBuilder
     {
         private GameObject go;
-        public void Build(Vector2 position, EnemyType type)
+        public void Build(Vector2 position, EnemyType type, Alignment alignment)
         {
             go = new GameObject();
             go.Transform.Position = position;
@@ -22,7 +22,7 @@ namespace TankGame
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
-                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate,Constant.basicEnemyAttackRadius, type));
+                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate,Constant.basicEnemyAttackRadius, type, alignment));
 
                     break;
 
@@ -32,7 +32,7 @@ namespace TankGame
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new BasicEliteEnemy(go, Constant.basicEliteEnemyHealth, Constant.basicEliteEnemyDamage,
-                            Constant.basicEliteEnemyMovementSpeed, Constant.basicEliteEnemyAttackRate,Constant.basicEliteEnemyAttackRadius ,type));
+                            Constant.basicEliteEnemyMovementSpeed, Constant.basicEliteEnemyAttackRate,Constant.basicEliteEnemyAttackRadius ,type, alignment));
 
                     break;
 
@@ -42,7 +42,7 @@ namespace TankGame
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new SwarmerEnemy(go, Constant.swarmerEnemyHealth, Constant.swarmerEnemyDamage,
-                            Constant.swarmerEnemyMovementSpeed, Constant.swarmerEnemyAttackRate, Constant.swarmerEnemyAttackRadius, type));
+                            Constant.swarmerEnemyMovementSpeed, Constant.swarmerEnemyAttackRate, Constant.swarmerEnemyAttackRadius, type, alignment));
 
                     break;
 
@@ -52,7 +52,7 @@ namespace TankGame
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new SiegebreakerEnemy(go, Constant.siegeBreakerEnemyHealth, Constant.siegeBreakerEnemyDamage,
-                            Constant.siegeBreakerEnemyMovementSpeed, Constant.siegeBreakerEnemyAttackRate, Constant.siegeBreakerEnemyAttackRadius, type));
+                            Constant.siegeBreakerEnemyMovementSpeed, Constant.siegeBreakerEnemyAttackRate, Constant.siegeBreakerEnemyAttackRadius, type, alignment));
 
                     break;
 
@@ -62,15 +62,15 @@ namespace TankGame
                     go.AddComponent(new Animator(go));
 
                     go.AddComponent(new Spitter(go, Constant.spitterHealth,
-                            Constant.spitterMovementSpeed, Constant.spitterAttackRate, Constant.spitterAttackRange, type, Constant.spitterBulletType,Constant.spitterSpread));
+                            Constant.spitterMovementSpeed, Constant.spitterAttackRate, Constant.spitterAttackRange, type, Constant.spitterBulletType,Constant.spitterSpread, alignment));
                     break;
 
                 default:
                     go.AddComponent(new BasicEnemy(go, Constant.basicEnemyHealth, Constant.basicEnemyDamage,
-                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate,Constant.basicEnemyAttackRadius, type));
+                            Constant.basicEnemyMovementSpeed, Constant.basicEnemyAttackRate,Constant.basicEnemyAttackRadius, type, alignment));
                     break;
             }
-            go.AddComponent(new Collider(go, Alignment.Enemy));
+            go.AddComponent(new Collider(go, alignment));
         }
 
 

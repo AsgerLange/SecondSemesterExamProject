@@ -41,13 +41,13 @@ namespace TankGame
 
         protected float shotTimeStamp; //when a vehicle last fired its weapon
         protected float builtTimeStamp; //when a vehicle last built a tower
-        public float goldTimeStamp; 
+        public float goldTimeStamp;
 
 
         protected float lootTimeStamp; // when a vehicle received loot
         private Crate latestLootCrate; //For displaying reward
         private float deathTimeStamp;
-        private static float muteTimeStamp;
+
 
         public int PlayerNumber { get; set; }
         public bool IsAlive { get; set; }
@@ -92,7 +92,6 @@ namespace TankGame
                     {
                         animator.PlayAnimation("Death");
                         IsAlive = false;
-                        health = 0;
                         PlayDeathSound();
                         isPlayingAnimation = true;
                     }
@@ -101,6 +100,7 @@ namespace TankGame
                         animator.PlayAnimation("Death"); //just in case
 
                     }
+                    health = 0;
                 }
                 else if (health > maxHealth)
                 {
@@ -197,11 +197,17 @@ namespace TankGame
         /// </summary>
         protected virtual void Die()
         {
-            this.health = maxHealth;
             deathTimeStamp = GameWorld.Instance.TotalGameTime;
             GameWorld.Instance.VehiclesToRemove.Add(this.GameObject);
             GameWorld.Instance.UpdatePlayerAmount();
             this.stats.PlayerDeathAmmount++;
+
+            lock (GameWorld.colliderKey)
+            {
+                GameWorld.Instance.Colliders.Remove((Collider)this.GameObject.GetComponent("Collider"));
+                ((Collider)GameObject.GetComponent("Collider")).DoCollsionChecks = false;
+
+            }
 
             if (this.stats.PlayerDeathAmmount >= Constant.maxDeaths && GameWorld.Instance.pvp)
             {
@@ -238,9 +244,9 @@ namespace TankGame
 
                 BuildTower(); //and building tower
 
-                ToggleMusic();
+
             }
-            
+
 
         }
 
@@ -303,7 +309,7 @@ namespace TankGame
         /// <summary>
         /// Spawns a tower on the vehicle's postition, if the spawn button is pressed and the vehicle has sufficient amount of money.
         /// </summary>
-        private void BuildTower()
+        protected virtual void BuildTower()
         {
             KeyboardState keyState = Keyboard.GetState();
 
@@ -397,7 +403,7 @@ namespace TankGame
         /// <param name="animationName"></param>
         public virtual void OnAnimationDone(string animationName)
         {
-            if ((animationName == "Shoot" || animationName == "ShootMachinegun" )&& IsAlive)
+            if ((animationName == "Shoot" || animationName == "ShootMachinegun") && IsAlive)
             {
                 isPlayingAnimation = false;
                 spriteRenderer.Offset = Vector2.Zero;
@@ -414,7 +420,7 @@ namespace TankGame
             }
             else if (IsAlive == false)
             {
-               animator.PlayAnimation("Death");
+                animator.PlayAnimation("Death");
                 isPlayingAnimation = true;
 
             }
@@ -499,7 +505,16 @@ namespace TankGame
             {
                 if (control == Controls.WASD)
                 {
-                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
+                    if (this is MonsterVehicle)
+                    {
+
+                        spriteBatch.DrawString(font, (this as MonsterVehicle).enemySpawner.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
+
+                    }
+                    else
+                    {
+                        spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(2, 2), Color.CornflowerBlue);
+                    }
                     spriteBatch.DrawString(font, "$" + money, new Vector2(2, 20), Color.CornflowerBlue);
                     spriteBatch.DrawString(font, weapon.ToString(), new Vector2(2, Constant.hight - 20), Color.CornflowerBlue);
                     spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(2, Constant.hight - 40), Color.CornflowerBlue);
@@ -507,7 +522,19 @@ namespace TankGame
                 }
                 else if (control == Controls.UDLR)
                 {
-                    spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, 2), Color.YellowGreen);
+                    if (this is MonsterVehicle)
+                    {
+                        string enemyTypeAndPrice = (this as MonsterVehicle).enemySpawner.ToString();
+
+                        spriteBatch.DrawString(font, enemyTypeAndPrice
+                            , new Vector2(Constant.width - font.MeasureString(enemyTypeAndPrice).X - 2, 2), Color.YellowGreen);
+
+                    }
+                    else
+                    {
+
+                        spriteBatch.DrawString(font, TowerPlacer.ToString(), new Vector2(Constant.width - font.MeasureString(TowerPlacer.ToString()).X - 2, 2), Color.YellowGreen);
+                    }
                     spriteBatch.DrawString(font, "$" + money, new Vector2(Constant.width - font.MeasureString(money + " $").X - 2, 20), Color.YellowGreen);
                     spriteBatch.DrawString(font, weapon.ToString(), new Vector2(Constant.width - font.MeasureString(weapon.ToString()).X - 2, Constant.hight - 20), Color.YellowGreen);
                     spriteBatch.DrawString(font, "HP: " + Health.ToString(), new Vector2(Constant.width - font.MeasureString("HP: " + Health.ToString()).X - 2, Constant.hight - 40), Color.YellowGreen);
@@ -526,8 +553,13 @@ namespace TankGame
             }
         }
 
+        /// <summary>
+        /// Used to show scores in pvp 
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawDeaths(SpriteBatch spriteBatch)
         {
+            // colors reversed because of points
             if (GameWorld.Instance.pvp)
             {
                 if (control == Controls.WASD)
@@ -615,24 +647,33 @@ namespace TankGame
         /// Respawns the vehicle
         /// </summary>
         public void Respawn(int playerNumber)
-        {          
+        {
+            this.health = maxHealth;
             animator.PlayAnimation("Idle");
             isPlayingAnimation = false;
             this.IsAlive = true;
-            GetBasicGun();
-            GameWorld.Instance.Colliders.Add((Collider)GameObject.GetComponent("Collider"));
-            GameWorld.Instance.VehiclesToRemove.Remove(this.GameObject);
-            GameWorld.Instance.UpdatePlayerAmount();
 
-            if (GameWorld.Instance.pvp==true)
+            GetBasicGun();
+            if (GameWorld.Instance.pvp == true)
             {
-                GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(75,Constant.width-75), GameWorld.Instance.Rnd.Next(75,Constant.hight-75));
+                GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, Constant.width - 100), GameWorld.Instance.Rnd.Next(100, Constant.hight - 100));
             }
             else
             {
-                GameObject.Transform.Position = new Vector2(Constant.width / 2, Constant.hight / 2);
+                GameObject.Transform.Position = new Vector2(Constant.width / 2, (Constant.hight / 2) - 1);
 
             }
+            this.Rotation = 0;
+            lock (GameWorld.colliderKey)
+            {
+
+                GameWorld.Instance.Colliders.Add((Collider)GameObject.GetComponent("Collider"));
+                ((Collider)GameObject.GetComponent("Collider")).DoCollsionChecks = true;
+            }
+
+            GameWorld.Instance.VehiclesToRemove.Remove(this.GameObject);
+            GameWorld.Instance.UpdatePlayerAmount();
+
 
             GameWorld.Instance.GameObjectsToAdd.Add(this.GameObject);
 
@@ -651,7 +692,7 @@ namespace TankGame
 
 
             //        (comp as Vehicle).Money = this.money;
-           // GameWorld.Instance.GameObjectsToAdd.Add(tmp);
+            // GameWorld.Instance.GameObjectsToAdd.Add(tmp);
             // GameWorld.Instance.VehiclesToRemove.Remove(this.GameObject);
             //    }
             //}
@@ -673,23 +714,6 @@ namespace TankGame
 
         }
 
-        private void ToggleMusic()
-        {
-            KeyboardState keyState = Keyboard.GetState();
-
-
-            if (keyState.IsKeyDown(Keys.M) && GameWorld.Instance.TotalGameTime > muteTimeStamp + 1 && GameWorld.Instance.MusicIsPlaying)
-            {
-                GameWorld.Instance.StopMusic();
-                muteTimeStamp = GameWorld.Instance.TotalGameTime;
-            }
-            else if (keyState.IsKeyDown(Keys.M) && GameWorld.Instance.TotalGameTime > muteTimeStamp + 1 && GameWorld.Instance.MusicIsPlaying == false)
-            {
-                GameWorld.Instance.PlayBackgroundSong();
-                muteTimeStamp = GameWorld.Instance.TotalGameTime;
-
-            }
-        }
         protected virtual void PlayDeathSound()
         {
             vehicleDeathSound.Play(1f, 0f, 0);

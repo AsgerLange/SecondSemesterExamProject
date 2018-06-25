@@ -581,13 +581,15 @@ namespace TankGame
         /// </summary>
         public void Draw(SpriteBatch spriteBatch)
         {
+            DrawUnlocksFromSession(spriteBatch);
+
             spriteBatch.Draw(BackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             if (scoreSaved == false && nameEntered == false)
             {
-                string nameText = "Enter your Name Here";
-                spriteBatch.DrawString(font, nameText, new Vector2(textBox.X + 5, textBox.Y - 50), Color.Black);//Draws the text
+                string nameText = "Enter your Name Here and press ENTER";
+                spriteBatch.DrawString(font, nameText, new Vector2(textBox.X -45, textBox.Y - 50), Color.Gold);//Draws the text
                 spriteBatch.Draw(theBox, new Vector2(textBox.X - 5, textBox.Y - 15), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
-                spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Black);//Draws the text
+                spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Gold);//Draws the text
             }
             if (scoreSaved && nameEntered && scoresLoaded)
             {//HigscoreScreen
@@ -600,6 +602,21 @@ namespace TankGame
                 }
             }
         }
+
+
+        private void DrawUnlocksFromSession(SpriteBatch spriteBatch)
+        {
+            if (scoreSaved && nameEntered && scoresLoaded)
+            {
+
+                if (GameWorld.Instance.GetSpawn.Wave >= 20 && GameWorld.Instance.GetMenu.monsterUnlocked == false)
+                {
+                    spriteBatch.DrawString(font, "+NEW VEHICLE UNLOCKED: SIEGEBREAKER!", new Vector2(Constant.width / 2 - 160, Constant.hight - 90), Color.Gold);
+
+                }
+            }
+        }
+
 
         /// <summary>
         /// Helps to split up text if the text lenght is bigger than the box lenght

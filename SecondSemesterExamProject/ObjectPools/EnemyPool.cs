@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +59,7 @@ namespace TankGame
             }
             enemyPoolThread.Start();
         }
-       
+
 
         /// <summary>
         /// keeps the enemies updated
@@ -146,7 +147,7 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="enemyType"></param>
         /// <returns></returns>
-        public GameObject CreateEnemy(Vector2 position, EnemyType enemyType)
+        public GameObject CreateEnemy(Vector2 position, EnemyType enemyType, Alignment alignment)
         {
             if (enemiesWaitingToBeSpawned.Count > 0 && activeEnemies.Count < Constant.maxEnemyOnScreen)
             {
@@ -167,11 +168,13 @@ namespace TankGame
 
                     lock (GameWorld.colliderKey)
                     {
-                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+                        ((Collider)tmp.GetComponent("Collider")).GetAlignment = alignment;
+
                         GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
+                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
                     }
 
-                    AddEnemy(tmp);
+                    AddEnemy(tmp, alignment);
                 }
             }
             if (inActiveEnemies.Count > 0 &&
@@ -187,6 +190,7 @@ namespace TankGame
                         {
                             if (comp is Enemy)
                             {
+
                                 if (((Enemy)comp).GetEnemyType == enemyType)
                                 {
                                     tmp = en;
@@ -202,7 +206,6 @@ namespace TankGame
                 }
                 if (tmp != null)
                 {
-                    ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
 
                     inActiveEnemies.Remove(tmp);
 
@@ -210,19 +213,22 @@ namespace TankGame
 
                     lock (GameWorld.colliderKey)
                     {
+                        ((Collider)tmp.GetComponent("Collider")).GetAlignment = alignment;
+                        ((Collider)tmp.GetComponent("Collider")).DoCollsionChecks = true;
+
                         GameWorld.Instance.Colliders.Add((Collider)tmp.GetComponent("Collider"));
                     }
                     tmp.Transform.Position = position;
 
-                    AddEnemy(tmp);
+                    AddEnemy(tmp, alignment);
 
                     return tmp;
                 }
                 else
                 {
-                    tmp = GameObjectDirector.Instance.Construct(position, enemyType);
+                    tmp = GameObjectDirector.Instance.Construct(position, enemyType, alignment);
 
-                    AddEnemy(tmp);
+                    AddEnemy(tmp, alignment);
 
 
                     return tmp;
@@ -233,9 +239,9 @@ namespace TankGame
             {
                 GameObject tmp;
 
-                tmp = GameObjectDirector.Instance.Construct(position, enemyType);
+                tmp = GameObjectDirector.Instance.Construct(position, enemyType, alignment);
 
-                AddEnemy(tmp);
+                AddEnemy(tmp, alignment);
 
 
                 return tmp;
@@ -279,29 +285,40 @@ namespace TankGame
                     tmp.IsAlive = true;
                     tmp.CanRelease = true;
                     tmp.CanAttackPlane = false;
+                    tmp.playerSpawned = false;
+
                     if (component is BasicEnemy)
                     {
                         tmp.Health = Constant.basicEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEnemyMovementSpeed;
+
                     }
 
                     if (component is BasicEliteEnemy)
                     {
                         tmp.Health = Constant.basicEliteEnemyHealth;
+                        tmp.MovementSpeed = Constant.basicEliteEnemyMovementSpeed;
                     }
 
                     if (component is SwarmerEnemy)
                     {
                         tmp.Health = Constant.swarmerEnemyHealth;
+                        tmp.MovementSpeed = Constant.swarmerEnemyMovementSpeed;
+
                     }
 
                     if (component is SiegebreakerEnemy)
                     {
                         tmp.Health = Constant.siegeBreakerEnemyHealth;
+                        tmp.MovementSpeed = Constant.siegeBreakerEnemyMovementSpeed;
+
                     }
 
                     if (component is Spitter)
                     {
                         tmp.Health = Constant.spitterHealth;
+                        tmp.MovementSpeed = Constant.spitterMovementSpeed;
+
                         tmp.CanAttackPlane = true;
                     }
 
@@ -334,8 +351,39 @@ namespace TankGame
         /// Adds the enemy to the queue or to the game depending on how many is in game already
         /// </summary>
         /// <param name="tmp"></param>
-        private void AddEnemy(GameObject tmp)
+        private void AddEnemy(GameObject tmp, Alignment alignment)
         {
+
+            bool spitter = false;
+            bool playerSpawned = false;
+
+
+            foreach (Component comp in tmp.GetComponentList)
+            {
+                if (comp is Enemy)
+                {
+                    playerSpawned = (comp as Enemy).playerSpawned;
+                    (comp as Enemy).Alignment = alignment;
+
+
+                }
+                if (comp is Spitter)
+                {
+                    spitter = true;
+                    break;
+                }
+            }
+
+            if (spitter == false && playerSpawned == false)
+            {
+                ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Red;
+            }
+            else
+            {
+                ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SpitterEnemy");
+
+            }
+
             lock (activeKey)
             {
                 if (activeEnemies.Count < Constant.maxEnemyOnScreen)

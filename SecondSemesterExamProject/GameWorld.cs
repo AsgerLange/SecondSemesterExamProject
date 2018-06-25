@@ -53,6 +53,7 @@ namespace TankGame
         public Texture2D backGround;
         public Rectangle screenSize;
         private Texture2D pvpBackGround;
+        private float muteTimeStamp;
 
         public GameOver GetGameOver
         {
@@ -309,6 +310,7 @@ namespace TankGame
                 score.Update(gameTime);
             }
 
+            ToggleMusic();
             base.Update(gameTime);
         }
 
@@ -540,6 +542,27 @@ namespace TankGame
         {
             MediaPlayer.Stop();
             MusicIsPlaying = false;
+        }
+
+        private void ToggleMusic()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+
+            if (keyState.IsKeyDown(Keys.M) && TotalGameTime > muteTimeStamp + 1 && MusicIsPlaying == false ||
+                keyState.IsKeyDown(Keys.M) && MusicIsPlaying == false &&
+                (gameState == GameState.Menu || gameState == GameState.GameOver || gameState == GameState.Score))
+            {
+                PlayBackgroundSong();
+                muteTimeStamp = TotalGameTime;
+            }
+            else if (keyState.IsKeyDown(Keys.M) && TotalGameTime > muteTimeStamp + 1 && Instance.MusicIsPlaying
+                || (keyState.IsKeyDown(Keys.N) && MusicIsPlaying && (gameState == GameState.Menu || gameState == GameState.GameOver || gameState == GameState.Score)))
+            {
+                StopMusic();
+                muteTimeStamp = TotalGameTime;
+
+            }
         }
     }
 }

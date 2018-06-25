@@ -10,8 +10,8 @@ namespace TankGame
 {
     class Melee : Enemy
     {
-        public Melee(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType) 
-            : base(gameObject, health, damage, movementSpeed, attackRate,attackRange, enemyType)
+        public Melee(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, Alignment alignment)
+            : base(gameObject, health, damage, movementSpeed, attackRate, attackRange, enemyType, alignment)
         {
         }
 
@@ -30,9 +30,12 @@ namespace TankGame
         /// <param name="other"></param>
         protected override void InteractionOnCollision(Collider other)
         {
-            if (other.GetAlignment != Alignment.Neutral)
+
+            Collider thisCollider = (Collider)GameObject.GetComponent("Collider");
+
+            if (other.GetAlignment != thisCollider.GetAlignment)
             {
-                if (other.GetAlignment == Alignment.Friendly)
+                if (other.GetAlignment != Alignment.Neutral)
                 {
                     CheckIfCanAttack(other);
                 }
@@ -63,9 +66,27 @@ namespace TankGame
                             break;
                         }
 
+                        if ((component is Enemy && (component as Enemy).Health > 0))
+                        {
+                            AttackEnemy(component as Enemy);
+
+                            break;
+                        }
                     }
                 }
 
+            }
+
+        }
+        protected override void FollowHQ()
+        {
+            if (playerSpawned)
+            {
+                targetGameObject = vehicleWhoSpawnedIt.GameObject;
+            }
+            else
+            {
+                base.FollowHQ();
             }
 
         }
@@ -76,12 +97,16 @@ namespace TankGame
         protected virtual void AttackTower(Tower tower)
         {
             tower.Health -= damage;  //damage Tower
-            
+
             if (attackVariation > 2)//Adds animation variation
             {
                 attackVariation = 1;
             }
-            animator.PlayAnimation("Attack" + attackVariation);
+            if (isAlive)
+            {
+                animator.PlayAnimation("Attack" + attackVariation);
+            }
+
             attackVariation++;
             attackTimeStamp = GameWorld.Instance.TotalGameTime;
 
@@ -98,8 +123,26 @@ namespace TankGame
             {
                 attackVariation = 1;
             }
+            if (isAlive)
+            {
+                animator.PlayAnimation("Attack" + attackVariation);
+            }
+            attackVariation++;
 
-            animator.PlayAnimation("Attack" + attackVariation);
+            attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack
+        }
+        protected virtual void AttackEnemy(Enemy enemy)
+        {
+            enemy.Health -= damage; // damage vehicle
+
+            if (attackVariation > 2)//Adds animation variation
+            {
+                attackVariation = 1;
+            }
+            if (isAlive)
+            {
+                animator.PlayAnimation("Attack" + attackVariation);
+            }
             attackVariation++;
 
             attackTimeStamp = GameWorld.Instance.TotalGameTime; //determines the next time an enemy can attack

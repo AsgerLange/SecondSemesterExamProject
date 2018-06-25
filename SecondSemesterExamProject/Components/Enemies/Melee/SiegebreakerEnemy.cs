@@ -19,8 +19,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="attackRate"></param>
-        public SiegebreakerEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType) 
-            : base(gameObject, health, damage, movementSpeed, attackRate,attackRange, enemyType)
+        public SiegebreakerEnemy(GameObject gameObject, int health, int damage, float movementSpeed, float attackRate,float attackRange, EnemyType enemyType, Alignment alignment) 
+            : base(gameObject, health, damage, movementSpeed, attackRate,attackRange, enemyType, alignment)
         {
 
         }
