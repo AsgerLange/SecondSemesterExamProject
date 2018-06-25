@@ -398,7 +398,7 @@ namespace TankGame
                 {
 
                     
-                    if ((this as MonsterBullet).hasHit == true)
+                    if ((this as MonsterBullet).hasHit == false)
                     {
 
                         shooter.Stats.BulletsMissed++;
