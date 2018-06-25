@@ -96,7 +96,17 @@ namespace TankGame
         /// <param name="tower">Targeted Tower component</param>
         protected virtual void AttackTower(Tower tower)
         {
+
+            if (playerSpawned)
+            {
+                tower.Health -= damage*3;  //damage Tower
+
+            }
+            else
+            {
             tower.Health -= damage;  //damage Tower
+
+            }
 
             if (attackVariation > 2)//Adds animation variation
             {
@@ -117,7 +127,16 @@ namespace TankGame
         /// <param name="vehicle">Targeted vehicle component</param>
         protected virtual void AttackVehicle(Vehicle vehicle)
         {
-            vehicle.Health -= damage; // damage vehicle
+            if(playerSpawned)
+            {
+                vehicle.Health -= damage * 3; // damage vehicle
+
+            }
+            else
+            {
+
+                vehicle.Health -= damage; // damage vehicle
+            }
 
             if (attackVariation > 2)//Adds animation variation
             {
@@ -133,7 +152,16 @@ namespace TankGame
         }
         protected virtual void AttackEnemy(Enemy enemy)
         {
-            enemy.Health -= damage; // damage vehicle
+            if (playerSpawned)
+            {
+                enemy.Health -= damage*3; // damage vehicle
+
+            }
+            else
+            {
+
+                enemy.Health -= damage; // damage vehicle
+            }
 
             if (attackVariation > 2)//Adds animation variation
             {

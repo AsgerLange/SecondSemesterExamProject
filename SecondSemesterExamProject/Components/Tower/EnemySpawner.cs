@@ -47,31 +47,31 @@ namespace TankGame
 
         public void SpawnEnemy()
         {
-            if (vehicle.Money>=EnemyBuildCost)
+            if (vehicle.Money >= EnemyBuildCost)
             {
 
 
-            GameObject tmp;
-            if (vehicle.Control == Controls.WASD)
-            {
-                tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 10),
-                    enemyType, vehicle.alignment);
+                GameObject tmp;
+                if (vehicle.Control == Controls.WASD)
+                {
+                    tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 10),
+                        enemyType, vehicle.alignment);
 
-            }
-            else
-            {
+                }
+                else
+                {
 
-                tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 10),
-                   enemyType, vehicle.alignment);
+                    tmp = EnemyPool.Instance.CreateEnemy(new Vector2(vehicle.GameObject.Transform.Position.X, vehicle.GameObject.Transform.Position.Y + 10),
+                       enemyType, vehicle.alignment);
 
 
-            }
-            vehicle.EnemyCount++;
+                }
+                vehicle.EnemyCount++;
 
-            SetupEnemy(tmp);
+                SetupEnemy(tmp);
 
-            vehicle.Money -= EnemyBuildCost;
-            builtTimeStamp = GameWorld.Instance.TotalGameTime;
+                vehicle.Money -= EnemyBuildCost;
+                builtTimeStamp = GameWorld.Instance.TotalGameTime;
             }
         }
 
@@ -82,26 +82,26 @@ namespace TankGame
             foreach (Component comp in tmp.GetComponentList)
             {
                 if (comp is Enemy)
-                {                 
+                {
                     (comp as Enemy).VehicleWhoSpawnedIt = vehicle;
                     (comp as Enemy).playerSpawned = true;
                     (comp as Enemy).AttackRange = (comp as Enemy).AttackRange * 1.5f;
 
-                    if (comp is SiegebreakerEnemy)
+                    if (comp is SiegebreakerEnemy || comp is BasicEliteEnemy)
                     {
-                        (comp as Enemy).Health = Constant.siegeBreakerEnemyHealth / 3;
-                        break;
+                        (comp as Enemy).Health = (comp as Enemy).Health / 3;
+
                     }
-                    if (comp is BasicEliteEnemy)
+                    else
                     {
-                        (comp as Enemy).Health = Constant.basicEliteEnemyHealth / 2;
+                        (comp as Enemy).Health = (comp as Enemy).Health / 2;
                     }
 
                     if (comp is Spitter)
                     {
                         spitter = true;
-                        break;
                     }
+                    break;
 
                 }
 
@@ -185,7 +185,7 @@ namespace TankGame
 
         public override string ToString()
         {
-            return enemyType.ToString() + ":  $" + enemyBuildCost +"     "+vehicle.EnemyCount+" / "+Constant.spawnedEnemyMaxAmount;
+            return enemyType.ToString() + ":  $" + enemyBuildCost + "     " + vehicle.EnemyCount + " / " + Constant.spawnedEnemyMaxAmount;
         }
     }
 }
