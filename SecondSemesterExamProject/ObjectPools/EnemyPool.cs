@@ -415,20 +415,14 @@ namespace TankGame
             
             lock (activeKey)
             {
-
-                foreach (GameObject enemy in activeEnemies)
-                {
-                    foreach (Component comp in enemy.GetComponentList)
-                    {
-                        if (comp is Enemy)
-                        {
-                            (comp as Enemy).AttackTimeStamp = 0;
-                        }
-                    }
-                    releaseList.Add(enemy);
-                }
+                activeEnemies.Clear();
+                
             }
+            lock (inActiveKey)
+            {
+                inActiveEnemies.Clear();
 
+            }
             enemyPoolThread = null;
             instance = null;
         }

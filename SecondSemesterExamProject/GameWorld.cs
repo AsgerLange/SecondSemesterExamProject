@@ -338,10 +338,10 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
-            {
-                GameOver();
-            }
+            //if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
+            //{
+            //    GameOver();
+            //}
         }
 
         private void Respawn()
