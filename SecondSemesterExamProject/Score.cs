@@ -32,6 +32,7 @@ namespace TankGame
         private List<Highscore> highscores = new List<Highscore>();
         #endregion
 
+        private List<Button> buttons = new List<Button>();
 
         public Score()
         {
@@ -98,6 +99,28 @@ namespace TankGame
             return returnList;
         }
 
+        private void CreateButtons()
+        {
+            if (scoreSaved && nameEntered)
+            {
+
+                Button MainMenuButton = new Button(new Vector2(Constant.width-225,Constant.hight-100), Constant.RedButtonTexture, Constant.buttonFont)
+                {
+                    Text = "Main Menu"
+                };
+                MainMenuButton.PenColour = Color.Gold;
+                MainMenuButton.click += MainMenuButton_click;
+                MainMenuButton.LoadContent(GameWorld.Instance.Content);
+                buttons.Add(MainMenuButton);
+            }
+        }
+
+        private void MainMenuButton_click(object sender, EventArgs e)
+        {
+
+            GameWorld.Instance.ShouldRestart = true;
+        }
+
         /// <summary>
         /// Creates the tables
         /// </summary>
@@ -126,6 +149,18 @@ namespace TankGame
         /// </summary>
         public virtual void Update(GameTime gameTime)
         {
+            CreateButtons();
+
+            if (buttons.Count > 0)
+            {
+                foreach (Button button in buttons)
+                {
+                    button.Update();
+                }
+            }
+
+
+
             if (scoreSaved == false && nameEntered == false)
             {
                 KeyboardState keyboardState = Keyboard.GetState();//Gets the state
@@ -157,6 +192,7 @@ namespace TankGame
                 {
                     LoadScoreToScreen();
                 }
+               
             }
         }
         /// <summary>
@@ -573,6 +609,10 @@ namespace TankGame
             {
                 HS.LoadContent(content);
             }
+            foreach (Button but in buttons)
+            {
+                but.LoadContent(content);
+            }
             parsedText = ParseText(name);
         }
 
@@ -583,11 +623,19 @@ namespace TankGame
         {
             DrawUnlocksFromSession(spriteBatch);
 
+            if (buttons.Count > 0)
+            {
+                foreach (Button button in buttons)
+                {
+                    button.Draw(spriteBatch);
+                }
+            }
+
             spriteBatch.Draw(BackGround, new Rectangle(0, 0, Constant.width, Constant.hight), null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             if (scoreSaved == false && nameEntered == false)
             {
                 string nameText = "Enter your Name Here and press ENTER";
-                spriteBatch.DrawString(font, nameText, new Vector2(textBox.X -45, textBox.Y - 50), Color.Gold);//Draws the text
+                spriteBatch.DrawString(font, nameText, new Vector2(textBox.X - 45, textBox.Y - 50), Color.Gold);//Draws the text
                 spriteBatch.Draw(theBox, new Vector2(textBox.X - 5, textBox.Y - 15), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);//Draws the box
                 spriteBatch.DrawString(font, ParseText(name), new Vector2(textBox.X + 5, textBox.Y), Color.Gold);//Draws the text
             }

@@ -249,6 +249,7 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(titleFont, title, titlePos, Color.LightSteelBlue, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+
             if (buttons.Count > 0)
             {
                 foreach (Button but in buttons)
@@ -312,6 +313,7 @@ namespace TankGame
 
                 //Creates the new spawner that spawns the waves
                 GameWorld.Instance.GetSpawn = new Spawn(Constant.width, Constant.hight);
+
 
 
             }

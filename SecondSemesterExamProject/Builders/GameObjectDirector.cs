@@ -120,5 +120,10 @@ namespace TankGame
 
             return lootCrateBuilder.GetResult(); //returns the vehicle that has been build
         }
+
+        public void Restart()
+        {
+            instance = null;
+        }
     }
 }
