@@ -85,7 +85,7 @@ namespace TankGame
         /// </summary>
         private void Update()
         {
-            while (GameWorld.Instance.gameRunning)
+            while (GameWorld.Instance.gameRunning && GameWorld.Instance.GetGameState!= GameState.GameOver)
             {
                 GameWorld.barrier.SignalAndWait(); //Waits for the other threads
 
@@ -400,6 +400,21 @@ namespace TankGame
             {
                 Stats.SpitterBulletCounter++;
             }
+        }
+
+        public void Restart()
+        {
+            lock (activeListKey)
+            {
+
+            foreach (GameObject go in ActiveBullets)
+            {
+                    releaseList.Add(go);
+            }
+            }
+
+            bulletPoolThread = null;
+            instance = null;
         }
     }
 }

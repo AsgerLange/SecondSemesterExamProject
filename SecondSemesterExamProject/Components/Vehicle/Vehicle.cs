@@ -95,11 +95,7 @@ namespace TankGame
                         PlayDeathSound();
                         isPlayingAnimation = true;
                     }
-                    else
-                    {
-                        animator.PlayAnimation("Death"); //just in case
-
-                    }
+                    
                     health = 0;
                 }
                 else if (health > maxHealth)
@@ -286,6 +282,7 @@ namespace TankGame
 
                     weapon.Shoot(alignment, Rotation); //Fires the weapon
 
+                  
 
                     if (weapon is MachineGun)
                     {
@@ -418,12 +415,13 @@ namespace TankGame
                 animator.PlayAnimation("Idle");
 
             }
-            else if (IsAlive == false)
-            {
-                animator.PlayAnimation("Death");
-                isPlayingAnimation = true;
 
-            }
+            //else if (IsAlive == false)
+            //{
+            //    animator.PlayAnimation("Death");
+            //    isPlayingAnimation = true;
+
+            //}
 
         }
 

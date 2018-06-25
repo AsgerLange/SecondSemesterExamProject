@@ -57,7 +57,10 @@ namespace TankGame
                     IsBackground = true
                 };
             }
+
             enemyPoolThread.Start();
+
+
         }
 
 
@@ -405,6 +408,28 @@ namespace TankGame
                     enemiesWaitingToBeSpawned.Enqueue(tmp);
                 }
             }
+        }
+
+        public void Restart()
+        {
+            //lock (activeKey)
+            //{
+            //    foreach (GameObject go in activeEnemies)
+            //    {
+            //        releaseList.Add(go);
+            //    }
+            //}
+            lock (activeKey)
+            {
+
+                foreach (GameObject enemy in activeEnemies)
+                {
+                    releaseList.Add(enemy);
+                }
+            }
+
+            enemyPoolThread = null;
+            instance = null;
         }
     }
 }
