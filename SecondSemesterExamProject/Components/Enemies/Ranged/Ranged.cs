@@ -153,7 +153,6 @@ namespace TankGame
         {
             if (playerSpawned)
             {
-
                 if (vehicleWhoSpawnedIt.Control == Controls.WASD)
                 {
                     ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Cyan;

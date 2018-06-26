@@ -259,6 +259,7 @@ namespace TankGame
 
                     tmp.DirRotation = 0;
                     tmp.IsRotated = false;
+                    (component as Bullet).SpriteRenderer.color = Color.White;
 
                     if (component is BasicBullet)
                     {

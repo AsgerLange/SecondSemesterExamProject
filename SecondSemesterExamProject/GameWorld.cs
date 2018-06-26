@@ -569,11 +569,6 @@ namespace TankGame
                 VehiclesToRemove.Clear();
                 gameObjectsToAdd.Clear();
 
-                //foreach (GameObject go in gameObjects)
-                //{
-                //    GameObjectsToRemove.Add(go);
-                //}
-                // this.gameState = GameState.Menu;
                 ShouldRestart = false;
                 gameRunning = true;
                 Initialize();

@@ -638,6 +638,18 @@ namespace TankGame
             {
                 isInside = true;
             }
+            else
+            {
+                foreach (Component comp in gameObject.GetComponentList)
+                {
+                    if (comp is Vehicle)
+                    {
+                        isInside = true;
+                        break;
+                    }
+                }
+            }
+
 
             return isInside;
         }
