@@ -165,6 +165,8 @@ namespace TankGame
             }
         }
 
+        public bool ShouldRestart { get; set; }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -264,6 +266,9 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            ToggleMusic();
+            ManualGameover();
+
             if (gameState == GameState.Menu)
             {
                 menu.Update();
@@ -303,14 +308,18 @@ namespace TankGame
             else if (gameState == GameState.GameOver)
             {
                 gameOver.Update();
+
+                Restart();
+
             }
             else if (gameState == GameState.Score)
             {
                 //handles score funktions
                 score.Update(gameTime);
+
+                Restart();
             }
 
-            ToggleMusic();
             base.Update(gameTime);
         }
 
@@ -329,10 +338,10 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
-            {
-                GameOver();
-            }
+            //if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
+            //{
+            //    GameOver();
+            //}
         }
 
         private void Respawn()
@@ -525,7 +534,52 @@ namespace TankGame
         /// </summary>
         public void GameOver()
         {
+            gameRunning = false;
             this.gameState = GameState.GameOver;
+
+        }
+
+        public void Restart()
+        {
+            if (ShouldRestart == true)
+            {
+                Stats.Reset();
+                Score.name = "";
+                score = null;
+                menu = null;
+                gameOver = null;
+                spawner = null;
+
+                pvp = false;
+                lock (colliderKey)
+                {
+                    colliders.Clear();
+
+                }
+                playerAmount = 0;
+                EnemyPool.Instance.Restart();
+                BulletPool.Instance.Restart();
+                GameObjectDirector.Instance.Restart();
+
+                towerAmount = 0;
+                totalGameTime = 0;
+
+                gameObjects.Clear();
+                vehicles.Clear();
+                VehiclesToRemove.Clear();
+                gameObjectsToAdd.Clear();
+
+                //foreach (GameObject go in gameObjects)
+                //{
+                //    GameObjectsToRemove.Add(go);
+                //}
+                // this.gameState = GameState.Menu;
+                ShouldRestart = false;
+                gameRunning = true;
+                Initialize();
+            }
+
+
         }
 
         /// <summary>
@@ -562,6 +616,40 @@ namespace TankGame
                 StopMusic();
                 muteTimeStamp = TotalGameTime;
 
+            }
+        }
+        private void ManualGameover()
+        {
+            if (gameState == GameState.Game)
+            {
+
+                KeyboardState keyState = Keyboard.GetState();
+
+                //if the player is pressing the "Shoot" button
+                if (keyState.IsKeyDown(Keys.Escape))
+                {
+                    if (pvp)
+                    {
+
+                        GameOver();
+                    }
+                    else
+                    {
+                        if (gameObjects.Count > 0)
+                        {
+                            foreach (GameObject go in gameObjects)
+                            {
+                                if (go.GetComponent("HQ") is HQ)
+                                {
+                                    ((HQ)go.GetComponent("HQ")).Health = 0;
+                                    break;
+
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
         }
     }

@@ -22,7 +22,7 @@ namespace TankGame
             this.attackRange = attackRange;
             this.spread = spread;
         }
-   
+
         /// <summary>
         /// Creates the animations
         /// </summary>
@@ -56,11 +56,16 @@ namespace TankGame
         /// </summary>
         public override void AI()
         {
-            if (isAttacking == false)
+            if (isAttacking == false || IsInsideScreen(GameObject) == false)
             {
                 base.AI();
             }
-            Shoot();
+            if (IsInsideScreen(GameObject))
+            {
+                Shoot();
+
+            }
+            
         }
 
         protected virtual void Shoot()
@@ -94,7 +99,7 @@ namespace TankGame
                         }
                         if (comp is Tower)
                         {
-                            if ((comp as Tower).Health>0)
+                            if ((comp as Tower).Health > 0)
                             {
                                 targetIsAlive = true;
                             }
@@ -118,6 +123,7 @@ namespace TankGame
                             bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
 
                         ChangeColorOnBullet(tmp);
+                        ChangeDamageIfPlayerSpawned(tmp);
 
                         if (attackVariation > 2)//Adds animation variation
                         {
@@ -126,6 +132,7 @@ namespace TankGame
                         if (isAlive)
                         {
                             animator.PlayAnimation("Attack" + attackVariation);
+                            isPlayingAnimation = true;
                         }
 
                         attackVariation++;
@@ -146,6 +153,7 @@ namespace TankGame
         {
             if (playerSpawned)
             {
+
                 if (vehicleWhoSpawnedIt.Control == Controls.WASD)
                 {
                     ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Cyan;
@@ -170,7 +178,20 @@ namespace TankGame
         {
             base.OnAnimationDone(animationName);
         }
+        private void ChangeDamageIfPlayerSpawned(GameObject tmp)
+        {
+            if (playerSpawned)
+            {
+                foreach (Component comp in tmp.GetComponentList)
+                {
+                    if (comp is Bullet)
+                    {
+                        (comp as Bullet).BulletDamage = (comp as Bullet).BulletDamage * 3;
 
+                    }
+                }
+            }
+        }
         /// <summary>
         /// handles what the enemy does
         /// </summary>
@@ -186,5 +207,7 @@ namespace TankGame
         {
             base.Die();
         }
+
+      
     }
 }

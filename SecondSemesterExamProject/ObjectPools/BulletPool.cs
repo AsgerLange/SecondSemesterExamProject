@@ -85,11 +85,11 @@ namespace TankGame
         /// </summary>
         private void Update()
         {
-            while (GameWorld.Instance.gameRunning)
+            while (GameWorld.Instance.gameRunning && GameWorld.Instance.GetGameState != GameState.GameOver)
             {
                 GameWorld.barrier.SignalAndWait(); //Waits for the other threads
 
-                lock (activeListKey) 
+                lock (activeListKey)
                 {
                     foreach (var go in ActiveBullets)
                     {
@@ -181,7 +181,8 @@ namespace TankGame
                     }
                     tmp.Transform.Position = gameObject.Transform.Position;
 
-                    lock (activeListKey)                    {
+                    lock (activeListKey)
+                    {
 
                         activeBullets.Add(tmp);
                     }
@@ -400,6 +401,21 @@ namespace TankGame
             {
                 Stats.SpitterBulletCounter++;
             }
+        }
+
+        public void Restart()
+        {
+            lock (activeListKey)
+            {
+                activeBullets.Clear();
+            }
+            lock (inActiveKey)
+            {
+                inActiveBullets.Clear();
+            }
+
+            bulletPoolThread = null;
+            instance = null;
         }
     }
 }

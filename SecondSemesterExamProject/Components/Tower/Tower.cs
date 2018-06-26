@@ -304,7 +304,7 @@ namespace TankGame
 
         private void Deploy()
         {
-            if (GameWorld.Instance.TotalGameTime > spawnTimeStamp + 2 && GameObject.Transform.canMove == true)
+            if (GameWorld.Instance.TotalGameTime > spawnTimeStamp + 1 && GameObject.Transform.canMove == true)
             {
                 GameObject.Transform.canMove = false;
             }
