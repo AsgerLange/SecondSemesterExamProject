@@ -46,7 +46,7 @@ namespace TankGame
                         isAlive = false;
                         if (dieSoundEffect != null)
                         {
-                            dieSoundEffect.Play();
+                            PlayDeathSound();
                         }
                         animator.PlayAnimation("Death");
                     }
@@ -327,6 +327,9 @@ namespace TankGame
             shootSound.Play(0.5f, 0, 0);
 
         }
-
+        protected virtual void PlayDeathSound()
+        {
+            dieSoundEffect.Play();
+        }
     }
 }

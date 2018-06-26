@@ -42,7 +42,14 @@ namespace TankGame
 
         private Button pvpButton;
 
+        public Texture2D PvpBackground { get; set; }
+        public Texture2D RegularBackground { get; set; }
 
+        public Texture2D MenuBackGround
+        {
+            get { return menuBackGround; }
+            set { menuBackGround = value; }
+        }
         public VehicleType P1
         {
             get { return p1; }
@@ -208,6 +215,7 @@ namespace TankGame
             };
             pvpButton.PenColour = Color.Gold;
             pvpButton.click += Pvp_click;
+            pvpButton.IsPvpButton = true;
             buttons.Add(pvpButton);
         }
 
@@ -289,7 +297,11 @@ namespace TankGame
             font = content.Load<SpriteFont>(Constant.buttonFont);
             titleFont = content.Load<SpriteFont>(Constant.titleFont);
             titlePos = new Vector2(Constant.width / 2 - titleFont.MeasureString(title).X / 2, 30);
+
             menuBackGround = content.Load<Texture2D>(Constant.menuBackGround);
+            PvpBackground = content.Load<Texture2D>("PvpBackGround");
+            RegularBackground = content.Load<Texture2D>(Constant.menuBackGround);
+
             p1ControlsImage = content.Load<Texture2D>(Constant.p1ControlImagePath);
             p2ControlsImage = content.Load<Texture2D>(Constant.p2ControlImagePath);
 

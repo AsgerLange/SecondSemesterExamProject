@@ -25,6 +25,7 @@ namespace TankGame
         public bool Clicked { get; private set; }
         public Color PenColour { get; set; }
         public Vector2 Position { get; set; }
+        public bool IsPvpButton { get; set; }
         public Rectangle Rectangle
         {
             get
@@ -63,9 +64,32 @@ namespace TankGame
                     click?.Invoke(this, new EventArgs());
                 }
             }
-            
+
+            ChangeBackGroundIfPvp();
         }
 
+        private void ChangeBackGroundIfPvp()
+        {
+            if (IsPvpButton)
+            {
+                if (Text != null)
+                {
+                    if (isHovering && Text.Contains("PVP"))
+                    {
+                        GameWorld.Instance.GetMenu.MenuBackGround = GameWorld.Instance.GetMenu.PvpBackground;
+                    }
+
+                    else if (isHovering == false && Text.Contains("PVP"))
+                    {
+                        if (GameWorld.Instance.GetMenu.MenuBackGround != GameWorld.Instance.backGround)
+                        {
+
+                            GameWorld.Instance.GetMenu.MenuBackGround = GameWorld.Instance.backGround;
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// draws the button
         /// </summary>

@@ -51,8 +51,8 @@ namespace TankGame
 
         //Background
         public Texture2D backGround;
+        public Texture2D pvpBackGround;
         public Rectangle screenSize;
-        private Texture2D pvpBackGround;
         private float muteTimeStamp;
 
         public GameOver GetGameOver
@@ -406,12 +406,12 @@ namespace TankGame
 
             foreach (Vehicle vehicle in vehicles)
             {
-                if (vehicle.IsAlive)
-                {
+                if (vehicle.IsAlive)                {
 
                     if (vehicle.goldTimeStamp + 0.3 <= totalGameTime)
                     {
                         vehicle.Money += 1;
+                        vehicle.Stats.TotalAmountOfGold += 1;
                         vehicle.goldTimeStamp = GameWorld.instance.TotalGameTime;
                     }
                 }

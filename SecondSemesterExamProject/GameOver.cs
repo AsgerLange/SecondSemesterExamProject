@@ -118,7 +118,16 @@ namespace TankGame
 
         private void DrawGameOver(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.Instance.backGround, GameWorld.Instance.screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            if (GameWorld.Instance.pvp)
+            {
+                spriteBatch.Draw(GameWorld.Instance.pvpBackGround, GameWorld.Instance.screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+            }
+            else
+            {
+                spriteBatch.Draw(GameWorld.Instance.backGround, GameWorld.Instance.screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+            }
 
             spriteBatch.DrawString(titleFont, "GameOver", new Vector2(Constant.width / 4, 2), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
         }
