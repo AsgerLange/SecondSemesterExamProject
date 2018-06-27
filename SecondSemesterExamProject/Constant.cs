@@ -87,16 +87,16 @@ namespace TankGame
         public static readonly float monsterMoveSpeed = 140;
         public static readonly int monsterHealth = 350;
         public static readonly float monsterRotateSpeed = 2.5f;
-        public static readonly int monsterStartGold = 1000 ;
+        public static readonly int monsterStartGold = 200 ;
         public static readonly int spawnedEnemyMaxAmount = 15; 
 
         public static readonly float monsterRegenRate = 0.5f; // seconds per life
 
-        public static readonly int basicEnemyCost = 20;
-        public static readonly int basicEliteCost = 40;
+        public static readonly int basicEnemyCost = 25;
+        public static readonly int basicEliteCost = 50;
         public static readonly int swarmerCost = 10;
-        public static readonly int spitterCost = 30;
-        public static readonly int siegeBreakerCost = 100;
+        public static readonly int spitterCost = 35;
+        public static readonly int siegeBreakerCost = 200;
 
 
 
