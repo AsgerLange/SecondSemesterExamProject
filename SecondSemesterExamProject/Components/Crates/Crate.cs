@@ -123,7 +123,7 @@ namespace TankGame
                         {
                             if (comp is Vehicle)
                             {
-                                if ((this is WeaponCrate) && comp is MonsterVehicle)
+                                if (((this is WeaponCrate) || (this is TowerCrate)) && comp is MonsterVehicle)
                                 {                                   
                                 }
                                 else
@@ -160,17 +160,22 @@ namespace TankGame
         {
             if (isAlive == true)
             {
-                bool isBullet = false;
+                bool push = true;
 
                 foreach (Component go in other.GameObject.GetComponentList)
                 {
                     if (go is Bullet)
                     {
-                        isBullet = true;
+                        push = false;
+                        break;
+                    }
+                    if (go is Enemy)
+                    {
+                        push = false;
                         break;
                     }
                 }
-                if (other.GetAlignment != Alignment.Enemy && isBullet == false || (other.GetAlignment == Alignment.Enemy && GameWorld.Instance.pvp && isBullet == false))
+                if (other.GetAlignment != Alignment.Enemy && push == true || (other.GetAlignment == Alignment.Enemy && GameWorld.Instance.pvp && push == true))
                 {
                     float force = Constant.pushForce;
                     Vector2 dir = GameObject.Transform.Position - other.GameObject.Transform.Position;

@@ -18,7 +18,7 @@ namespace TankGame
         /// </summary>
         public void Build()
         {
-            int random = GameWorld.Instance.Rnd.Next(0,6);
+            int random = GameWorld.Instance.Rnd.Next(0,7);
 
             switch (random)
             {
@@ -40,6 +40,9 @@ namespace TankGame
                 case 5:
                     type = CrateType.MoneyCrate;
                     break;
+                case 6:
+                    type = CrateType.HealthCrate;
+                    break;
 
                 default:
                     type = CrateType.HealthCrate;
@@ -48,8 +51,8 @@ namespace TankGame
             }
             go = new GameObject();
 
-            go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(Constant.width),
-                GameWorld.Instance.Rnd.Next(Constant.hight));
+            go.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, Constant.width - 100),
+                GameWorld.Instance.Rnd.Next(100, Constant.hight - 100));
 
             switch (type)
             {

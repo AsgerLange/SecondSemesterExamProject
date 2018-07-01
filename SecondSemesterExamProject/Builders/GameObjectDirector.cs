@@ -65,9 +65,9 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public GameObject Construct(Vector2 position, EnemyType type)
+        public GameObject Construct(Vector2 position, EnemyType type, Alignment alignment)
         {
-            enemyBuilder.Build(position, type);
+            enemyBuilder.Build(position, type, alignment);
 
             return enemyBuilder.GetResult(); //returns the bullet that has been build
         }
@@ -119,6 +119,11 @@ namespace TankGame
             lootCrateBuilder.Build();
 
             return lootCrateBuilder.GetResult(); //returns the vehicle that has been build
+        }
+
+        public void Restart()
+        {
+            instance = null;
         }
     }
 }

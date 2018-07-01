@@ -51,8 +51,9 @@ namespace TankGame
 
         //Background
         public Texture2D backGround;
+        public Texture2D pvpBackGround;
         public Rectangle screenSize;
-        private Texture2D pvpBackGround;
+        private float muteTimeStamp;
 
         public GameOver GetGameOver
         {
@@ -164,6 +165,8 @@ namespace TankGame
             }
         }
 
+        public bool ShouldRestart { get; set; }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -263,6 +266,9 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            ToggleMusic();
+            ManualGameover();
+
             if (gameState == GameState.Menu)
             {
                 menu.Update();
@@ -302,11 +308,16 @@ namespace TankGame
             else if (gameState == GameState.GameOver)
             {
                 gameOver.Update();
+
+                Restart();
+
             }
             else if (gameState == GameState.Score)
             {
                 //handles score funktions
                 score.Update(gameTime);
+
+                Restart();
             }
 
             base.Update(gameTime);
@@ -327,10 +338,10 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
-            {
-                GameOver();
-            }
+            //if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
+            //{
+            //    GameOver();
+            //}
         }
 
         private void Respawn()
@@ -395,12 +406,12 @@ namespace TankGame
 
             foreach (Vehicle vehicle in vehicles)
             {
-                if (vehicle.IsAlive)
-                {
+                if (vehicle.IsAlive)                {
 
                     if (vehicle.goldTimeStamp + 0.3 <= totalGameTime)
                     {
                         vehicle.Money += 1;
+                        vehicle.Stats.TotalAmountOfGold += 1;
                         vehicle.goldTimeStamp = GameWorld.instance.TotalGameTime;
                     }
                 }
@@ -523,7 +534,47 @@ namespace TankGame
         /// </summary>
         public void GameOver()
         {
+            gameRunning = false;
             this.gameState = GameState.GameOver;
+
+        }
+
+        public void Restart()
+        {
+            if (ShouldRestart == true)
+            {
+                Stats.Reset();
+                Score.name = "";
+                score = null;
+                menu = null;
+                gameOver = null;
+                spawner = null;
+
+                pvp = false;
+                lock (colliderKey)
+                {
+                    colliders.Clear();
+
+                }
+                playerAmount = 0;
+                EnemyPool.Instance.Restart();
+                BulletPool.Instance.Restart();
+                GameObjectDirector.Instance.Restart();
+
+                towerAmount = 0;
+                totalGameTime = 0;
+
+                gameObjects.Clear();
+                vehicles.Clear();
+                VehiclesToRemove.Clear();
+                gameObjectsToAdd.Clear();
+
+                ShouldRestart = false;
+                gameRunning = true;
+                Initialize();
+            }
+
+
         }
 
         /// <summary>
@@ -540,6 +591,61 @@ namespace TankGame
         {
             MediaPlayer.Stop();
             MusicIsPlaying = false;
+        }
+
+        private void ToggleMusic()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+
+            if (keyState.IsKeyDown(Keys.M) && TotalGameTime > muteTimeStamp + 1 && MusicIsPlaying == false ||
+                keyState.IsKeyDown(Keys.M) && MusicIsPlaying == false &&
+                (gameState == GameState.Menu || gameState == GameState.GameOver || gameState == GameState.Score))
+            {
+                PlayBackgroundSong();
+                muteTimeStamp = TotalGameTime;
+            }
+            else if (keyState.IsKeyDown(Keys.M) && TotalGameTime > muteTimeStamp + 1 && Instance.MusicIsPlaying
+                || (keyState.IsKeyDown(Keys.N) && MusicIsPlaying && (gameState == GameState.Menu || gameState == GameState.GameOver || gameState == GameState.Score)))
+            {
+                StopMusic();
+                muteTimeStamp = TotalGameTime;
+
+            }
+        }
+        private void ManualGameover()
+        {
+            if (gameState == GameState.Game)
+            {
+
+                KeyboardState keyState = Keyboard.GetState();
+
+                //if the player is pressing the "Shoot" button
+                if (keyState.IsKeyDown(Keys.Escape))
+                {
+                    if (pvp)
+                    {
+
+                        GameOver();
+                    }
+                    else
+                    {
+                        if (gameObjects.Count > 0)
+                        {
+                            foreach (GameObject go in gameObjects)
+                            {
+                                if (go.GetComponent("HQ") is HQ)
+                                {
+                                    ((HQ)go.GetComponent("HQ")).Health = 0;
+                                    break;
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
         }
     }
 }

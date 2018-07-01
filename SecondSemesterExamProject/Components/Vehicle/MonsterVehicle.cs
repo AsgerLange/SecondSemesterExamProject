@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,10 @@ namespace TankGame
     class MonsterVehicle : Vehicle
     {
         private float healTimeStamp;
+        public int EnemyCount = 0;
+        public EnemyType SpawnType { get; set; }
+
+        public EnemySpawner enemySpawner;
         /// <summary>
         /// Creates the tank
         /// </summary>
@@ -25,6 +30,7 @@ namespace TankGame
              TowerType tower, int playerNumber) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
         {
             this.vehicleType = VehicleType.MonsterVehicle;
+            enemySpawner = new EnemySpawner(this);
         }
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace TankGame
             animator.CreateAnimation("MoveShootForward", new Animation(5, 153, 0, 31, 51, 12, Vector2.Zero));
             animator.CreateAnimation("MoveShootBackward", new Animation(5, 153, 0, 31, 51, 12, Vector2.Zero));
             animator.CreateAnimation("Death", new Animation(7, 204, 0, 31, 51, 6, Vector2.Zero));
-           
+
 
 
         }
@@ -68,7 +74,7 @@ namespace TankGame
 
         private void RestoreHealth()
         {
-            if (healTimeStamp+ Constant.monsterRegenRate <= GameWorld.Instance.TotalGameTime)
+            if (healTimeStamp + Constant.monsterRegenRate <= GameWorld.Instance.TotalGameTime)
             {
                 Health += 1;
 
@@ -84,13 +90,118 @@ namespace TankGame
             base.OnAnimationDone(animationName);
         }
 
+        protected override void BuildTower()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (((keyState.IsKeyDown(Keys.LeftAlt) || (keyState.IsKeyDown(Keys.G))) && control == Controls.WASD)
+                 || ((keyState.IsKeyDown(Keys.OemPeriod) || (keyState.IsKeyDown(Keys.Back))) && control == Controls.UDLR))
+            {
+                if (enemySpawner.BuiltTimeStamp + Constant.buildTowerCoolDown <= GameWorld.Instance.TotalGameTime)
+                {
+                    if (Money >= enemySpawner.EnemyBuildCost && EnemyPool.Instance.ActiveEnemies.Count < Constant.maxEnemyOnScreen)
+                    {
+                        if (EnemyCount < Constant.spawnedEnemyMaxAmount)
+                        {
+                            enemySpawner.SpawnEnemy();
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
-        /// handles what the tank does
+        /// Spawns a swarmer 
         /// </summary>
-        public override void Update()
+        private void SpawnSwarmer()
+        {
+            //    GameObject tmp;
+            //    bool spitter = false;
+            //    if (control == Controls.WASD)
+            //    {
+            //        tmp = EnemyPool.Instance.CreateEnemy(new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y + 10),
+            //            EnemyType.Spitter, alignment, Color.Cyan);
+
+            //    }
+            //    else
+            //    {
+
+            //        tmp = EnemyPool.Instance.CreateEnemy(new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y + 10),
+            //            EnemyType.Spitter, alignment, Color.Lime);
+
+
+            //    }
+            //    EnemyCount++;
+            //    foreach (Component comp in tmp.GetComponentList)
+            //    {
+            //        if (comp is Enemy)
+            //        {
+
+            //            (comp as Enemy).AttackRange = (comp as Enemy).AttackRange * 1.5f;
+            //            (comp as Enemy).VehicleWhoSpawnedIt = this;
+            //            (comp as Enemy).playerSpawned = true;
+
+            //            if (comp is Spitter)
+            //            {
+            //                spitter = true;
+            //            }
+
+            //        }
+
+
+            //    }
+            //    //(comp as SpriteRenderer).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SwarmerBlank");
+
+            //    if (control == Controls.WASD && spitter == false)
+            //    {
+
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Cyan;
+
+            //    }
+            //    else if (control == Controls.WASD && spitter)
+            //    {
+
+
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SpitterBlue");
+
+            //    }
+            //    else if (control == Controls.UDLR && spitter == false)
+            //    {
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Lime;
+
+            //    }
+            //    else if (control == Controls.UDLR && spitter)
+            //    {
+
+            //        ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).Sprite = GameWorld.Instance.Content.Load<Texture2D>("SpitterGreen");
+
+            //    }
+
+            //    Money -= 10;
+            //    builtTimeStamp = GameWorld.Instance.TotalGameTime;
+        }
+
+
+    /// <summary>
+    /// handles what the tank does
+    /// </summary>
+    public override void Update()
         {
             RestoreHealth();
+
+            CheckIfToggleEnemy();
             base.Update();
+        }
+
+        private void CheckIfToggleEnemy()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            //if the player is pressing the "Shoot" button
+            if ((keyState.IsKeyDown(Keys.E) && control == Controls.WASD)
+                || (keyState.IsKeyDown(Keys.RightControl) && control== Controls.UDLR))
+            {
+                enemySpawner.ToggleEnemy();
+            }
         }
 
         /// <summary>
@@ -132,7 +243,7 @@ namespace TankGame
         }
         protected override void PlayDeathSound()
         {
-            vehicleDeathSound.Play(1f, -1f, 0);
+            vehicleDeathSound.Play(0.7f, -1f, 0);
         }
     }
 }

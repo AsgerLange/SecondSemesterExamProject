@@ -14,7 +14,7 @@ namespace TankGame
     {
         private bool checkedForUnlockables = false;
 
-        private bool monsterUnlocked = false;
+        public bool monsterUnlocked = false;
         private VehicleType p1 = VehicleType.Tank;
         private VehicleType p2 = VehicleType.None;
         private int p1TypeInt;
@@ -42,7 +42,14 @@ namespace TankGame
 
         private Button pvpButton;
 
+        public Texture2D PvpBackground { get; set; }
+        public Texture2D RegularBackground { get; set; }
 
+        public Texture2D MenuBackGround
+        {
+            get { return menuBackGround; }
+            set { menuBackGround = value; }
+        }
         public VehicleType P1
         {
             get { return p1; }
@@ -148,18 +155,23 @@ namespace TankGame
             return playerDraw;
         }
 
+        /// <summary>
+        /// Unlocks the MonsterVehicle, if any player has made it past wave 20.
+        /// </summary>
         private void UnlockMonsterVehicle()
         {
             if (monsterUnlocked == false && checkedForUnlockables == false)
             {
-                string command = "select wave from player ORDER BY wave desc;";
-                string collumn = "wave";
+                string command = "select wave from player where wave >= "+Constant.monsterVehicleUnlockWave +" limit 1;";
+                string returnCollumn = "wave";
+
                 List<int> output = new List<int>();
-                output = GameWorld.Instance.score.ReadFromDB(command, collumn, 1);
+
+                output = GameWorld.Instance.score.ReadFromDB(command, returnCollumn, 1);
 
                 foreach (int item in output)
                 {
-                    if (item >= 20)
+                    if (item >= Constant.monsterVehicleUnlockWave)
                     {
                         monsterUnlocked = true;
                         break;
@@ -203,6 +215,7 @@ namespace TankGame
             };
             pvpButton.PenColour = Color.Gold;
             pvpButton.click += Pvp_click;
+            pvpButton.IsPvpButton = true;
             buttons.Add(pvpButton);
         }
 
@@ -249,6 +262,7 @@ namespace TankGame
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(titleFont, title, titlePos, Color.LightSteelBlue, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
+
             if (buttons.Count > 0)
             {
                 foreach (Button but in buttons)
@@ -283,7 +297,11 @@ namespace TankGame
             font = content.Load<SpriteFont>(Constant.buttonFont);
             titleFont = content.Load<SpriteFont>(Constant.titleFont);
             titlePos = new Vector2(Constant.width / 2 - titleFont.MeasureString(title).X / 2, 30);
+
             menuBackGround = content.Load<Texture2D>(Constant.menuBackGround);
+            PvpBackground = content.Load<Texture2D>("PvpBackGround");
+            RegularBackground = content.Load<Texture2D>(Constant.menuBackGround);
+
             p1ControlsImage = content.Load<Texture2D>(Constant.p1ControlImagePath);
             p2ControlsImage = content.Load<Texture2D>(Constant.p2ControlImagePath);
 
@@ -312,6 +330,7 @@ namespace TankGame
 
                 //Creates the new spawner that spawns the waves
                 GameWorld.Instance.GetSpawn = new Spawn(Constant.width, Constant.hight);
+
 
 
             }

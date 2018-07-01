@@ -14,8 +14,8 @@ namespace TankGame
         protected int spread;
         protected bool isAttacking = false;
 
-        public Ranged(GameObject gameObject, int health, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, BulletType bulletType, int spread
-            ) : base(gameObject, health, movementSpeed, attackRate, attackRange, enemyType)
+        public Ranged(GameObject gameObject, int health, float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, BulletType bulletType, int spread, Alignment alignment
+            ) : base(gameObject, health, movementSpeed, attackRate, attackRange, enemyType, alignment)
         {
             this.CanAttackPlane = true;
             this.bulletType = bulletType;
@@ -30,7 +30,18 @@ namespace TankGame
         {
             base.CreateAnimation();
         }
+        protected override void FollowHQ()
+        {
+            if (playerSpawned)
+            {
+                targetGameObject = vehicleWhoSpawnedIt.GameObject;
+            }
+            else
+            {
+                base.FollowHQ();
+            }
 
+        }
         /// <summary>
         /// loads the enemy
         /// </summary>
@@ -45,11 +56,16 @@ namespace TankGame
         /// </summary>
         public override void AI()
         {
-            if (isAttacking == false)
+            if (isAttacking == false || IsInsideScreen(GameObject) == false)
             {
                 base.AI();
             }
-            Shoot();
+            if (IsInsideScreen(GameObject))
+            {
+                Shoot();
+
+            }
+            
         }
 
         protected virtual void Shoot()
@@ -58,6 +74,8 @@ namespace TankGame
             if (attackTimeStamp + attackRate <= GameWorld.Instance.TotalGameTime)
             {
                 bool isBullet = false;
+                bool targetIsAlive = false;
+
                 Collider target;
                 target = FindTargetInRange();
                 if (target != null)
@@ -69,9 +87,28 @@ namespace TankGame
                             isBullet = true;
                             break;
                         }
+                        if (comp is Enemy)
+                        {
+                            targetIsAlive = (comp as Enemy).IsAlive;
+                            break;
+                        }
+                        if (comp is Vehicle)
+                        {
+                            targetIsAlive = (comp as Vehicle).IsAlive;
+                            break;
+                        }
+                        if (comp is Tower)
+                        {
+                            if ((comp as Tower).Health > 0)
+                            {
+                                targetIsAlive = true;
+                            }
+                            break;
+                        }
+
 
                     }
-                    if (isBullet == false)
+                    if (isBullet == false && targetIsAlive)
                     {
 
                         Vector2 direction = new Vector2(target.CollisionBox.Center.X - GameObject.Transform.Position.X, target.CollisionBox.Center.Y - GameObject.Transform.Position.Y);
@@ -82,14 +119,22 @@ namespace TankGame
 
                         RotateToMatchDirection(direction);
 
-                        BulletPool.Instance.CreateBullet(GameObject, Alignment.Enemy,
+                        GameObject tmp = BulletPool.Instance.CreateBullet(GameObject, alignment,
                             bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+
+                        ChangeColorOnBullet(tmp);
+                        ChangeDamageIfPlayerSpawned(tmp);
 
                         if (attackVariation > 2)//Adds animation variation
                         {
                             attackVariation = 1;
                         }
-                        animator.PlayAnimation("Attack" + attackVariation);
+                        if (isAlive)
+                        {
+                            animator.PlayAnimation("Attack" + attackVariation);
+                            isPlayingAnimation = true;
+                        }
+
                         attackVariation++;
 
                         attackTimeStamp = GameWorld.Instance.TotalGameTime;
@@ -104,7 +149,25 @@ namespace TankGame
             }
         }
 
+        private void ChangeColorOnBullet(GameObject tmp)
+        {
+            if (playerSpawned)
+            {
+                if (vehicleWhoSpawnedIt.Control == Controls.WASD)
+                {
+                    ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Cyan;
+                }
+                else
+                {
+                    ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Lime;
+                }
 
+            }
+            else
+            {
+                ((SpriteRenderer)tmp.GetComponent("SpriteRenderer")).color = Color.Red;
+            }
+        }
 
         /// <summary>
         /// handles which animation should the tank be running
@@ -114,7 +177,20 @@ namespace TankGame
         {
             base.OnAnimationDone(animationName);
         }
+        private void ChangeDamageIfPlayerSpawned(GameObject tmp)
+        {
+            if (playerSpawned)
+            {
+                foreach (Component comp in tmp.GetComponentList)
+                {
+                    if (comp is Bullet)
+                    {
+                        (comp as Bullet).BulletDamage = (comp as Bullet).BulletDamage * 3;
 
+                    }
+                }
+            }
+        }
         /// <summary>
         /// handles what the enemy does
         /// </summary>
@@ -130,5 +206,7 @@ namespace TankGame
         {
             base.Die();
         }
+
+      
     }
 }

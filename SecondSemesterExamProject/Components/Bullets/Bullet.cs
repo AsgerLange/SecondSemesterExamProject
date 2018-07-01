@@ -315,7 +315,7 @@ namespace TankGame
                                 if (!(type is Crate))
                                 {
 
-                                    if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+                                    if (type is Enemy && thisCollider.GetAlignment != other.GetAlignment)
                                     {
                                         (type as Enemy).Health -= bulletDmg;
                                         BulletSpecialEffect(other);
@@ -398,7 +398,7 @@ namespace TankGame
                 {
 
                     
-                    if ((this as MonsterBullet).hasHit == true)
+                    if ((this as MonsterBullet).hasHit == false)
                     {
 
                         shooter.Stats.BulletsMissed++;

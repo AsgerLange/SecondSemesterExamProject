@@ -25,7 +25,12 @@ namespace TankGame
         private Color statsColor = Color.Gold;
         private float statsPosX = 225;
 
+        private int p1Points;
+        private int p2Points;
+
+
         Button ContinueButton;
+        Button MainMenuButton;
 
         public GameOver()
         {
@@ -40,6 +45,26 @@ namespace TankGame
             ContinueButton = Continue;
 
 
+
+
+            MainMenuButton = new Button(new Vector2(Constant.width - 225, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
+            {
+                Text = "Main Menu"
+            };
+            MainMenuButton.PenColour = Color.Gold;
+            MainMenuButton.click += MainMenuButton_click;
+
+
+
+
+
+
+        }
+
+        private void MainMenuButton_click(object sender, EventArgs e)
+        {
+
+            GameWorld.Instance.ShouldRestart = true;
         }
 
         /// <summary>
@@ -61,6 +86,13 @@ namespace TankGame
                     ContinueButton.Draw(spriteBatch);
                 }
             }
+
+
+            if (MainMenuButton != null)
+            {
+                MainMenuButton.Draw(spriteBatch);
+            }
+
             DrawGameOver(spriteBatch);
             DrawGameRecap(spriteBatch);
 
@@ -78,11 +110,24 @@ namespace TankGame
             {
                 ContinueButton.LoadContent(content);
             }
+            if (MainMenuButton != null)
+            {
+                MainMenuButton.LoadContent(content);
+            }
         }
 
         private void DrawGameOver(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.Instance.backGround, GameWorld.Instance.screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            if (GameWorld.Instance.pvp)
+            {
+                spriteBatch.Draw(GameWorld.Instance.pvpBackGround, GameWorld.Instance.screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+            }
+            else
+            {
+                spriteBatch.Draw(GameWorld.Instance.backGround, GameWorld.Instance.screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+            }
 
             spriteBatch.DrawString(titleFont, "GameOver", new Vector2(Constant.width / 4, 2), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
         }
@@ -129,26 +174,41 @@ namespace TankGame
         {
             foreach (Vehicle vehicle in GameWorld.Instance.Vehicles)
             {
+
+
                 if (vehicle.Control == Controls.WASD)
                 {
-                    spriteBatch.DrawString(font, "Green score: " + vehicle.Stats.PlayerDeathAmmount, new Vector2(statsPosX, 180), Color.YellowGreen);
+                    p2Points = vehicle.Stats.PlayerDeathAmmount;
 
-                    if (vehicle.Stats.PlayerDeathAmmount == Constant.maxDeaths)
-                    {
-                        spriteBatch.DrawString(font, "Green VICTORY!", new Vector2(statsPosX, 120), Color.YellowGreen);
+                    spriteBatch.DrawString(font, "Blue score: " + p1Points, new Vector2(statsPosX, 180), Color.CornflowerBlue);
 
-                    }
+
                 }
                 else
                 {
-                    spriteBatch.DrawString(font, "Blue score: " + vehicle.Stats.PlayerDeathAmmount, new Vector2(statsPosX, 160), Color.CornflowerBlue);
+                    p1Points = vehicle.Stats.PlayerDeathAmmount;
 
-                    if (vehicle.Stats.PlayerDeathAmmount == Constant.maxDeaths)
-                    {
-                        spriteBatch.DrawString(font, "Blue VICTORY! ", new Vector2(statsPosX, 120), Color.CornflowerBlue);
+                    spriteBatch.DrawString(font, "Green score: " + p2Points, new Vector2(statsPosX, 160), Color.YellowGreen);
 
-                    }
+
                 }
+
+                if (p2Points > p1Points)
+                {
+                    spriteBatch.DrawString(font, "Green VICTORY!", new Vector2(statsPosX, 120), Color.YellowGreen);
+
+                }
+                else if (p1Points > p2Points)
+                {
+                    spriteBatch.DrawString(font, "Blue VICTORY!", new Vector2(statsPosX, 120), Color.CornflowerBlue);
+
+                }
+                else if (p1Points == p2Points)
+                {
+                    spriteBatch.DrawString(font, "DRAW", new Vector2(statsPosX, 120), Color.Gold);
+
+                }
+
 
             }
 
@@ -239,7 +299,7 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 300), p2StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p2StatsPosX, 320), p2StatsColor);
-               
+
                 spriteBatch.DrawString(font, "Shockwaves fired: " + vehicle.Stats.MonsterBulletCounter,
                     new Vector2(p2StatsPosX, 340), p2StatsColor);
 
@@ -290,6 +350,13 @@ namespace TankGame
                     ContinueButton.Update();
                 }
             }
+
+
+            if (MainMenuButton != null)
+            {
+                MainMenuButton.Update();
+            }
+
             int cal = 0;
             foreach (Vehicle VH in GameWorld.Instance.Vehicles)
             {

@@ -9,7 +9,7 @@ namespace TankGame
 {
     class Spawn
     {
-        private int wave = 20;
+        private int wave =0;
         private int waveSize = 0;
         private int spawned = 0;
         private Random rnd = new Random();
@@ -230,12 +230,21 @@ namespace TankGame
                     int roll = rnd.Next(1, Constant.swarmerSpawnMax + 1);
                     for (int s = 0; s < roll; s++)
                     {
-                        EnemyPool.Instance.CreateEnemy(new Vector2(spawnPos.X + s, spawnPos.Y), enemyType);
+                        GameObject tmp = EnemyPool.Instance.CreateEnemy(new Vector2(spawnPos.X + s, spawnPos.Y), enemyType, Alignment.Enemy);
+                        
+                        foreach (Component comp in tmp.GetComponentList)
+                        {
+                            if (comp is SpriteRenderer)
+                            {
+                                (comp as SpriteRenderer).color = Color.Red;
+                            }
+
+                        }
                     }
                 }
                 else
                 {
-                    EnemyPool.Instance.CreateEnemy(spawnPos, enemyType);
+                    EnemyPool.Instance.CreateEnemy(spawnPos, enemyType, Alignment.Enemy);
                 }
 
                 spawned++;

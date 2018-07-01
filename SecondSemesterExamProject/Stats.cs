@@ -205,5 +205,16 @@ namespace TankGame
             result = 100 - result;
             return (int)result;
         }
+
+        public static void  Reset()
+        {
+            basicEnemyKilled = 0;
+            basicEliteEnemyKilled = 0;
+            SwarmerKilled = 0;
+            SpitterKilled = 0;
+            siegeBreakerKilled = 0;
+            spitterBulletCounter = 0;
+
+        }
     }
 }

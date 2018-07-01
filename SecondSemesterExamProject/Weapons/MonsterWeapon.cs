@@ -67,11 +67,11 @@ namespace TankGame
             if (vehicle.Control == Controls.WASD)
             {
 
-                shootSoundEffect.Play(1, -0.3f, 0); //Plays shooting soundeffect
+                shootSoundEffect.Play(0.7f, -0.3f, 0); //Plays shooting soundeffect
             }
             else
             {
-                shootSoundEffect.Play(1, -0.5f, 0); //Plays shooting soundeffect
+                shootSoundEffect.Play(0.7f, -0.5f, 0); //Plays shooting soundeffect
 
             }
         }

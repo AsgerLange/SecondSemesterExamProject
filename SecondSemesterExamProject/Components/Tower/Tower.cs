@@ -43,14 +43,14 @@ namespace TankGame
                     if (isAlive)
                     {
 
-                        health = 0;
                         isAlive = false;
                         if (dieSoundEffect != null)
                         {
-                            dieSoundEffect.Play();
+                            PlayDeathSound();
                         }
                         animator.PlayAnimation("Death");
                     }
+                    health = 0;
                 }
             }
         }
@@ -304,7 +304,7 @@ namespace TankGame
 
         private void Deploy()
         {
-            if (GameWorld.Instance.TotalGameTime>spawnTimeStamp+2 && GameObject.Transform.canMove == true)
+            if (GameWorld.Instance.TotalGameTime > spawnTimeStamp + 1 && GameObject.Transform.canMove == true)
             {
                 GameObject.Transform.canMove = false;
             }
@@ -327,6 +327,9 @@ namespace TankGame
             shootSound.Play(0.5f, 0, 0);
 
         }
-
+        protected virtual void PlayDeathSound()
+        {
+            dieSoundEffect.Play();
+        }
     }
 }

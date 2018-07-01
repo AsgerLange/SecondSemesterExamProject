@@ -75,7 +75,7 @@ namespace TankGame
                 }
                 else
                 {
-                    spriteRenderer.color = Color.Lime;
+                    spriteRenderer.color = Color.PaleGreen;
 
                 }
                 colorChanged = true;

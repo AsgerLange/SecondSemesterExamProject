@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
 
 namespace TankGame
 {
     class Spitter : Ranged
     {
-        public Spitter(GameObject gameObject, int health , float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, BulletType bulletType, int spread)
-            : base(gameObject, health , movementSpeed, attackRate,attackRange, enemyType, bulletType, spread)
+        public Spitter(GameObject gameObject, int health , float movementSpeed, float attackRate, float attackRange, EnemyType enemyType, BulletType bulletType, int spread, Alignment alignment)
+            : base(gameObject, health , movementSpeed, attackRate,attackRange, enemyType, bulletType, spread , alignment)
         {
         }
 
@@ -43,6 +44,12 @@ namespace TankGame
         {
 
             base.Shoot();
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            base.LoadContent(content);
+
         }
 
         /// <summary>
