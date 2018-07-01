@@ -9,7 +9,7 @@ namespace TankGame
 {
     class Spawn
     {
-        private int wave = 0;
+        private int wave = 20;
         private int waveSize = 0;
         private int spawned = 0;
         private Random rnd = new Random();
@@ -69,8 +69,12 @@ namespace TankGame
         /// </summary>
         public void Update()
         {
-            SpawnSingle();
-            CreateWave();
+            if (GameWorld.Instance.pvp == false)
+            {
+
+                SpawnSingle();
+                CreateWave();
+            }
             SpawnCrate();
         }
 
@@ -79,7 +83,8 @@ namespace TankGame
         /// </summary>
         private void SpawnCrate()
         {
-            if (Constant.crateSpawnDelay + crateStamp <= GameWorld.Instance.TotalGameTime)
+            if ((GameWorld.Instance.pvp==false && Constant.crateSpawnDelay + crateStamp <= GameWorld.Instance.TotalGameTime) 
+                || (GameWorld.Instance.pvp == true && (Constant.crateSpawnDelay/2) + crateStamp <= GameWorld.Instance.TotalGameTime))
             {
                 GameWorld.Instance.GameObjectsToAdd.Add(GameObjectDirector.Instance.ConstructCrate());
 
@@ -130,7 +135,7 @@ namespace TankGame
                     }
                 }
 
-                int side = rnd.Next(0, 5);
+                int side = rnd.Next(1, 5);
                 Rectangle spawnRectangle;
                 switch (side)
                 {
@@ -177,7 +182,7 @@ namespace TankGame
         {
             if (Constant.singleSpawnDelay + spawnStamp <= GameWorld.Instance.TotalGameTime)
             {
-                int side = rnd.Next(0, 5);
+                int side = rnd.Next(1, 5);
                 Rectangle spawnRectangle;
                 switch (side)
                 {

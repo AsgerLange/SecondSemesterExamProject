@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TankGame
-{    
+{
     class Bike : Vehicle
     {
         /// <summary>
@@ -19,8 +19,8 @@ namespace TankGame
         /// <param name="health"></param>
         /// <param name="movementSpeed"></param>
         /// <param name="fireRate"></param>
-        public Bike(GameObject gameObject, Controls control , int health, float movementSpeed  , float rotateSpeed, int money,
-             TowerType tower, int playerNumber) : base(gameObject , control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
+        public Bike(GameObject gameObject, Controls control, int health, float movementSpeed, float rotateSpeed, int money,
+             TowerType tower, int playerNumber) : base(gameObject, control, health, movementSpeed, rotateSpeed, money, tower, playerNumber)
         {
             this.vehicleType = VehicleType.Bike;
             this.weapon = new Shotgun(this.GameObject);
@@ -76,8 +76,16 @@ namespace TankGame
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
-            this.weapon = new Shotgun(this.GameObject);
             base.LoadContent(content);
+
+            if (GameWorld.Instance.pvp)
+            {
+                this.weapon = new BasicWeapon(this.GameObject);
+            }
+            else
+            {
+                this.weapon = new Shotgun(this.GameObject);
+            }
         }
 
         /// <summary>
@@ -104,6 +112,6 @@ namespace TankGame
         {
             base.Die();
         }
-        
+
     }
 }

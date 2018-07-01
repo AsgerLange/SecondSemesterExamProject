@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace TankGame
 {
-    enum VehicleType { None, Tank, Bike, Plane }
-    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet };
+    enum VehicleType { None, Tank, Bike, Plane,
+        MonsterVehicle
+    }
+    enum BulletType { BasicBullet, BiggerBullet, ShotgunPellet, SniperBullet, SpitterBullet, MonsterBullet };
     enum EnemyType { BasicEnemy, BasicEliteEnemy, Swarmer, Spitter, SiegebreakerEnemy };
     enum TowerType { BasicTower, ShotgunTower, SniperTower, MachineGunTower };
     enum CrateType { WeaponCrate, TowerCrate, MoneyCrate, HealthCrate };
@@ -18,7 +20,11 @@ namespace TankGame
     {
         public readonly static int width = 1240;
         public readonly static int hight = 720;
+        #region PVP
+        public readonly static int maxDeaths = 5;
+        public readonly static int pvpHealthModifier = 3;
 
+        #endregion
         #region Menu
         public readonly static string menuBackGround = "Background1";
         public readonly static string gameBackGround = "Background1";
@@ -49,6 +55,7 @@ namespace TankGame
         #endregion
 
         #region Vehicles
+
         public static readonly float buildTowerCoolDown = 0.25f;
         public static readonly int respawntime = 15;
         public static readonly int maxAmountOfVehicles = 2;
@@ -75,6 +82,15 @@ namespace TankGame
         public static readonly float bikeRotateSpeed = 3f;
         public static readonly int bikeStartGold = 150;
         #endregion;
+        #region MonsterVehicle
+        public static readonly string monsterSpriteSheet = "MonsterVehicle";
+        public static readonly float monsterMoveSpeed = 160;
+        public static readonly int monsterHealth = 600;
+        public static readonly float monsterRotateSpeed = 2.5f;
+        public static readonly int monsterStartGold = 150;
+        public static readonly float monsterRegenRate = 0.8f; // seconds per life
+
+        #endregion
         #endregion
 
         #region Tower
@@ -164,10 +180,16 @@ namespace TankGame
         public static readonly int shotgunPelletDmg = 50;
         #endregion;
 
+        #region MonsterBullet
+        public static readonly string monsterBulletSheet = "MonsterShockwaveBullet";
+        public static readonly float monsterBulletMovementSpeed = 360;
+        public static readonly float monsterBulletLifeSpan = 0.2f;
+        public static readonly int monsterBulletDmg = 250;
+        #endregion
         #region EnemyBullets
         #region SpitterBullet
         public static readonly string spitterBulletSheet = "SpitterBullet";
-        public static readonly float spitterBulletMovementSpeed = 190;
+        public static readonly float spitterBulletMovementSpeed = 210;
         public static readonly float spitterBulletLifeSpan = 0.95f;
         public static readonly int spitterBulletDmg = 10;
         #endregion
@@ -205,6 +227,13 @@ namespace TankGame
         public readonly static int MachineGunSpread = 7;
         public readonly static BulletType MachineGunBulletType = BulletType.BasicBullet;
         #endregion;
+
+        #region MonsterWeapon
+        public readonly static float monsterWeaponFireRate = 1f;
+        public readonly static int monsterWeaponAmmo = int.MaxValue;
+                public readonly static BulletType monsterWeaponBulletType = BulletType.MonsterBullet;
+        public readonly static int monsterWeaponSpread = 0;
+        #endregion
         #endregion;
 
         #region Enemies

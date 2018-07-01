@@ -41,6 +41,8 @@ namespace TankGame
         private int biggerBulletCounter;
         private int sniperBulletCounter;
         private int shotgunPelletsCounter;
+        private int monsterBulletCounter;
+
         private static int spitterBulletCounter;
 
         private int bulletsMissed;
@@ -69,6 +71,11 @@ namespace TankGame
         {
             get { return shotgunPelletsCounter; }
             set { shotgunPelletsCounter = value; }
+        }
+        public int MonsterBulletCounter
+        {
+            get { return monsterBulletCounter; }
+            set { monsterBulletCounter = value; }
         }
         public static int SpitterBulletCounter
         {
@@ -188,7 +195,7 @@ namespace TankGame
             float sum;
 
             sum = vehicle.Stats.BasicBulletCounter + vehicle.Stats.biggerBulletCounter +
-            vehicle.Stats.sniperBulletCounter + vehicle.Stats.shotgunPelletsCounter;
+            vehicle.Stats.sniperBulletCounter + vehicle.Stats.shotgunPelletsCounter + vehicle.Stats.MonsterBulletCounter;
             if (sum == 0)
             {
                 sum = 1;

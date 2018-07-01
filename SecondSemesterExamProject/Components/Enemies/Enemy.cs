@@ -27,6 +27,7 @@ namespace TankGame
         protected int attackVariation = 1;
         protected float attackRange;
         protected SoundEffect deathSound;
+        protected bool canAttackPlane = false;
 
         public EnemyType GetEnemyType
         {
@@ -36,6 +37,11 @@ namespace TankGame
         {
             get { return isAlive; }
             set { isAlive = value; }
+        }
+        public bool CanAttackPlane
+        {
+            get { return canAttackPlane; }
+            set { canAttackPlane = value; }
         }
         public int Health
         {
@@ -292,7 +298,7 @@ namespace TankGame
                 Die();
             }
 
-            if (animationName == "Walk")
+            if (animationName == "Walk" && IsAlive)
             {
                 if (isPlayingAnimation == true)
                 {
@@ -301,9 +307,14 @@ namespace TankGame
             }
             else
             {
-                animator.PlayAnimation("Idle");
-                isPlayingAnimation = false;
+                if (IsAlive)
+                {
+
+                    animator.PlayAnimation("Idle");
+                    isPlayingAnimation = false;
+                }
             }
+
         }
 
         /// <summary>
@@ -356,7 +367,6 @@ namespace TankGame
 
             if (target != null)
             {
-
                 if (targetGameObject.GetComponent("Collider") != target)
                 {
                     this.targetGameObject = target.GameObject;
@@ -421,6 +431,8 @@ namespace TankGame
             float distance = 0;
 
             bool otherIsBullet = false;
+            bool otherIsPlane = false;
+
 
             lock (GameWorld.colliderKey)
             {
@@ -435,27 +447,38 @@ namespace TankGame
                                 if (comp is Bullet)
                                 {
                                     otherIsBullet = true;
-                                    break;
+
+
+                                }
+                                if (comp is Plane)
+                                {
+
+                                    otherIsPlane = true;
+
                                 }
 
                             }
                             if (otherIsBullet == false)
                             {
+                                if (otherIsPlane==false || (otherIsPlane && this.canAttackPlane))
+                                {
 
-                                float otherDistance;
-                                otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                    * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
-                                    + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
-                                    * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
-                                if (closestTarget == null)
-                                {
-                                    closestTarget = other;
-                                    distance = otherDistance;
-                                }
-                                else if (distance > otherDistance)
-                                {
-                                    closestTarget = other;
-                                    distance = otherDistance;
+
+                                    float otherDistance;
+                                    otherDistance = ((GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                        * (GameObject.Transform.Position.X - other.CollisionBox.Center.X)
+                                        + (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y)
+                                        * (GameObject.Transform.Position.Y - other.CollisionBox.Center.Y));
+                                    if (closestTarget == null)
+                                    {
+                                        closestTarget = other;
+                                        distance = otherDistance;
+                                    }
+                                    else if (distance > otherDistance)
+                                    {
+                                        closestTarget = other;
+                                        distance = otherDistance;
+                                    }
                                 }
                             }
                         }
@@ -525,7 +548,7 @@ namespace TankGame
         /// </summary>
         protected virtual void PlayDeathSound()
         {
-            deathSound.Play(0.6f,0,0);
+            deathSound.Play(0.6f, 0, 0);
         }
     }
 }

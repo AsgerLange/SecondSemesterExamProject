@@ -12,6 +12,9 @@ namespace TankGame
 {
     class Menu
     {
+        private bool checkedForUnlockables = false;
+
+        private bool monsterUnlocked = false;
         private VehicleType p1 = VehicleType.Tank;
         private VehicleType p2 = VehicleType.None;
         private int p1TypeInt;
@@ -25,8 +28,8 @@ namespace TankGame
         private Vector2 p2Pos = new Vector2(Constant.width - 450, Constant.hight / 2);
         private Vector2 p2UpPos = new Vector2(Constant.width - 465, Constant.hight / 2 - 45);
         private Vector2 p2DownPos = new Vector2(Constant.width - 465, Constant.hight / 2 + 30);
-        private Vector2 p1ControlsPos = new Vector2(200, Constant.hight/2-75);
-        private Vector2 p2ControlsPos = new Vector2(Constant.width / 2 + 250, Constant.hight/2-100);
+        private Vector2 p1ControlsPos = new Vector2(200, Constant.hight / 2 - 75);
+        private Vector2 p2ControlsPos = new Vector2(Constant.width / 2 + 250, Constant.hight / 2 - 100);
 
         private GameObject p1Choice;
         private GameObject p2Choice;
@@ -37,6 +40,7 @@ namespace TankGame
         private Texture2D p1ControlsImage;
         private Texture2D p2ControlsImage;
 
+        private Button pvpButton;
 
 
         public VehicleType P1
@@ -63,7 +67,7 @@ namespace TankGame
         }
 
         /// <summary>
-        /// initializes the vehicles to be drawn
+        /// initializes the vehicles to be 3n
         /// </summary>
         private void AddVehiclesToBeDrawn()
         {
@@ -96,6 +100,7 @@ namespace TankGame
         private GameObject ChangeVehicle(VehicleType type, int player)
         {
             GameObject playerDraw = new GameObject();
+
             switch (type)
             {
                 case VehicleType.None:
@@ -127,6 +132,15 @@ namespace TankGame
                     ((Plane)playerDraw.GetComponent("Plane")).IsAlive = false;
                     break;
 
+                case VehicleType.MonsterVehicle:
+                    playerDraw.Transform.Position = new Vector2(0, 0);
+                    playerDraw.AddComponent(new SpriteRenderer(p1Choice, Constant.monsterSpriteSheet + player, 0.05f));
+                    playerDraw.AddComponent(new Animator(playerDraw));
+                    playerDraw.AddComponent(new MonsterVehicle(playerDraw, Controls.WASD, Constant.monsterHealth, Constant.monsterMoveSpeed,
+                        Constant.monsterRotateSpeed, Constant.monsterStartGold, TowerType.BasicTower, player));
+                    ((MonsterVehicle)playerDraw.GetComponent("MonsterVehicle")).IsAlive = false;
+                    break;
+
                 default:
                     break;
             }
@@ -134,6 +148,25 @@ namespace TankGame
             return playerDraw;
         }
 
+        private void UnlockMonsterVehicle()
+        {
+            if (monsterUnlocked == false && checkedForUnlockables == false)
+            {
+                string command = "select wave from player ORDER BY wave desc;";
+                string collumn = "wave";
+                List<int> output = new List<int>();
+                output = GameWorld.Instance.score.ReadFromDB(command, collumn, 1);
+
+                foreach (int item in output)
+                {
+                    if (item >= 20)
+                    {
+                        monsterUnlocked = true;
+                        break;
+                    }
+                }
+            }
+        }
         /// <summary>
         /// places the buttons on the menu screen
         /// </summary>
@@ -163,13 +196,35 @@ namespace TankGame
             Button p2Down = new Button(p2DownPos, Constant.GreenButtonDownTexture, Constant.buttonFont);
             p2Down.click += P2Down_click;
             buttons.Add(p2Down);
+
+            pvpButton = new Button(new Vector2(startGamePos.X, startGamePos.Y + 50), Constant.RedButtonTexture, Constant.buttonFont)
+            {
+                Text = "Start PVP"
+            };
+            pvpButton.PenColour = Color.Gold;
+            pvpButton.click += Pvp_click;
+            buttons.Add(pvpButton);
         }
 
+        /// <summary>
+        /// Checks ealier sessions for unlockables
+        /// </summary>
+        private void CheckIfUnlocked()
+        {
+            if (checkedForUnlockables == false)
+            {
+
+                UnlockMonsterVehicle();
+
+                checkedForUnlockables = true;
+            }
+        }
         /// <summary>
         /// updates the menu
         /// </summary>
         public void Update()
         {
+            CheckIfUnlocked();
             if (buttons.Count > 0)
             {
                 foreach (Button but in buttons)
@@ -232,7 +287,6 @@ namespace TankGame
             p1ControlsImage = content.Load<Texture2D>(Constant.p1ControlImagePath);
             p2ControlsImage = content.Load<Texture2D>(Constant.p2ControlImagePath);
 
-
             foreach (Button but in buttons)
             {
                 but.LoadContent(content);
@@ -250,6 +304,16 @@ namespace TankGame
             {
                 SpawnPlayers();
                 GameWorld.Instance.GetGameState = GameState.Game;
+
+
+                //adds objects to the map
+                GameWorld.Instance.Map = new Map();
+
+
+                //Creates the new spawner that spawns the waves
+                GameWorld.Instance.GetSpawn = new Spawn(Constant.width, Constant.hight);
+
+
             }
         }
 
@@ -261,7 +325,13 @@ namespace TankGame
         private void P1Up_click(object sender, EventArgs e)
         {
             p1TypeInt++;
-            if (p1TypeInt >= Enum.GetNames(typeof(VehicleType)).Length)
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked == false)
+            {
+                maxLenght -= 1;
+            }
+
+            if (p1TypeInt >= maxLenght)
             {
                 p1TypeInt = 0;
             }
@@ -278,9 +348,14 @@ namespace TankGame
         private void P1Down_click(object sender, EventArgs e)
         {
             p1TypeInt--;
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked == false)
+            {
+                maxLenght -= 1;
+            }
             if (p1TypeInt < 0)
             {
-                p1TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
+                p1TypeInt = maxLenght - 1;
             }
             p1 = (VehicleType)p1TypeInt;
             p1Choice = ChangeVehicle(p1, 1);
@@ -295,7 +370,12 @@ namespace TankGame
         private void P2Up_click(object sender, EventArgs e)
         {
             p2TypeInt++;
-            if (p2TypeInt >= Enum.GetNames(typeof(VehicleType)).Length)
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked == false)
+            {
+                maxLenght -= 1;
+            }
+            if (p2TypeInt >= maxLenght)
             {
                 p2TypeInt = 0;
             }
@@ -312,15 +392,37 @@ namespace TankGame
         private void P2Down_click(object sender, EventArgs e)
         {
             p2TypeInt--;
+            int maxLenght = Enum.GetNames(typeof(VehicleType)).Length;
+            if (monsterUnlocked == false)
+            {
+                maxLenght -= 1;
+            }
             if (p2TypeInt < 0)
             {
-                p2TypeInt = Enum.GetNames(typeof(VehicleType)).Length - 1;
+                p2TypeInt = maxLenght - 1;
             }
             p2 = (VehicleType)p2TypeInt;
             p2Choice = ChangeVehicle(p2, 2);
             p2Choice.Transform.Position = p2Pos;
         }
+        private void Pvp_click(object sender, EventArgs e)
+        {
+            if ((!(p1 == VehicleType.None) && !(p2 == VehicleType.None)))
+            {
+                GameWorld.Instance.pvp = true;
+                SpawnPlayers();
+                GameWorld.Instance.GetGameState = GameState.Game;
 
+
+                //adds objects to the map
+                GameWorld.Instance.Map = new Map();
+
+
+                //Creates the new spawner that spawns the waves
+                GameWorld.Instance.GetSpawn = new Spawn(Constant.width, Constant.hight);
+
+            }
+        }
         /// <summary>
         /// spawns the player(s)
         /// </summary>
@@ -328,11 +430,21 @@ namespace TankGame
         {
             if (!(p1 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p1, Controls.WASD, 1);
+                GameObjectDirector.Instance.Construct(p1, Controls.WASD, 1, Alignment.Friendly);
+
             }
             if (!(p2 == VehicleType.None))
             {
-                GameObjectDirector.Instance.Construct(p2, Controls.UDLR, 2);
+                if (GameWorld.Instance.pvp == false)
+                {
+                    GameObjectDirector.Instance.Construct(p2, Controls.UDLR, 2, Alignment.Friendly);
+
+                }
+                else
+                {
+                    GameObjectDirector.Instance.Construct(p2, Controls.UDLR, 2, Alignment.Enemy);
+
+                }
             }
         }
     }

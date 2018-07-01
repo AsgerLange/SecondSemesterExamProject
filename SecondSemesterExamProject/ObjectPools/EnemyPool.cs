@@ -18,6 +18,7 @@ namespace TankGame
         private static EnemyPool instance;
         //The enemyPool is in its own thread
         private static Thread enemyPoolThread;
+
         //List containing active Enemies
         private static List<GameObject> inActiveEnemies = new List<GameObject>();
 
@@ -57,6 +58,7 @@ namespace TankGame
             }
             enemyPoolThread.Start();
         }
+       
 
         /// <summary>
         /// keeps the enemies updated
@@ -276,7 +278,7 @@ namespace TankGame
 
                     tmp.IsAlive = true;
                     tmp.CanRelease = true;
-
+                    tmp.CanAttackPlane = false;
                     if (component is BasicEnemy)
                     {
                         tmp.Health = Constant.basicEnemyHealth;
@@ -300,6 +302,7 @@ namespace TankGame
                     if (component is Spitter)
                     {
                         tmp.Health = Constant.spitterHealth;
+                        tmp.CanAttackPlane = true;
                     }
 
 

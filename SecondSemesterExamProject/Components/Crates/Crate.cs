@@ -117,19 +117,25 @@ namespace TankGame
                             isBullet = true;
                         }
                     }
-                    if (other.GetAlignment == Alignment.Friendly && isBullet == false)
+                    if (isBullet == false)
                     {
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {
                             if (comp is Vehicle)
                             {
-                                GiveLoot(comp as Vehicle);
+                                if ((this is WeaponCrate) && comp is MonsterVehicle)
+                                {                                   
+                                }
+                                else
+                                {
+                                    GiveLoot(comp as Vehicle);
 
-                                (comp as Vehicle).LootTimeStamp = GameWorld.Instance.TotalGameTime;
+                                    (comp as Vehicle).LootTimeStamp = GameWorld.Instance.TotalGameTime;
 
 
-                                Die();
-                                break;
+                                    Die();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -143,7 +149,7 @@ namespace TankGame
         /// <param name="vehicle"></param>
         protected virtual void GiveLoot(Vehicle vehicle)
         {
-            pickUpSound.Play(0.5f,0,0);
+            pickUpSound.Play(0.5f, 0, 0);
         }
 
         /// <summary>
@@ -161,9 +167,10 @@ namespace TankGame
                     if (go is Bullet)
                     {
                         isBullet = true;
+                        break;
                     }
                 }
-                if (other.GetAlignment != Alignment.Enemy && isBullet == false)
+                if (other.GetAlignment != Alignment.Enemy && isBullet == false || (other.GetAlignment == Alignment.Enemy && GameWorld.Instance.pvp && isBullet == false))
                 {
                     float force = Constant.pushForce;
                     Vector2 dir = GameObject.Transform.Position - other.GameObject.Transform.Position;

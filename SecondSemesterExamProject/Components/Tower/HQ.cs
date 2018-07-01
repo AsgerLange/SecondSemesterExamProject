@@ -16,10 +16,21 @@ namespace TankGame
         public HQ(GameObject gameObject) : base(gameObject)
         {
             this.attackRate = Constant.HQFireRate;
-            this.health = Constant.HQHealth;
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = Constant.HQHealth * Constant.pvpHealthModifier;
+
+            }
+            else
+            {
+                this.health = Constant.HQHealth;
+
+
+            }
             this.attackRange = Constant.HQAttackRange;
             this.bulletType = Constant.HQbulletType;
             this.spread = Constant.HQSpread;
+            GameObject.Transform.canMove = false;
         }
 
         public override void LoadContent(ContentManager content)

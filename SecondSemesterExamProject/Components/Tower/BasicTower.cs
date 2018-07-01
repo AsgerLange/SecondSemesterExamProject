@@ -12,10 +12,18 @@ namespace TankGame
     class BasicTower : Tower
     {
 
-        public BasicTower(GameObject gameObject): base(gameObject)
+        public BasicTower(GameObject gameObject) : base(gameObject)
         {
             this.attackRate = Constant.basicTowerFireRate;
-            this.health = Constant.basicTowerHealth;
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = Constant.basicTowerHealth * Constant.pvpHealthModifier;
+            }
+            else
+            {
+                this.health = Constant.basicTowerHealth;
+
+            }
             this.attackRange = Constant.basicTowerAttackRange;
             this.bulletType = Constant.basicTowerBulletType;
             this.spread = Constant.basicTowerSpread;
@@ -93,7 +101,7 @@ namespace TankGame
         protected override void PlayShootSoundEffect()
         {
             shootSound.Play(0.4f, 0, 0);
-          
+
 
         }
     }

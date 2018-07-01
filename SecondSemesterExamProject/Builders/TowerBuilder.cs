@@ -15,10 +15,11 @@ namespace TankGame
         /// </summary>
         /// <param name="position">postion</param>
         /// <param name="type">type of tower</param>
-        public void Build(Vector2 position, TowerType type, Vehicle vehicle)
+        public void Build(Vector2 position, TowerType type, Vehicle vehicle, Alignment alignment)
         {
             go = new GameObject();
             go.Transform.Position = position;
+            go.AddComponent(new Collider(go, alignment));
 
 
             switch (type)
@@ -50,7 +51,11 @@ namespace TankGame
                     break;
             }
             go.AddComponent(new Animator(go));
-            go.AddComponent(new Collider(go, Alignment.Friendly));
+
+            if (vehicle.Control == Controls.UDLR)
+            {
+                ((SpriteRenderer)go.GetComponent("SpriteRenderer")).color = Color.Lime;
+            }
         }
 
 

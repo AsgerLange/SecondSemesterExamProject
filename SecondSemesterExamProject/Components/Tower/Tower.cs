@@ -22,9 +22,10 @@ namespace TankGame
         protected SpriteRenderer spriteRenderer;
         public Animator animator;
         protected BulletType bulletType;
+        protected Alignment alignment;
         protected SoundEffect dieSoundEffect;
         protected SoundEffect shootSound;
-
+        protected float spawnTimeStamp;
 
 
         /// <summary>
@@ -59,10 +60,18 @@ namespace TankGame
         /// <param name="gameObject"></param>
         public Tower(GameObject gameObject) : base(gameObject)
         {
-            GameObject.Transform.canMove = false;
+            spawnTimeStamp = GameWorld.Instance.TotalGameTime;
             isAlive = true;
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             spriteRenderer.UseRect = true;
+            foreach (Component comp in GameObject.GetComponentList)
+            {
+                if (comp is Collider)
+                {
+                    alignment = (comp as Collider).GetAlignment;
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -84,6 +93,7 @@ namespace TankGame
         public virtual void Update()
         {
 
+            Deploy();
             Shoot();
         }
 
@@ -102,7 +112,7 @@ namespace TankGame
                     direction.Normalize();
 
                     float rotation = GetDegreesFromDestination(direction);
-                    BulletPool.CreateBullet(GameObject, Alignment.Friendly, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
+                    BulletPool.Instance.CreateBullet(GameObject, alignment, bulletType, rotation + (GameWorld.Instance.Rnd.Next(-spread, spread)));
                     shootTimeStamp = GameWorld.Instance.TotalGameTime;
                     PlayShootSoundEffect();
                 }
@@ -159,7 +169,7 @@ namespace TankGame
             {
                 foreach (Collider other in GameWorld.Instance.Colliders)
                 {
-                    if (other.GetAlignment == Alignment.Enemy)
+                    if (other.GetAlignment != alignment && other.GetAlignment != Alignment.Neutral)
                     {
                         foreach (Component comp in other.GameObject.GetComponentList)
                         {
@@ -292,6 +302,13 @@ namespace TankGame
 
         }
 
+        private void Deploy()
+        {
+            if (GameWorld.Instance.TotalGameTime>spawnTimeStamp+2 && GameObject.Transform.canMove == true)
+            {
+                GameObject.Transform.canMove = false;
+            }
+        }
         /// <summary>
         /// handles what happens when a tower dies
         /// </summary>
@@ -299,6 +316,7 @@ namespace TankGame
         {
 
             GameWorld.Instance.GameObjectsToRemove.Add(this.GameObject);
+            //fix
             GameWorld.Instance.TowerAmount--;
         }
         /// <summary>
@@ -309,5 +327,6 @@ namespace TankGame
             shootSound.Play(0.5f, 0, 0);
 
         }
+
     }
 }

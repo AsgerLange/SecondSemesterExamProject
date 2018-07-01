@@ -21,6 +21,7 @@ namespace TankGame
     /// </summary>
     class GameWorld : Game
     {
+        public bool pvp = false;
         private GameState gameState = new GameState();
         private Menu menu;
         public static readonly object colliderKey = new object();
@@ -46,15 +47,18 @@ namespace TankGame
         private int towerAmount;
 
         private GameOver gameOver;
-        Score score;
+        public Score score;
 
         //Background
         public Texture2D backGround;
         public Rectangle screenSize;
+        private Texture2D pvpBackGround;
+
         public GameOver GetGameOver
         {
             get { return gameOver; }
         }
+        public bool MusicIsPlaying { get; set; }
         public List<Collider> Colliders
         {
             get
@@ -81,6 +85,11 @@ namespace TankGame
         {
             get { return gameObjectsToRemove; }
             set { gameObjectsToRemove = value; }
+        }
+        public Map Map
+        {
+            get { return map; }
+            set { map = value; }
         }
 
         public GameState GetGameState
@@ -192,17 +201,13 @@ namespace TankGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //initializes the barrier
-            barrier = new Barrier(2);
+            barrier = new Barrier(3);
 
             //secure that enemyPool has been started
             EnemyPool ep = EnemyPool.Instance;
 
-            //adds objects to the map
-            map = new Map();
-
-            //Creates the new spawner that spawns the waves
-            spawner = new Spawn(Constant.width, Constant.hight);
-
+            //secure that bulletPool has been started
+            BulletPool bp = BulletPool.Instance;
 
             //creates a score to keep track of scores and stats
             score = new Score();
@@ -220,12 +225,13 @@ namespace TankGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             score.LoadContent(Content);
             backGround = Content.Load<Texture2D>(Constant.gameBackGround);
+            pvpBackGround = Content.Load<Texture2D>("PvpBackGround");
 
             backgroundMusic = Content.Load<Song>("BackgroundMusic1");
 
 
 
-            PlayBackgroundSong(backgroundMusic);
+            PlayBackgroundSong();
 
             screenSize = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -270,8 +276,12 @@ namespace TankGame
                 //adds Gameobjects
                 AddGameObjects();
 
-                //call the Spawner
-                spawner.Update();
+                if (GetSpawn != null)
+                {
+                    //call the Spawner
+                    spawner.Update();
+
+                }
 
                 //Updates GameObjects
                 foreach (var go in gameObjects)
@@ -280,36 +290,13 @@ namespace TankGame
                 }
 
                 //Checks if any vehicle needs to respawn
-                if (vehiclesToRemove.Count > 0)
+                Respawn();
+
+                if (pvp)
                 {
-                    foreach (GameObject go in vehiclesToRemove)
-                    {
-                        foreach (Component comp in go.GetComponentList)
-                        {
-                            if (comp is Vehicle)
-                            {
-                                if ((comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
-                                {
-                                    (comp as Vehicle).Respawn((comp as Vehicle).PlayerNumber);
-
-                                    VehiclesToRemove.Clear();
-
-                                    break;
-                                }
-                            }
-                        }
-                        break;
-                    }
+                    RegenGold();
                 }
 
-                lock (BulletPool.activeListKey)
-                {
-                    foreach (var go in BulletPool.ActiveBullets)
-                    {
-                        go.Update();
-                    }
-                }
-                BulletPool.ReleaseList();
                 RemoveObjects();
             }
             else if (gameState == GameState.GameOver)
@@ -340,12 +327,37 @@ namespace TankGame
                 }
                 gameObjectsToAdd.Clear();
             }
-            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1)
+            if (UpdatePlayerAmount() <= 0 && vehicles.Count > 1 && instance.pvp == false)
             {
                 GameOver();
             }
         }
 
+        private void Respawn()
+        {
+            if (vehiclesToRemove.Count > 0)
+            {
+                foreach (GameObject go in vehiclesToRemove)
+                {
+                    foreach (Component comp in go.GetComponentList)
+                    {
+                        if (comp is Vehicle)
+                        {
+                            if ((pvp == false && (comp as Vehicle).DeathTimeStamp + Constant.respawntime <= totalGameTime)
+                                || (pvp == true && (comp as Vehicle).DeathTimeStamp + Constant.respawntime / 2 <= totalGameTime))
+                            {
+                                (comp as Vehicle).Respawn((comp as Vehicle).PlayerNumber);
+
+
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+        }
         /// <summary>
         /// Removes dead objects
         /// </summary>
@@ -375,6 +387,24 @@ namespace TankGame
                 gameObjectsToRemove.Clear();
             }
 
+
+        }
+
+        private void RegenGold()
+        {
+
+            foreach (Vehicle vehicle in vehicles)
+            {
+                if (vehicle.IsAlive)
+                {
+
+                    if (vehicle.goldTimeStamp + 0.3 <= totalGameTime)
+                    {
+                        vehicle.Money += 1;
+                        vehicle.goldTimeStamp = GameWorld.instance.TotalGameTime;
+                    }
+                }
+            }
 
         }
 
@@ -414,9 +444,19 @@ namespace TankGame
                         go.Draw(spriteBatch);
                     }
                 }
+                DrawScore(spriteBatch);
+
                 DrawVehiclesRespawnTimeRemaining(spriteBatch);
 
-                spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                if (pvp == false)
+                {
+                    spriteBatch.Draw(backGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                }
+                else
+                {
+                    spriteBatch.Draw(pvpBackGround, screenSize, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+                }
             }
             else if (gameState == GameState.GameOver)
             {
@@ -439,7 +479,6 @@ namespace TankGame
         {
             if (VehiclesToRemove.Count > 0)
             {
-
                 foreach (GameObject go in vehiclesToRemove)
                 {
                     foreach (Component comp in go.GetComponentList)
@@ -451,6 +490,15 @@ namespace TankGame
                     }
                 }
             }
+        }
+        private void DrawScore(SpriteBatch spriteBatch)
+        {
+            foreach (Vehicle vehicle in vehicles)
+            {
+
+                vehicle.DrawDeaths(spriteBatch);
+            }
+
         }
         public int UpdatePlayerAmount()
         {
@@ -481,11 +529,17 @@ namespace TankGame
         /// <summary>
         /// plays the background music
         /// </summary>
-        public void PlayBackgroundSong(Song song)
+        public void PlayBackgroundSong()
         {
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.25f;
-            MediaPlayer.Play(song);
+            MediaPlayer.Volume = 0.20f;
+            MediaPlayer.Play(backgroundMusic);
+            MusicIsPlaying = true;
+        }
+        public void StopMusic()
+        {
+            MediaPlayer.Stop();
+            MusicIsPlaying = false;
         }
     }
 }

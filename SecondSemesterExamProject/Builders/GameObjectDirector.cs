@@ -52,7 +52,7 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public GameObject Construct(Vector2 position, BulletType type, float rotation, Alignment alignment)
+        public GameObject Construct(Vector2 position, BulletType type, float rotation, Alignment alignment )
         {
             bulletBuilder.Build(position, type, rotation, alignment);
 
@@ -78,9 +78,9 @@ namespace TankGame
         /// <param name="position"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public GameObject Construct(Vector2 position, TowerType type, Vehicle vehicle)
+        public GameObject Construct(Vector2 position, TowerType type, Vehicle vehicle, Alignment alignment)
         {
-            towerBuilder.Build(position, type, vehicle);
+            towerBuilder.Build(position, type, vehicle, alignment);
 
             return towerBuilder.GetResult();
         }
@@ -104,9 +104,9 @@ namespace TankGame
         /// <param name="type"></param>
         /// <param name="controls"></param>
         /// <returns></returns>
-        public GameObject Construct(VehicleType type, Controls controls, int playerNumber)
+        public GameObject Construct(VehicleType type, Controls controls, int playerNumber, Alignment alignment)
         {
-            vehicleBuilder.Build(type, controls, playerNumber);
+            vehicleBuilder.Build(type, controls, playerNumber, alignment);
 
             return vehicleBuilder.GetResult(); //returns the vehicle that has been build
         }

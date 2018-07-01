@@ -34,6 +34,11 @@ namespace TankGame
         }
         #endregion;
 
+        public SpriteRenderer SpriteRenderer
+        {
+            get { return spriteRenderer; }
+            set { spriteRenderer = value; }
+        }
         public BulletType GetBulletType
         {
             get { return bulletType; }
@@ -120,6 +125,11 @@ namespace TankGame
                     this.lifeSpan = Constant.spitterBulletLifeSpan;
                     this.bulletDmg = Constant.spitterBulletDmg;
                     break;
+                case BulletType.MonsterBullet:
+                    this.movementSpeed = Constant.monsterBulletMovementSpeed;
+                    this.lifeSpan = Constant.monsterBulletLifeSpan;
+                    this.bulletDmg = Constant.monsterBulletDmg;
+                    break;
 
                 default:
                     break;
@@ -136,7 +146,6 @@ namespace TankGame
         public virtual void Update()
         {
             BulletMovement();
-            spriteRenderer.Rotation = rotation;
 
             CheckIfBulletIsExpired();
 
@@ -152,7 +161,7 @@ namespace TankGame
                 shouldDie = true;
                 if (shooter != null)
                 {
-                    IncrementMissCoint();
+                    IncrementMissCount();
 
                 }
                 DestroyBullet();
@@ -172,13 +181,15 @@ namespace TankGame
 
             //Translates movemement
             TranslateMovement(translation);
-
             if (isRotated == false)
             {
                 //Rotates the bullet to fit its direction
                 rotation = GetDegreesFromDestination(translation);
+                spriteRenderer.Rotation = rotation;
+
                 isRotated = true;
             }
+
         }
 
         /// <summary>
@@ -296,37 +307,47 @@ namespace TankGame
                                 break;
                             }
                         }
-          
-                        if (!(((type is Tower) || (type is Vehicle)) && thisCollider.GetAlignment == Alignment.Enemy 
-                            && otherIsBullet == false)
-                            || !((type is Enemy) && thisCollider.GetAlignment == Alignment.Enemy) || type is Terrain)
+                        if (otherIsBullet == false)
                         {
-                            if (!(type is Crate))
-                            {
 
-                            if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+                            if (other.GetAlignment != thisCollider.GetAlignment)
                             {
-                                (type as Enemy).Health -= bulletDmg;
+                                if (!(type is Crate))
+                                {
+
+                                    if (type is Enemy && thisCollider.GetAlignment == Alignment.Friendly)
+                                    {
+                                        (type as Enemy).Health -= bulletDmg;
+                                        BulletSpecialEffect(other);
+
+                                    }
+                                    else if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy
+                                        || type is Vehicle && thisCollider.GetAlignment == Alignment.Friendly)
+                                    {
+                                        (type as Vehicle).Health -= bulletDmg;
+                                        BulletSpecialEffect(other);
+
+                                    }
+                                    else if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy
+                                        || type is Tower && thisCollider.GetAlignment == Alignment.Friendly)
+                                    {
+                                        (type as Tower).Health -= bulletDmg;
+                                        BulletSpecialEffect(other);
+
+                                    }
+                                    else if (type is Terrain)
+                                    {
+                                        IncrementMissCount();
+                                        BulletSpecialEffect(other);
+
+                                    }
+
+                                }
                             }
-                            else if (type is Vehicle && thisCollider.GetAlignment == Alignment.Enemy)
+                            if (shouldDie)
                             {
-                                (type as Vehicle).Health -= bulletDmg;
+                                DestroyBullet();
                             }
-                            else if (type is Tower && thisCollider.GetAlignment == Alignment.Enemy)
-                            {
-                                (type as Tower).Health -= bulletDmg;
-                            }
-                            else if (type is Terrain)
-                            {
-                                IncrementMissCoint();
-                            }
-                            
-                            BulletSpecialEffect(other);
-                            }
-                        }
-                        if (shouldDie)
-                        {
-                            DestroyBullet();
                         }
                     }
                 }
@@ -352,11 +373,11 @@ namespace TankGame
         /// <summary>
         /// handles incrementing the miss counts for bullets
         /// </summary>
-        private void IncrementMissCoint()
+        private void IncrementMissCount()
         {
             if (shooter != null)
             {
-                if (!(this is SniperBullet))
+                if (!(this is SniperBullet|| this is MonsterBullet))
                 {
 
                     shooter.Stats.BulletsMissed++;
@@ -368,6 +389,16 @@ namespace TankGame
                     //Snipers' damage is reduced upon hitting an enemy, so if the damage == the base damage and it
                     //disappears, it hasn't hit an enemy
                     if ((this as SniperBullet).BulletDamage == Constant.sniperBulletBulletDmg)
+                    {
+
+                        shooter.Stats.BulletsMissed++;
+                    }
+                }
+                else if ((this is MonsterBullet))
+                {
+
+                    
+                    if ((this as MonsterBullet).hasHit == true)
                     {
 
                         shooter.Stats.BulletsMissed++;

@@ -15,7 +15,19 @@ namespace TankGame
         public SniperTower(GameObject gameObject): base(gameObject)
         {
             this.attackRate = Constant.sniperTowerFireRate;
-            this.health = Constant.sniperTowerHealth;
+
+            if (GameWorld.Instance.pvp == true)
+            {
+                this.health = Constant.sniperTowerHealth * Constant.pvpHealthModifier;
+                
+            }
+            else
+            {
+                this.health = Constant.sniperTowerHealth;
+                
+
+            }
+            
             this.attackRange = Constant.sniperTowerAttackRange;
             this.bulletType = Constant.sniperTowerBulletType;
             this.spread = Constant.sniperTowerSpread;

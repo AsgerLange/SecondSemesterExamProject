@@ -30,6 +30,7 @@ namespace TankGame
         public GameOver()
         {
             string text = "Continue";
+
             Button Continue = new Button(new Vector2(Constant.width / 2 - 100, Constant.hight - 100), Constant.RedButtonTexture, Constant.buttonFont)
             {
                 Text = text
@@ -37,6 +38,7 @@ namespace TankGame
             Continue.PenColour = Color.Gold;
             Continue.click += Continue_click;
             ContinueButton = Continue;
+
 
         }
 
@@ -52,12 +54,20 @@ namespace TankGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (ContinueButton != null)
+            if (GameWorld.Instance.pvp == false)
             {
-                ContinueButton.Draw(spriteBatch);
+                if (ContinueButton != null)
+                {
+                    ContinueButton.Draw(spriteBatch);
+                }
             }
             DrawGameOver(spriteBatch);
             DrawGameRecap(spriteBatch);
+
+            if (GameWorld.Instance.pvp)
+            {
+                DrawVictory(spriteBatch);
+            }
         }
 
         public void LoadContent(ContentManager content)
@@ -79,7 +89,10 @@ namespace TankGame
 
         private void DrawGameRecap(SpriteBatch spriteBatch)
         {
-            DrawEnemiesKilled(spriteBatch);
+            if (GameWorld.Instance.pvp == false)
+            {
+                DrawEnemiesKilled(spriteBatch);
+            }
 
             foreach (Vehicle vehicle in GameWorld.Instance.Vehicles)
             {
@@ -106,6 +119,38 @@ namespace TankGame
 
             spriteBatch.DrawString(font, "Siegebreakers killed: "
                 + Stats.SiegeBreakerKilled, new Vector2(statsPosX, 260), statsColor);
+
+            //spitter bullets
+            spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
+            new Vector2(statsPosX, 300), statsColor);
+        }
+
+        private void DrawVictory(SpriteBatch spriteBatch)
+        {
+            foreach (Vehicle vehicle in GameWorld.Instance.Vehicles)
+            {
+                if (vehicle.Control == Controls.WASD)
+                {
+                    spriteBatch.DrawString(font, "Green score: " + vehicle.Stats.PlayerDeathAmmount, new Vector2(statsPosX, 180), Color.YellowGreen);
+
+                    if (vehicle.Stats.PlayerDeathAmmount == Constant.maxDeaths)
+                    {
+                        spriteBatch.DrawString(font, "Green VICTORY!", new Vector2(statsPosX, 120), Color.YellowGreen);
+
+                    }
+                }
+                else
+                {
+                    spriteBatch.DrawString(font, "Blue score: " + vehicle.Stats.PlayerDeathAmmount, new Vector2(statsPosX, 160), Color.CornflowerBlue);
+
+                    if (vehicle.Stats.PlayerDeathAmmount == Constant.maxDeaths)
+                    {
+                        spriteBatch.DrawString(font, "Blue VICTORY! ", new Vector2(statsPosX, 120), Color.CornflowerBlue);
+
+                    }
+                }
+
+            }
 
         }
 
@@ -150,8 +195,12 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Player 2 deaths: "
             + vehicle.Stats.PlayerDeathAmmount, new Vector2(p2StatsPosX, 580), p2StatsColor);
             }
-            spriteBatch.DrawString(font, "Wave Number: " + GameWorld.Instance.GetSpawn.Wave,
-             new Vector2(statsPosX, 120), statsColor);
+            if (GameWorld.Instance.pvp == false)
+            {
+                spriteBatch.DrawString(font, "Wave Number: " + GameWorld.Instance.GetSpawn.Wave,
+                 new Vector2(statsPosX, 120), statsColor);
+
+            }
         }
         private void DrawBulletsCreated(SpriteBatch spriteBatch, Vehicle vehicle)
         {
@@ -168,13 +217,13 @@ namespace TankGame
                     new Vector2(p1StatsPosX, 300), p1StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p1StatsPosX, 320), p1StatsColor);
-
+                spriteBatch.DrawString(font, "Shockwaves fired: " + vehicle.Stats.MonsterBulletCounter,
+                  new Vector2(p1StatsPosX, 340), p1StatsColor);
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
                    new Vector2(p1StatsPosX, 360), p1StatsColor);
                 spriteBatch.DrawString(font, "Total bullet accuracy: " + vehicle.Stats.CalculateAccuracy() + "%",
                   new Vector2(p1StatsPosX, 380), p1StatsColor);
-
 
             }
             else if (vehicle.Control == Controls.UDLR)
@@ -190,6 +239,9 @@ namespace TankGame
                     new Vector2(p2StatsPosX, 300), p2StatsColor);
                 spriteBatch.DrawString(font, "Shotgun pellets fired: " + vehicle.Stats.ShotgunPelletsCounter,
                     new Vector2(p2StatsPosX, 320), p2StatsColor);
+               
+                spriteBatch.DrawString(font, "Shockwaves fired: " + vehicle.Stats.MonsterBulletCounter,
+                    new Vector2(p2StatsPosX, 340), p2StatsColor);
 
 
                 spriteBatch.DrawString(font, "Total bullets missed: " + vehicle.Stats.BulletsMissed,
@@ -227,26 +279,33 @@ namespace TankGame
                 spriteBatch.DrawString(font, "Machinegun towers built: " + vehicle.Stats.MachinegunTowerbuilt,
                     new Vector2(p2StatsPosX, 500), p2StatsColor);
             }
-            spriteBatch.DrawString(font, "Spitter bullets fired: " + Stats.SpitterBulletCounter,
-             new Vector2(statsPosX, 300), statsColor);
+
         }
         public void Update()
         {
-            if (ContinueButton != null)
+            if (GameWorld.Instance.pvp == false)
             {
-                ContinueButton.Update();
+                if (ContinueButton != null)
+                {
+                    ContinueButton.Update();
+                }
             }
             int cal = 0;
             foreach (Vehicle VH in GameWorld.Instance.Vehicles)
             {
                 cal += VH.Stats.TotalAmountOfGold;
             }
-            int waveModifier = GameWorld.Instance.GetSpawn.Wave;
-            if (waveModifier > 10)
+
+            if (GameWorld.Instance.pvp == false)
             {
-                waveModifier = 10;
+
+                int waveModifier = GameWorld.Instance.GetSpawn.Wave;
+                if (waveModifier > 10)
+                {
+                    waveModifier = 10;
+                }
+                Score = cal * waveModifier + Stats.BasicEnemyKilled * 1 + Stats.SwarmerKilled * 1 + Stats.SpitterKilled * 5 + Stats.BasicEliteEnemyKilled * 10 + Stats.SiegeBreakerKilled * 50;
             }
-            Score = cal * waveModifier + Stats.BasicEnemyKilled * 1 + Stats.SwarmerKilled * 1 + Stats.SpitterKilled * 5 + Stats.BasicEliteEnemyKilled * 10 + Stats.SiegeBreakerKilled * 50;
         }
     }
 }
