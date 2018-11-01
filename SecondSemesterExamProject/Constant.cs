@@ -87,7 +87,7 @@ namespace TankGame
         public static readonly float monsterMoveSpeed = 140;
         public static readonly int monsterHealth = 350;
         public static readonly float monsterRotateSpeed = 2.5f;
-        public static readonly int monsterStartGold = 1000 ;
+        public static readonly int monsterStartGold = 150 ;
         public static readonly int spawnedEnemyMaxAmount = 15; 
 
         public static readonly float monsterRegenRate = 0.5f; // seconds per life
